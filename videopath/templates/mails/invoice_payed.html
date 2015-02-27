@@ -1,0 +1,19 @@
+{% extends "mails/base_1.html" %}
+{% load mathfilters %}
+{% block content %}
+
+<p>
+Thank you.
+<br />
+We have just received your payment of <strong>{{ amount_due | div:100 | floatformat:-2}} EUR</strong> for your Videopath subscription.
+</p>
+<p>
+Here are the payment details. 
+<br />
+	<a href = "{{ link }}">Open Invoice</a>
+</p>
+<p>
+	To change your plan or payment settings, visit your plans page on your account settings  <a href="http://app.videopath.com">http://app.videopath.com</a>.
+</p>
+
+{% endblock %}

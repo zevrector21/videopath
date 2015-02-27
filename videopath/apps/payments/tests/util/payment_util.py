@@ -1,0 +1,27 @@
+from videopath.apps.common.test_utils import BaseTestCase
+from videopath.apps.payments.models import Payment
+from videopath.apps.payments.util import payment_util
+
+class TestCase(BaseTestCase):
+
+    def setup(self):
+        self.create_user()
+        self.payment = Payment.objects.create(user=self.user, amount_due=200)
+
+    def test_creation(self):
+
+    	# no payment should be created if nothing is owed
+    	payment = payment_util.create_payment(self.user, [])
+    	self.assertEquals(payment,None)
+
+    	# expect payment to be created properly
+    	payment = payment_util.create_payment(self.user, [{
+    		"text":"one line",
+    		"amount": 200
+    		}])
+    	self.assertEquals(payment.amount_due,200)
+
+
+    def test_processing(self):
+    	payment_util.process_payments()
+

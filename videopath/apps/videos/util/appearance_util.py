@@ -16,12 +16,6 @@ def appearance_for_revision(revision):
     result = settings.DEFAULT_VIDEO_APPEARANCE.copy()
     user = revision.video.user
 
-    # merge appearance from text field on user settings
-    try:
-        result.update(convert(user.settings.video_appearance))  
-    except:
-        pass
-
     # merge appearance from model on user 
     try:
         vrs = PlayerAppearanceSerializer(user.default_player_appearance)

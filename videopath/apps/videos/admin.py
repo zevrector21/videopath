@@ -147,7 +147,7 @@ class PlayerAppearanceAdmin(admin.ModelAdmin):
         ('Colors Advanced', {
             'classes': ('collapse',),
             'fields': (
-                'ui_color_playbar_outline','ui_color_playbar_background','ui_color_playbar_progress','ui_color_playbar_buffer',
+                'ui_color_playbar_outline','ui_color_playbar_background','ui_color_playbar_progress','ui_color_playbar_buffer', 'ui_color_playbar_indicators',
                 'ui_color_marker_background','ui_color_marker_outline','ui_color_marker_text',
                 'ui_color_marker_highlight_background','ui_color_marker_highlight_outline','ui_color_marker_highlight_text',
                 'ui_color_button_background','ui_color_button_text','ui_color_button_highlight_background','ui_color_button_highlight_text',

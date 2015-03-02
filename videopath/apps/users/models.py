@@ -37,9 +37,6 @@ class UserSettings(UserenaBaseProfile):
     currency = models.CharField(
         max_length=3, default=CURRENCY_EUR, choices=CURRENCY_CHOICES)
 
-    # default video appearance of all of the users videos
-    video_appearance = models.TextField(blank=True)
-
     class Meta:
         verbose_name = 'User Settings'
         verbose_name_plural = 'User Settings'

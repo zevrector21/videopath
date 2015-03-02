@@ -9,7 +9,6 @@ from videopath.apps.videos.models import Video, Marker
 from videopath.apps.analytics.models import TotalAnalyticsData, DailyAnalyticsData
 from videopath.apps.analytics.signals import analytics_imported
 
-
 #
 # Import data from google analytics
 #
@@ -320,6 +319,17 @@ class MetricsPopularMarkers(MetricsImport):
 
         marker_cache[marker_id] = marker_info
         row.popular_markers = json.dumps(marker_cache)
+
+#
+# used by health checks to check access
+#
+def check_access():
+    try:
+        _get_client()
+        return True
+    except Exception as e:
+        return str(e)
+
 
 #
 # Define which importers to use

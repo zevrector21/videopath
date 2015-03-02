@@ -16,6 +16,10 @@ def check_mandrill_access():
 	service = service_provider.get_service("mail")
 	return service.check_access()
 
+def check_mailchimp_access():
+	service = service_provider.get_service("mailchimp")
+	return service.check_access()
+
 def check_db_connection():
 	try:
 		from django.db import connection

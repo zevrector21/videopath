@@ -1,4 +1,3 @@
-import mailchimp
 import random
 import string
 
@@ -16,6 +15,7 @@ from rest_framework.exceptions import ValidationError, PermissionDenied
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
+from videopath.apps.common.services import service_provider
 from videopath.apps.users.models import AuthenticationToken, OneTimeAuthenticationToken
 from videopath.apps.users.serializers import UserSerializer
 from videopath.apps.common.mailer import send_signup_email, send_forgot_pw_mail
@@ -123,9 +123,9 @@ class UserViewSet(viewsets.ModelViewSet):
         # subscribe to mailchimp if they want to
         if serializer.validated_data.get("newsletter", False):
             try:
-                mc = mailchimp.Mailchimp(settings.MAILCHIMP_APIKEY)
-                mc.lists.subscribe(
-                    "8d64e6c84e", {"email": user.email}, update_existing=True, double_optin=False)
+                email = user.email  
+                service = service_provider.get_service("mailchimp")      
+                service.subscribe_email(email)      
             except:
                 None
 

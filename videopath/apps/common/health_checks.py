@@ -11,8 +11,10 @@ def run():
 
 	for app in installed_apps:
 		try:
+			print app
 			health_module = app + ".health"
 			module = importlib.import_module(health_module)
+			print "-imported"
 			result, s, f = _run_module_test(module)
 			apps[app] = result
 			succeeded += s

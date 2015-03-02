@@ -30,10 +30,14 @@ def confirm_subscription_topic(topic, token):
 #
 def check_connection():
 	try:
-		# list our pipelines, just to see if the connection to the service
-		# works
+		# connect
 		t = elastictranscoder.connect_to_region(AWS_REGION)
-		t.list_pipelines()
+
+		# check the presets we have defined in the settings
+		t.read_pipeline(settings.AWS_PIPELINE_ID)
+		# check the pipline we have defined
+		t.read_preset(settings.AWS_TRANSCODE_PRESET_ID)
+		t.read_preset(settings.AWS_TRANSCODE_PRESET_ID2)
 		return True
 	except Exception as e:
 		return str(e)

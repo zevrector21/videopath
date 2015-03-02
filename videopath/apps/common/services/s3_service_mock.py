@@ -28,3 +28,9 @@ def check_existence(bucket, key):
 #
 def check_access():
 	return True
+
+#
+# Check if we have full access to a certain bucket
+#
+def check_access_to_bucket(bucket):
+	return True

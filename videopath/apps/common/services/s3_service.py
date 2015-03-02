@@ -77,3 +77,14 @@ def check_access():
 		return True
 	except Exception as e:
 		return str(e)
+
+#
+# Check if we have full access to a certain bucket
+#
+def check_access_to_bucket(bucket):
+	try:
+		upload("test", bucket, "test_key")
+		delete(bucket, "test_key")
+		return True
+	except Exception as e:
+		return str(e)

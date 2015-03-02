@@ -35,11 +35,12 @@ def _run_module_test(module):
 		if "check_" in func:
 			function = getattr(module, func)
 			check_result = function()
+			name = func.replace("check_", "").replace("_", " ")
 
 			if check_result == True:
-				result[func] = "OK"
+				result[name] = "OK"
 				succeeded+=1
 			else:
-				result[func] = "FAILED - " + str(check_result)
+				result[name] = "FAILED - " + str(check_result)
 				failed+=1
 	return result, succeeded, failed

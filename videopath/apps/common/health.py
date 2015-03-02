@@ -15,3 +15,12 @@ def check_s3_access():
 def check_mandrill_access():
 	service = service_provider.get_service("mail")
 	return service.check_access()
+
+def check_db_connection():
+	try:
+		from django.db import connection
+		cursor = connection.cursor()
+		cursor.execute("select 1")
+		return True
+	except Exception as e:
+		return str(e)

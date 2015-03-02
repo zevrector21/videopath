@@ -55,9 +55,9 @@ STATIC_ROOT = os.path.join(SITE_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
 
 # Additional locations of static files
-STATICFILES_DIRS = (
-    os.path.join(SITE_ROOT, 'static'),
-)
+# STATICFILES_DIRS = (
+#     os.path.join(SITE_ROOT, 'static'),
+# )
 
 # make commons middleware append a slash to urls
 APPEND_SLASH = True

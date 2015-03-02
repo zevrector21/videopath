@@ -1,5 +1,11 @@
+from django.core.cache import cache
+from django.db import connection
+
 from videopath.apps.common.services import service_provider
 
+#
+# External services
+#
 def check_stripe_access():
 	service = service_provider.get_service("stripe")
 	return service.check_access()
@@ -20,11 +26,23 @@ def check_mailchimp_access():
 	service = service_provider.get_service("mailchimp")
 	return service.check_access()
 
+#
+# Django stuff
+#
+
+# database
 def check_db_connection():
 	try:
-		from django.db import connection
 		cursor = connection.cursor()
 		cursor.execute("select 1")
 		return True
 	except Exception as e:
 		return str(e)
+
+# cache
+def check_cache():
+	cache.set('cache_test', 'itworks', 1)
+	if cache.get("cache_test") == "itworks":
+		return True
+	else:
+		return 	"Caching appears to be offline"

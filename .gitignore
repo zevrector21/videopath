@@ -37,6 +37,7 @@ nosetests.xml
 
 # Django
 videopath/settings/local.py
+videopath/staticfiles
 test.db
 
 # redis

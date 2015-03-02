@@ -9,4 +9,8 @@ from videopath.apps.common import health_checks
 @permission_classes((AllowAny,))
 def view(request):
 	result = health_checks.run()
-	return Response(result)
+
+	if result["failed"] == 0:
+		return Response(result)
+	else:
+		return Response(result, status=500)

@@ -68,3 +68,12 @@ def check_existence(bucket, key):
 	key = bucket.get_key(key)
 	return key != None
 
+#
+#
+#
+def check_access():
+	try:
+		connection.get_all_buckets()
+		return True
+	except Exception as e:
+		return str(e)

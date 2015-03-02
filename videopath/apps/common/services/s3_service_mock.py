@@ -22,3 +22,9 @@ def list_keys(bucket, prefix = ""):
 #
 def check_existence(bucket, key):
 	return True
+
+#
+# Test access to s3
+#
+def check_access():
+	return True

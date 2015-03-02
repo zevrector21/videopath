@@ -24,3 +24,16 @@ def start_transcoding_job(input, other, outputs):
 def confirm_subscription_topic(topic, token):
 	conn = sns.connect_to_region(AWS_REGION)
 	return conn.confirm_subscription(topic, token)
+
+#
+#
+#
+def check_connection():
+	try:
+		# list our pipelines, just to see if the connection to the service
+		# works
+		t = elastictranscoder.connect_to_region(AWS_REGION)
+		t.list_pipelines()
+		return True
+	except Exception as e:
+		return str(e)

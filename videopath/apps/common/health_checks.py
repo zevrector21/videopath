@@ -7,13 +7,16 @@ def run():
 	failed = 0
 	succeeded = 0
 	apps = {}
+	installed_apps = settings.INSTALLED_APPS + ('videopath.apps.common',)
 
-	for app in settings.INSTALLED_APPS:
+	for app in installed_apps:
 		try:
 			health_module = app + ".health"
 			module = importlib.import_module(health_module)
-			result = _run_module_test(module)
+			result, s, f = _run_module_test(module)
 			apps[app] = result
+			succeeded += s
+			failed += f
 		except ImportError:
 			pass
 
@@ -26,9 +29,17 @@ def run():
 
 def _run_module_test(module):
 	result = {}
+	failed = 0
+	succeeded = 0
 	for func in dir(module): 
 		if "check_" in func:
 			function = getattr(module, func)
 			check_result = function()
-			result[func] = "OK"
-	return result
+
+			if check_result == True:
+				result[func] = "OK"
+				succeeded+=1
+			else:
+				result[func] = "FAILED - " + str(check_result)
+				failed+=1
+	return result, succeeded, failed

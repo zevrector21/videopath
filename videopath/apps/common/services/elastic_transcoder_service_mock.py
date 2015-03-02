@@ -10,3 +10,9 @@ def start_transcoding_job(input, other, outputs):
 #
 def confirm_subscription_topic(topic, token):
 	return "some confirmation"
+
+#
+#
+#
+def check_connection():
+	return True

@@ -17,3 +17,16 @@ def mandrill_send(message):
         m.messages.send(message=message, async=False, ip_pool='Main Pool')
     except:
         logger.error("error sending mail")
+
+
+
+#
+# Check acccess
+#
+def check_access():
+	try:
+		m = Mandrill(settings.MANDRILL_APIKEY)
+		m.users.ping()
+		return True
+	except Exception as e:
+		return str(e)

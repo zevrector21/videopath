@@ -28,3 +28,9 @@ def charge_user(user, amount):
 		return "some id" if  user.stripe_id.key == STRIPE_CUSTOMER_WITH_CARD else False
 	except:
 		return False
+
+#
+# Test access to stripe
+#
+def check_access():
+    return True

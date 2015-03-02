@@ -92,3 +92,14 @@ def _get_stripe_customer_for_user(user, create_if_missing=False):
         return stripe_customer
 
     return None
+
+
+#
+# Test access to stripe
+#
+def check_access():
+    try:
+        stripe.Account.retrieve()
+        return True
+    except Exception as e:
+        return str(e)

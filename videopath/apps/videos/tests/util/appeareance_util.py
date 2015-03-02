@@ -17,12 +17,6 @@ class TestCase(BaseTestCase):
        	app = appearance_util.appearance_for_revision(video.draft)
        	self.assertEqual(app.get("language"), "en")
 
-       	# test appearance setting on user
-       	video.user.settings.video_appearance = 'language="de"'
-       	video.user.settings.save()
-       	app = appearance_util.appearance_for_revision(video.draft)
-       	self.assertEqual(app.get("language"), "de")
-
        	# test appearance setting on video revision
        	video.draft.video_appearance = 'language="fr"'
        	video.draft.save()

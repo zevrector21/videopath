@@ -62,3 +62,4 @@ DEFAULT_VIDEO_APPEARANCE = {
     "endscreen_logo": None, 
     "icon": None
 }
+

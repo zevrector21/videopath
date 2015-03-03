@@ -1,7 +1,7 @@
 Django==1.6.9
 GitPython==0.3.2.RC1
 Markdown==2.3.1
-Pillow==2.7.0
+Pillow==2.3.1
 South==1.0.2
 astroid==1.2.0
 async==0.6.1
@@ -32,6 +32,7 @@ gitdb==0.5.4
 google-api-python-client==1.2
 gunicorn==18.0
 heroku==0.1.4
+hospital==0.8
 html2text==3.200.3
 httplib2==0.8
 humanize==0.5
@@ -39,6 +40,7 @@ logilab-common==0.62.1
 mailchimp==2.0.8
 mandrill==1.0.53
 mock==1.0.1
+moment==0.2.2
 newrelic==2.12.0.10
 nose==1.3.4
 nose-cov==1.6
@@ -48,6 +50,7 @@ pylint==1.3.0
 python-dateutil==1.5
 python-gflags==2.0
 pytz==2013.9
+raven==5.2.0
 redis==2.9.1
 requests==2.2.1
 rq==0.3.13

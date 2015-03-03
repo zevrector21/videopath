@@ -121,6 +121,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
+    'raven.contrib.django.raven_compat', # error reporting with raven
     'south',
     'django_nose',
     'userena',

@@ -26,6 +26,16 @@ def check_mailchimp_access():
 	service = service_provider.get_service("mailchimp")
 	return service.check_access()
 
+
+def check_raven_sentry_connection():
+	from raven.scripts.runner import send_test_message
+	from raven.contrib.django.models import client
+	try:
+		print send_test_message(client, {})
+		return True
+	except Exception as e:
+		return str(e)
+
 #
 # Django stuff
 #

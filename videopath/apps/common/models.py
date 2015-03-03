@@ -1,6 +1,7 @@
 import random
 import re
 import string 
+import copy
 
 from django.core.validators import RegexValidator
 from django.db import models
@@ -27,6 +28,12 @@ class VideopathBaseModel(models.Model):
 
     def reload(self):
         return self.__class__.objects.get(pk=self.pk)
+
+    def duplicate(self):
+        duplicate = copy.copy(self)
+        duplicate.pk = None
+        duplicate.save()
+        return duplicate
 
     class Meta:
         abstract = True

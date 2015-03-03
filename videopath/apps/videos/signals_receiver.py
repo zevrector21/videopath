@@ -9,7 +9,7 @@ from videopath.apps.videos.models import Video, VideoRevision
 #
 @receiver(post_save, sender=Video)
 def create_first_draft(sender, instance=None, created=False, **kwargs):
-    if created:
+    if created and instance.draft == None:
         revision = VideoRevision.objects.create(video=instance)
         instance.draft = revision
         instance.save()

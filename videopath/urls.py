@@ -8,7 +8,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
 
 	# always redirect to admin from base url
-	url(r'^$', RedirectView.as_view(url='v1/')),
+	url(r'^$', RedirectView.as_view(url='admin/')),
 
 	# users app
 	url(r'^v1/', include('videopath.apps.users.urls')),

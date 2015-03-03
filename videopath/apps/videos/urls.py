@@ -21,7 +21,7 @@ router.register(r'markercontent', MarkerContentViewSet, base_name="marker_conten
 urlpatterns = patterns('',   
 
    # special urls that overwrite the Viewsets
-   url(r'^video/(?P<vid>.+)/revision/(?P<rev_type>draft|published)/$', get_revision),
+   url(r'^video/(?P<vid>[0-9]+)/revision/(?P<rev_type>draft|published)/$', get_revision),
 
    # publish / unpublish actions
    url(r'^video/(?P<vid>[0-9]+)/public/$', video_publish),

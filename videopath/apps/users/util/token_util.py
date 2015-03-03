@@ -57,19 +57,20 @@ def _load_user_and_token(key):
 def _track_activity(user):
 	thresh = datetime.now() - timedelta(minutes=10)
 	cachekey = user.username + "-activity"
-        activity = cache.get(cachekey)
-        if not activity:
-            try:
-                activity = user.activity
-            except UserActivity.DoesNotExist:
-                activity = UserActivity.objects.create(
-                    user=user, last_seen=datetime.now())
-            cache.set(cachekey, activity)
+	activity = cache.get(cachekey)
+	if not activity:
+	    try:
+	        activity = user.activity
+	    except UserActivity.DoesNotExist:
+	        activity, created = UserActivity.objects.get_or_create(user=user)
+	        activity.last_seen=datetime.now()
+	        activity.save()
+	    cache.set(cachekey, activity)
 
-        if activity and activity.last_seen < thresh:
-            activity.last_seen = datetime.now()
-            activity.save()
-            cache.set(cachekey, activity)
+	if activity and activity.last_seen < thresh:
+	    activity.last_seen = datetime.now()
+	    activity.save()
+	    cache.set(cachekey, activity)
 
 #
 # Keep a log of when the users were here

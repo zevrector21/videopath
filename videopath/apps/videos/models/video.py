@@ -1,3 +1,5 @@
+import copy
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
@@ -48,6 +50,41 @@ class Video(VideopathBaseModel):
     # define wether video is archived
     archived = models.BooleanField(default=False)
 
+
+    def duplicate(self):
+
+        # don't duplicate video with uploaded file
+        if self.file.count() > 0:
+            return None
+
+        # create a copy of the draft
+        duplicate = copy.copy(self)
+        duplicate.pk = None
+        duplicate.key = None
+
+        # make sure we only have one revision as draft
+        # and the video is marked as unpublished
+        duplicate.draft = self.get_draft_or_current_revision().duplicate()
+        duplicate.current_revision = None
+        duplicate.published = 0
+
+        # clean up some other values
+        duplicate.total_plays = 0
+        duplicate.total_views = 0
+        duplicate.archived = False
+
+        duplicate.save()
+
+        # copy over video sources
+        for source in self.video_sources.all():
+            duplicate_source = source.duplicate()
+            duplicate_source.video = duplicate
+            duplicate_source.save()
+
+        duplicate.draft.video = duplicate
+        duplicate.draft.save()
+
+        return duplicate
 
     # manage revisions/drafts
     def delete_draft(self):

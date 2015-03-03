@@ -20,7 +20,11 @@ class VideoSourceInlineAdmin(admin.TabularInline):
 #
 # Video
 #
+
+
 class VideoAdmin(admin.ModelAdmin):
+
+    # fields
     list_display = ('key', 'id', 'user', 'revision_link', 'created_humanized',
                     'modified_humanized',  'draft_link', 'current_revision_link', 'archived')
     list_filter = ('user__username',)
@@ -28,6 +32,26 @@ class VideoAdmin(admin.ModelAdmin):
     search_fields = ['key', 'id']
     inlines = (VideoFileInlineAdmin, VideoSourceInlineAdmin)
 
+    # actions
+    actions=["make_published", "make_unpublished", "make_duplicated"]
+    def make_published(self, request, queryset):
+        for video in queryset.all():
+            video.publish()
+
+    make_published.short_description = "Publish selected videos"
+
+    def make_unpublished(self, request, queryset):
+        for video in queryset.all():
+            video.unpublish()
+    make_unpublished.short_description = "Unpublish selected videos"
+
+    def make_duplicated(self, request, queryset):
+        for video in queryset.all():
+            copy = video.duplicate()
+            self.message_user(request, "Duplicated video " + video.key + " -> " + copy.key)
+    make_duplicated.short_description = "Duplicate selected videos"
+
+    # custom fields
     def created_humanized(self, obj):
         return humanize.naturaltime(obj.created)
 
@@ -145,13 +169,12 @@ class PlayerAppearanceAdmin(admin.ModelAdmin):
             'fields': ('ui_color_1', 'ui_color_2')
         }),
         ('Colors Advanced', {
-            'classes': ('collapse',),
             'fields': (
-                'ui_color_playbar_outline','ui_color_playbar_background','ui_color_playbar_progress','ui_color_playbar_buffer', 'ui_color_playbar_indicators',
-                'ui_color_marker_background','ui_color_marker_outline','ui_color_marker_text',
-                'ui_color_marker_highlight_background','ui_color_marker_highlight_outline','ui_color_marker_highlight_text',
-                'ui_color_button_background','ui_color_button_text','ui_color_button_highlight_background','ui_color_button_highlight_text',
-                'ui_color_overlay_outline',)
+                ('ui_color_playbar_outline','ui_color_playbar_background','ui_color_playbar_progress','ui_color_playbar_buffer', 'ui_color_playbar_indicators'),
+                ('ui_color_marker_background','ui_color_marker_outline','ui_color_marker_text'),
+                ('ui_color_marker_highlight_background','ui_color_marker_highlight_outline','ui_color_marker_highlight_text'),
+                ('ui_color_button_background','ui_color_button_text','ui_color_button_highlight_background','ui_color_button_highlight_text'),
+                ('ui_color_overlay_outline',))
         }),
         ('Images', {
             'fields': ('endscreen_logo', 'icon')

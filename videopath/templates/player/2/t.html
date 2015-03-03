@@ -20,12 +20,9 @@
   <meta property="og:type" content="video.movie" />
 
   <!-- error reporting -->
+  <script src="//cdn.ravenjs.com/1.1.2/jquery,native/raven.min.js"></script>
   <script>
-    (function(_,e,rr,s){_errs=[s];var c=_.onerror;_.onerror=function(){var a=arguments;_errs.push(a);
-    c&&c.apply(this,a)};var b=function(){var c=e.createElement(rr),b=e.getElementsByTagName(rr)[0];
-    c.src="//beacon.errorception.com/"+s+".js";c.async=!0;b.parentNode.insertBefore(c,b)};
-    _.addEventListener?_.addEventListener("load",b,!1):_.attachEvent("onload",b)})
-    (window,document,"script","53919eb4ec9aef4f360000d5");
+      Raven.config("https://f20239c96aee4394b9b61981f6ac869d@app.getsentry.com/38934", {}).install();
   </script>
 
 

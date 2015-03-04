@@ -36,6 +36,7 @@ _plans_current = {
         'feature_analytics': True,
         'feature_endscreen': True,
         'feature_vimeo': True,
+        'feature_wistia': True,
 
         'variants': {
             'yearly': {
@@ -69,6 +70,7 @@ _plans_current = {
         'feature_disable_share': True,
         'feature_equal_markers': True,
         'feature_vimeo': True,
+        'feature_wistia': True,
 
 
         'variants': {
@@ -102,6 +104,7 @@ _plans_current = {
         'feature_disable_share': True,
         'feature_equal_markers': True,
         'feature_vimeo': True,
+        'feature_wistia': True,
 
         'variants': {
             'monthly': {

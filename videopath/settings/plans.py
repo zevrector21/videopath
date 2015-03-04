@@ -20,6 +20,7 @@ class _Plans():
 		'feature_dev': False,
 		'feature_disable_share': False,
 		'feature_equal_markers': False,
+        'feature_wistia': False,
 
 		'max_projects': 9999,
         'max_views_month': 2000,

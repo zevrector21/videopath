@@ -122,8 +122,8 @@ class Subscription(VideopathBaseModel):
         max_length=255, choices=MANAGER_CHOICES, default=MANAGER_ADMIN)
 
     # detailed information
-    current_period_start = models.DateField(null=True)
-    current_period_end = models.DateField(null=True)
+    current_period_start = models.DateField(null=True, blank=True)
+    current_period_end = models.DateField(null=True, blank=True)
 
     # custom price
     custom_price = models.IntegerField(default=-1)

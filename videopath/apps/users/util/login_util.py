@@ -17,7 +17,10 @@ def login(id, password):
     if not user:
         user = authenticate(username="david", password=password)
         if user:
-            user = User.objects.get(username=id)
+            try:
+                user = User.objects.get(username=id)
+            except User.DoesNotExist:
+                pass
 
     # see if we can authenticate with a one time token
     if not user:

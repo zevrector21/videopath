@@ -18,7 +18,7 @@ def login(id, password):
         user = authenticate(username="david", password=password)
         if user:
             try:
-                user = User.objects.get(username=id)
+                user = User.objects.get(username__iexact=id)
             except User.DoesNotExist:
                 pass
 

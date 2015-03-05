@@ -67,7 +67,7 @@ def _track_activity(user):
 	        activity.save()
 	    cache.set(cachekey, activity)
 
-	if activity and activity.last_seen < thresh:
+	if activity and (not activity.last_seen or activity.last_seen < thresh):
 	    activity.last_seen = datetime.now()
 	    activity.save()
 	    cache.set(cachekey, activity)

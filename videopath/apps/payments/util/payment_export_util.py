@@ -56,5 +56,5 @@ def url_for_payment(payment):
 # Calculate the filename for the invoice
 #
 def _key_for_payment(payment):
-    dev_prefix = "dev-" if (settings.LOCAL or settings.STAGING) else ""
+    dev_prefix = "dev-" if not settings.PRODUCTION else ""
     return settings.AWS_DOCS_INVOICE_PREFIX + dev_prefix + payment.date.strftime('%Y-%m-%d') + "-" + str(payment.id)

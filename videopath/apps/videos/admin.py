@@ -27,9 +27,9 @@ class VideoAdmin(admin.ModelAdmin):
     # fields
     list_display = ('key', 'id', 'user', 'revision_link', 'created_humanized',
                     'modified_humanized',  'draft_link', 'current_revision_link', 'archived')
-    list_filter = ('user__username',)
     ordering = ('-created',)
     search_fields = ['key', 'id']
+    exclude = ['draft','current_revision']
     inlines = (VideoFileInlineAdmin, VideoSourceInlineAdmin)
 
     # actions
@@ -66,14 +66,14 @@ class VideoAdmin(admin.ModelAdmin):
     def draft_link(self, obj):
         if not obj.draft:
             return "None"
-        link = "/admin/videos/videorevision/?id=" + str(obj.draft.id)
+        link = "/admin/videos/videorevision/" + str(obj.draft.id)
         return "<a href = '" + link + "'>Current Draft</a>"
     draft_link.allow_tags = True
 
     def current_revision_link(self, obj):
         if not obj.current_revision:
             return "None"
-        link = "/admin/videos/videorevision/?id=" + \
+        link = "/admin/videos/videorevision/" + \
             str(obj.current_revision.id)
         return "<a href = '" + link + "'>Current Revision</a>"
     current_revision_link.allow_tags = True

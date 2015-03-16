@@ -33,6 +33,26 @@ def view(request):
         if max_rows <= 0:
             break
 
+    result += helpers.header("Most popular video the last 7 days")
+    last_day = date.today()
+    first_day = last_day - timedelta(days=7)
+    count = DailyAnalyticsData.objects.filter(
+        # video__user=user,
+        date__gte=first_day,
+        date__lt=last_day)\
+        .values('video_id')\
+        .annotate(score=Sum("plays_all"))\
+        .order_by('-score')
+    max_rows = 10
+    for entry in count:
+        video = Video.objects.get(pk=entry["video_id"])
+        link = "http://player.videopath.com/" + video.key
+        result += "<a href='" + link + "'>"+video.get_draft_or_current_revision().title + "</a> (" + video.user.username + ")" + \
+            ": " + str(entry["score"]) + " plays<br />"
+        max_rows = max_rows - 1
+        if max_rows <= 0:
+            break
+
     # videos created per week
     result += helpers.header("Videos created per week")
     result += helpers.dategraph(Video.objects.all(), "created", "%Y %V")

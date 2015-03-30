@@ -20,8 +20,6 @@ class VideoSourceInlineAdmin(admin.TabularInline):
 #
 # Video
 #
-
-
 class VideoAdmin(admin.ModelAdmin):
 
     # fields

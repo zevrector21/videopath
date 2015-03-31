@@ -26,6 +26,7 @@ def export_payment(payment):
         "payment_details": payment_details,
         "payment": payment,
         "lines": json.loads(payment.details) if payment.details else {},
+        "percent_vat": payment.percent_vat,
         "payment_info": {
             "amount_vat": amount_vat,
             "amount_due_net": amount_due_net

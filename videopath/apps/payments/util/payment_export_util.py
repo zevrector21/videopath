@@ -15,9 +15,9 @@ def export_payment(payment):
     payment_details = payment.user.payment_details
 
     # tax calculations
-    tax_percent = payment.percent_vat
-    amount_due = payment.amount_due
-    amount_vat = round((amount_due / (100 + tax_percent)) * tax_percent)
+    tax_percent = float(payment.percent_vat)
+    amount_due = float(payment.amount_due)
+    amount_vat = round((amount_due / (100.0 + tax_percent)) * tax_percent)
     amount_due_net = amount_due - amount_vat
 
     # render template

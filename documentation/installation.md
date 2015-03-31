@@ -43,8 +43,8 @@ Start it with ``source dir-to-your-venv/bin/activate``.
 
 	# create environment variables or create a local settings file
 	# this file will allow you to change
-	vi videopath/settings_local.py
-	cp videopath/settings_local_sample.py videopath/settings_local.py
+	vi videopath/settings/env_local.py
+	cp videopath/settings/env_local_sample.py videopath/settings/env_local.py
 
 	# create a "static" folder
 	mkdir videopath/static

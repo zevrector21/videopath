@@ -1,5 +1,5 @@
 from videopath.apps.common.test_utils import BaseTestCase
-from videopath.apps.payments.models import Payment
+from videopath.apps.payments.models import Payment, PaymentDetails
 from videopath.apps.payments.util import payment_util
 
 class TestCase(BaseTestCase):
@@ -20,8 +20,29 @@ class TestCase(BaseTestCase):
     		"amount": 200
     		}])
     	self.assertEquals(payment.amount_due,200)
-
+        self.assertEquals(payment.percent_vat,19)
 
     def test_processing(self):
     	payment_util.process_payments()
+
+    def test_creation_with_eu_vat(self):
+        # expect payment to be created properly
+        PaymentDetails.objects.create(user=self.user, country="United Kingdom")
+        payment = payment_util.create_payment(self.user, [{
+            "text":"one line",
+            "amount": 200
+            }])
+        self.assertEquals(payment.amount_due,200)
+        self.assertEquals(payment.percent_vat, 20)
+
+    def test_creation_with_us_vat(self):
+        # expect payment to be created properly
+        PaymentDetails.objects.create(user=self.user, country="United States")
+        payment = payment_util.create_payment(self.user, [{
+            "text":"one line",
+            "amount": 200
+            }])
+        self.assertEquals(payment.amount_due,200)
+        self.assertEquals(payment.percent_vat, 0)
+        
 

@@ -2,8 +2,10 @@ import json
 
 from datetime import date
 
+from django.conf import settings
+
 from videopath.apps.common import mailer
-from videopath.apps.payments.models import Payment
+from videopath.apps.payments.models import Payment, PaymentDetails
 from videopath.apps.payments.util import payment_export_util
 from videopath.apps.common.services import service_provider
 
@@ -14,6 +16,17 @@ stripe_service = service_provider.get_service("stripe")
 #
 def create_payment(user, lines):
     amount_due = 0
+    percent_vat = 19
+
+    # get correct vat
+    try:
+        country = user.payment_details.country
+        if country in settings.VAT_RATES:
+            percent_vat = settings.VAT_RATES[country]
+        else:
+            percent_vat = 0
+    except PaymentDetails.DoesNotExist:
+        pass
 
     # sum up
     for line in lines:
@@ -27,7 +40,7 @@ def create_payment(user, lines):
         user=user,
         date=date.today(),
         amount_due=amount_due,
-        percent_vat=19,
+        percent_vat=percent_vat,
         details=json.dumps(lines)
     )
 

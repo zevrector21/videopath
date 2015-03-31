@@ -17,7 +17,7 @@ settings_files = [
     # list of countries
     "const_countries",
     # vat
-    "cont_vat_rates",
+    "const_vat_rates",
     # the rest
     "misc"
 ]

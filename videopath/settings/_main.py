@@ -14,6 +14,10 @@ settings_files = [
     "const_keys",
     # all our plans
     "plans",
+    # list of countries
+    "const_countries",
+    # vat
+    "cont_vat_rates",
     # the rest
     "misc"
 ]

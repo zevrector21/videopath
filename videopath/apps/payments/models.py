@@ -21,6 +21,7 @@ class StripeID(VideopathBaseModel):
 #
 # Payment details of user, the adress
 #
+COUNTRY_CHOICES = settings.COUNTRIES_TUPLES()
 class PaymentDetails(VideopathBaseModel):
 
     # data
@@ -28,7 +29,7 @@ class PaymentDetails(VideopathBaseModel):
     street = models.CharField(max_length=150)
     city = models.CharField(max_length=150)
     post_code = models.CharField(max_length=150)
-    country = models.CharField(max_length=150)
+    country = models.CharField(max_length=150, choices=COUNTRY_CHOICES)
 
     # user ref
     user = models.OneToOneField(User,

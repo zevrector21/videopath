@@ -11,11 +11,14 @@ def authenticate_token(key):
 	# try to load user and token from key	
 	user, token = _load_user_and_token(key)
 
-	# last seen
-	_track_activity(user)
-
-	# last seen per day
-	_track_activity_daily(user)
+	
+	try:
+		# last seen
+		_track_activity(user)
+		# last seen per day
+		_track_activity_daily(user)
+	except:
+		pass
 
 	return user, token
 

@@ -11,7 +11,7 @@ from videopath.apps.admin.views import helpers
 
 
 @csrf_exempt
-def view(request):
+def listview(request):
     result = helpers.navigation()
 
     # video plays
@@ -70,5 +70,34 @@ def view(request):
             humanize.naturalday(v.current_revision.modified) + ")"
         result += title
         result += "<br />"
+
+    return HttpResponse("<pre>" + result + "</pre>")
+
+
+@csrf_exempt
+def videoview(request, key):
+    result = helpers.navigation()
+    video = Video.objects.get(key=key)
+
+    result += helpers.header("Video " + video.get_current_revision_or_draft().title)
+    result += "User: " + helpers.userlink(video.user)
+
+    result += helpers.header("Overall stats")
+    try:
+        data = video.total_analytics.latest("plays_all")
+
+        percent_interacting = int(min(100, (float(data.overlays_opened_unique / float(data.plays_all)) * 100)))
+        clicks_per_user = (float(data.overlays_opened_all) / float(data.plays_all))
+
+        result += "Plays: " + str(data.plays_all) + "\n"
+        result += "Plays unique: " + str(data.plays_unique) + "\n"
+        result += "Average Session Duration: " + str(data.avg_session_time) + "\n"
+        result += "Clicks on markers: " + str(data.overlays_opened_all) + "\n"
+        result += "Clicks on markers unique: " + str(data.overlays_opened_unique) + "\n"
+        result += "Viewers interacting: " + str(percent_interacting) + "%\n"
+        result += "Average clicks per user: " + str(clicks_per_user) + "\n"
+
+    except:
+        result += "No stats available at this time"
 
     return HttpResponse("<pre>" + result + "</pre>")

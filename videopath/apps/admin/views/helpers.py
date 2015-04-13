@@ -20,7 +20,8 @@ def header(text):
     return "<br /><br /><h3>" + text + "</h3>"
 
 def videolink(v):
-    url = "http://player.videopath.com/" + v.key
+    play_url = "http://player.videopath.com/" + v.key
+    detail_url = base + "videos/" + v.key + "/"
     revision = None
     try:
         revision = v.draft
@@ -36,8 +37,8 @@ def videolink(v):
     if not revision:
         return None
 
-    title = "<a href ='" + url + "' target = '_blank' >" + revision.title + \
-        "</a> (" + v.user.username + ", " + \
+    title = "<a href ='" + detail_url + "'>" + revision.title + \
+        "</a> (<a href='"+play_url + "' target = '_blank' >play</a>, " + v.user.username + ", " + \
         humanize.naturalday(revision.modified) + ", "+ \
         str(v.total_plays) + " plays)"
     return title

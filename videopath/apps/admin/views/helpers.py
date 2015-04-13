@@ -6,6 +6,21 @@ from django.contrib.auth.models import User
 
 base = "/admin/YT58Pc3u6ZlK/insights/"
 
+company_accounts = [
+        "david",
+        "product_demo", #company
+        "marketing", # company
+        "anna",
+        "tim t", #tim 2
+        "tim", # tim 1
+        "trival", # thomas
+        "nimaa", 
+        "lcdenison", # louisa 1
+        "dontdelete", # louisa 2
+        "yana",
+        "jolly",
+        "junayd"
+]
 
 def navigation():
     result = ""

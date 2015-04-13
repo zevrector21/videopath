@@ -53,7 +53,13 @@ def listview(request):
 
     # videos created per week
     result += helpers.header("Videos created per week")
-    result += helpers.dategraph(Video.objects.all(), "created", "%Y %V")
+    result += "Excludes videos created by staff. <br /><br />"
+    result += helpers.dategraph(Video.objects.all().exclude(user__username__in=helpers.company_accounts), "created", "%Y %V")
+
+    # videos published per week
+    result += helpers.header("Videos published per week")
+    result += "Excludes videos created by staff. <br /><br />"
+    result += helpers.dategraph(Video.objects.filter(published=1).exclude(user__username__in=helpers.company_accounts), "created", "%Y %V")
 
     # published vids
     startdate = datetime.now()

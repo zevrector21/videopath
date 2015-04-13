@@ -11,7 +11,7 @@ from rest_framework.exceptions import ParseError, ValidationError
 
 from videopath.apps.videos.util import video_export_util, share_mail_util
 from videopath.apps.videos.permissions import MarkerPermissions, VideoPermissions, MarkerContentPermissions, VideoRevisionPermissions, AuthenticatedPermission
-from videopath.apps.videos.models import Video, Marker, MarkerContent, VideoRevision, PlayerAppearance
+from videopath.apps.videos.models import Video, Marker, MarkerContent, VideoRevision
 from videopath.apps.videos.serializers import VideoRevisionDetailSerializer, VideoSerializer, MarkerSerializer, MarkerContentSerializer, VideoRevisionSerializer
 
 from rest_framework.decorators import api_view
@@ -54,11 +54,9 @@ def video_publish(request, vid=None):
 
     if request.method == 'PUT':
         video.publish()
-        video_export_util.export_video(video)
 
     if request.method == 'DELETE':
         video.unpublish()
-        video_export_util.delete_export(video)
 
     return Response({})
 

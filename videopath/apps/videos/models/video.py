@@ -6,7 +6,6 @@ from django.conf import settings
 
 from videopath.apps.common.models import VideopathBaseModel
 from videopath.apps.videos.managers.video_manager import VideoManager
-from videopath.apps.videos.util import video_export_util
 
 class Video(VideopathBaseModel):
 
@@ -130,6 +129,8 @@ class Video(VideopathBaseModel):
         self.save()
         if old_current_revision != None:
             old_current_revision.delete()
+
+        from videopath.apps.videos.util import video_export_util
         video_export_util.export_video(self)
 
 
@@ -144,6 +145,8 @@ class Video(VideopathBaseModel):
             self.current_revision = None
         self.published = 0
         self.save()
+        
+        from videopath.apps.videos.util import video_export_util
         video_export_util.delete_export(self)
 
 

@@ -46,9 +46,7 @@ def listview(request):
     max_rows = 10
     for entry in count:
         video = Video.objects.get(pk=entry["video_id"])
-        link = "http://player.videopath.com/" + video.key
-        result += "<a href='" + link + "'>"+video.get_draft_or_current_revision().title + "</a> (" + video.user.username + ")" + \
-            ": " + str(entry["score"]) + " plays<br />"
+        result += helpers.videolink(video) + "\n"
         max_rows = max_rows - 1
         if max_rows <= 0:
             break
@@ -64,12 +62,7 @@ def listview(request):
     videos = Video.objects.filter(current_revision__modified__range=[
                                   enddate, startdate]).order_by('-current_revision__modified')
     for v in videos:
-        url = "http://player.videopath.com/" + v.key
-        title = "<a href ='" + url + "' target = '_blank' >" + v.current_revision.title + \
-            "</a> (" + v.user.username + ", " + \
-            humanize.naturalday(v.current_revision.modified) + ")"
-        result += title
-        result += "<br />"
+        result += helpers.videolink(v) + "\n"
 
     return HttpResponse("<pre>" + result + "</pre>")
 

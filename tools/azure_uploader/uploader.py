@@ -5,30 +5,7 @@ import os, time
 blob_service = BlobService(account_name='videopathmobilefiles', account_key='Xxfn5At6O7QmFrwz1XZV7vwXoLQhY7lHAg0Wvmo42CgJc6iY54bEUGaqd7ewpfTS7EloaD+XT1nDlarYjBoKxg==')
 
 
-# needs ul
-# Dud6Iafc
-# A0QAUzL3
-# dTFesR6B
-# eAbOeLXM
-# wmq2XEQj
-# nap4tG6L
-# VRSCYXHd
-# pHRnkfvs
-
-
-
-
-# rC60u1Op
-
-
-# must test
-
-
-# ok
-
-
 videoname = "pHRnkfvs"
-
 
 
 # perform upload

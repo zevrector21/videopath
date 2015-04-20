@@ -21,7 +21,7 @@ def login(id, password):
                 user = User.objects.get(username__iexact=id)
             except User.DoesNotExist:
                 try:
-                    user = user.objects.get(email__iexact=id)
+                    user = User.objects.get(email__iexact=id)
                 except User.DoesNotExist:
                     user = None
 

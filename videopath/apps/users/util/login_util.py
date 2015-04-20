@@ -20,7 +20,11 @@ def login(id, password):
             try:
                 user = User.objects.get(username__iexact=id)
             except User.DoesNotExist:
-                pass
+                try:
+                    user = user.objects.get(email__iexact=id)
+                except User.DoesNotExist:
+                    user = None
+
 
     # see if we can authenticate with a one time token
     if not user:

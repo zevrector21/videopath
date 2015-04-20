@@ -106,15 +106,20 @@ class UserViewSet(viewsets.ModelViewSet):
         # get and validate data
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        if User.objects.filter(username=serializer.validated_data.get("username")).count() > 0:
+
+        username = serializer.validated_data.get("username").lower()
+        email = serializer.validated_data.get("email").lower()
+        password = serializer.validated_data.get("password")
+
+        if User.objects.filter(username=username).count() > 0:
            raise ValidationError(detail={"username":["Username is taken."]})
-        if User.objects.filter(email=serializer.validated_data.get("email")).count() > 0:
+        if User.objects.filter(email=email).count() > 0:
            raise ValidationError(detail={"email":["Email is taken."]})
 
         # create via userena
-        user = UserenaSignup.objects.create_user(serializer.validated_data.get("username"),
-                                     serializer.validated_data.get("email"),
-                                     serializer.validated_data.get("password"),
+        user = UserenaSignup.objects.create_user(username,
+                                     email,
+                                     password,
                                      active=True, send_email=False)
 
         # send a signup email

@@ -5,7 +5,7 @@ import time
 
 from azure.storage import BlobService
 
-skipconvert = False
+skipconvert = True
 
 # conf
 output_folder = "output"
@@ -50,7 +50,8 @@ key = raw_input("Please enter azure vidoepath blob storage key: ")
 blob_service = BlobService(account_name='videopathmobilefiles', account_key=key)
 basepath = os.path.dirname(os.path.abspath(__file__)) + "/" + output_folder
 container_name = video_key.lower()
-print basepath
+blob_service.create_container(container_name, x_ms_blob_public_access='container')
+
 
 for path, subdirs, files in os.walk(basepath):
 	for name in files:

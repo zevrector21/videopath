@@ -70,6 +70,19 @@ _plans_individual = {
                 'feature_wistia': True,
             },
 
+            'agency-evaluation': {
+                'name': 'Agency Evaluation',
+                'feature_vimeo': True,
+                'feature_upload': True,
+                'feature_analytics': True,
+                'feature_endscreen': True,
+                'feature_colors': True,
+                'feature_disable_share': True,
+                'feature_equal_markers': True,
+                'feature_wistia': True,
+                'max_views_month': 500,
+            },
+
             'staff': {
                 'name': 'videopath staff account',
                 'feature_vimeo': True,

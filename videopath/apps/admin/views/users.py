@@ -41,6 +41,27 @@ def listview(request):
 
     return HttpResponse("<pre>" + result + "</pre>")
 
+@csrf_exempt
+def listview_sales(request):
+    result = helpers.navigation()
+
+    result += helpers.header("All Users for Sales")
+    users = []
+    for u in User.objects.all():
+        videos = u.videos.filter(archived=False).count()
+        videos_published = u.videos.filter(published=Video.PUBLIC, archived=False).count()
+        user = [
+            "<span>" + helpers.userlink(u) + "</span>",
+            "<b>" + str(videos) + "</b> videos",
+            "<b>" + str(videos_published) + "</b> published",
+            "<b>"+str(u.date_joined.date())+ "</b>",
+            "<a target = '_blank' href='mailto:"+u.email+"'>"+u.email+"</a>",
+        ]
+        users.append(user)
+    result += helpers.table(users)
+
+    return HttpResponse("<pre>" + result + "</pre>")
+
 def userview(request, username):
     result = helpers.navigation()
 

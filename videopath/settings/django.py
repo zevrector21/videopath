@@ -102,6 +102,8 @@ TEMPLATE_DIRS = (
     os.path.join(SITE_ROOT, 'templates'),
 )
 
+GRAPPELLI_ADMIN_TITLE = "Videopath Admin"
+
 #
 # Change default user model
 #

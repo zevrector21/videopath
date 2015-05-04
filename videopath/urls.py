@@ -28,6 +28,7 @@ urlpatterns = patterns('',
 	# admin urls
 	url(r'^admin/', include('videopath.apps.admin.urls')),
 	url(r'^admin/', include(admin.site.urls)),
+	url(r'^grappelli/', include('grappelli.urls')),
 
 	# rest framework
 	url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))

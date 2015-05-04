@@ -102,6 +102,8 @@ TEMPLATE_DIRS = (
     os.path.join(SITE_ROOT, 'templates'),
 )
 
+GRAPPELLI_ADMIN_TITLE = "Videopath Admin"
+
 #
 # Change default user model
 #
@@ -113,6 +115,7 @@ TEMPLATE_CONTEXT_PROCESSORS = DEFAULT_SETTINGS.TEMPLATE_CONTEXT_PROCESSORS + (
 )
 
 INSTALLED_APPS = (
+    'grappelli',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',

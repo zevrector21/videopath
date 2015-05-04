@@ -2,8 +2,12 @@ from django.conf.urls import url, patterns
 
 urlpatterns = patterns('',
    url(r'^YT58Pc3u6ZlK/insights/kpis/', 'videopath.apps.admin.views.kpis.view'),
+
+   url(r'^YT58Pc3u6ZlK/insights/users/sales/', 'videopath.apps.admin.views.users.listview_sales'),
    url(r'^YT58Pc3u6ZlK/insights/users/(?P<username>.+)/', 'videopath.apps.admin.views.users.userview'),
    url(r'^YT58Pc3u6ZlK/insights/users/', 'videopath.apps.admin.views.users.listview'),
+
+
    url(r'^YT58Pc3u6ZlK/insights/userstats/', 'videopath.apps.admin.views.userstats.view'),
    url(r'^YT58Pc3u6ZlK/insights/videos/(?P<key>.+)/', 'videopath.apps.admin.views.videos.videoview'),
    url(r'^YT58Pc3u6ZlK/insights/videos/', 'videopath.apps.admin.views.videos.listview'),

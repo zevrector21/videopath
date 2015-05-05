@@ -15,7 +15,7 @@ CACHES = memcacheify()
 # Player config for export
 #
 PLAYER_DEFAULT_VERSION = '2'
-PLAYER_SRC = '//src.videopath.com/player/'
+PLAYER_SRC = '//d2re7j0vtih67y.cloudfront.net/player/'
 PLAYER_LOCATION = 'http://player.videopath.com/'
 
 #

@@ -8,11 +8,26 @@ from videopath.apps.common.services import service_provider
 
 # constants
 DUMPFILE = "./db_dump"
-LATEST_BACKUP_URL = settings.PGBACKUPS_URL + "/latest_backup"
+#LATEST_BACKUP_URL = settings.PGBACKUPS_URL + "/latest_backup"
 
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
+
+        # test new backup strategy
+        print "backup"
+        token = "667ec1d6-421a-4e49-8c8d-107fa8db51f8"
+        headers = {
+            'Accept': 'application/vnd.heroku+json; version=3',
+            'Authorization': 'Bearer ' + token,
+            'x_heroku_gem_version': '11'
+        }
+
+        #
+        r = requests.get("https://postgres-api.heroku.com/client/v11/databases/videopath-api/transfers", headers=headers)
+        print r.json()
+
+        return None
 
         # get latest backup info
         r = requests.get(LATEST_BACKUP_URL)

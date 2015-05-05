@@ -22,8 +22,8 @@ PLAYER_LOCATION = 'http://player.videopath.com/'
 # CDN Endpoints
 #
 VIDEO_CDN = '//videos.videopath.com/'
-THUMBNAIL_CDN = '//thumbs.videopath.com/'
-IMAGE_CDN = 'https://images.videopath.com/'
+THUMBNAIL_CDN = '//d2nmf7yrr53ast.cloudfront.net/'
+IMAGE_CDN = 'https://dobvnaghfdgn1.cloudfront.net/'
 DOCS_CDN = "http://docs.videopath.com/"
 
 #

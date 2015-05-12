@@ -23,13 +23,19 @@ def listview(request):
         .values('video__user__username')\
         .annotate(score=Sum("plays_all"))\
         .order_by('-score')
-    max_rows = 7
+
+    rows = 0
+    result_array = []
     for entry in count:
-        result += entry["video__user__username"] + \
-            ": " + str(entry["score"]) + " plays<br />"
-        max_rows = max_rows - 1
-        if max_rows <= 0:
+        result_array.append([
+                entry["video__user__username"],
+                str(entry["score"])
+            ])
+        rows += 1
+        if rows > 7:
             break
+    result += helpers.table(result_array, ["username", "plays"])
+
 
     result += helpers.header("Most popular video the last 7 days")
     last_day = date.today()
@@ -41,13 +47,14 @@ def listview(request):
         .values('video_id')\
         .annotate(score=Sum("plays_all"))\
         .order_by('-score')
+    videos = []
     max_rows = 10
     for entry in count:
-        video = Video.objects.get(pk=entry["video_id"])
-        result += helpers.videolink(video) + "\n"
+        videos.append(Video.objects.get(pk=entry["video_id"]))
         max_rows = max_rows - 1
         if max_rows <= 0:
             break
+    result += helpers.videolist(videos)
 
     # videos created per week
     result += helpers.header("Videos created per week")

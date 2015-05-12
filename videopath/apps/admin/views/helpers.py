@@ -51,8 +51,7 @@ def smart_truncate(content, length=100, suffix='...'):
     else:
         return ' '.join(content[:length+1].split(' ')[0:-1]) + suffix
 
-def videolink(v, as_array = False):
-    play_url = "http://player.videopath.com/" + v.key
+def videolink(v):
     detail_url = base + "videos/" + v.key + "/"
     revision = None
     try:
@@ -67,24 +66,18 @@ def videolink(v, as_array = False):
 
     if not revision:
         return None
-    if as_array:
-        return [
-            "<a href ='" + detail_url + "'>" + smart_truncate(revision.title, 50) + "</a>",
-            v.user.username,
-            humanize.naturalday(revision.modified),
-            str(v.total_plays) 
-        ] 
 
-    title = "<a href ='" + detail_url + "'>" + smart_truncate(revision.title, 30) + \
-        "</a> (<a href='"+play_url + "' target = '_blank' >play</a>, " + v.user.username + ", " + \
-        humanize.naturalday(revision.modified) + ", "+ \
-        str(v.total_plays) + " plays)"
-    return title
+    return [
+        "<a href ='" + detail_url + "'>" + smart_truncate(revision.title, 50) + "</a>",
+        v.user.username,
+        humanize.naturalday(revision.modified),
+        str(v.total_plays) 
+    ] 
 
 def videolist(videos):
     result_array = []
     for video in videos:
-        link = videolink(video, True)
+        link = videolink(video)
         if link:
             result_array.append(link)
     return table(result_array, ["Title", "User", "Modified", "Plays"])

@@ -1,19 +1,16 @@
 import humanize
 
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
+from django.contrib.admin.views.decorators import staff_member_required
+from django.template.response import SimpleTemplateResponse
 
 from videopath.apps.videos.models import Video
 from videopath.apps.files.models import VideoSource
 from videopath.apps.admin.views import helpers
 
-@csrf_exempt
+@staff_member_required
 def listview(request):
-    result = helpers.navigation()
-
-    result += helpers.header("All Users")
-    result += "Red: No videos<br />Orange: No published videos or all videos are demo videos<br />Green: Has published videos<br /><br />"
+    result = ""
     users = []
     for u in User.objects.all():
         videos = u.videos.filter(archived=False).count()
@@ -39,13 +36,15 @@ def listview(request):
         users.append(user)
     result += helpers.table(users)
 
-    return HttpResponse("<pre>" + result + "</pre>")
+    return SimpleTemplateResponse("insights/base.html", {
+        "title": "All Users",
+        "insight_content": result
+        })
 
-@csrf_exempt
+@staff_member_required
 def listview_sales(request):
-    result = helpers.navigation()
 
-    result += helpers.header("All Users for Sales")
+    result = ""
     users = []
     for u in User.objects.all():
         videos = u.videos.filter(archived=False).count()
@@ -60,15 +59,17 @@ def listview_sales(request):
         users.append(user)
     result += helpers.table(users)
 
-    return HttpResponse("<pre>" + result + "</pre>")
+    return SimpleTemplateResponse("insights/base.html", {
+        "title": "All Users (Sales List)",
+        "insight_content": result
+        })
 
+@staff_member_required
 def userview(request, username):
-    result = helpers.navigation()
-
     # load user
     user = User.objects.get(username=username)
 
-    result += helpers.header("User: " + username)
+    result = helpers.header("Info")
     result += "<a href='mailto:"+user.email+"'>" + user.email+ "</a> <br />"
     result += "Signed up " + humanize.naturaltime(user.date_joined) + "<br />"
 
@@ -111,4 +112,7 @@ def userview(request, username):
     result += helpers.videolist(videos)
 
 
-    return HttpResponse("<pre>" + result + "</pre>")
+    return SimpleTemplateResponse("insights/base.html", {
+        "title": "User '" + username + "'",
+        "insight_content": result
+        })

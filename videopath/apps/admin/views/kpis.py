@@ -1,10 +1,11 @@
 from datetime import timedelta, date
 import itertools
 
-from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, HttpResponseRedirect
+from django.template.response import SimpleTemplateResponse
 from django.contrib.auth.models import User
 from django.core.cache import cache
+from django.contrib.admin.views.decorators import staff_member_required
 
 from videopath.apps.admin.views import helpers
 from videopath.apps.videos.models import Video
@@ -159,7 +160,7 @@ def build_retention_table(groups):
 
 
 # build the view
-@csrf_exempt
+@staff_member_required
 def view(request):
     
     # default to year weeks
@@ -171,7 +172,7 @@ def view(request):
 
     # redirect if args are missing
     if not "cohorte" in get or not "start" in get or not "end" in get:
-        return HttpResponseRedirect("/admin/YT58Pc3u6ZlK/insights/kpis/?cohorte="+cohorte_size+"&start="+start+"&end="+end)
+        return HttpResponseRedirect("/admin/insights/kpis/?cohorte="+cohorte_size+"&start="+start+"&end="+end)
 
     # convert args
     cohorte_selector = cohorte_selectors[cohorte_size]
@@ -182,7 +183,7 @@ def view(request):
     users = build_user_info(start_date, end_date)
     
    
-    result = helpers.navigation()
+    result = ""
  
     # info
     result += helpers.header("Report Details")
@@ -201,5 +202,9 @@ def view(request):
     result += helpers.header("Retention")
     result += build_retention_table(groups)
 
+    return SimpleTemplateResponse("insights/base.html", {
+        "title": "KPIs",
+        "insight_content": result
+        })
 
-    return HttpResponse("<pre>" + result + "</pre>")
+

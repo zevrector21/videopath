@@ -4,7 +4,7 @@ import humanize
 from django.contrib.auth.models import User
 
 
-base = "/admin/YT58Pc3u6ZlK/insights/"
+base = "/admin/insights/"
 
 company_accounts = [
         "david",
@@ -19,29 +19,45 @@ company_accounts = [
         "dontdelete", # louisa 2
         "yana",
         "jolly",
-        "junayd"
+        "junayd",
+        "vp_test_basic",
+        "vp_test_pro",
+        "vp_test_enterprise",
 ]
 
-def navigation():
-    result = ""
-    result += "<a href='"+base+"'>Main</a> | "
-    result += "<a href='"+base+"kpis/'>KPIs</a> | "
-    result += "<a href='"+base+"userstats/'>Userstats</a> | "
-    result += "<a href='"+base+"users/'>Userlist</a> | "
-    result += "<a href='"+base+"videos/'>Videos</a>"
-    return result
-
 def header(text):
-    return "<br /><br /><h3>" + text + "</h3>"
+    return "<h3>" + text + "</h3>"
 
-def videolink(v):
+def table(array, header = None):
+    
+    result = ""
+    if header:
+        result = "<tr>"
+        for item in header:
+            result += "<th>" + item + "</th>"
+        result += "</tr>"
+
+    for row in array:
+        rowr = "<tr>"
+        for item in row:
+            rowr += "<td>" + item + "</td>"
+        result += rowr + "</tr>"
+
+    return "<table>" + result + "</table>"
+
+def smart_truncate(content, length=100, suffix='...'):
+    if len(content) <= length:
+        return content
+    else:
+        return ' '.join(content[:length+1].split(' ')[0:-1]) + suffix
+
+def videolink(v, as_array = False):
     play_url = "http://player.videopath.com/" + v.key
     detail_url = base + "videos/" + v.key + "/"
     revision = None
     try:
         revision = v.draft
     except:
-        raise
         pass
 
     try:
@@ -51,52 +67,51 @@ def videolink(v):
 
     if not revision:
         return None
+    if as_array:
+        return [
+            "<a href ='" + detail_url + "'>" + smart_truncate(revision.title, 50) + "</a>",
+            v.user.username,
+            humanize.naturalday(revision.modified),
+            str(v.total_plays) 
+        ] 
 
-    title = "<a href ='" + detail_url + "'>" + revision.title + \
+    title = "<a href ='" + detail_url + "'>" + smart_truncate(revision.title, 30) + \
         "</a> (<a href='"+play_url + "' target = '_blank' >play</a>, " + v.user.username + ", " + \
         humanize.naturalday(revision.modified) + ", "+ \
         str(v.total_plays) + " plays)"
     return title
 
 def videolist(videos):
-    result = ""
+    result_array = []
     for video in videos:
-        link = videolink(video)
-        if link is None:
-            continue
-        result += link + "<br />"
-    return result
+        link = videolink(video, True)
+        if link:
+            result_array.append(link)
+    return table(result_array, ["Title", "User", "Modified", "Plays"])
+
 
 def userlink(user):
     username = user.username if isinstance(user, User) else user
     url = base + 'users/' + username +"/"
     return "<a href = '"+url+"'>"+username+"</a>"
 
-def table(array):
-    result = ""
-    for row in array:
-        rowr = "<tr>"
-        for item in row:
-            rowr += "<td>" + item + "</td>"
-        result += rowr + "</tr>"
 
-    return "<table>" + result + "</table>"
 
 
 def printgraph(values, maxlength=30.0):
-    result = ""
+    result_array = []
     maxval = max(values.values())
     ratio = maxlength / maxval
 
     orderedvalues = collections.OrderedDict(sorted(values.items()))
     for k in orderedvalues:
         length = ratio * orderedvalues[k]
-        result += k + "\t"
+        xs = "<b>" + str(orderedvalues[k]) + "</b> "
         while length > 0:
-            result += "X"
+            xs += "X"
             length -= 1
-        result += " " + str(orderedvalues[k]) + " <br />"
-    return result
+        result_array.append([k, xs])
+    return table(result_array)
 
 
 def dategraph(models, datefield, timeselector="%y %m"):

@@ -1,21 +1,19 @@
 from datetime import timedelta, datetime, date
-import humanize
 
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
+from django.template.response import SimpleTemplateResponse
 from django.db.models import Sum
+from django.contrib.admin.views.decorators import staff_member_required
 
 from videopath.apps.videos.models import Video
 from videopath.apps.analytics.models import DailyAnalyticsData
 from videopath.apps.admin.views import helpers
 
 
-@csrf_exempt
+@staff_member_required
 def listview(request):
-    result = helpers.navigation()
 
     # video plays
-    result += helpers.header("Plays of videos by user in the last 7 days")
+    result = helpers.header("Plays of videos by user in the last 7 days")
     last_day = date.today()
     first_day = last_day - timedelta(days=7)
     count = DailyAnalyticsData.objects.filter(
@@ -67,18 +65,20 @@ def listview(request):
     result += helpers.header("Recently published videos")
     videos = Video.objects.filter(current_revision__modified__range=[
                                   enddate, startdate]).order_by('-current_revision__modified')
-    for v in videos:
-        result += helpers.videolink(v) + "\n"
+    result += helpers.videolist(videos) 
 
-    return HttpResponse("<pre>" + result + "</pre>")
+    return SimpleTemplateResponse("insights/base.html", {
+        "title": "Videos",
+        "insight_content": result
+        })
 
 
-@csrf_exempt
+
+@staff_member_required
 def videoview(request, key):
-    result = helpers.navigation()
     video = Video.objects.get(key=key)
 
-    result += helpers.header("Video " + video.get_current_revision_or_draft().title)
+    result = helpers.header("General Info")
     result += "User: " + helpers.userlink(video.user)
 
     result += helpers.header("Overall stats")
@@ -99,4 +99,10 @@ def videoview(request, key):
     except:
         result += "No stats available at this time"
 
-    return HttpResponse("<pre>" + result + "</pre>")
+    result += helpers.header("Video")
+    result += '<iframe width="700px" height="525px" frameborder="0" src="https://player.videopath.com/' + video.key + '" allowfullscreen="" onmousewheel="event.preventDefault();"></iframe>'
+
+    return SimpleTemplateResponse("insights/base.html", {
+        "title": "Video '" + video.get_current_revision_or_draft().title + "'",
+        "insight_content": result
+        })

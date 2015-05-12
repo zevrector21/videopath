@@ -1,17 +1,18 @@
 from datetime import timedelta, date
 import humanize
 
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
+from django.template.response import SimpleTemplateResponse
+
 from django.contrib.auth.models import User
+from django.contrib.admin.views.decorators import staff_member_required
 
 from videopath.apps.users.models import UserActivityDay
 from videopath.apps.admin.views import helpers
 
 
-@csrf_exempt
+@staff_member_required
 def view(request):
-    result = helpers.navigation()
+    result = ""
 
     # activity
     enddate = date.today() - timedelta(days=30)
@@ -52,4 +53,7 @@ def view(request):
     result += helpers.header("Signups per week")
     result += helpers.dategraph(User.objects.all(), "date_joined", "%Y %V")
 
-    return HttpResponse("<pre>" + result + "</pre>")
+    return SimpleTemplateResponse("insights/base.html", {
+        "title": "User statistics",
+        "insight_content": result
+        })

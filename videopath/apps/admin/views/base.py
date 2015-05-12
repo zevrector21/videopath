@@ -1,8 +1,8 @@
 from datetime import timedelta, datetime
 
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
+from django.contrib.admin.views.decorators import staff_member_required
+from django.template.response import SimpleTemplateResponse
 
 from videopath.apps.users.models import UserActivity
 from videopath.apps.videos.models import Video
@@ -10,19 +10,14 @@ from videopath.apps.files.models import VideoSource
 from videopath.apps.admin.views import helpers
 
 
-@csrf_exempt
+@staff_member_required
 def view(request):
 
-    result = helpers.navigation()
-
-
-    result += helpers.header("general stats")
+    result = helpers.header("General Stats")
 
     # no of accounts
     all_users = User.objects.all().order_by("username")
     result += "Number of user accounts: " + str(all_users.count()) + "\n"
-
-    
 
     # general stats videos
     all_videos = Video.objects.all()
@@ -63,5 +58,7 @@ def view(request):
         date_joined__range=[enddate, startdate]).order_by('-last_seen')
     result += "Signups in last 30 days: " + str(last_activities.count()) + "\n"
 
-
-    return HttpResponse("<pre>" + result + "</pre>")
+    return SimpleTemplateResponse("insights/base.html", {
+        "title": "Insights Home",
+        "insight_content": result
+        })

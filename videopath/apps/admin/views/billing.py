@@ -2,7 +2,7 @@ import datetime
 import stripe
 
 from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
+from django.contrib.admin.views.decorators import staff_member_required
 
 from videopath.apps.payments.models import Payment, PaymentDetails
 
@@ -15,7 +15,7 @@ def convert_timestamp(timestamp):
 def convert_amount(amount):
     return "{:2.2f}".format(amount/100.0)
 
-@csrf_exempt
+@staff_member_required
 def view(request):
 
     table = []
@@ -77,5 +77,7 @@ def view(request):
             result += '"' + col + '",'
         result += "\n"
 
+    response = HttpResponse(result, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="somefilename.csv"'
 
-    return HttpResponse("<pre>"+result+"</pre>")
+    return response

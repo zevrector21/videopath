@@ -18,10 +18,11 @@ def view(request):
             result_array.append([
                     helpers.userlink(sub.user),
                     sub.plan,
-                    sub.managed_by
+                    sub.managed_by,
+                    sub.notes
                 ])
 
-    headers = ["User", "Plan", "Payment Method"]
+    headers = ["User", "Plan", "Payment Method", "Notes"]
     return SimpleTemplateResponse("insights/base.html", {
         "title": "Subscriptions",
         "insight_content": helpers.table(result_array, headers)

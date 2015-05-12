@@ -137,6 +137,9 @@ class Subscription(VideopathBaseModel):
                                 verbose_name=('user'),
                                 related_name='subscription')
 
+    # notes for internal use
+    notes = models.TextField(default="")
+
 #
 # pending subscription, if the user has changed his plan,
 # but needs to stay in the current one until it expires

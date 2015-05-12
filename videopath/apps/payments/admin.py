@@ -23,7 +23,7 @@ class PaymentDetailsAdmin(admin.ModelAdmin):
 
 
 class SubscriptionsAdmin(admin.ModelAdmin):
-    list_display = ('user', 'plan', 'active')
+    list_display = ('user', 'plan', 'notes', 'active')
     search_fields = ['user__username', 'user__email']
 
 

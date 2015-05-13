@@ -13,7 +13,7 @@ def check_access_to_dumps_bucket():
 # Check that db backups are being made
 #
 # disabled for now
-def _check_most_recent_backup():
+def c_heck_most_recent_backup():
 
 
 	service = service_provider.get_service("s3")

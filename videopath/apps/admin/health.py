@@ -12,7 +12,10 @@ def check_access_to_dumps_bucket():
 #
 # Check that db backups are being made
 #
-def check_most_recent_backup():
+# disabled for now
+def _check_most_recent_backup():
+
+
 	service = service_provider.get_service("s3")
 	yesterday = date.today()  - timedelta(1)
 	prefix = "videopath-api/" + yesterday.strftime("%Y-%m-%d")

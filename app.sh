@@ -10,15 +10,15 @@ elif [ "$1" == "test" ]; then
 	python manage.py test videopath/apps/**/tests/**/*.py
 elif [ "$1" == "deploy" ]; then
 	#capture db state
-	heroku pgbackups:capture --expire --app videopath-api
+	heroku pg:backups capture --app videopath-api
 	# deploy
 	git push heroku master
 	# run migrations
 	heroku run python manage.py migrate --app videopath-api
 elif [ "$1" == "import_heroku_db" ]; then
 	# capture remote db and import to local postgres instance
-	 heroku pgbackups:capture --expire --app videopath-api
-	 backup_url=$(heroku pgbackups:url --app videopath-api)
+	 heroku pg:backups capture --app videopath-api
+	 backup_url=$(heroku pg:backups public-url --app videopath-api)
 	 curl -o latest.dump $backup_url
 	 pg_restore --verbose --clean --no-acl --no-owner -h localhost -U David -d videopath_import latest.dump
 	 rm latest.dump

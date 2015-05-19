@@ -26,6 +26,10 @@ class PlanSerializer(serializers.Serializer):
     def get_currency(self,plan):
         return self.user_currency
 
+    currency_symbol = serializers.SerializerMethodField()
+    def get_currency_symbol(self,plan):
+        return "&euro;" if self.user_currency == settings.CURRENCY_EUR else "$"
+
     # plan contraints
     max_views_month = serializers.IntegerField()
     max_projects = serializers.IntegerField()

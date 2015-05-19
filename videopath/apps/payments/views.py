@@ -81,7 +81,7 @@ def credit_card_view(request, uid=None, pk=None):
 def plan_view(request):
     name = request.GET.get('group', None)
     plans = settings.PLANS.susbcribable_plans(name)
-    serializer = serializers.get_paginated_serializer(plans, PlanSerializer)
+    serializer = serializers.get_paginated_serializer(plans, PlanSerializer, {"currency":"USD"})
     return Response(serializer.data)
 
 

@@ -17,8 +17,14 @@ class PlanSerializer(serializers.Serializer):
 
     # payment details
     payment_interval = serializers.CharField(max_length=200)
-    price_eur = serializers.IntegerField()
-    price_usd = serializers.IntegerField()
+
+    price = serializers.SerializerMethodField()
+    def get_price(self, plan):
+        return plan["price_eur"] if self.user_currency == settings.CURRENCY_EUR else plan["price_usd"]
+
+    currency = serializers.SerializerMethodField()
+    def get_currency(self,plan):
+        return self.user_currency
 
     # plan contraints
     max_views_month = serializers.IntegerField()
@@ -33,6 +39,10 @@ class PlanSerializer(serializers.Serializer):
     feature_dev = serializers.BooleanField()
     feature_disable_share = serializers.BooleanField()
     feature_equal_markers = serializers.BooleanField()
+
+    def __init__(self, *args, **kwargs):
+        self.user_currency = kwargs.pop('currency', settings.CURRENCY_EUR)
+        super(PlanSerializer, self).__init__(*args, **kwargs)
 
 #
 # Serialize CreditCards
@@ -63,8 +73,8 @@ class PaymentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Payment
-        fields = ('amount_due', 'date', 'paid', 'number', 'download_url')
-        readonly_fields = ('amount_due', 'date', 'paid', 'number')
+        fields = ('amount_due', 'date', 'paid', 'number', 'download_url', 'currency')
+        readonly_fields = ('amount_due', 'date', 'paid', 'number', 'currency')
 
 #
 # Actual subscription
@@ -82,12 +92,12 @@ class SubscriptionSerializer(serializers.ModelSerializer):
 
     def get_plan(self, subscription):
         plan = settings.PLANS.plan_for_id(subscription.plan)
-        return PlanSerializer(plan).data
+        return PlanSerializer(plan, currency = subscription.currency).data
 
     def get_pending_subscription(self, subscription):
         try:
             plan = settings.PLANS.plan_for_id(subscription.user.pending_subscription.plan)
-            return PlanSerializer(plan).data
+            return PlanSerializer(plan, currency = subscription.currency).data
         except PendingSubscription.DoesNotExist:
             return False
 

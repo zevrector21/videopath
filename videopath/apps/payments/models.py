@@ -111,12 +111,10 @@ SUBSCRIPTION_CHOICES = settings.PLANS.model_subscription_choices()
 class Subscription(VideopathBaseModel):
 
     MANAGER_ADMIN = "admin"
-    MANAGER_STRIPE = "stripe"
     MANAGER_SYSTEM = "system"
 
     MANAGER_CHOICES = (
         (MANAGER_ADMIN, MANAGER_ADMIN),
-        (MANAGER_STRIPE, MANAGER_STRIPE),
         (MANAGER_SYSTEM, MANAGER_SYSTEM),
     )
 

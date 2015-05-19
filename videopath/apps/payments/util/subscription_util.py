@@ -20,7 +20,7 @@ def subscribe_user(user, plan_id=None, coupon_id=None):
 
     # get current state of users subscription
     subscription = None
-    subscription, created = Subscription.objects.get_or_create(user=user, defaults={'managed_by': Subscription.MANAGER_SYSTEM})
+    subscription, created = Subscription.objects.get_or_create(user=user, defaults={'managed_by': Subscription.MANAGER_SYSTEM, 'currency': user.settings.currency})
     if subscription.managed_by != Subscription.MANAGER_SYSTEM:
         return False, "Operation can't be performed at this time"
 

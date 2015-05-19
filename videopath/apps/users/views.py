@@ -146,6 +146,15 @@ class UserViewSet(viewsets.ModelViewSet):
         token = AuthenticationToken.objects.create(user=user)
         ottoken = OneTimeAuthenticationToken.objects.create(token=token)
 
+        # select users currency
+        geo_service = service_provider.get_service("geo_ip")
+        record = geo_service.record_from_request(request)
+        if record["continent"] == "EU":
+            user.settings.currency = "EUR"
+        else:
+            user.settings.currency = "USD"
+        user.settings.save()
+
         # create response
         data = UserSerializer(user, context={'request': request}).data
         data["api_token"] = token.key

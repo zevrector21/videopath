@@ -33,16 +33,17 @@ def create_simple_user(username=USER1_DETAILS["username"], password = USER1_DETA
 #
 # Base client with some convenice functions
 #
+ip = "199.68.216.112" # us ip
 class BaseAPIClient(APIClient):
 
-    def post_json(self, url, data):
-        return self.post(url, data, format='json')
+    def post_json(self, url, data, **kwargs):
+        return self.post(url, data, format='json', **kwargs)
 
-    def put_json(self, url, data):
-        return self.put(url, data, format='json')
+    def put_json(self, url, data, **kwargs):
+        return self.put(url, data, format='json', **kwargs)
 
-    def get_json(self, url):
-        return self.get(url, format='json')
+    def get_json(self, url, **kwargs):
+        return self.get(url, format='json', **kwargs)
 
 
 #

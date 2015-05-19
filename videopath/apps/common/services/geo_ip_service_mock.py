@@ -1,12 +1,6 @@
 
+import os
+service_path = os.path.dirname(os.path.realpath(__file__)) + "/geo_ip_service.py"
+execfile(service_path)
 
-def record_by_address(ip):
-    return {
-    	"continent": "EU",
-    	"country": "DE"
-    }
-
-
-def record_from_request(request):
-  	return record_by_address("")
 

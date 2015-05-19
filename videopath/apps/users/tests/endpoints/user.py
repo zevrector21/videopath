@@ -126,3 +126,40 @@ class TestCase(EndpointsBaseTestCase):
         login = self.client.login(username="dave_new", password="long_passsword")
         self.assertEqual(login, True)
 
+    def test_currency_selection(self):
+        from videopath.apps.users.models import User
+
+        #
+        # test if user with us ip address will be switched to USD
+        #
+        self.setup_users_and_clients()
+        data = {
+            'username': 'dave_new', 
+            'password': 'long_passsword',
+            'email': 'dscharf@gmx.de'
+        }
+        ip = "199.68.216.112" # us ip
+        self.client.post_json(USER_URL, data, HTTP_X_FORWARDED_FOR=ip)
+        user = User.objects.get(username='dave_new')
+        self.assertEqual(user.settings.currency, "USD")
+
+        #
+        # test if user with german ip address will be switched to USD
+        #
+        data = {
+            'username': 'dave_new_2', 
+            'password': 'long_passsword',
+            'email': 'dscharf@gmx.de2'
+        }
+        ip = "84.159.212.138" # german ip
+        self.client.post_json(USER_URL, data, HTTP_X_FORWARDED_FOR=ip)
+        user = User.objects.get(username='dave_new_2')
+        self.assertEqual(user.settings.currency, "EUR")
+
+
+
+
+
+
+
+

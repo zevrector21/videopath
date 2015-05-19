@@ -19,6 +19,7 @@ _plans_current = {
             'free': {
                 'name': 'Free',
                 'price_eur': 0,
+                'price_usd': 0,
                 'payment_interval': 'month',
             }
         }
@@ -41,13 +42,15 @@ _plans_current = {
         'variants': {
             'yearly': {
                 'name': 'Basic Yearly',
-                'price_eur': 84000,
+                'price_eur': 80000,
+                'price_usd': 100000,
                 'payment_interval': 'year',
                 'value': 11,
             },
             'monthly': {
                 'name': 'Basic Monthly',
                 'price_eur': 7900,
+                'price_usd': 9900,
                 'payment_interval': 'month',
                 'value': 10,
             }
@@ -76,13 +79,15 @@ _plans_current = {
         'variants': {
             'yearly': {
                 'name': 'Professional Plus Yearly',
-                'price_eur': 384000,
+                'price_eur': 380000,
+                'price_usd': 425000,
                 'payment_interval': 'year',
                 'value': 151,
             },
             'monthly': {
                 'name': 'Professional Plus Monthly',
                 'price_eur': 34900,
+                'price_usd': 39900,
                 'payment_interval': 'month',
                 'value': 150
             }
@@ -97,7 +102,7 @@ _plans_current = {
 
         # features
         'max_projects': 9999,
-        'max_views_month': 1000000,
+        'max_views_month': 10000000,
         'feature_analytics': True,
         'feature_endscreen': True,
         'feature_colors': True,
@@ -109,9 +114,17 @@ _plans_current = {
         'variants': {
             'monthly': {
                 'name': 'Enterprise Monthly',
-                'price_eur': 84900,
+                'price_eur': 129900,
+                'price_usd': 139900,
                 'payment_interval': 'month',
                 'value': 200
+            },
+            'monthly': {
+                'name': 'Enterprise Yearly',
+                'price_eur': 1400000,
+                'price_usd': 1500000,
+                'payment_interval': 'year',
+                'value': 201
             }
         }
     },

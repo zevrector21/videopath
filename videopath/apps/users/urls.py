@@ -17,6 +17,6 @@ urlpatterns = patterns('',
 
     url(r'', include(router.urls)),
 
-    url(r'^user/ip-check', 'videopath.apps.users.views.ip_check'),
+    # url(r'^user/ip-check', 'videopath.apps.users.views.ip_check'),
 
 )

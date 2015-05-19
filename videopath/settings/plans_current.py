@@ -102,7 +102,7 @@ _plans_current = {
 
         # features
         'max_projects': 9999,
-        'max_views_month': 10000000,
+        'max_views_month': 1000000,
         'feature_analytics': True,
         'feature_endscreen': True,
         'feature_colors': True,
@@ -119,7 +119,7 @@ _plans_current = {
                 'payment_interval': 'month',
                 'value': 200
             },
-            'monthly': {
+            'yearly': {
                 'name': 'Enterprise Yearly',
                 'price_eur': 1400000,
                 'price_usd': 1500000,

@@ -1,7 +1,6 @@
 import random
 import string
 
-from django.conf import settings
 from django.contrib.auth.models import User
 from django.db.models import Q
 
@@ -22,6 +21,15 @@ from videopath.apps.common.mailer import send_signup_email, send_forgot_pw_mail
 from videopath.apps.users.util import login_util
 from videopath.apps.users.permissions import UserPermissions
 
+
+#
+# testing ip
+#
+@api_view(['GET'])
+@permission_classes((AllowAny,))
+def ip_check(request):
+    service = service_provider.get_service("geo_ip")
+    return Response(service.record_from_request(request));
 
 #
 # "Login" and "Logout" methods

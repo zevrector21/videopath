@@ -16,5 +16,7 @@ urlpatterns = patterns('',
     url(r'^user/me/password-reset', 'videopath.apps.users.views.password_reset'),
 
     url(r'', include(router.urls)),
-    
+
+    url(r'^user/ip-check', 'videopath.apps.users.views.ip_check'),
+
 )

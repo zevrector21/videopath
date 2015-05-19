@@ -36,6 +36,14 @@ def check_raven_sentry_connection():
 	except Exception as e:
 		return str(e)
 
+def check_geo_ip():
+	service = service_provider.get_service("geo_ip")
+	record = service.record_by_address("84.159.212.138")
+	if record["country"] == "DE" and record["continent"] == "EU":
+		return True
+	else:
+		return "Lookup failed"
+
 #
 # Django stuff
 #

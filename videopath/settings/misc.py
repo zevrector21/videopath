@@ -63,3 +63,12 @@ DEFAULT_VIDEO_APPEARANCE = {
     "icon": None
 }
 
+#
+# Available currencies
+#
+CURRENCY_USD = "USD"
+CURRENCY_EUR = "EUR"
+CURRENCY_CHOICES = (
+    (CURRENCY_USD, 'US Dollars'),
+    (CURRENCY_EUR, 'Euro'),
+)

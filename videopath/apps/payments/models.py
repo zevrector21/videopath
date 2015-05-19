@@ -53,15 +53,17 @@ class QuotaInformation(VideopathBaseModel):
                                 related_name='quota_info')
 
 #
-# Payments charged to the user
+# Payments charged to the user, one payment is one invoice, should probably be renamed
 #
 class Payment(VideopathBaseModel):
 
     PROVIDER_OTHER = "other"
     PROVIDER_STRIPE = "stripe"
+    PROVIDER_TRANSFER = "transfer"
     PROVIDER_CHOICES = (
         (PROVIDER_OTHER, PROVIDER_OTHER),
         (PROVIDER_STRIPE, PROVIDER_STRIPE),
+        (PROVIDER_TRANSFER, PROVIDER_TRANSFER)
     )
 
     # meta
@@ -78,6 +80,10 @@ class Payment(VideopathBaseModel):
     percent_vat = models.IntegerField(default=0)
     date = models.DateTimeField(null=True, auto_now_add=True)
     number = models.IntegerField(default=0)
+
+    # the currency in which this payment/invoice is issued
+    currency = models.CharField(
+        max_length=3, default=settings.CURRENCY_EUR, choices=settings.CURRENCY_CHOICES)
 
     # serialized json with all the lines in the payment
     details = models.CharField(max_length=2048)
@@ -127,8 +133,9 @@ class Subscription(VideopathBaseModel):
     current_period_end = models.DateField(null=True, blank=True)
 
     # custom price
-    custom_price = models.IntegerField(default=-1)
-    custom_price_periods_remaining = models.IntegerField(default=0)
+    price = models.IntegerField(default=-1)
+    currency = models.CharField(
+        max_length=3, default=settings.CURRENCY_EUR, choices=settings.CURRENCY_CHOICES)
 
     # user ref
     user = models.OneToOneField(User,

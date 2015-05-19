@@ -33,12 +33,12 @@ def view(request):
         features = ""
         for key, value in plan.iteritems():
             if "feature" in key:
-                feature = key.replace("feature_", "").replace("_", " ") 
+                feature = key.replace("feature_", "") 
                 if value:
-                    feature = "<b>" + feature + "</b>"
+                    feature =  feature 
                 else:
-                    feature = "<span style='color:gray'>" + feature + "</span>"
-                features += feature + ", "
+                    feature = "<span style='color:lightgray'>" + feature + "</span>"
+                features += feature + "  "
  
         result = [ "<b>" + plan["name"] + "</b><br />" + plan["id"], 
         humanize.intcomma(plan["price_usd"]/100), 

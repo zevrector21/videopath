@@ -3,6 +3,7 @@ import string
 
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django.conf import settings
 
 from userena.models import UserenaSignup
 
@@ -150,9 +151,9 @@ class UserViewSet(viewsets.ModelViewSet):
         geo_service = service_provider.get_service("geo_ip")
         record = geo_service.record_from_request(request)
         if record["continent"] == "EU":
-            user.settings.currency = "EUR"
+            user.settings.currency = settings.CURRENCY_EUR
         else:
-            user.settings.currency = "USD"
+            user.settings.currency = settings.CURRENCY_USD
         user.settings.save()
 
         # create response

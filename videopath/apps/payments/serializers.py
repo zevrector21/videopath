@@ -18,6 +18,7 @@ class PlanSerializer(serializers.Serializer):
     # payment details
     payment_interval = serializers.CharField(max_length=200)
     price_eur = serializers.IntegerField()
+    price_usd = serializers.IntegerField()
 
     # plan contraints
     max_views_month = serializers.IntegerField()

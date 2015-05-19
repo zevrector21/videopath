@@ -23,7 +23,7 @@ def set_card_for_user(user, token):
 #
 # charge user a certain amount
 #
-def charge_user(user, amount):
+def charge_user(user, amount, currency):
 	try:
 		return "some id" if  user.stripe_id.key == STRIPE_CUSTOMER_WITH_CARD else False
 	except:

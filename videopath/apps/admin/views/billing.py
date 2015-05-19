@@ -23,9 +23,10 @@ def view(request):
     table.append([
         "Type",
         "Date",
-        "Gross Eur",
-        "Stripe Fees Eur",
-        "w/o Fees Eur",
+        "Gross",
+        "Stripe Fees",
+        "w/o Fees",
+        "Currency",
         "Vat %",
         "Invoice No",
         "Adress"
@@ -39,7 +40,8 @@ def view(request):
             convert_timestamp(t.date),
             convert_amount(t.summary.charge_gross),
             convert_amount(t.summary.charge_fees),
-            convert_amount(t.summary.net)
+            convert_amount(t.summary.net),
+            t.currency
             ])
 
         for ta in t.transactions.data:
@@ -63,6 +65,7 @@ def view(request):
                 convert_amount(ta.amount),
                 convert_amount(ta.fee),
                 convert_amount(ta.net),
+                ta.currency,
                 str(payment.percent_vat) if payment else "--",
                 "a01-"+str(payment.number) if payment else "--",
                 address if address else "--",

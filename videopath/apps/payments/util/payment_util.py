@@ -14,7 +14,7 @@ stripe_service = service_provider.get_service("stripe")
 #
 # Create a new payment from a lines object
 #
-def create_payment(user, lines):
+def create_payment(user, lines, currency):
     amount_due = 0
     percent_vat = 19
 
@@ -41,6 +41,7 @@ def create_payment(user, lines):
         date=date.today(),
         amount_due=amount_due,
         percent_vat=percent_vat,
+        currency = currency,
         details=json.dumps(lines)
     )
 
@@ -80,7 +81,7 @@ def process_payments():
 def _charge_payment(payment):
 
     # try stripe
-    charge_id = stripe_service.charge_user(payment.user, payment.amount_due)
+    charge_id = stripe_service.charge_user(payment.user, payment.amount_due, payment.currency)
     if charge_id:
         return Payment.PROVIDER_STRIPE, charge_id
     return None, None

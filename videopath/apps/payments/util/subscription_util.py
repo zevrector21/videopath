@@ -105,8 +105,8 @@ def _get_remaining_credit_of_current_plan(user):
         # calculate amount
         base = (period_end - period_start).days
         used = (today - period_start).days
-        amount = user.subscription.custom_price - \
-            int(float(used) / float(base) * user.subscription.custom_price)
+        amount = user.subscription.price - \
+            int(float(used) / float(base) * user.subscription.price)
 
         # render payment line
         line = {
@@ -114,7 +114,7 @@ def _get_remaining_credit_of_current_plan(user):
             "amount": -amount
         }
 
-        amount = amount if amount <= user.subscription.custom_price else user.subscription.custom_price
+        amount = amount if amount <= user.subscription.price else user.subscription.price
         return amount, line
 
     return 0, {}
@@ -138,13 +138,21 @@ def _set_subscription_to_plan(user, plan_id):
     subscription.plan = plan_id
     subscription.current_period_start = date.today()
     subscription.current_period_end = date.today() + interval
-    subscription.custom_price = target_plan["price_eur"]
+
+    # determine currency & price
+    subscription.currency = user.settings.currency
+    if subscription.currency == settings.CURRENCY_EUR:
+        subscription.price = target_plan["price_eur"]
+    else:
+        subscription.price = target_plan["price_usd"]
+
+    # save
     subscription.save()
     user.save()
 
     line = {
         "text": "Videopath " + target_plan["name"] + " " + str(subscription.current_period_start) + " until " + str(subscription.current_period_end),
-        "amount": subscription.custom_price
+        "amount": subscription.price
     }
 
     return True, line
@@ -154,7 +162,7 @@ def _set_subscription_to_plan(user, plan_id):
 #
 def _renew_subscription(user):
     result, line = _set_subscription_to_plan(user, user.subscription.plan)
-    payment_util.create_payment(user, [line])
+    payment_util.create_payment(user, [line], user.settings.currency)
 
 
 #
@@ -175,7 +183,7 @@ def _update_plan_and_create_payment(user, plan_id=None):
 
     lines.append(line)
 
-    payment_util.create_payment(user, lines)
+    payment_util.create_payment(user, lines, user.settings.currency)
 
     # notify user
     _send_email(user, "plan_changed")

@@ -4,7 +4,7 @@ from django.contrib.auth.models import User as _User
 from userena.models import UserenaBaseProfile
 
 from videopath.apps.common.models import VideopathBaseModel
-
+from django.conf import settings
 
 #
 # Proxy model for users, so that we can add stuff to it
@@ -22,20 +22,13 @@ class User(_User):
 #
 class UserSettings(UserenaBaseProfile):
 
-    CURRENCY_USD = "USD"
-    CURRENCY_EUR = "EUR"
-    CURRENCY_CHOICES = (
-        (CURRENCY_USD, 'US Dollars'),
-        (CURRENCY_EUR, 'Euro'),
-    )
-
     user = models.OneToOneField(_User,
                                 unique=True,
                                 verbose_name=('user'),
                                 related_name='settings')
 
     currency = models.CharField(
-        max_length=3, default=CURRENCY_EUR, choices=CURRENCY_CHOICES)
+        max_length=3, default=settings.CURRENCY_EUR, choices=settings.CURRENCY_CHOICES)
 
     class Meta:
         verbose_name = 'User Settings'

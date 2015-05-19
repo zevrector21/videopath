@@ -188,13 +188,13 @@
         </div>
         <p class = "hello">
             Dear {{ payment_details.name }}, <br /><br />
-            This is your invoice for your plan on Videopath. Your credit card has already been successfully charged with the amount of {{ payment.amount_due | div:100 | floatformat:2 }} EUR.
+            This is your invoice for your plan on Videopath. Your credit card has already been successfully charged with the amount of {{ payment.amount_due | div:100 | floatformat:2 }} {{payment.currency}}.
         </p>
         <div class = "invoice_entries">
 
             {% for line in lines %}
             	<div class = "invoice_entry right">
-            		{{ line.amount | div:100 | floatformat:2 }} EUR
+            		{{ line.amount | div:100 | floatformat:2 }} {{payment.currency}}
             	</div>
             	<div class = "invoice_entry">
                     {% if line.text %}
@@ -207,7 +207,7 @@
 
             {% if invoice.subtotal != invoice.total %}
                 <div class = "invoice_entry right">
-                    {{ invoice.total | sub:invoice.subtotal | div:100 | floatformat:2 }} EUR
+                    {{ invoice.total | sub:invoice.subtotal | div:100 | floatformat:2 }} {{payment.currency}}
                 </div>
                 <div class = "invoice_entry">
                     Discount
@@ -222,7 +222,7 @@
             <div class = "clear">
             </div>
             <div class = "invoice_entry right total">
-                {{ payment.amount_due | div:100 | floatformat:2}} EUR
+                {{ payment.amount_due | div:100 | floatformat:2}} {{payment.currency}}
             </div>
             <div class = "invoice_entry total">
                 AMOUNT DUE
@@ -233,7 +233,7 @@
         	<div class = "clear">
         	</div>
             <div class = "invoice_entry right">
-                {{ payment_info.amount_due_net | div:100 | floatformat:2}} EUR
+                {{ payment_info.amount_due_net | div:100 | floatformat:2}} {{payment.currency}}
             </div>
             <div class = "invoice_entry ">
                 TOTAL NET
@@ -241,7 +241,7 @@
             <div class = "clear">
             </div>
             <div class = "invoice_entry right">
-                {{ payment_info.amount_vat | div:100 | floatformat:2}} EUR
+                {{ payment_info.amount_vat | div:100 | floatformat:2}} {{payment.currency}}
             </div>
             <div class = "invoice_entry">
                 VAT ({{percent_vat}}%)

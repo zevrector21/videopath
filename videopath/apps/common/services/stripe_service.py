@@ -55,7 +55,7 @@ def set_card_for_user(user, token):
 #
 # charge user a certain amount
 #
-def charge_user(user, amount):
+def charge_user(user, amount, currency):
     customer = _get_stripe_customer_for_user(user)
     if not customer:
         return False
@@ -63,7 +63,7 @@ def charge_user(user, amount):
     try:
         charge = stripe.Charge.create(
             amount=amount,
-            currency="eur",
+            currency=currency.lower(),
             customer=customer,
             description="Videopath Subscription"
         )

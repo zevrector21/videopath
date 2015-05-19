@@ -229,8 +229,6 @@ def send_quota_exceeded_mail(user):
     )
 
 # payment stuff
-
-
 def send_invoice_payed_mail(user, invoice, link):
     send_templated_mail(
         user,
@@ -238,7 +236,8 @@ def send_invoice_payed_mail(user, invoice, link):
         "invoice_payed",
         {
             "amount_due": invoice.amount_due,
-            "link": link
+            "link": link,
+            "currency": invoice.currency
         },
         ["payment"]
     )

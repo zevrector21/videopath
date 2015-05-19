@@ -24,8 +24,11 @@ class TestCase(BaseTestCase):
 
         # we should now be subscribed to a plan
         self.assertEqual(self.user.subscription.plan, "201412-starter-monthly")
+        self.assertEqual(self.user.subscription.currency, "EUR")
+
         # and there should be a payment
         self.assertEqual(self.user.payments.latest("number").amount_due, 7900)
+        self.assertEqual(self.user.payments.latest("number").currency, "EUR")
 
     def test_remaining_credit(self):
 
@@ -35,7 +38,7 @@ class TestCase(BaseTestCase):
             plan="201412-starter-monthly",
             current_period_start=startdate,
             current_period_end=startdate + relativedelta(months=1),
-            custom_price=3500,
+            price=3500,
             managed_by=Subscription.MANAGER_SYSTEM
         )
         amount, line = subscription_util._get_remaining_credit_of_current_plan(
@@ -67,7 +70,7 @@ class TestCase(BaseTestCase):
             plan="201412-starter-monthly",
             current_period_start=startdate,
             current_period_end=date.today(),
-            custom_price=3500,
+            price=3500,
             managed_by=Subscription.MANAGER_SYSTEM
         )
         subscription_util.update_subscriptions()
@@ -83,7 +86,7 @@ class TestCase(BaseTestCase):
             plan="201412-starter-monthly",
             current_period_start=startdate,
             current_period_end=enddate,
-            custom_price=3500,
+            price=3500,
             managed_by=Subscription.MANAGER_SYSTEM
         )
         PendingSubscription.objects.create(user=self.user, plan="free-free")
@@ -91,3 +94,23 @@ class TestCase(BaseTestCase):
         self.user = User.objects.get(pk = self.user.id)
         self.assertEqual(self.user.subscription.plan, "free-free")
         self.assertEqual(Payment.objects.count(), 0)
+
+    def test_subscription_with_dollars(self):
+        # switch user to usd
+        self.user.settings.currency = "USD"
+        self.user.settings.save()
+
+        subscription_util.subscribe_user(self.user, "201412-starter-monthly")
+
+        # subscription should be in USD
+        self.assertEqual(self.user.subscription.currency, "USD")
+        # payment should be in USD
+        self.assertEqual(self.user.payments.latest("number").currency, "USD")
+
+
+
+
+
+
+
+

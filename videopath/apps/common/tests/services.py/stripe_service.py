@@ -22,11 +22,11 @@ class TestClass(BaseTestCase):
 
     def test_charge_success(self):
         StripeID.objects.create(user=self.user, key=STRIPE_CUSTOMER_WITH_CARD)
-        result = self.service.charge_user(self.user, 20000)
+        result = self.service.charge_user(self.user, 20000, "usd")
         self.assertNotEqual(result, False)
 
     def test_charge_fail(self):
         StripeID.objects.create(
             user=self.user, key=STRIPE_CUSTOMER_WITHOUT_CARD)
-        result = self.service.charge_user(self.user, 20000)
+        result = self.service.charge_user(self.user, 20000, "eur")
         self.assertFalse(result)

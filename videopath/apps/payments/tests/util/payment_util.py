@@ -11,14 +11,14 @@ class TestCase(BaseTestCase):
     def test_creation(self):
 
     	# no payment should be created if nothing is owed
-    	payment = payment_util.create_payment(self.user, [])
+    	payment = payment_util.create_payment(self.user, [], "eur")
     	self.assertEquals(payment,None)
 
     	# expect payment to be created properly
     	payment = payment_util.create_payment(self.user, [{
     		"text":"one line",
     		"amount": 200
-    		}])
+    		}], "eur")
     	self.assertEquals(payment.amount_due,200)
         self.assertEquals(payment.percent_vat,19)
 
@@ -31,7 +31,7 @@ class TestCase(BaseTestCase):
         payment = payment_util.create_payment(self.user, [{
             "text":"one line",
             "amount": 200
-            }])
+            }], "eur")
         self.assertEquals(payment.amount_due,200)
         self.assertEquals(payment.percent_vat, 20)
 
@@ -41,7 +41,7 @@ class TestCase(BaseTestCase):
         payment = payment_util.create_payment(self.user, [{
             "text":"one line",
             "amount": 200
-            }])
+            }], "eur")
         self.assertEquals(payment.amount_due,200)
         self.assertEquals(payment.percent_vat, 0)
         

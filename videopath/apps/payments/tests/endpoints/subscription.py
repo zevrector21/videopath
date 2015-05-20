@@ -2,7 +2,7 @@ from videopath.apps.videos.tests.endpoints.endpoints_base import EndpointsBaseTe
 
 from videopath.apps.payments.models import Subscription, PendingSubscription, PaymentDetails, StripeID
 
-SUBS_URL = '/v1/user/0/subscription/'
+SUBS_URL = '/v1/user/1/subscription/'
 PLAN_ID = '201412-starter-monthly'
 
 # Uses the standard django frame testing client

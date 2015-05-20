@@ -2,7 +2,7 @@ from videopath.apps.videos.tests.endpoints.endpoints_base import EndpointsBaseTe
 
 from videopath.apps.payments.models import Payment
 
-INVOICE_URL = '/v1/user/0/invoice/'
+INVOICE_URL = '/v1/user/1/invoice/'
 
 # Uses the standard django frame testing client
 class TestCase(EndpointsBaseTestCase):

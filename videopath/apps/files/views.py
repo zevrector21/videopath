@@ -13,6 +13,7 @@ from videopath.apps.files.aws import verify_image_upload, get_upload_endpoint_fo
 from videopath.apps.files.video_source_importers import import_url, import_custom
 
 from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 # other stuff
 @api_view(['POST', 'GET'])
@@ -58,7 +59,7 @@ def image_request_upload_ticket(request, type=None, related_id=None):
     endpoint = get_upload_endpoint_for_image(key=file.key)
     data = {'ticket_id': file.key, 'endpoint': endpoint,
             'marker_content_id': related_id}
-    return HttpResponse(json.dumps(data), mimetype="application/json")
+    return Response(data)
 
 
 @api_view(['POST', 'GET'])
@@ -77,7 +78,7 @@ def image_upload_complete(request, ticket_id=None):
         'file_found': file_found,
         'file_url': settings.IMAGE_CDN + ifile.key}
     resize_images()
-    return HttpResponse(json.dumps(data), mimetype="application/json")
+    return Response(data)
 
 
 @api_view(['GET'])
@@ -100,7 +101,7 @@ def video_thumbs(request, video_id=None):
     current = manager.current_thumbnail_index_for_video(video)
     data = {'index': current, 'available': available}
 
-    return HttpResponse(json.dumps(data), mimetype="application/json")
+    return Response(data)
 
 
 @api_view(['POST'])
@@ -111,7 +112,7 @@ def delete_custom_thumb(request, video_id=None):
         return HttpResponseForbidden()
     video_revision.custom_thumbnail = None
     video_revision.save()
-    return HttpResponse()
+    return Response()
 
 
 @api_view(['POST', 'GET'])
@@ -130,7 +131,7 @@ def video_request_upload_ticket(request, video_id=None):
     data = {'ticket_id': file.key, 'endpoint': endpoint, 'video_id': video.id}
 
     # Indent the json if we are in debug mode
-    return HttpResponse(json.dumps(data), mimetype="application/json")
+    return Response(data)
 
 
 
@@ -157,7 +158,7 @@ def video_upload_complete(request, ticket_id=None):
 
     data = {'ticket_id': ticket_id,
             'file_found': file_found, 'job_started': jobStarted}
-    return HttpResponse(json.dumps(data), mimetype="application/json")
+    return Response(data)
 
 
 
@@ -171,14 +172,14 @@ def import_source(request, key=None):
     if "url" in post:
         success, message = import_url(video, post["url"])
         if success:
-            return HttpResponse(json.dumps({}))
+            return Response({})
         else:
             result = json.dumps({"error": message})
             return HttpResponseBadRequest(result)
     else:
         success, message = import_custom(video, post)
         if success:
-            return HttpResponse(json.dumps({}))
+            return Response({})
         else:
             result = json.dumps({"error": message})
             return HttpResponseBadRequest(result)

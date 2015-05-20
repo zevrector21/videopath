@@ -19,7 +19,7 @@ def transcode_notification(request, notification_type=None):
         post = json.loads(request.body)
     except BaseException:
         logger.error('Could not interpret notification message')
-        return HttpResponse(json.dumps({}), mimetype="application/json")
+        return HttpResponse("")
 
     # respond to aws subscription request
     if post['Type'] == 'SubscriptionConfirmation':
@@ -70,4 +70,4 @@ def transcode_notification(request, notification_type=None):
     vfile.save()
 
     # respond with empty json
-    return HttpResponse(json.dumps({}), mimetype="application/json")
+    return HttpResponse("")

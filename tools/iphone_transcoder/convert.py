@@ -5,7 +5,7 @@ import time
 
 from azure.storage import BlobService
 
-skipconvert = True
+skipconvert = False
 
 # conf
 output_folder = "output"

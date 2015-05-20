@@ -35,6 +35,8 @@ elif [ "$1" == "reset_local_db" ]; then
 	python manage.py migrate
 	python manage.py createsuperuser
 	python manage.py check_permissions
+elif [ "$1" == "clear_cache" ]; then
+    find . -name \*.pyc -delete
 else 
 	echo "Command not found"
 fi

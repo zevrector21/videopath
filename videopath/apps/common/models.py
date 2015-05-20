@@ -50,5 +50,3 @@ class ColorField(models.CharField):
         kwargs['max_length'] = 10
         super(ColorField, self).__init__(*args, **kwargs)
         
-from south.modelsinspector import add_introspection_rules
-add_introspection_rules([], ["^videopath\.apps\.common\.models\.ColorField"])

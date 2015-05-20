@@ -1,4 +1,3 @@
-from mock import MagicMock
 
 from videopath.apps.common.test_utils import BaseTestCase
 from videopath.apps.videos.models import Video, Marker, MarkerContent
@@ -19,10 +18,6 @@ class ImageTests(BaseTestCase):
         v = Video.objects.create(user=self.user1)
         vf = VideoFile.objects.create(video=v)
 
-        # delete and see if singnal is called
-        aws.delete_video_files_for_key = MagicMock(return_value=None)
-        vf.delete()
-        # self.assertEqual(True, aws.delete_video_files_for_key.called)
 
     def test_image_file_delete(self):
 

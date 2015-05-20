@@ -25,6 +25,7 @@ class PaymentDetailsAdmin(admin.ModelAdmin):
 class SubscriptionsAdmin(admin.ModelAdmin):
     list_display = ('user', 'plan', 'notes', 'active')
     search_fields = ['user__username', 'user__email']
+    list_filter = ['plan', 'managed_by']
 
 
 class PendingSubscriptionAdmin(admin.ModelAdmin):

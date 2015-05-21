@@ -1,5 +1,7 @@
 import json
 
+from django.test import Client
+
 from videopath.apps.common.test_utils import BaseTestCase
 
 from videopath.apps.videos.models import Video
@@ -19,13 +21,15 @@ class TestCase(BaseTestCase):
 		v = Video.objects.create(user=self.user)
 		VideoFile.objects.create(video=v, key = FILE_KEY)
 
+		self.dj_client = Client()
+
 
 	def test_progressing_notification(self):
 		data = {
 			"Type":"something",
 			"Message": json.dumps(progress_notification)
 		}
-		self.client.post(PROGRESSING_URL, data)
+		self.dj_client.post(PROGRESSING_URL, json.dumps(data))
 		self.assertEqual(VideoFile.objects.first().status, VideoFile.TRANSCODING_STARTED)
 
 	def test_fail_notification(self):
@@ -33,7 +37,7 @@ class TestCase(BaseTestCase):
 			"Type":"something",
 			"Message": json.dumps(failed_notification)
 		}
-		self.client.post(PROGRESSING_URL, data)
+		self.dj_client.post(PROGRESSING_URL, json.dumps(data))
 		self.assertEqual(VideoFile.objects.first().status, VideoFile.TRANSCODING_ERROR)
 
 	def test_success_notification(self):
@@ -41,7 +45,7 @@ class TestCase(BaseTestCase):
 			"Type":"something",
 			"Message": json.dumps(completed_notification)
 		}
-		self.client.post(PROGRESSING_URL, data)
+		self.dj_client.post(PROGRESSING_URL, json.dumps(data))
 		self.assertEqual(VideoFile.objects.first().status, VideoFile.TRANSCODING_COMPLETE)
 
 

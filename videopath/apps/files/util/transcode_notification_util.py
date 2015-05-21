@@ -28,6 +28,7 @@ def process_notification(request, notification_type=None):
     # retrieve video file
     message = json.loads(post['Message'])
     key = message['input']['key']
+    state = message["state"]
 
     try:
         vfile = VideoFile.objects.get(key=key)
@@ -35,17 +36,17 @@ def process_notification(request, notification_type=None):
         return Response({"status":"did not find file"})
 
     # parse status out of type
-    if notification_type == 'progressing':
+    if state == 'PROGRESSING':
         vfile.status = VideoFile.TRANSCODING_STARTED
 
-    elif notification_type == 'complete':
+    elif state == 'COMPLETED':
         vfile.video_width = message['outputs'][0]['width']
         vfile.video_height = message['outputs'][0]['height']
         vfile.video_duration = message['outputs'][0]['duration']
         vfile.status = VideoFile.TRANSCODING_COMPLETE
         send_transcode_succeeded_mail(vfile)
 
-    elif notification_type == 'error':
+    elif state == 'ERROR':
         vfile.status = VideoFile.TRANSCODING_ERROR
         vfile.transcoding_result = message['outputs'][0]['statusDetail']
         send_transcode_failed_mail(vfile)

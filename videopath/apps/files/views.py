@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 
 from videopath.apps.videos.models import MarkerContent, Video, VideoRevision
 from videopath.apps.files.util.files_util import current_file_for_video
-from videopath.apps.files.util.image_resize_util import resize_images
+from videopath.apps.files.util.image_resize_util import process_image_file
 from videopath.apps.files.util import thumbnails_util
 from videopath.apps.files.models import ImageFile, VideoFile, VideoSource
 from videopath.apps.files.util.aws_util import get_upload_endpoint, verify_upload, start_transcoding_video
@@ -26,31 +26,30 @@ def image_request_upload_ticket(request, type=None, related_id=None):
     if type == "marker_content":
         marker_content = get_object_or_404(MarkerContent, pk=related_id)
         if marker_content.marker.video_revision.video.user != request.user:
-            return Response(status_code=403)
+            return Response(status=403)
 
         file.image_type = file.MARKER_CONTENT
         file.save()
         marker_content.image_file.add(file)
         marker_content.save()
-
     # file as thumbnail
     elif type == "custom_thumbnail":
         revision = get_object_or_404(VideoRevision, pk=related_id)
         if revision.video.user != request.user:
-            return Response(status_code=403)
+            return Response(status=403)
         file.image_type = file.CUSTOM_THUMBNAIL
         file.save()
         revision.custom_thumbnail = file
         revision.save()
-
+    # unknown
     else:
-        return Response(status_code=403)
+        return Response(status=403)
 
-    # return endpoint for upload
-    endpoint = get_upload_endpoint(key=file.key)
-    data = {'ticket_id': file.key, 'endpoint': endpoint,
-            'marker_content_id': related_id}
-    return Response(data)
+    return Response({
+        'ticket_id': file.key, 
+        'endpoint': get_upload_endpoint(key=file.key),
+        'marker_content_id': related_id
+        })
 
 
 @api_view(['POST', 'GET'])
@@ -64,13 +63,12 @@ def image_upload_complete(request, ticket_id=None):
     if file_found:
         ifile.status = ImageFile.FILE_RECEIVED
         ifile.save()
-    data = {
+    process_image_file(ifile)
+    return Response({
         'ticket_id': ticket_id,
         'file_found': file_found,
         'file_url': settings.IMAGE_CDN + ifile.key
-    }
-    resize_images()
-    return Response(data)
+    })
 
 #
 # Handle thumbnails
@@ -81,19 +79,16 @@ def video_thumbs(request, video_id=None):
     video = get_object_or_404(Video, pk=video_id)
     file = current_file_for_video(video)
     if video.user != request.user or file == None or file.status != VideoFile.TRANSCODING_COMPLETE:
-        return Response(status_code=403)
+        return Response(status=403)
 
-    available = thumbnails_util.available_thumbs_for_video(video)
-
-    if request.method == 'GET':
-        pass
-    elif request.method == 'POST':
+    if request.method == 'POST':
         post = json.loads(request.body)
         thumbnails_util.set_thumbnail_index_for_video(video, post["index"])
 
-    current = thumbnails_util.current_thumbnail_index_for_video(video)
-
-    return Response({'index': current, 'available': available})
+    return Response({
+        'index': thumbnails_util.current_thumbnail_index_for_video(video), 
+        'available': thumbnails_util.available_thumbs_for_video(video)
+    })
 
 
 @api_view(['POST'])
@@ -101,7 +96,7 @@ def delete_custom_thumb(request, video_id=None):
     # only allow request if video is found and user is owner
     video_revision = get_object_or_404(VideoRevision, pk=video_id)
     if video_revision.video.user != request.user:
-        return Response(status_code=403)
+        return Response(status=403)
     video_revision.custom_thumbnail = None
     video_revision.save()
     return Response()
@@ -116,16 +111,17 @@ def video_request_upload_ticket(request, video_id=None):
     # only allow request if video is found and user is owner
     video = get_object_or_404(Video, pk=video_id)
     if video.user != request.user:
-        return Response(status_code=403)
+        return Response(status=403)
 
     file = VideoFile()
     video.file.add(file)
     file.save()
 
-    endpoint = get_upload_endpoint(key=file.key)
-    data = {'ticket_id': file.key, 'endpoint': endpoint, 'video_id': video.id}
-
-    return Response(data)
+    return Response({
+        'ticket_id': file.key, 
+        'endpoint': get_upload_endpoint(key=file.key), 
+        'video_id': video.id
+    })
 
 
 @api_view(['POST', 'GET'])
@@ -148,11 +144,12 @@ def video_upload_complete(request, ticket_id=None):
             vfile.save()
         else:
             vfile.state = VideoFile.TRANSCODING_ERROR
-
-    data = {'ticket_id': ticket_id,
-            'file_found': file_found, 
-            'job_started': jobStarted}
-    return Response(data)
+            
+    return Response({
+        'ticket_id': ticket_id,
+        'file_found': file_found, 
+        'job_started': jobStarted
+    })
 
 
 #
@@ -164,7 +161,7 @@ def import_source(request, key=None):
     # get video
     video = get_object_or_404(Video, pk=key)
     if video.user != request.user:
-        return Response(status_code=403)
+        return Response(status=403)
 
     service = service_provider.get_service("video_source_import")
 

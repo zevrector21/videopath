@@ -16,7 +16,6 @@ def get_upload_endpoint(expires_in=6000, key=None, method='POST'):
 def verify_upload(ticket_id=None):
     return s3_service.check_existence(settings.AWS_UPLOAD_BUCKET, ticket_id)
 
-
 def start_transcoding_video(video):
     logger.info('start_transcoding_video')
 

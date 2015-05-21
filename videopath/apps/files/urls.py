@@ -9,7 +9,7 @@ urlpatterns = patterns('',
    url(r'^notifications/transcode/error/$', notification_handler, {'notification_type': 'error'}),
    url(r'^notifications/transcode/progressing/$', notification_handler, {'notification_type': 'progressing'}),
 
-   # legacy, should be removed when app is migrated
+   # legacy, should be removed when app is migrated (???)
    url(r'^video/upload/requestticket/(?P<video_id>[0-9]+)/$', 'videopath.apps.files.views.video_request_upload_ticket'),
    url(r'^video/upload/complete/(?P<ticket_id>.+)/$', 'videopath.apps.files.views.video_upload_complete'),
    url(r'^image/upload/requestticket/(?P<content_id>[0-9]+)/$','videopath.apps.files.views.image_request_upload_ticket_legacy'),

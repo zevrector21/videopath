@@ -7,7 +7,7 @@ image_sizes = {
         "maxSize": 5000000,
         "outs": [{
             "name": "regular",
-                    "type": "thumbnail",
+            "type": "thumbnail",
             "maxWidth": 800,
             "maxHeight": 800,
             "key": "_FILEKEY_"
@@ -24,13 +24,14 @@ image_sizes = {
             "key": "_FILEKEY_"
         }, {
             "name": "large",
-                    "type": "thumbnail",
+            "type": "thumbnail",
             "maxWidth": 1280,
             "maxHeight": 720,
             "key": "_FILEKEY_-hd"
         }]
     },
 
+    # unsused for now
     ImageFile.CUSTOM_LOGO: {
         "maxSize": 5000000
     }

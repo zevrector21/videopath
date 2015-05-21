@@ -67,7 +67,6 @@ def set_thumbnail_index_for_video(v, index):
 
 # get thumb
 # helpers
-
 def thumbnails_for_video( video):
     return thumbnails_for_revision(video.current_revision)
 

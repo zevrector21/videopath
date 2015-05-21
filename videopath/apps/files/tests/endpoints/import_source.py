@@ -36,3 +36,17 @@ class TestCase(BaseTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(VideoSource.objects.first().service, "wistia")
 
+    def test_custom_import(self):
+        self.setup_users_and_clients()
+        v=Video.objects.create(user=self.user)
+        data = {
+            "mp4":"http://videos.videopath.com/m35T1YU0KHQ8ZEr28fKgM4sS0zfEOQW3.mp4",
+            "webm": "http://videos.videopath.com/m35T1YU0KHQ8ZEr28fKgM4sS0zfEOQW3.webm",
+            "width":"320",
+            "height":"240",
+            "duration":"200"
+          }
+        response = self.client_user1.post(IMPORT_URL.format(v.pk), data)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(VideoSource.objects.first().service, "custom")
+        

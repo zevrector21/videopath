@@ -14,8 +14,6 @@ from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
 def process_notification(request, notification_type=None):
     
-    print request.body
-
     # load body
     try:
         post = json.loads(request.body)

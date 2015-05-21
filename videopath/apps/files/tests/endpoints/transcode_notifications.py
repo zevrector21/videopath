@@ -25,30 +25,27 @@ class TestCase(BaseTestCase):
 
 
 	def test_progressing_notification(self):
-		return
 		data = {
 			"Type":"something",
 			"Message": json.dumps(progress_notification)
 		}
-		self.dj_client.post(PROGRESSING_URL, json.dumps(data))
+		self.dj_client.generic("POST", PROGRESSING_URL, data=json.dumps(data))
 		self.assertEqual(VideoFile.objects.first().status, VideoFile.TRANSCODING_STARTED)
 
 	def test_fail_notification(self):
-		return
 		data = {
 			"Type":"something",
 			"Message": json.dumps(failed_notification)
 		}
-		self.dj_client.post(PROGRESSING_URL, json.dumps(data))
+		self.dj_client.generic("POST", PROGRESSING_URL, data=json.dumps(data))
 		self.assertEqual(VideoFile.objects.first().status, VideoFile.TRANSCODING_ERROR)
 
 	def test_success_notification(self):
-		return
 		data = {
 			"Type":"something",
 			"Message": json.dumps(completed_notification)
 		}
-		self.dj_client.post(PROGRESSING_URL, json.dumps(data))
+		self.dj_client.generic("POST", PROGRESSING_URL, data=json.dumps(data))
 		self.assertEqual(VideoFile.objects.first().status, VideoFile.TRANSCODING_COMPLETE)
 
 

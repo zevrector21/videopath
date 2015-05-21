@@ -9,7 +9,6 @@ from videopath.apps.files.util.image_resize_util import resize_images
 from videopath.apps.files.util import thumbnails_util
 from videopath.apps.files.models import ImageFile, VideoFile, VideoSource
 from videopath.apps.files.util.aws_util import get_upload_endpoint, verify_upload, start_transcoding_video
-from videopath.apps.files.video_source_importers import import_url, import_custom
 from videopath.apps.common.services import service_provider
 
 from rest_framework.decorators import api_view

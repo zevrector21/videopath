@@ -47,7 +47,7 @@ def check_geo_ip():
 def check_video_import_youtube():
 	service = service_provider.get_service("video_source_import")
 	try:
-		source = service.import_video_from_url("https://www.youtube.com/watch?v=PPN3KTtrnZM")
+		source = service.import_video_from_url("https://www.youtube.com/watch?v=2rtGFAnyf-s")
 		print source
 		return source["service"] == "youtube"
 	except Exception as e:

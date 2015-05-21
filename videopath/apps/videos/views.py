@@ -9,7 +9,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.exceptions import ParseError, ValidationError
 
-from videopath.apps.videos.util import video_export_util, share_mail_util
+from videopath.apps.videos.util import share_mail_util
 from videopath.apps.videos.permissions import MarkerPermissions, VideoPermissions, MarkerContentPermissions, VideoRevisionPermissions, AuthenticatedPermission
 from videopath.apps.videos.models import Video, Marker, MarkerContent, VideoRevision
 from videopath.apps.videos.serializers import VideoRevisionDetailSerializer, VideoSerializer, MarkerSerializer, MarkerContentSerializer, VideoRevisionSerializer
@@ -96,9 +96,9 @@ class VideoViewSet(viewsets.ModelViewSet):
         try:
             demo = self.request.DATA.get("demo_project", None)
             if demo:
-                youtube_id = settings.DEMO_VIDEOS[demo]
-                from videopath.apps.files.video_source_importers import import_youtube
-                import_youtube(instance, youtube_id)
+                from videopath.apps.files.models import VideoSource
+                data = {'service': 'youtube', 'title': 'Videopath Demo Video', 'video_aspect': 1.7777777777777777, 'thumbnail_url': 'https://i.ytimg.com/vi/2rtGFAnyf-s/maxresdefault.jpg', 'video_duration': 46, 'service_identifier': '2rtGFAnyf-s'}
+                VideoSource.objects.create(video=instance, status=VideoSource.STATUS_OK, **data)
         except:
             raise ValidationError(detail="Unkown demo project")
         

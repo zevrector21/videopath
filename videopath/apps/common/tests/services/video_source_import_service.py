@@ -24,7 +24,11 @@ class TestClass(BaseTestCase):
 
     def test_server_import(self):
         source = self.service.import_video_from_server({
-
+            "mp4":"//videos.videopath.com/m35T1YU0KHQ8ZEr28fKgM4sS0zfEOQW3.mp4",
+            "webm": "//videos.videopath.com/m35T1YU0KHQ8ZEr28fKgM4sS0zfEOQW3.webm",
+            "width":"320",
+            "height":"240",
+            "duration":"200"
           })
         self.assertEqual(source["service"], "custom")
        

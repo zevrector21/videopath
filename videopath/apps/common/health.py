@@ -44,6 +44,33 @@ def check_geo_ip():
 	else:
 		return "Lookup failed"
 
+def check_video_import_youtube():
+	service = service_provider.get_service("video_source_import")
+	try:
+		source = service.import_video_from_url("https://www.youtube.com/watch?v=PPN3KTtrnZM")
+		print source
+		return source["service"] == "youtube"
+	except Exception as e:
+		return e.message
+
+def check_video_import_vimeo():
+	service = service_provider.get_service("video_source_import")
+	try:
+		source = service.import_video_from_url("https://vimeo.com/36579366")
+		print source
+		return source["service"] == "vimeo"
+	except:
+		return "Vimeo import failed"
+		
+def check_video_import_wistia():
+	service = service_provider.get_service("video_source_import")
+	try:
+		source = service.import_video_from_url("http://fast.wistia.net/oembed?url=http://home.wistia.com/medias/1gaiqzxu03")
+		print source
+		return source["service"] == "wistia"
+	except:
+		return "Wistia import failed"
+
 #
 # Django stuff
 #

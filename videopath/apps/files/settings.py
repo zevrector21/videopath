@@ -1,7 +1,7 @@
 from videopath.apps.files.models import ImageFile
 
 # configure different image types
-image_conf = {
+image_sizes = {
 
     ImageFile.MARKER_CONTENT: {
         "maxSize": 5000000,

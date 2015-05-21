@@ -2,7 +2,6 @@
 from videopath.apps.common.test_utils import BaseTestCase
 from videopath.apps.videos.models import Video, Marker, MarkerContent
 from videopath.apps.files.models import VideoFile, ImageFile
-from videopath.apps.files import aws
 
 
 # Uses the standard django frame testing client

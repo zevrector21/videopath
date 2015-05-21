@@ -1,13 +1,13 @@
 from django.conf.urls import url, patterns
 
-notification_view = 'videopath.apps.files.notification_handlers.transcode_notification'
+notification_handler = 'videopath.apps.files.util.transcode_notification_util.process_notification'
 
 urlpatterns = patterns('',
 
    # external notifications (for from aws)
-   url(r'^notifications/transcode/complete/$', notification_view, {'notification_type': 'complete'}),
-   url(r'^notifications/transcode/error/$', notification_view, {'notification_type': 'error'}),
-   url(r'^notifications/transcode/progressing/$', notification_view, {'notification_type': 'progressing'}),
+   url(r'^notifications/transcode/complete/$', notification_handler, {'notification_type': 'complete'}),
+   url(r'^notifications/transcode/error/$', notification_handler, {'notification_type': 'error'}),
+   url(r'^notifications/transcode/progressing/$', notification_handler, {'notification_type': 'progressing'}),
 
    # legacy, should be removed when app is migrated
    url(r'^video/upload/requestticket/(?P<video_id>[0-9]+)/$', 'videopath.apps.files.views.video_request_upload_ticket'),

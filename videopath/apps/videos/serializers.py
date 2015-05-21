@@ -2,12 +2,10 @@
 from rest_framework import serializers
 
 from videopath.apps.videos.models import Video, Marker, MarkerContent, VideoRevision, PlayerAppearance
-from videopath.apps.files.video_helper import file_url_for_markercontent
-from videopath.apps.files.thumbnail_manager import ThumbnailManager
+from videopath.apps.files.util.files_util import file_url_for_markercontent
+from videopath.apps.files.util import thumbnails_util
 from videopath.apps.files.serializers import VideoSourceSerializer, VideoFileSerializer, ImageFileSerializer
 from videopath.apps.videos.util import appearance_util
-
-thumbnail_manager = ThumbnailManager()
 
 #
 # Video
@@ -25,7 +23,7 @@ class VideoSerializer(serializers.ModelSerializer):
 
     def get_thumbnails(self, video):
         revision = video.get_draft_or_current_revision()
-        return thumbnail_manager.thumbnails_for_revision(revision)
+        return thumbnails_util.thumbnails_for_revision(revision)
 
     # also provide some info about the most recent revision for overviews
     def get_revision_info(self, video):
@@ -168,7 +166,7 @@ class VideoRevisionDetailSerializer(serializers.ModelSerializer):
         return video_revision.video.key
 
     def get_thumbnails(self, video_revision):
-        return thumbnail_manager.thumbnails_for_revision(video_revision)
+        return thumbnails_util.thumbnails_for_revision(video_revision)
 
     class Meta:
         model = VideoRevision

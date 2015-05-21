@@ -3,7 +3,7 @@ from PIL import Image
 
 from django.conf import settings
 
-from videopath.apps.files.conf import image_conf
+from videopath.apps.files.settings import image_sizes
 from videopath.apps.files.models import ImageFile
 
 
@@ -30,7 +30,7 @@ def resize_images():
             f.save()
 
             # get conf for file
-            conf = image_conf[f.image_type]
+            conf = image_sizes[f.image_type]
 
             in_key = in_bucket.get_key(f.key)
             if in_key is None or in_key.size > conf["maxSize"]:

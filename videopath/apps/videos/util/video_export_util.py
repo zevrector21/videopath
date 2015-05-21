@@ -8,7 +8,7 @@ from rest_framework.renderers import JSONRenderer
 
 from videopath.apps.videos.models import Video
 from videopath.apps.videos.serializers import VideoRevisionDetailSerializer
-from videopath.apps.files.thumbnail_manager import ThumbnailManager
+from videopath.apps.files.util import thumbnails_util
 
 s3_service = service_provider.get_service("s3")
 
@@ -63,14 +63,12 @@ def delete_export(video):
 # Render an html page template for a video object
 #
 def _render_template(video):
-    thmbmng = ThumbnailManager()
-
     vrs = VideoRevisionDetailSerializer(video.current_revision)
     
     serialized_data = JSONRenderer().render(vrs.data)
 
     # get thumbnail url 
-    thumb_urls = thmbmng.thumbnails_for_revision(video.current_revision)
+    thumb_urls = thumbnails_util.thumbnails_for_revision(video.current_revision)
     description = video.current_revision.description if video.current_revision.description and video.current_revision.description.strip() else "Watch this interactive video"
 
     # render template

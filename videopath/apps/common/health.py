@@ -31,7 +31,7 @@ def check_raven_sentry_connection():
 	from raven.scripts.runner import send_test_message
 	from raven.contrib.django.models import client
 	try:
-		print send_test_message(client, {})
+		send_test_message(client, {})
 		return True
 	except Exception as e:
 		return str(e)
@@ -48,7 +48,6 @@ def check_video_import_youtube():
 	service = service_provider.get_service("video_source_import")
 	try:
 		source = service.import_video_from_url("https://www.youtube.com/watch?v=2rtGFAnyf-s")
-		print source
 		return source["service"] == "youtube"
 	except Exception as e:
 		return e.message
@@ -57,7 +56,6 @@ def check_video_import_vimeo():
 	service = service_provider.get_service("video_source_import")
 	try:
 		source = service.import_video_from_url("https://vimeo.com/36579366")
-		print source
 		return source["service"] == "vimeo"
 	except:
 		return "Vimeo import failed"
@@ -66,7 +64,6 @@ def check_video_import_wistia():
 	service = service_provider.get_service("video_source_import")
 	try:
 		source = service.import_video_from_url("http://fast.wistia.net/oembed?url=http://home.wistia.com/medias/1gaiqzxu03")
-		print source
 		return source["service"] == "wistia"
 	except:
 		return "Wistia import failed"

@@ -6,7 +6,7 @@ IMPORT_URL = '/v1/video/{0}/import_source/'
 class TestCase(BaseTestCase):
 
     def test_thumbs(self):
-
+    	
         pass
         # todo
 

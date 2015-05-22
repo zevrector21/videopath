@@ -5,7 +5,6 @@ from django.shortcuts import get_object_or_404
 
 from videopath.apps.videos.models import MarkerContent, Video, VideoRevision
 from videopath.apps.files.util.files_util import current_file_for_video
-from videopath.apps.files.util.image_resize_util import process_image_file
 from videopath.apps.files.util import thumbnails_util
 from videopath.apps.files.models import ImageFile, VideoFile, VideoSource
 from videopath.apps.files.util.aws_util import get_upload_endpoint, verify_upload, start_transcoding_video
@@ -63,7 +62,8 @@ def image_upload_complete(request, ticket_id=None):
     if file_found:
         ifile.status = ImageFile.FILE_RECEIVED
         ifile.save()
-    process_image_file(ifile)
+    service = service_provider.get_service("image_resize")
+    service.resize_image_file(ifile)
     return Response({
         'ticket_id': ticket_id,
         'file_found': file_found,

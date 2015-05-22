@@ -19,8 +19,8 @@ class TestCase(BaseTestCase):
 		ticket_id = response.data["ticket_id"]
 
 		# test complete notification
-		#response = self.client_user1.get(COMPLETE_URL.format(ticket_id))
-		#self.assertEqual(response.status_code, 200)
+		response = self.client_user1.get(COMPLETE_URL.format(ticket_id))
+		self.assertEqual(response.status_code, 200)
 
 
     def test_upload_marker_content_image(self):
@@ -36,5 +36,5 @@ class TestCase(BaseTestCase):
 		ticket_id = response.data["ticket_id"]
 
 		# test complete notification
-		#response = self.client_user1.get(COMPLETE_URL.format(ticket_id))
-		#self.assertEqual(response.status_code, 200)
+		response = self.client_user1.get(COMPLETE_URL.format(ticket_id))
+		self.assertEqual(response.status_code, 200)

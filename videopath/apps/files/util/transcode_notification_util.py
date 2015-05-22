@@ -12,7 +12,7 @@ logger = settings.LOGGER
 from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
-def process_notification(request, notification_type=None):
+def process_notification(request, type):
     
     # load body
     try:

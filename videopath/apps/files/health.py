@@ -19,9 +19,9 @@ def check_access_to_thumbnail_bucket():
 	service = service_provider.get_service("s3")
 	return service.check_access_to_bucket(settings.AWS_THUMBNAIL_BUCKET)
 
-def check_access_to_video_backup_bucket():
-	service = service_provider.get_service("s3")
-	return service.check_access_to_bucket(settings.AWS_VIDEO_BACKUP_BUCKET)
+# def check_access_to_video_backup_bucket():
+# 	service = service_provider.get_service("s3")
+# 	return service.check_access_to_bucket(settings.AWS_VIDEO_BACKUP_BUCKET)
 
 def check_access_to_image_out_bucket():
 	service = service_provider.get_service("s3")

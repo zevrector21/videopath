@@ -105,6 +105,11 @@ TEMPLATE_DIRS = (
 GRAPPELLI_ADMIN_TITLE = "Videopath Admin"
 
 #
+#
+#
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
+#
 # Change default user model
 #
 #AUTH_USER_MODEL = 'videopath.apps.users.model.user'
@@ -125,14 +130,14 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
     'raven.contrib.django.raven_compat', # error reporting with raven
-    'south',
+    #'south',
     'django_nose',
     'userena',
     'guardian',
     'easy_thumbnails',
     'rest_framework',
     'mathfilters',
-    'videopath.apps.admin',
+    'videopath.apps.vp_admin',
     'videopath.apps.users',
     'videopath.apps.files',
     'videopath.apps.videos',

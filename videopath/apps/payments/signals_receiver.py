@@ -2,7 +2,7 @@ from django.dispatch import receiver
 
 from videopath.apps.analytics.signals import analytics_imported
 from videopath.apps.payments.util import quota_util
-from videopath.apps.admin.signals import hourly_jobs
+from videopath.apps.vp_admin.signals import hourly_jobs
 from videopath.apps.payments.util import payment_util, subscription_util
 
 @receiver(analytics_imported)

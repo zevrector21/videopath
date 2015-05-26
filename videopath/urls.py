@@ -26,7 +26,7 @@ urlpatterns = patterns('',
 	url(r'^v1/', include('videopath.apps.videos.urls')),
 
 	# admin urls
-	url(r'^admin/', include('videopath.apps.admin.urls')),
+	url(r'^admin/', include('videopath.apps.vp_admin.urls')),
 	url(r'^admin/', include(admin.site.urls)),
 	url(r'^grappelli/', include('grappelli.urls')),
 

@@ -3,7 +3,9 @@ from django.db import models
 from videopath.apps.videos.models import Video, MarkerContent
 from videopath.apps.common.models import VideopathBaseModel
 
+#
 # base model for all files
+#
 class VideopathFileBaseModel(VideopathBaseModel):
     key = models.CharField(max_length=50, blank=True, unique=True)
 
@@ -15,7 +17,9 @@ class VideopathFileBaseModel(VideopathBaseModel):
             self.key = self.generate_key(32)
         super(VideopathFileBaseModel, self).save(*args, **kwargs)
 
+#
 # image file for marker content
+#
 class ImageFile(VideopathFileBaseModel):
 
     # status
@@ -62,8 +66,9 @@ class ImageFile(VideopathFileBaseModel):
     def __unicode__(self):
         return u'%s %s' % ("ImageFile", self.key)
 
-
+#
 # video source file for videos
+#
 class VideoFile(VideopathFileBaseModel):
 
     # status
@@ -106,7 +111,9 @@ class VideoFile(VideopathFileBaseModel):
     original_bytes = models.BigIntegerField(default=0)
     transcoded_bytes = models.BigIntegerField(default=0)
 
-
+#
+# Video source, such as youtube etc for video
+#
 class VideoSource(VideopathBaseModel):
 
     # service type

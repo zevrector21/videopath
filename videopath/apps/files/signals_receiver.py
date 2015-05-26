@@ -3,10 +3,10 @@ from django.dispatch import receiver
 from django.core.management import call_command
 from django.conf import settings
 
-from videopath.apps.files.aws import delete_image_files_for_key
+from videopath.apps.files.util.aws_util import delete_image_files_for_key
 from videopath.apps.files.models import VideoFile, ImageFile
 from videopath.apps.videos.models import MarkerContent
-from videopath.apps.admin.signals import daily_jobs
+from videopath.apps.vp_admin.signals import daily_jobs
 
 
 # delete image file object if many to many relationship will be empty

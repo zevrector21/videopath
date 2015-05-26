@@ -58,9 +58,9 @@ def send_share_mail(video, recipients, message):
     except:
         return
 
-    from videopath.apps.files.thumbnail_manager import ThumbnailManager
+    from videopath.apps.files.util.thumbnails_util import thumbnails_for_video
 
-    thumb_url = ThumbnailManager().thumbnails_for_video(video)["large"]
+    thumb_url = thumbnails_for_video(video)["large"]
     if not thumb_url.startswith("http"):
         thumb_url = "https:" + thumb_url
 

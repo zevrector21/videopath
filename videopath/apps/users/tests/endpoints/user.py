@@ -14,11 +14,11 @@ class TestCase(EndpointsBaseTestCase):
         self.assertEqual(response.data.get("count"), 1)
 
         # should be able to access myself
-        response = self.client_user1.get_json(USER_URL + "0/")
+        response = self.client_user1.get_json(USER_URL + "1/")
         self.assertEqual(response.status_code, 200)
 
         # should not be able to access other user
-        response = self.client_user1.get_json(USER_URL + "1/")
+        response = self.client_user1.get_json(USER_URL + "2/")
         self.assertEqual(response.status_code, 404)
 
     def test_change_email(self):
@@ -49,15 +49,15 @@ class TestCase(EndpointsBaseTestCase):
         password = self.USER1_DETAILS["password"]
 
         # should not work, because a password is needed for the change
-        response = self.client_user1.put_json(USER_URL + "0/", {"new_password":new_password})
+        response = self.client_user1.put_json(USER_URL + "1/", {"new_password":new_password})
         self.assertEqual(response.status_code,403)
 
         # should not work, as the email is to short
-        response = self.client_user1.put_json(USER_URL + "0/", {"new_password":"short", "password":password})
+        response = self.client_user1.put_json(USER_URL + "1/", {"new_password":"short", "password":password})
         self.assertEqual(response.status_code,400)
 
         # should work
-        response = self.client_user1.put_json(USER_URL + "0/", {"new_password":new_password, "password":password})
+        response = self.client_user1.put_json(USER_URL + "1/", {"new_password":new_password, "password":password})
         self.assertEqual(response.status_code,200)
 
         user = self.user1.__class__.objects.get(pk=self.user1.pk)

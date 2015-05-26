@@ -2,7 +2,7 @@ from videopath.apps.videos.tests.endpoints.endpoints_base import EndpointsBaseTe
 
 from videopath.apps.payments.models import PaymentDetails
 
-ADDRESS_URL = '/v1/user/0/address/'
+ADDRESS_URL = '/v1/user/1/address/'
 
 test_data = {
     'name': "Dave",

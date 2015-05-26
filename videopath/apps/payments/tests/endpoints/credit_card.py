@@ -1,6 +1,6 @@
 from videopath.apps.videos.tests.endpoints.endpoints_base import EndpointsBaseTestCase
 
-CC_URL = '/v1/user/0/credit-card/'
+CC_URL = '/v1/user/1/credit-card/'
 
 # Uses the standard django frame testing client
 class TestCase(EndpointsBaseTestCase):

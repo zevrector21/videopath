@@ -4,7 +4,7 @@ from django.core.cache import cache
 from django.core.management import call_command
 
 from videopath.apps.users.models import AuthenticationToken
-from videopath.apps.admin.signals import hourly_jobs
+from videopath.apps.vp_admin.signals import hourly_jobs
 
 # delete files on s3 if file object is deleted
 

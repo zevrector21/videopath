@@ -18,8 +18,8 @@ STRIPE_API_KEY = os.environ.get("STRIPE_API_KEY")
 #
 # GA access
 #
-GA_USERNAME = "videopath.dev"
-GA_PASSWORD = os.environ.get("GA_PASSWORD")
+GA_EMAIL = os.environ.get("GA_EMAIL")
+GA_PRIVATE_KEY = os.environ.get("GA_PRIVATE_KEY")
 
 #
 # AWS

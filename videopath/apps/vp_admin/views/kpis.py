@@ -1,7 +1,7 @@
 from datetime import timedelta, date
 import itertools
 
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.template.response import SimpleTemplateResponse
 from django.contrib.auth.models import User
 from django.core.cache import cache
@@ -177,7 +177,7 @@ def view(request):
     # convert args
     cohorte_selector = cohorte_selectors[cohorte_size]
     start_date = date.today() + timedelta(days=int(start))
-    end_date = date.today() + timedelta(days=int(end))
+    end_date = date.today() + timedelta(days=int(end)+1)
 
     # build dict of users   
     users = build_user_info(start_date, end_date)

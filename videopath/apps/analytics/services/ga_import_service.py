@@ -2,6 +2,7 @@ import json
 import datetime
 import time
 import httplib2
+import base64
 
 from oauth2client.client import SignedJwtAssertionCredentials
 from apiclient.discovery import build
@@ -66,7 +67,8 @@ def import_historical_data(offset=0):
 # get the service object
 #
 def _get_service():
-    credentials = SignedJwtAssertionCredentials(settings.GA_EMAIL, settings.GA_PRIVATE_KEY, auth_scope)
+    key = base64.standard_b64decode(settings.GA_PRIVATE_KEY)
+    credentials = SignedJwtAssertionCredentials(settings.GA_EMAIL, key, auth_scope)
     http = httplib2.Http()
     http = credentials.authorize(http)
     service = build('analytics', 'v3', http=http)

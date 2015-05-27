@@ -25,7 +25,6 @@ enum34==1.0.4
 gdata==2.0.18
 gitdb==0.5.4
 GitPython==0.3.2rc1
-google-api-python-client==1.4.0
 gunicorn==18.0
 heroku==0.1.4
 html2text==3.200.3

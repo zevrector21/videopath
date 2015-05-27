@@ -28,9 +28,9 @@ def delete_all_image_files(sender, instance=None, **kwargs):
     delete_image_files_for_key(instance.key)
 
 # register daily cron jobs
-@receiver(daily_jobs)
-def run_update_video_file_sizes(sender, **kwargs):
-    call_command("update_video_file_sizes")
+# @receiver(daily_jobs)
+# def run_update_video_file_sizes(sender, **kwargs):
+#     call_command("update_video_file_sizes")
 
 @receiver(daily_jobs)
 def run_backup_videos(sender, **kwargs):

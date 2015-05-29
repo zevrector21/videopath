@@ -188,7 +188,7 @@ REST_FRAMEWORK = {
         'anon': '5/second',
     },
 
-    'PAGINATE_BY': 50,
+    'PAGINATE_BY': 200,
     'PAGINATE_BY_PARAM': 'page_size'
 }
 

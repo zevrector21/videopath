@@ -57,7 +57,7 @@ def _resize_image_file(f):
 
         image.thumbnail((out["maxWidth"], out["maxHeight"]), Image.ANTIALIAS)
 
-        image.save(_filename_out, "PNG" if has_transparency else "JPEG")
+        image.save(_filename_out, "PNG" if has_transparency else "JPEG", quality=90)
 
         # save image back to s3
         key = out["key"].replace("_FILEKEY_", f.key)

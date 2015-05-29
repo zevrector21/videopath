@@ -28,7 +28,7 @@
 
 
   <!-- styles -->
-  <link rel="stylesheet" type="text/css" href="{{ src_url }}style/style.gz.css" media="screen" />
+  <link rel="stylesheet" type="text/css" href="{{ src_url }}style/style.css" media="screen" />
 
   <!-- sripts -->
   <script>
@@ -56,7 +56,7 @@
   </div>
 
   <!-- container for seo text -->
-  <div class = "vp_seo">
+  <div class = "vp_seo" style = "display:none">
     {% for marker in markers.all %}
       <h1>{{marker.title}}</h1>
       {% for content in marker.contents.all %}
@@ -66,7 +66,7 @@
   </div>
 
   <!-- load main js dependency -->
-  <script src="{{ src_url }}scripts/main.gz.js"></script>
+  <script src="{{ src_url }}scripts/main.js"></script>
 
 </body>
 </html>

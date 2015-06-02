@@ -120,7 +120,8 @@ revision_fields = (
     'ui_disable_share_buttons',
     'ui_equal_marker_lengths',
     'custom_tracking_code',
-    'iphone_images'
+    'iphone_images',
+    'continuous_playback'
 )
 
 #

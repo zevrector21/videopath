@@ -127,4 +127,4 @@ class PaymentsViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = PaymentSerializer
 
     def get_queryset(self, uid=None):
-        return Payment.objects.filter(user=self.request.user, exported_invoice=True).order_by('-date')
+        return Payment.objects.filter(user=self.request.user).order_by('-date')

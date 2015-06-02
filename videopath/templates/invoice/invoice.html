@@ -188,7 +188,18 @@
         </div>
         <p class = "hello">
             Dear {{ payment_details.name }}, <br /><br />
-            This is your invoice for your plan on Videopath. Your credit card has already been successfully charged with the amount of {{ payment.amount_due | div:100 | floatformat:2 }} {{payment.currency}}.
+            This is your invoice for your plan on Videopath. 
+
+            {% if payment.payed and payment.provider == "stripe" %}
+                Your credit card has already been successfully charged with the amount of {{ payment.amount_due | div:100 | floatformat:2 }}    {{payment.currency}}.
+            {% elif not payment.payed and payment.provider == "stripe" %}
+                Your credit card will be charged with the amount of {{ payment.amount_due | div:100 | floatformat:2 }} {{payment.currency}}.
+            {% elif payment.payed %}
+                We have received your payment of {{ payment.amount_due | div:100 | floatformat:2 }} {{payment.currency}}.
+            {% else %}
+                Please transfer the amount of {{ payment.amount_due | div:100 | floatformat:2 }} {{payment.currency}} to our account at Postbank, IBAN DE22 5451 0067 0654 6516 78 within 15 working days.
+            {% endif %}
+
         </p>
         <div class = "invoice_entries">
 

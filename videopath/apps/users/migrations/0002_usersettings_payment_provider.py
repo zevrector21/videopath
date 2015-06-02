@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='usersettings',
             name='payment_provider',
-            field=models.CharField(default=b'stripe', max_length=3, choices=[(b'other', b'other'), (b'stripe', b'stripe'), (b'transfer', b'transfer')]),
+            field=models.CharField(default=b'stripe', max_length=150, choices=[(b'other', b'other'), (b'stripe', b'stripe'), (b'transfer', b'transfer')]),
             preserve_default=True,
         ),
     ]

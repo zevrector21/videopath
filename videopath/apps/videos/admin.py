@@ -101,7 +101,7 @@ class VideoRevisionAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('General', {
-            'fields': ('video', 'title', 'description', 'iphone_images', 'player_appearance')
+            'fields': ('video', 'title', 'description', 'iphone_images', 'player_appearance', 'continuous_playback')
         }),
         ('Appearance', {
             'fields': ('ui_color_1', 'ui_color_2')

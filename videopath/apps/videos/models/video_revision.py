@@ -43,6 +43,9 @@ class VideoRevision(VideopathBaseModel):
     ui_equal_marker_lengths = models.BooleanField(default=False)
     ui_fit_video = models.BooleanField(default=False)
 
+    #
+    continuous_playback = models.BooleanField(default=False)
+
     # iphone support
     iphone_images = models.IntegerField(default=-1)
     

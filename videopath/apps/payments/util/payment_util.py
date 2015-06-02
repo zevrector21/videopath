@@ -36,14 +36,18 @@ def create_payment(user, lines, currency):
     if amount_due <= 0:
         return
 
-    return Payment.objects.create(
+    payment = Payment.objects.create(
         user=user,
         date=date.today(),
         amount_due=amount_due,
         percent_vat=percent_vat,
         currency = currency,
-        details=json.dumps(lines)
+        details=json.dumps(lines),
+        provider=user.settings.payment_provider
     )
+
+    mailer.send_invoice_created_mail(payment.user, payment, payment_export_util.url_for_payment(payment))
+    return payment
 
 #
 # Go through all payments and try to charge unpayed payments
@@ -51,7 +55,7 @@ def create_payment(user, lines, currency):
 def process_payments():
 
     # cycle all unpaid payments
-    for payment in Payment.objects.filter(paid=False):
+    for payment in Payment.objects.filter(paid=False, provider=settings.PAYMENT_PROVIDER_STRIPE):
 
         # update charging attempt
         if payment.last_charging_attempt == None or payment.last_charging_attempt < date.today():
@@ -65,8 +69,6 @@ def process_payments():
                 payment.paid = True
                 payment.save()
                 payment_export_util.export_payment(payment)
-                mailer.send_invoice_payed_mail(
-                    payment.user, payment, payment_export_util.url_for_payment(payment))
             else:
                 # notify admin
                 mailer.send_admin_mail("Payment could not be processed", str(payment.number) + " " + payment.user.username)

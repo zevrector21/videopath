@@ -57,22 +57,13 @@ class QuotaInformation(VideopathBaseModel):
 #
 class Payment(VideopathBaseModel):
 
-    PROVIDER_OTHER = "other"
-    PROVIDER_STRIPE = "stripe"
-    PROVIDER_TRANSFER = "transfer"
-    PROVIDER_CHOICES = (
-        (PROVIDER_OTHER, PROVIDER_OTHER),
-        (PROVIDER_STRIPE, PROVIDER_STRIPE),
-        (PROVIDER_TRANSFER, PROVIDER_TRANSFER)
-    )
-
     # meta
     exported_invoice = models.BooleanField(default=False)
     paid = models.BooleanField(default=False)
     charging_attempts = models.IntegerField(default=0)
     last_charging_attempt = models.DateField(null=True)
     provider = models.CharField(
-        max_length=150, choices=PROVIDER_CHOICES, default=PROVIDER_OTHER)
+        max_length=150, choices=settings.PAYMENT_PROVIDER_CHOICES, default=settings.PAYMENT_PROVIDER_STRIPE)
     transaction_id = models.CharField(max_length=150, default="")
 
     # content

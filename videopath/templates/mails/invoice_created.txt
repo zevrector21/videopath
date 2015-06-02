@@ -2,15 +2,10 @@
 {% load mathfilters %}
 {% block content %}
 
-Thank you. 
-
-We have just received your payment of <strong>{{ amount_due | div:100 | floatformat:-2}} {{currency}}</strong> for your Videopath subscription.
-
-Here are the payment details.
+We have just created an invoice for <strong>{{ amount_due | div:100 | floatformat:-2}} {{currency}}</strong> for your Videopath subscription.
 
 {{link}}
 
 To change your plan or payment settings, visit your plans page on your account settings at <a href="http://app.videopath.com">http://app.videopath.com</a>.
-
 
 {% endblock %}

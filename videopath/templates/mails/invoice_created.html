@@ -3,14 +3,10 @@
 {% block content %}
 
 <p>
-Thank you.
-<br />
-We have just received your payment of <strong>{{ amount_due | div:100 | floatformat:-2}} {{currency}}</strong> for your Videopath subscription.
+We have just created an invoice for <strong>{{ amount_due | div:100 | floatformat:-2}} {{currency}}</strong> for your Videopath subscription.
 </p>
 <p>
-Here are the payment details. 
-<br />
-	<a href = "{{ link }}">Open Invoice</a>
+<a href = "{{ link }}">Display invoice</a>
 </p>
 <p>
 	To change your plan or payment settings, visit your plans page on your account settings  <a href="http://app.videopath.com">http://app.videopath.com</a>.

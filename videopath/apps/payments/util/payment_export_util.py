@@ -53,7 +53,7 @@ def render_payment(payment):
 # Final url for the payment
 #
 def url_for_payment(payment):
-    return  "https://docs.videopath.com/public/invoices/" + payment.pk
+    return  "https://docs.videopath.com/public/invoices/" + str(payment.pk)
 
 
 #

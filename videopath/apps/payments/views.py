@@ -1,6 +1,8 @@
 
 from django.conf import settings
 from django.http import Http404
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
 
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -10,12 +12,23 @@ from rest_framework.exceptions import PermissionDenied, ValidationError
 from videopath.apps.payments.models import PaymentDetails, Payment
 from videopath.apps.payments.serializers import PaymentDetailsSerializer, PaymentSerializer, SubscriptionSerializer, CreditCardSerializer, PlanSerializer
 from videopath.apps.payments.permissions import PaymentDetailsPermission
-from videopath.apps.payments.util import subscription_util
+from videopath.apps.payments.util import subscription_util, payment_export_util
 from videopath.apps.common.services import service_provider
 from videopath.apps.common import serializers
 from videopath.apps.common.views import SingletonViewSet
 
+
 stripe_service = service_provider.get_service("stripe")
+
+
+#
+# Public view
+#
+def public_invoice(request, invoice_id):
+    p = get_object_or_404(Payment,pk=invoice_id)
+    s = payment_export_util.render_payment(p)
+    return HttpResponse(s)
+
 
 #
 # Manage subscriptions

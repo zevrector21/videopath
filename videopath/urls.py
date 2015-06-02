@@ -31,6 +31,12 @@ urlpatterns = patterns('',
 	url(r'^grappelli/', include('grappelli.urls')),
 
 	# rest framework
-	url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+	url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+
+
+	# some public urls
+
+	url(r'^public/invoices/(?P<invoice_id>[0-9]+)', 'videopath.apps.payments.views.public_invoice'),
+
 
 )

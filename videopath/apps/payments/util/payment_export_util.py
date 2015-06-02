@@ -11,6 +11,21 @@ from django.conf import settings
 #
 def export_payment(payment):
 
+    s = render_payment(payment)
+
+    key_id = _key_for_payment(payment)
+
+    # save to s3
+    s3_service = service_provider.get_service("s3")
+    s3_service.upload(s, settings.AWS_DOCS_BUCKET, key_id, content_type="text/html", public=True)
+
+    # finalize
+    payment.exported_invoice = True
+    payment.save()
+
+    return True
+
+def render_payment(payment):
     # get busy
     payment_details = payment.user.payment_details
 
@@ -32,19 +47,7 @@ def export_payment(payment):
             "amount_due_net": amount_due_net
         }
     })
-    s = t.render(c)
-
-    key_id = _key_for_payment(payment)
-
-    # save to s3
-    s3_service = service_provider.get_service("s3")
-    s3_service.upload(s, settings.AWS_DOCS_BUCKET, key_id, content_type="text/html", public=True)
-
-    # finalize
-    payment.exported_invoice = True
-    payment.save()
-
-    return True
+    return t.render(c)
 
 #
 # Final url for the payment

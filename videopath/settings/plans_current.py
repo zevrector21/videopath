@@ -98,7 +98,7 @@ _plans_current = {
     '201412-enterprise': {
 
         'group': 'enterprise',
-        'subscribable': False,
+        'subscribable': True,
 
         # features
         'max_projects': 9999,

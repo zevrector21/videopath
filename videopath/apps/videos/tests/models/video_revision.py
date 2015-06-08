@@ -31,6 +31,9 @@ class TestCase(BaseTestCase):
     	self.assertEqual(MarkerContent.objects.count(), 8)
 
 
+    def test_password(self):
+        video = Video.objects.create(user=self.user)
+        revision = video.draft
 
 
 

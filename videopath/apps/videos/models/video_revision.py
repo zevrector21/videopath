@@ -1,4 +1,5 @@
 import copy
+from hashlib import sha256
 
 from django.db import models
 
@@ -57,6 +58,53 @@ class VideoRevision(VideopathBaseModel):
     endscreen_button_color = ColorField(default="#ff6b57", blank=True)
     endscreen_subtitle = models.CharField(
         default="Create your own interactive video", max_length=512, blank=True)
+
+
+    # password protection
+    password = models.CharField(max_length=512, blank=True) # stores the salted sha digest
+    password_hashed = models.CharField(max_length=512, blank=True) # helper field for updateing the password
+    password_salt = models.CharField(max_length=512, blank=True) # stores the salt specific to this video
+
+    # @property
+    # def password(self):
+    #     return self._password
+
+    # @password.setter
+    # def password(self, password):
+
+    #     if not password:
+    #         return
+
+    #     if password == self._password:
+    #         return
+
+    #     if password == "clear":
+    #         self._password = ""
+    #         return
+
+    #     # generate salt if not present
+    #     if not self.password_salt:
+    #         self.password_salt = self.generate_key(32)
+    #     # save salted password
+    #     self._password = sha256(password+self.password_salt).digest()
+
+    def pre_save(self):
+        print "pre_save"
+        pass
+
+    def save(self, *args, **kwargs):
+        
+        if not self.password_salt:
+            self.password_salt = self.generate_key(32)
+
+        if self.password and self.password !=self.password_hashed:
+            self.password_hashed = unicode(sha256(self.password+self.password_salt).hexdigest())
+
+        self.password = self.password_hashed
+
+
+        super(VideoRevision, self).save(*args, **kwargs)
+
 
     # duplicate the revision
     def duplicate(self):

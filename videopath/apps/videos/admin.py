@@ -101,7 +101,7 @@ class VideoRevisionAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('General', {
-            'fields': ('video', 'title', 'description', 'iphone_images', 'player_appearance')
+            'fields': ('video', 'title', 'description', 'iphone_images', 'player_appearance', 'password', 'password_salt', 'password_hashed')
         }),
         ('Appearance', {
             'fields': ('ui_color_1', 'ui_color_2')
@@ -113,6 +113,8 @@ class VideoRevisionAdmin(admin.ModelAdmin):
             'fields': ('custom_thumbnail', )
         })
     )
+
+    readonly_fields=('password_hashed', 'password_salt')
 
     def created_humanized(self, obj):
         return humanize.naturaltime(obj.created)

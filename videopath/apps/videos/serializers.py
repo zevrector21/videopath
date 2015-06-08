@@ -120,7 +120,8 @@ revision_fields = (
     'ui_disable_share_buttons',
     'ui_equal_marker_lengths',
     'custom_tracking_code',
-    'iphone_images'
+    'iphone_images',
+    'password'
 )
 
 #
@@ -176,5 +177,5 @@ class VideoRevisionDetailSerializer(serializers.ModelSerializer):
             'key',
             'video_sources',
             'video_files',
-            'appearance'
+            'appearance',
         ) + revision_fields

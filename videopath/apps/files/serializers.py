@@ -14,11 +14,12 @@ from videopath.apps.files.settings import image_sizes
 class VideoSourceSerializer(serializers.ModelSerializer):
 
     large_thumbnail_url = serializers.ReadOnlyField(source='thumbnail_url')
+    thumbnail_url = serializers.SerializerMethodField()
 
     class Meta:
         model = VideoSource
         fields = ('status', 'service', 'service_identifier', 'video_duration',
-                  'video_aspect', 'thumbnail_url', 'large_thumbnail_url', 'source_webm', 'source_mp4')
+                  'video_aspect', 'thumbnail_url', 'large_thumbnail_url', 'source_webm', 'source_mp4', 'allow_youtube_clickthrough')
 
 
 #

@@ -18,7 +18,7 @@ class VideoSourceSerializer(serializers.ModelSerializer):
     class Meta:
         model = VideoSource
         fields = ('status', 'service', 'service_identifier', 'video_duration',
-                  'video_aspect', 'thumbnail_url', 'large_thumbnail_url', 'source_webm', 'source_mp4')
+                  'video_aspect', 'thumbnail_url', 'large_thumbnail_url', 'source_webm', 'source_mp4', 'allow_youtube_clickthrough')
 
 
 #

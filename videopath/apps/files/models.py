@@ -166,3 +166,6 @@ class VideoSource(VideopathBaseModel):
 
     #
     thumbnail_url = models.CharField(max_length=2048, default="")
+
+    # special settings
+    allow_youtube_clickthrough = models.BooleanField(default=False)

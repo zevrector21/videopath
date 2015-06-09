@@ -14,7 +14,6 @@ from videopath.apps.files.settings import image_sizes
 class VideoSourceSerializer(serializers.ModelSerializer):
 
     large_thumbnail_url = serializers.ReadOnlyField(source='thumbnail_url')
-    thumbnail_url = serializers.SerializerMethodField()
 
     class Meta:
         model = VideoSource

@@ -14,5 +14,5 @@ admin.site.register(ImageFile, ImageFileAdmin)
 
 
 class VideoSourceAdmin(admin.ModelAdmin):
-    list_display = ('service', 'title', 'service_identifier', 'status')
+    list_display = ('service', 'title', 'service_identifier', 'status', 'created')
 admin.site.register(VideoSource, VideoSourceAdmin)

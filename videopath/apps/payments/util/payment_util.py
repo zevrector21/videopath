@@ -60,7 +60,6 @@ def process_payments():
         # update charging attempt
         if payment.last_charging_attempt == None or payment.last_charging_attempt < date.today():
             payment.last_charging_attempt = date.today()
-
             # try charging
             provider, transaction_id = _charge_payment(payment)
             if provider:
@@ -84,7 +83,8 @@ def _charge_payment(payment):
 
     # try stripe
     charge_id = stripe_service.charge_user(payment.user, payment.amount_due, payment.currency)
+    print charge_id
     if charge_id:
-        return Payment.PROVIDER_STRIPE, charge_id
+        return settings.PAYMENT_PROVIDER_STRIPE, charge_id
     return None, None
    

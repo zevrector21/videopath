@@ -50,7 +50,8 @@
         <div class = "logo"></div>
       </a>
       <br />
-      <div class = "status1">
+      <div class = "status1" id = "vp_loading_status_1">
+        Loading video...
       </div>
       <div class = "status2">
       </div>
@@ -68,7 +69,30 @@
   </div>
 
   <!-- load main js dependency -->
-  <script src="{{ src_url }}scripts/desktop.js"></script>
+  <script>
+    (function(){
+
+      // IE detection
+      function isIE () {
+        var myNav = navigator.userAgent.toLowerCase();
+        return (myNav.indexOf('msie') != -1) ? parseInt(myNav.split('msie')[1]) : false;
+      }
+
+      // prepare vars
+      var src = "{{ src_url }}scripts/desktop.js",
+            s = document.createElement('script'),
+            el_status_1 =  document.getElementById('vp_loading_status_1');
+
+
+      if ( isIE() && isIE() < 9 ) {
+        el_status_1.innerHTML = "Internet Explorer 8 and earlier are not supported. Please upgrade to a newer Version of your Browser!";
+      } else {
+        s.src = src;
+        document.body.appendChild(s);
+      }
+      
+    })();
+  </script>
 
 </body>
 </html>

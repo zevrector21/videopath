@@ -35,5 +35,11 @@ class TestCase(BaseTestCase):
         video = Video.objects.create(user=self.user)
         revision = video.draft
 
+        # test if settings password adds hash and salted version of pw
+        revision.password = "super secret"
+        revision.save()
+        self.assertIsNotNone(revision.password_hashed)
+        self.assertIsNotNone(revision.password_salt)
+
 
 

@@ -29,8 +29,6 @@ def export_video(video, verbose=False):
     s = _render_template(video)
     key_id = _key_for_video(video)
 
-    print s
-
     # save to s3
     s3_service.upload(s, settings.AWS_PLAYER_BUCKET, key_id, content_type="text/html", cache_control = "public, max-age=600", public=True)
 

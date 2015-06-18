@@ -21,6 +21,7 @@ class TestCase(BaseTestCase):
 	def test_export_util_password(self):
 		video = Video.objects.create(user=self.user)
 		video.draft.password = "super secret"
+		video.draft.save()
 		video_export_util.export_video(video)
 		self.assertEqual(True, True)
 

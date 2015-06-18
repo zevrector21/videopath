@@ -83,6 +83,10 @@ def _render_template(video):
         'src_url': settings.PLAYER_SRC + video.player_version + "/",
         'video_url': settings.PLAYER_LOCATION + video.key + "/",
     }
+    
+    # for non production builds omit player version
+    if not settings.PRODUCTION:
+        template_dict['src_url'] = settings.PLAYER_SRC
 
     # encrypted video
     if revision.password_hashed:

@@ -71,12 +71,17 @@ class VideoRevision(VideopathBaseModel):
         if not self.password_salt:
             self.password_salt = self.generate_key(32)
 
+        # only update hashed password if the value has been changed
+        # we detect this by seing if the excerpt of the hash set on the
+        # password variable has changed
         if self.password and self.password not in self.password_hashed:
             self.password_hashed = unicode(sha256(self.password+self.password_salt).hexdigest())
 
+        # clear password
         if not self.password:
             self.password_hashed = ""
 
+        # set excerpt of hash on public password variable
         self.password = self.password_hashed[:6]
 
         super(VideoRevision, self).save(*args, **kwargs)

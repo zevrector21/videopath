@@ -31,6 +31,15 @@ class TestCase(BaseTestCase):
     	self.assertEqual(MarkerContent.objects.count(), 8)
 
 
+    def test_password(self):
+        video = Video.objects.create(user=self.user)
+        revision = video.draft
+
+        # test if settings password adds hash and salted version of pw
+        revision.password = "super secret"
+        revision.save()
+        self.assertIsNotNone(revision.password_hashed)
+        self.assertIsNotNone(revision.password_salt)
 
 
 

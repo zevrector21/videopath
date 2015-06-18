@@ -83,6 +83,21 @@ _plans_individual = {
                 'max_views_month': 500,
             },
 
+            'nyia': {
+                'name': 'Nyia Personal Plan',
+                'feature_vimeo': True,
+                'feature_upload': True,
+                'feature_analytics': True,
+                'feature_endscreen': True,
+                'feature_colors': True,
+                'feature_disable_share': True,
+                'feature_equal_markers': True,
+                'feature_wistia': True,
+                'max_views_month': 500,
+                'price_eur': 2000,
+                'payment_interval': 'month',
+            },
+
             'staff': {
                 'name': 'videopath staff account',
                 'feature_vimeo': True,

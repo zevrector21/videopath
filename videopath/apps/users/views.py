@@ -120,10 +120,11 @@ class UserViewSet(viewsets.ModelViewSet):
         email = serializer.validated_data.get("email").lower()
         password = serializer.validated_data.get("password")
 
-        if User.objects.filter(username=username).count() > 0:
-           raise ValidationError(detail={"username":["Username is taken."]})
         if User.objects.filter(email=email).count() > 0:
            raise ValidationError(detail={"email":["Email is taken."]})
+        if User.objects.filter(username=username).count() > 0:
+           raise ValidationError(detail={"username":["Username is taken."]})
+        
 
         # create via userena
         user = UserenaSignup.objects.create_user(username,

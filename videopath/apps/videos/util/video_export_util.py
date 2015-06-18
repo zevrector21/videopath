@@ -88,12 +88,15 @@ def _render_template(video):
 
     # encrypted video
     if revision.password_hashed:
+
+        encrypted_data = JSONRenderer().render({
+            'encrypted': "1",
+            'salt': revision.password_salt,
+            'data': _encrypt(data_string, revision.password_hashed)
+            })
+
         template_dict.update({
-            'video_data': {
-                'encrypted': True,
-                'salt': revision.password_salt,
-                'data': _encrypt(data_string, revision.password_hashed)
-            },
+            'video_data': encrypted_data,
             'thumb_urls': {},
             'title': 'Private Video - Videopath',
             'description': 'Private Video',

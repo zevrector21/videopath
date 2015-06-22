@@ -6,16 +6,19 @@ def record_by_address(ip):
 	try:
 	    gi = pygeoip.GeoIP(dat_path, pygeoip.MEMORY_CACHE)
 	    country = gi.country_code_by_addr(ip)
-	    continent = pygeoip.const.COUNTRY_CODES.index(country)
+	    country_index = pygeoip.const.COUNTRY_CODES.index(country)
+	    country_full = pygeoip.const.COUNTRY_NAMES[country_index]
 	    continent = pygeoip.const.CONTINENT_NAMES[pygeoip.const.COUNTRY_CODES.index(country)]
 	    return {
 	    	"continent": continent,
-	    	"country": country
+	    	"country": country,
+	    	"country_full": country_full
 	    }
 	except:
 	    return {
 	    	"continent": "--",
-	    	"country": "--"
+	    	"country": "--",
+	    	"country_full": "--"
 	    }
 
 

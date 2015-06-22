@@ -5,6 +5,7 @@ from django.core.cache import cache
 from rest_framework import exceptions
 
 from videopath.apps.users.models import AuthenticationToken, UserActivity, UserActivityDay
+from videopath.apps.common.services import service_provider
 
 def authenticate_token(key):
 	
@@ -85,3 +86,6 @@ def _track_activity_daily(user):
         if not activity:
             activity, created = UserActivityDay.objects.get_or_create(user=user, day=today)
             cache.set(cachekey, activity)
+            if created:
+            	slack = service_provider.get_service("slack")
+        		slack.notify("User " + request.user.email + " just seen for the first time today.")

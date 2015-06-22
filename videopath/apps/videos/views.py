@@ -56,7 +56,7 @@ def video_publish(request, vid=None):
     if request.method == 'PUT':
         video.publish()
         slack = service_provider.get_service("slack")
-        slack.notify("User " + request.user.email + "just published video http://player.videopath.com/" + video.key + ". ")
+        slack.notify("User " + request.user.email + " just published video http://player.videopath.com/" + video.key + ". ")
 
 
     if request.method == 'DELETE':

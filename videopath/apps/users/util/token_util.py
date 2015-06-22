@@ -87,5 +87,5 @@ def _track_activity_daily(user):
             activity, created = UserActivityDay.objects.get_or_create(user=user, day=today)
             cache.set(cachekey, activity)
             if created:
-            	slack = service_provider.get_service("slack")
-        		slack.notify("User " + request.user.email + " just seen for the first time today.")
+				slack = service_provider.get_service("slack")
+				slack.notify("User " + user.email + " just seen for the first time today.")

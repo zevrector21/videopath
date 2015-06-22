@@ -13,6 +13,7 @@ from videopath.apps.videos.util import share_mail_util
 from videopath.apps.videos.permissions import MarkerPermissions, VideoPermissions, MarkerContentPermissions, VideoRevisionPermissions, AuthenticatedPermission
 from videopath.apps.videos.models import Video, Marker, MarkerContent, VideoRevision
 from videopath.apps.videos.serializers import VideoRevisionDetailSerializer, VideoSerializer, MarkerSerializer, MarkerContentSerializer, VideoRevisionSerializer
+from videopath.apps.common.services import service_provider
 
 from rest_framework.decorators import api_view
 
@@ -54,6 +55,9 @@ def video_publish(request, vid=None):
 
     if request.method == 'PUT':
         video.publish()
+        slack = service_provider.get_service("slack")
+        slack.notify("User " + request.user.email + "just published video http://player.videopath.com/" + video.key + ". ")
+
 
     if request.method == 'DELETE':
         video.unpublish()
@@ -100,7 +104,7 @@ class VideoViewSet(viewsets.ModelViewSet):
                 data = {'service': 'youtube', 'title': 'Videopath Demo Video', 'video_aspect': 1.7777777777777777, 'thumbnail_url': 'https://i.ytimg.com/vi/2rtGFAnyf-s/maxresdefault.jpg', 'video_duration': 46, 'service_identifier': '2rtGFAnyf-s'}
                 VideoSource.objects.create(video=instance, status=VideoSource.STATUS_OK, **data)
         except:
-            raise ValidationError(detail="Unkown demo project")
+            raise ValidationError(detail="Unknown demo project")
         
 
     def destroy(self, request, *args, **kwargs):

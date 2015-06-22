@@ -162,6 +162,10 @@ class UserViewSet(viewsets.ModelViewSet):
         data["api_token"] = token.key
         data["api_token_once"] = ottoken.key
 
+        slack = service_provider.get_service("slack")
+        geo = service_provider.get_service("geo_ip")
+        slack.notify("User " + user.email + " just signed up from " + geo.record_from_request(request)["country"] + ".")
+
         # possibly return some tokens and shit
         return Response(data, status=status.HTTP_201_CREATED)
 

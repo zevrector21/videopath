@@ -33,3 +33,8 @@ AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
 RAVEN_CONFIG = {
     'dsn': os.environ.get("RAVEN_KEY"),
 }
+
+#
+# Slack
+#
+SLACK_API_TOCKEN = os.environ.get("SLACK_API_TOCKEN")

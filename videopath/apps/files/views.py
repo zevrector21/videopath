@@ -176,6 +176,10 @@ def import_source(request, key=None):
     # create video source objects    
     VideoSource.objects.create(video=video, status=VideoSource.STATUS_OK, **source)
 
+    if "url" in request.data:
+        slack = service_provider.get_service("slack")
+        slack.notify("User " + request.user.email + " just imported video " + request.data["url"] + ".")
+
     # try to set title on draft
     try:
         video.draft.title = source["title"]

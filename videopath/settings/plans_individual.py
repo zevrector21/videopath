@@ -108,7 +108,8 @@ _plans_individual = {
                 'feature_disable_share': True,
                 'feature_equal_markers': True,
                 'feature_wistia': True,
-                'feature_dev': True
+                'feature_dev': True,        
+                'feature_custom_analytics': True,
             }
 
         }

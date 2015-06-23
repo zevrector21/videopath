@@ -74,6 +74,7 @@ _plans_current = {
         'feature_equal_markers': True,
         'feature_vimeo': True,
         'feature_wistia': True,
+        'feature_custom_analytics': True,
 
 
         'variants': {
@@ -110,6 +111,7 @@ _plans_current = {
         'feature_equal_markers': True,
         'feature_vimeo': True,
         'feature_wistia': True,
+        'feature_custom_analytics': True,
 
         'variants': {
             'monthly': {

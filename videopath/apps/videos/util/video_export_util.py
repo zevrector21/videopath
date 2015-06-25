@@ -1,3 +1,5 @@
+import json
+
 from videopath.apps.common.services import service_provider
 
 from django.template import Context
@@ -63,25 +65,57 @@ def delete_export(video):
 # Render an html page template for a video object
 #
 def _render_template(video):
-    vrs = VideoRevisionDetailSerializer(video.current_revision)
-    
-    serialized_data = JSONRenderer().render(vrs.data)
+    revision = video.current_revision
+    vrs = VideoRevisionDetailSerializer(revision)
+    data_json = JSONRenderer().render(vrs.data)
+    data_string = json.dumps(vrs.data)
 
     # get thumbnail url 
     thumb_urls = thumbnails_util.thumbnails_for_revision(video.current_revision)
+
+    # get default description
     description = video.current_revision.description if video.current_revision.description and video.current_revision.description.strip() else "Watch this interactive video"
 
     # render template
     t = get_template('player/' + video.player_version + '/t.html')
-    c = Context({
+
+    template_dict = {
         'src_url': settings.PLAYER_SRC + video.player_version + "/",
-        'video_data': serialized_data,
         'video_url': settings.PLAYER_LOCATION + video.key + "/",
-        'thumb_urls': thumb_urls,
-        'title': video.current_revision.title + " - Videopath",
-        'description': description,
-        'markers': video.current_revision.markers
-    })
+    }
+    
+    # for non production builds omit player version
+    if not settings.PRODUCTION:
+        template_dict['src_url'] = settings.PLAYER_SRC
+
+    # encrypted video
+    if revision.password_hashed:
+
+        encrypted_data = JSONRenderer().render({
+            'encrypted': "1",
+            'salt': revision.password_salt,
+            'data': _encrypt(data_string, revision.password_hashed)
+            })
+
+        template_dict.update({
+            'video_data': encrypted_data,
+            'thumb_urls': {},
+            'title': 'Private Video - Videopath',
+            'description': 'Private Video',
+            'markers': []
+        })
+
+    #regular video
+    else:
+        template_dict.update({
+            'video_data': data_json,
+            'thumb_urls': thumb_urls,
+            'title': video.current_revision.title + " - Videopath",
+            'description': description,
+            'markers': video.current_revision.markers
+        })
+
+    c = Context(template_dict)
     return t.render(c)
 
 #
@@ -91,5 +125,24 @@ def _key_for_video(video):
     name = video.key
     key_id = name + "/index.html"
     return key_id
+
+#
+# encrypt helper function
+#
+from os import urandom
+from Crypto.Cipher import AES
+from base64 import b64encode
+def _encrypt(plain, password):
+
+    password = password.decode('hex')
+
+    padded = plain+(16 - len(plain)%16) * chr(0)
+    iv = urandom(16)
+
+    mode = AES.MODE_OFB
+    encryptor = AES.new(password, mode,iv)
+
+    cryptedbytes = encryptor.encrypt(padded)
+    return b64encode(iv + cryptedbytes)
 
 

@@ -68,6 +68,7 @@ class PlayerAppearance(VideopathBaseModel):
     # images, takes url to png or jpg images
     endscreen_logo = models.CharField(max_length=255, blank=True, null=True)
     icon = models.CharField(max_length=255, blank=True, null=True)
+    icon_link_target = models.CharField(max_length=1024, blank=True, null=True)
 
     # language
     language = models.CharField(max_length=50,choices=LANGUAGE_CHOICES, default=LANG_EN)

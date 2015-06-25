@@ -177,7 +177,7 @@ class PlayerAppearanceAdmin(admin.ModelAdmin):
                 ('ui_color_overlay_outline',))
         }),
         ('Images', {
-            'fields': ('endscreen_logo', 'icon')
+            'fields': ('endscreen_logo', 'icon', 'icon_link_target')
         }),
         ('Fonts', {
             'fields': ('ui_font_marker', 'ui_font_overlay_titles', 'ui_font_overlay_text')

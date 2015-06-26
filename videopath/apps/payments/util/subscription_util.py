@@ -141,10 +141,8 @@ def _set_subscription_to_plan(user, plan_id):
 
     # determine currency & price
     subscription.currency = user.settings.currency
-    if subscription.currency == settings.CURRENCY_EUR:
-        subscription.price = target_plan["price_eur"]
-    else:
-        subscription.price = target_plan["price_usd"]
+    price_id = settings.CURRENCY_SETTINGS[subscription.currency]['plan_string']
+    subscription.price = target_plan[price_id]
 
     # save
     subscription.save()

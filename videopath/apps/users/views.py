@@ -151,8 +151,14 @@ class UserViewSet(viewsets.ModelViewSet):
         # select users currency
         geo_service = service_provider.get_service("geo_ip")
         record = geo_service.record_from_request(request)
-        if record["continent"] == "EU":
+
+        # greate britain
+        if record["country"] in ["UK", "GB"]:
+            user.settings.currency = settings.CURRENCY_GBP
+        # rest of europe
+        elif record["continent"] == "EU":
             user.settings.currency = settings.CURRENCY_EUR
+        # rest of world
         else:
             user.settings.currency = settings.CURRENCY_USD
         user.settings.save()

@@ -157,6 +157,20 @@ class TestCase(EndpointsBaseTestCase):
         self.assertEqual(user.settings.currency, "EUR")
 
 
+        #
+        # test if user with uk ip address will be switched to GBP
+        #
+        data = {
+            'username': 'dave_new_3', 
+            'password': 'long_passsword',
+            'email': 'dscharf@gmx.de3'
+        }
+        ip = "212.58.244.20" # british ip
+        self.client.post_json(USER_URL, data, HTTP_X_FORWARDED_FOR=ip)
+        user = User.objects.get(username='dave_new_3')
+        self.assertEqual(user.settings.currency, "GBP")
+
+
 
 
 

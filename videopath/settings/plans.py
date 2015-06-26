@@ -29,6 +29,7 @@ class _Plans():
         'name': 'None',
         'price_eur': 0,
         'price_usd': 0,
+        'price_gbp': 0,
         'payment_interval': 'month',
 
         'value': 1

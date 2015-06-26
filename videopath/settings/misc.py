@@ -68,10 +68,26 @@ DEFAULT_VIDEO_APPEARANCE = {
 #
 CURRENCY_USD = "USD"
 CURRENCY_EUR = "EUR"
-CURRENCY_CHOICES = (
-    (CURRENCY_USD, 'US Dollars'),
-    (CURRENCY_EUR, 'Euro'),
-)
+CURRENCY_GBP = "GBP"
+
+CURRENCY_SETTINGS = {
+    CURRENCY_USD: {
+        'plan_string': 'price_usd',
+        'symbol': '$',
+        'name': 'US Dollars'
+    },
+    CURRENCY_GBP: {
+        'plan_string': 'price_gbp',
+        'symbol': '&pound;',
+        'name': 'British Pounds'
+    },
+    CURRENCY_EUR: {
+        'plan_string': 'price_eur',
+        'symbol': '&euro;',
+        'name': 'Euro'
+    }
+}
+CURRENCY_CHOICES = [(k, v["name"]) for k, v in CURRENCY_SETTINGS.iteritems()]
 
 #
 # Available payment providers

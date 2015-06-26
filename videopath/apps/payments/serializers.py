@@ -20,7 +20,8 @@ class PlanSerializer(serializers.Serializer):
 
     price = serializers.SerializerMethodField()
     def get_price(self, plan):
-        return plan["price_eur"] if self.user_currency == settings.CURRENCY_EUR else plan["price_usd"]
+        price_id = settings.CURRENCY_SETTINGS[self.user_currency]['plan_string']
+        return plan[price_id]
 
     currency = serializers.SerializerMethodField()
     def get_currency(self,plan):
@@ -28,7 +29,7 @@ class PlanSerializer(serializers.Serializer):
 
     currency_symbol = serializers.SerializerMethodField()
     def get_currency_symbol(self,plan):
-        return "&euro;" if self.user_currency == settings.CURRENCY_EUR else "$"
+        return settings.CURRENCY_SETTINGS[self.user_currency]['symbol']
 
     # plan contraints
     max_views_month = serializers.IntegerField()

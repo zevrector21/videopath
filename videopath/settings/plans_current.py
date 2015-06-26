@@ -44,6 +44,7 @@ _plans_current = {
                 'name': 'Basic Yearly',
                 'price_eur': 80000,
                 'price_usd': 100000,
+                'price_gbp': 65000,
                 'payment_interval': 'year',
                 'value': 11,
             },
@@ -51,6 +52,7 @@ _plans_current = {
                 'name': 'Basic Monthly',
                 'price_eur': 7900,
                 'price_usd': 9900,
+                'price_gbp': 5900,
                 'payment_interval': 'month',
                 'value': 10,
             }
@@ -82,6 +84,7 @@ _plans_current = {
                 'name': 'Professional Plus Yearly',
                 'price_eur': 380000,
                 'price_usd': 425000,
+                'price_gbp': 300000,
                 'payment_interval': 'year',
                 'value': 151,
             },
@@ -89,6 +92,7 @@ _plans_current = {
                 'name': 'Professional Plus Monthly',
                 'price_eur': 34900,
                 'price_usd': 39900,
+                'price_gbp': 29900,
                 'payment_interval': 'month',
                 'value': 150
             }
@@ -118,6 +122,7 @@ _plans_current = {
                 'name': 'Enterprise Monthly',
                 'price_eur': 129900,
                 'price_usd': 139900,
+                'price_gbp': 104900,
                 'payment_interval': 'month',
                 'value': 200
             },
@@ -125,6 +130,7 @@ _plans_current = {
                 'name': 'Enterprise Yearly',
                 'price_eur': 1400000,
                 'price_usd': 1500000,
+                'price_gbp': 1000000,
                 'payment_interval': 'year',
                 'value': 201
             }

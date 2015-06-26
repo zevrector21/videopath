@@ -1,13 +1,18 @@
 from django.contrib import admin
 
 from videopath.apps.payments.models import Subscription, PaymentDetails, StripeID, QuotaInformation, Payment, PendingSubscription
+from videopath.apps.payments.util import payment_export_util
 
 class StripeCustomerAdmin(admin.ModelAdmin):
     list_display = ('user', 'key')
 
 
 class PaymentAdmin(admin.ModelAdmin):
-    list_display = ('user', 'date', 'paid', 'amount_due', 'number')
+    list_display = ('user', 'date', 'paid', 'amount_due', 'number', 'download_url')
+    def download_url(self, payment):
+    	url = payment_export_util.url_for_payment(payment) 
+    	return "<a href = '%s'>View</a>" % url
+    download_url.allow_tags = True
 
 
 class QuotaInformationAdmin(admin.ModelAdmin):

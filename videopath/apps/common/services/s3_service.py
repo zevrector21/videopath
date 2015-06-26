@@ -35,10 +35,12 @@ def upload(source, bucket, key, content_type = None, cache_control = None, verif
 			with open (source, "r") as myfile:
 				source=myfile.read().replace('\n', '')
 
+
+
 		# gzip string
 		out = StringIO.StringIO()
 		with gzip.GzipFile(fileobj=out, mode="w") as f:
-  			f.write(source)
+  			f.write(source.encode('utf8'))
   		source = out.getvalue()
 
 		# upload from string

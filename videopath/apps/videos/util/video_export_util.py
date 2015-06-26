@@ -13,6 +13,7 @@ from videopath.apps.videos.serializers import VideoRevisionDetailSerializer
 from videopath.apps.files.util import thumbnails_util
 
 s3_service = service_provider.get_service("s3")
+cloudfront_service = service_provider.get_service("cloudfront")
 
 #
 # export a video to s3
@@ -30,7 +31,15 @@ def export_video(video, verbose=False):
     key_id = _key_for_video(video)
 
     # save to s3
-    s3_service.upload(s, settings.AWS_PLAYER_BUCKET, key_id, content_type="text/html", cache_control = "public, max-age=600", public=True)
+    s3_service.upload(s, 
+        settings.AWS_PLAYER_BUCKET, 
+        key_id, 
+        content_type="text/html", 
+        cache_control = "public, max-age=600, s-max-age=2592000", 
+        public=True)
+
+    # invalidate player
+    cloudfront_service.invalidate(settings.AWS_PLAYER_DISTRIBUTION_ID, ["/" + video.key + "*"])
 
 #
 # export list of videos

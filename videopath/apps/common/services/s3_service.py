@@ -1,4 +1,6 @@
 import os
+import gzip
+import StringIO
 
 from boto.s3.connection import S3Connection
 
@@ -27,15 +29,21 @@ def upload(source, bucket, key, content_type = None, cache_control = None, verif
 	# define wether to upload from file or from string
 	if isinstance(source, basestring):
 
-		# upload from fiel path
+		# upload from file path
+		# read file into string
 		if os.path.exists(source):
-			 key.set_contents_from_filename(source)
+			with open (source, "r") as myfile:
+				source=myfile.read().replace('\n', '')
+
+		# gzip string
+		out = StringIO.StringIO()
+		with gzip.GzipFile(fileobj=out, mode="w") as f:
+  			f.write(source)
+  		source = out.getvalue()
 
 		# upload from string
-		else:
-			key.set_contents_from_string(source, policy=policy)
-
-	# upload from file object
+		key.set_metadata("Content-Encoding", "gzip")
+		key.set_contents_from_string(source, policy=policy)
 	else:
 		pass
 

@@ -46,3 +46,9 @@ AWS_PLAYER_BUCKET = 'player.videopath.com'
 AWS_DB_DUMPS_BUCKET = "dumps.videopath.com"
 
 PGBACKUPS_URL = os.environ.get("PGBACKUPS_URL")
+
+
+#
+# Cloudfront IDs
+#
+AWS_PLAYER_DISTRIBUTION_ID = "EWJTLXRZSWYB1"

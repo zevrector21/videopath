@@ -18,6 +18,10 @@ def check_s3_access():
 	service = service_provider.get_service("s3")
 	return service.check_access()
 
+def check_cloundfront_access():
+	service = service_provider.get_service("cloudfront")
+	return service.check_access()
+
 def check_mandrill_access():
 	service = service_provider.get_service("mail")
 	return service.check_access()

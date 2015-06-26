@@ -18,7 +18,7 @@ cloudfront_service = service_provider.get_service("cloudfront")
 #
 # export a video to s3
 #
-def export_video(video, verbose=False):
+def export_video(video, verbose=False, invalidate = True):
 
     # 
     if video.current_revision == None or video.archived:
@@ -39,14 +39,20 @@ def export_video(video, verbose=False):
         public=True)
 
     # invalidate player
-    cloudfront_service.invalidate(settings.AWS_PLAYER_DISTRIBUTION_ID, ["/" + video.key + "*"])
+    if invalidate:
+        try:
+            cloudfront_service.invalidate(settings.AWS_PLAYER_DISTRIBUTION_ID, ["/" + video.key + "*"])
+        except:
+            pass
 
 #
 # export list of videos
 #
 def export_videos(videos, verbose = False):
     for video in videos:
-        export_video(video, verbose)
+        export_video(video, verbose, False)
+    # invalidate whole bucket
+    cloudfront_service.invalidate(settings.AWS_PLAYER_DISTRIBUTION_ID, ["/*"])
 
 #
 # export all videos of a user

@@ -96,3 +96,10 @@ MAILCHIMP_APIKEY = ""
 # GA
 #
 GA_PASSWORD = ''
+
+#
+# Set dev player locations
+#
+AWS_PLAYER_BUCKET = "player-dev.videopath.com"
+PLAYER_SRC = '//player-dev.videopath.com/develop/'
+PLAYER_LOCATION = 'http://player-dev.videopath.com/'

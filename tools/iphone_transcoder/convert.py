@@ -4,11 +4,11 @@ import shutil
 import time
 
 from azure.storage import BlobService
+from threading import Thread
 
 skipconvert = False
+num_threads = 10
 
-# conf
-output_folder = "output"
 
 # check input
 if len(sys.argv) <= 1:
@@ -17,6 +17,9 @@ if len(sys.argv) <= 1:
 
 # input
 filename = sys.argv[1]
+
+# conf
+output_folder = "output/" + sys.argv[2]
 
 # vars
 audio_file_name = output_folder + "/audio.mp3"
@@ -52,14 +55,23 @@ basepath = os.path.dirname(os.path.abspath(__file__)) + "/" + output_folder
 container_name = video_key.lower()
 blob_service.create_container(container_name, x_ms_blob_public_access='container')
 
-
+# collect files for uploading
+filepaths = []
 for path, subdirs, files in os.walk(basepath):
 	for name in files:
 		# don't upload hidden files
 		if name[0] == ".":
 		    continue
-
 		pathname = os.path.join(path, name)
+		filepaths.append(pathname)
+
+
+
+# uploading thread
+def upload_files(filepaths):
+	while len(filepaths):
+		pathname = filepaths.pop(0)
+
 		keyname = pathname.replace(basepath, "")[1:]
 
 		print pathname + " --> " + container_name + ": " + keyname
@@ -86,3 +98,13 @@ for path, subdirs, files in os.walk(basepath):
 			except:
 				print "retrying..."
 				time.sleep(1)
+
+def sleeper():
+		print "thread %d sleeps for 5 seconds" % i
+		time.sleep(5)
+		print "thread %d woke up" % i
+
+# spawn threads
+for i in range(num_threads):
+	t = Thread(target=upload_files, args=(filepaths,))
+	t.start()

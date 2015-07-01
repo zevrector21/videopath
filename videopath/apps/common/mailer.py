@@ -87,7 +87,7 @@ def send_share_mail(video, recipients, message):
 
     # send
     message = {
-        'subject': video.user.username.capitalize() + " shared a video with you!",
+        'subject': video.user.username + " shared a video with you!",
         'text': message_plain,
         'html': message_html,
         'to': recipientsmap,

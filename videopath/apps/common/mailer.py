@@ -133,7 +133,7 @@ def send_mail(user, subject, message_plain, message_html, tags=[]):
 
 def send_templated_mail(user, subject, template_name, vars, tags):
 
-    vars["username"] = user.username.title()
+    vars["username"] = user.username
 
     c = Context(vars)
 

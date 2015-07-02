@@ -160,6 +160,13 @@ def _import_wistia(key):
         _raise()
 
 #
+# Brightcove Imports
+#
+def _import_brightcove(key):
+    pass
+
+
+#
 # Custom Imports, if self hosting
 #
 def import_video_from_server(vars):

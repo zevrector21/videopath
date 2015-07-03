@@ -21,6 +21,10 @@ class TestClass(BaseTestCase):
         source = self.service.import_video_from_url("http://fast.wistia.net/oembed?url=http://home.wistia.com/medias/1gaiqzxu03")
         self.assertEqual(source["service"], "wistia")
 
+    def test_brightcove_import(self):
+        source = self.service.import_video_from_url("http://players.brightcove.net/4328472451001/default_default/index.html?videoId=4332059708001")
+        self.assertEqual(source["service"], "brightcove")
+
 
     def test_server_import(self):
         source = self.service.import_video_from_server({

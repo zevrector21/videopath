@@ -11,6 +11,10 @@ def import_video_from_url( url):
 	if "vimeo" in url:
 		return {'service': 'vimeo', 'title': 'Bret Victor - Inventing on Principle', 'video_aspect': 1.7777777777777777, 'thumbnail_url': 'http://i.vimeocdn.com/video/251172173_640.jpg', 'video_duration': 3260, 'service_identifier': '36579366'}
 
+	if "brightcove" in url: 
+		return {'video_aspect': 1.7777777777777777, 'video_duration': 116.216, 'thumbnail_url': u'http://brightcove.vo.llnwd.net/v1/unsecured/media/4328472451001/201507/2799/4328472451001_4332085060001_th-5593bcfde4b0aea8a771006d-672293876001.jpg?pubId=4328472451001&videoId=4332059708001', 'service': 'brightcove', 'service_identifier': {'player': u'33108374-2ef7-4447-b6d3-f0e046e0f70c', 'account': u'4328472451001', 'video_id': u'4332059708001'}}
+
+
 def import_video_from_server(vars):
 	return {
 			"service":"custom"

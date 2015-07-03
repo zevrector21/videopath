@@ -36,6 +36,15 @@ class TestCase(BaseTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(VideoSource.objects.first().service, "wistia")
 
+    def test_brightcove_import(self):
+        # create user and video
+        self.setup_users_and_clients()
+        v=Video.objects.create(user=self.user)
+
+        response = self.client_user1.post(IMPORT_URL.format(v.pk), {'url':'http://players.brightcove.net/4328472451001/default_default/index.html?videoId=4332059708001'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(VideoSource.objects.first().service, "brightcove")
+
     def test_custom_import(self):
         self.setup_users_and_clients()
         v=Video.objects.create(user=self.user)

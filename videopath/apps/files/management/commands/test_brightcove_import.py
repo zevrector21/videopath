@@ -1,6 +1,5 @@
 import requests
 import re
-import pprint
 
 from django.core.management.base import BaseCommand
 

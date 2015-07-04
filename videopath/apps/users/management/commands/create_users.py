@@ -14,7 +14,7 @@ class Command(BaseCommand):
     	while amount > 0:
     		
 
-			username = "student-" + str(amount) + "@schiffers.info"
+			username = "student-" + str(amount) + "@videopath.com"
 			password = "videopath-"+ str(amount)
 
 			user = UserenaSignup.objects.create_user(username,

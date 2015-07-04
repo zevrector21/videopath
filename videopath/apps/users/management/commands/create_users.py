@@ -9,9 +9,9 @@ class Command(BaseCommand):
 
     	print sys.argv
 
-    	amount = 50
+    	amount = 60
 
-    	while amount > 0:
+    	while amount > 50:
     		
 
 			username = "student-" + str(amount) + "@videopath.com"

@@ -109,7 +109,7 @@ _plans_individual = {
                 'feature_equal_markers': True,
                 'feature_wistia': True,
                 'max_views_month': 50000,
-                'price_eur': 15882,
+                'price_eur': 18900,
                 'payment_interval': 'month',
             },
 

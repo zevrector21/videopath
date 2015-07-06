@@ -2,7 +2,7 @@ import re
 import simplejson
 import urllib2
 import requests
-
+import json
 
 
 #
@@ -205,11 +205,11 @@ def _import_brightcove(key):
 
     result = {
         "service":"brightcove",
-        "service_identifier":{
-            'account': account,
-            'video_id': video_id,
-            'player': player
-        },
+        "service_identifier":json.dumps({
+            'account': str(account),
+            'video_id': str(video_id),
+            'player': str(player)
+        }),
         "video_duration": duration / 1000.0,
         "video_aspect": float(width) / float(height),
         "thumbnail_url": thumbnail_url

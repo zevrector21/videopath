@@ -197,11 +197,10 @@ def _import_brightcove(key):
     json_data = response.json()
     source = json_data["sources"][0]
 
-    thumbnail_url = json_data["thumbnail"]
+    thumbnail_url = json_data["poster"]
     duration = json_data["duration"]
     width = source["width"]
     height = source["height"]
-
 
     result = {
         "service":"brightcove",
@@ -217,10 +216,6 @@ def _import_brightcove(key):
 
     return result
 
-    print result
-
-
-    _raise()
 
 
 #

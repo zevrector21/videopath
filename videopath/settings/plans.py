@@ -16,6 +16,7 @@ class _Plans():
 		'feature_analytics': False,
 		'feature_endscreen': False,
 		'feature_vimeo': False,
+		'feature_brightcove': False,
 		'feature_colors': False,
 		'feature_dev': False,
 		'feature_disable_share': False,

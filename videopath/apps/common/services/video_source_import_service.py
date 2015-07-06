@@ -2,7 +2,7 @@ import re
 import simplejson
 import urllib2
 import requests
-
+import json
 
 
 #
@@ -16,6 +16,8 @@ def import_video_from_url( url):
         return _import_vimeo(key)
     if service == "wistia":
         return _import_wistia(key)
+    if service == "brightcove":
+        return _import_brightcove(key)
     else:
         _raise("Please double check that you copied a valid Video URL.")
 
@@ -24,7 +26,11 @@ def _get_service_from_url(url):
         for regex in url_tests[test]:
             m = re.search(regex, url)
             if m:
-                return test, m.group(1)
+                groupscount = len(m.groups())
+                if groupscount == 1:
+                    return test, m.group(1)
+                else:
+                    return test, m.groups()
     return False, False
 
 
@@ -44,6 +50,9 @@ url_tests = {
     ],
     "wistia": [
         "wistia.com/medias/([\w-]{8,})"
+    ],
+    "brightcove": [
+        'brightcove.net\/([0-9]*)\/([0-9a-z\-]*)_([0-9a-z\-]*)\/index.html\?videoId=([0-9]*)'
     ]
 }
 
@@ -158,6 +167,56 @@ def _import_wistia(key):
         }
     except urllib2.HTTPError:
         _raise()
+
+#
+# Brightcove Imports
+#
+def _import_brightcove(key):
+
+    # const
+    player_url = "http://players.brightcove.net/{0}/{1}_default/index.html?videoId={2}"
+    api_url = 'https://edge.api.brightcove.com/playback/v1/accounts/{0}/videos/{1}'
+    re_policy_key = 'policyKey:"([A-Za-z0-9-_]*)"'
+
+    # extract base info
+    account = key[0]
+    video_id = key[3]
+    player = key[1]
+
+    # get policy key by parsing player result
+    player_url = player_url.format(account, player, video_id)
+    print player_url
+    response = requests.get(player_url)
+    m = re.search(re_policy_key, response.text)
+    policy_key = m.group(1)
+
+   # fish out video defintions
+    url = api_url.format(account, video_id)
+    headers = {"BCOV-Policy":policy_key}
+    response = requests.get(url, headers=headers)
+    json_data = response.json()
+    source = json_data["sources"][0]
+
+    thumbnail_url = json_data["poster"]
+    duration = json_data["duration"]
+    width = source["width"]
+    height = source["height"]
+
+    result = {
+        "service":"brightcove",
+        "service_identifier":json.dumps({
+            'account': str(account),
+            'video_id': str(video_id),
+            'player': str(player)
+        }),
+        "video_duration": duration / 1000.0,
+        "video_aspect": float(width) / float(height),
+        "thumbnail_url": thumbnail_url
+    }
+
+    return result
+
+
 
 #
 # Custom Imports, if self hosting

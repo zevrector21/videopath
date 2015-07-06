@@ -1,3 +1,5 @@
+import json
+
 from django.conf import settings
 
 from rest_framework import serializers
@@ -14,6 +16,16 @@ from videopath.apps.files.settings import image_sizes
 class VideoSourceSerializer(serializers.ModelSerializer):
 
     large_thumbnail_url = serializers.ReadOnlyField(source='thumbnail_url')
+
+
+    service_identifier = serializers.SerializerMethodField()
+
+    def get_service_identifier(self, video_source):
+        try:
+            return json.loads(video_source.service_identifier)
+        except:
+            return video_source.service_identifier
+
 
     class Meta:
         model = VideoSource

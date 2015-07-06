@@ -125,6 +125,7 @@ _plans_individual = {
                 'feature_wistia': True,
                 'feature_dev': True,        
                 'feature_custom_analytics': True,
+                'feature_brightcove': True
             }
 
         }

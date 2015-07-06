@@ -121,12 +121,14 @@ class VideoSource(VideopathBaseModel):
     SERVICE_YOUTUBE = "youtube"
     SERVICE_VIMEO = "vimeo"
     SERVICE_WISTIA = "wistia"
+    SERVICE_BRIGHTCOVE = "brightcove"
     SERVICE_CUSTOM = "custom"
     SERVICE_CHOICES = (
         (SERVICE_NONE, SERVICE_NONE),
         (SERVICE_YOUTUBE, SERVICE_YOUTUBE),
         (SERVICE_VIMEO, SERVICE_VIMEO),
         (SERVICE_WISTIA, SERVICE_WISTIA),
+        (SERVICE_BRIGHTCOVE, SERVICE_BRIGHTCOVE),
         (SERVICE_CUSTOM, SERVICE_CUSTOM),
     )
 

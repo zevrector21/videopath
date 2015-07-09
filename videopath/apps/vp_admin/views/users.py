@@ -3,6 +3,8 @@ import humanize
 from django.contrib.auth.models import User
 from django.contrib.admin.views.decorators import staff_member_required
 from django.template.response import SimpleTemplateResponse
+from django.db.models import Count
+
 
 from videopath.apps.videos.models import Video
 from videopath.apps.files.models import VideoSource
@@ -44,19 +46,24 @@ def listview(request):
 @staff_member_required
 def listview_sales(request):
 
+    print "LISTVIEW"
+
     result = ""
     users = []
-    for u in User.objects.all():
-        videos = u.videos.filter(archived=False).count()
-        videos_published = u.videos.filter(published=Video.PUBLIC, archived=False).count()
+
+    for u in User.objects.extra(select={
+            'num_videos': 'SELECT COUNT(*) FROM videos_video WHERE videos_video.user_id = auth_user.id AND videos_video.archived != True',
+            'num_videos_published': 'SELECT COUNT(*) FROM videos_video WHERE videos_video.user_id = auth_user.id AND videos_video.published = 1 AND videos_video.archived != True',
+        }):
         user = [
             "<span>" + helpers.userlink(u) + "</span>",
-            "<b>" + str(videos) + "</b> videos",
-            "<b>" + str(videos_published) + "</b> published",
+            "<b>" + str(u.num_videos) + "</b> videos",
+            "<b>" + str(u.num_videos_published) + "</b> published",
             "<b>"+str(u.date_joined.date())+ "</b>",
             "<a target = '_blank' href='mailto:"+u.email+"'>"+u.email+"</a>",
         ]
         users.append(user)
+
     result += helpers.table(users)
 
     return SimpleTemplateResponse("insights/base.html", {
@@ -66,6 +73,9 @@ def listview_sales(request):
 
 @staff_member_required
 def userview(request, username):
+
+    print "OTHER VIEW"
+
     # load user
     user = User.objects.get(username=username)
 

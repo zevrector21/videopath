@@ -14,6 +14,9 @@ urlpatterns = patterns('',
    url(r'^insights/videos/(?P<key>.+)/', 'videopath.apps.vp_admin.views.videos.videoview'),
    url(r'^insights/videos/', 'videopath.apps.vp_admin.views.videos.listview'),
 
+   url(r'^insights/features/', 'videopath.apps.vp_admin.views.features.view'),
+
+
    url(r'^insights/billing/', 'videopath.apps.vp_admin.views.billing.view'),
    url(r'^insights/', 'videopath.apps.vp_admin.views.base.view'),
 

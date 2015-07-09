@@ -46,8 +46,6 @@ def listview(request):
 @staff_member_required
 def listview_sales(request):
 
-    print "LISTVIEW"
-
     result = ""
     users = []
 
@@ -73,8 +71,6 @@ def listview_sales(request):
 
 @staff_member_required
 def userview(request, username):
-
-    print "OTHER VIEW"
 
     # load user
     user = User.objects.get(username=username)

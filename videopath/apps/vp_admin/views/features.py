@@ -6,12 +6,12 @@ from videopath.apps.vp_admin.views import helpers
 
 EXCLUDED_USER_NAMES = [
 	"anna",
-	"david"
+	"marketing"
+	#"david"
 ]
 
 @staff_member_required
 def view(request):
-
 
 
 	#
@@ -23,11 +23,12 @@ def view(request):
 	SELECT_VIDEO_SOURCES = SELECT_PUBLISHED_REVISIONS + " JOIN files_videosource as vs ON (vs.video_id = v.id)"
 	SELECT_VIDEO_FILES = SELECT_PUBLISHED_REVISIONS + " JOIN files_videofile as vf ON (vf.video_id = v.id)"
 
+	result = "Staff videos are not included in these statistics. <br />Only published videos are counted."
 
 	#
 	# Overall stats
 	#
-	result = helpers.header("Overall Stats (Published)")
+	result += helpers.header("Overall Stats (Published)")
 
 	num_videos = get_result(SELECT_PUBLISHED_REVISIONS)
 	num_markers = get_result(SELECT_PUBLISHED_MARKERS)
@@ -41,7 +42,7 @@ def view(request):
 	table.append(["Markers per publ. Video", num_markers / num_videos])
 	table.append(["Content Blocks per publ. Video", num_blocks / num_videos])
 	table.append(["Content Blocks per publ. Marker", num_blocks / num_markers])
-	result += helpers.table(table)
+	result += helpers.table(table, ["Feature", "All", "Upgraded"])
 
 	#
 	# Import Source Stats
@@ -62,7 +63,7 @@ def view(request):
 	table.append(["Wistia Hosting", num_wistia])
 	table.append(["Brightcove Hosting", num_brightcove])
 
-	result += helpers.table(table)
+	result += helpers.table(table, ["Feature", "All", "Upgraded"])
 
 	#
 	# Video Feature Stats
@@ -89,8 +90,7 @@ def view(request):
 	table.append(["Password Protection", num_password])
 	table.append(["Continuous Playback", num_continuous_playback])
 	table.append(["Iphone enabled", num_iphone_enabled])
-	result += helpers.table(table)
-
+	result += helpers.table(table, ["Feature", "All", "Upgraded"])
 
 	#
 	# Content Block Stats
@@ -114,7 +114,7 @@ def view(request):
 	table.append(["Website ", num_website_block])
 	table.append(["Button ", num_button_block])
 	table.append(["Maps ", num_maps_block])
-	result += helpers.table(table)
+	result += helpers.table(table, ["Feature", "All", "Upgraded"])
 
 
 	return SimpleTemplateResponse("insights/base.html", {
@@ -126,6 +126,22 @@ def line(title, result):
 	return title + ": " + str(result) + "<br />"
 
 def get_result(query):
+
+	# exclude certain user names
+	s = " u.username NOT IN (" 
+	for n in EXCLUDED_USER_NAMES:
+		s += "'" + n + "',"
+	s = s[:-1]
+	s += ")"
+
+	if "WHERE" in query:
+		query += " AND " + s
+	else:
+		query += " WHERE " + s
+
 	cursor = connection.cursor()
 	cursor.execute(query)
-	return float(cursor.fetchone()[0])
+	val_all = cursor.fetchone()[0]
+
+
+	return val_all

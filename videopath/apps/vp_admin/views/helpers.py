@@ -34,13 +34,13 @@ def table(array, header = None):
     if header:
         result = "<tr>"
         for item in header:
-            result += "<th>" + item + "</th>"
+            result += "<th>" + str(item) + "</th>"
         result += "</tr>"
 
     for row in array:
         rowr = "<tr>"
         for item in row:
-            rowr += "<td>" + item + "</td>"
+            rowr += "<td>" +str(item) + "</td>"
         result += rowr + "</tr>"
 
     return "<table>" + result + "</table>"

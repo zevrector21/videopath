@@ -2,25 +2,130 @@
 from django.contrib.admin.views.decorators import staff_member_required
 from django.template.response import SimpleTemplateResponse
 from django.db import connection
+from videopath.apps.vp_admin.views import helpers
+
+EXCLUDED_USER_NAMES = [
+	"anna",
+	"david"
+]
 
 @staff_member_required
 def view(request):
 
 
 
+	#
+	# General Query Building blocks
+	#
+	SELECT_PUBLISHED_REVISIONS = "SELECT COUNT(*) FROM videos_video as v JOIN videos_videorevision as vr ON(v.current_revision_id = vr.id) JOIN auth_user as u ON (u.id = v.user_id)"
+	SELECT_PUBLISHED_MARKERS = SELECT_PUBLISHED_REVISIONS + " JOIN videos_marker vm ON (vm.video_revision_id = vr.id)"
+	SELECT_PUBLISHED_CONTENT_BLOCKS = SELECT_PUBLISHED_MARKERS + " JOIN videos_markercontent vmc ON (vmc.marker_id = vm.id)"
+	SELECT_VIDEO_SOURCES = SELECT_PUBLISHED_REVISIONS + " JOIN files_videosource as vs ON (vs.video_id = v.id)"
+	SELECT_VIDEO_FILES = SELECT_PUBLISHED_REVISIONS + " JOIN files_videofile as vf ON (vf.video_id = v.id)"
 
 
+	#
+	# Overall stats
+	#
+	result = helpers.header("Overall Stats (Published)")
 
-	# query const
-	SELECT_DRAFT_REVISIONS = "SELECT COUNT(*) FROM videos_video as v JOIN videos_videorevision as vr ON(v.draft_id = vr.id)"
-	USING_COLORS = "vr.ui_color_1 != '#424242'"
+	num_videos = get_result(SELECT_PUBLISHED_REVISIONS)
+	num_markers = get_result(SELECT_PUBLISHED_MARKERS)
+	num_blocks = get_result(SELECT_PUBLISHED_CONTENT_BLOCKS)
 
-	cursor = connection.cursor()
-	cursor.execute(SELECT_DRAFT_REVISIONS + " WHERE " + USING_COLORS)
-	print cursor.fetchone()
+	table = []
+	table.append(["Published Videos", num_videos])
+	table.append(["Published Markers", num_markers])
+	table.append(["Published Content Blocks", num_blocks])
+	table.append([""])
+	table.append(["Markers per publ. Video", num_markers / num_videos])
+	table.append(["Content Blocks per publ. Video", num_blocks / num_videos])
+	table.append(["Content Blocks per publ. Marker", num_blocks / num_markers])
+	result += helpers.table(table)
+
+	#
+	# Import Source Stats
+	#
+	result += helpers.header("Import Source Stats (Published)")
+
+	num_uploaded = get_result(SELECT_VIDEO_FILES)
+
+	num_youtube = get_result(SELECT_VIDEO_SOURCES + " WHERE vs.service like 'youtube'")
+	num_vimeo = get_result(SELECT_VIDEO_SOURCES + " WHERE vs.service like 'vimeo'")
+	num_wistia = get_result(SELECT_VIDEO_SOURCES + " WHERE vs.service like 'wistia'")
+	num_brightcove = get_result(SELECT_VIDEO_SOURCES + " WHERE vs.service like 'brightcove'")
+
+	table = []
+	table.append(["Uploaded Files", num_uploaded])
+	table.append(["Youtube Hosting", num_youtube])
+	table.append(["Vimeo Hosting", num_vimeo])
+	table.append(["Wistia Hosting", num_wistia])
+	table.append(["Brightcove Hosting", num_brightcove])
+
+	result += helpers.table(table)
+
+	#
+	# Video Feature Stats
+	#
+	result += helpers.header("Video Feature Stats (Published)")
+
+	num_custom_colors = get_result(SELECT_PUBLISHED_REVISIONS + " WHERE vr.ui_color_1 != '#424242'")
+	num_continuous_playback = get_result(SELECT_PUBLISHED_REVISIONS + " WHERE vr.continuous_playback = 1")
+	num_equal_marker_lengths = get_result(SELECT_PUBLISHED_REVISIONS +  "WHERE vr.ui_equal_marker_lengths = 1")
+	num_custom_thumbnail = get_result(SELECT_PUBLISHED_REVISIONS + " WHERE vr.custom_thumbnail_id NOT NULL")
+	num_disable_share_buttons = get_result(SELECT_PUBLISHED_REVISIONS + " WHERE vr.ui_disable_share_buttons = 1")
+	num_fit_video = get_result(SELECT_PUBLISHED_REVISIONS + " WHERE vr.ui_fit_video = 1")
+	num_custom_tracking_code = get_result(SELECT_PUBLISHED_REVISIONS + " WHERE vr.custom_tracking_code != ''")
+	num_password = get_result(SELECT_PUBLISHED_REVISIONS + " WHERE vr.password !=''")
+	num_iphone_enabled = get_result(SELECT_PUBLISHED_REVISIONS + " WHERE vr.iphone_images > 20")
+
+	table = []
+	table.append(["Custom Colors", num_custom_colors])
+	table.append(["Custom Thumbnail", num_custom_thumbnail])
+	table.append(["Disabled Share Buttons", num_disable_share_buttons])
+	table.append(["Equal Marker Lengths", num_equal_marker_lengths])
+	table.append(["Fit Video", num_fit_video])
+	table.append(["Custom Tracking Code", num_custom_tracking_code])
+	table.append(["Password Protection", num_password])
+	table.append(["Continuous Playback", num_continuous_playback])
+	table.append(["Iphone enabled", num_iphone_enabled])
+	result += helpers.table(table)
+
+
+	#
+	# Content Block Stats
+	#
+	result += helpers.header("Content Block Stats (Published)")
+
+	num_text_block = get_result(SELECT_PUBLISHED_CONTENT_BLOCKS + " WHERE vmc.type = 'text'")
+	num_image_block = get_result(SELECT_PUBLISHED_CONTENT_BLOCKS + " WHERE vmc.type = 'image'")
+	num_social_block = get_result(SELECT_PUBLISHED_CONTENT_BLOCKS + " WHERE vmc.type = 'social'")
+	num_media_block = get_result(SELECT_PUBLISHED_CONTENT_BLOCKS + " WHERE vmc.type = 'media'")
+	num_website_block = get_result(SELECT_PUBLISHED_CONTENT_BLOCKS + " WHERE vmc.type = 'website'")
+	num_maps_block = get_result(SELECT_PUBLISHED_CONTENT_BLOCKS + " WHERE vmc.type = 'maps'")
+	num_button_block = get_result(SELECT_PUBLISHED_CONTENT_BLOCKS + " WHERE vmc.type = 'simple_button'")
+
+
+	table = []
+	table.append(["Text ", num_text_block])
+	table.append(["Image ", num_image_block])
+	table.append(["Social ", num_social_block])
+	table.append(["Media ", num_media_block])
+	table.append(["Website ", num_website_block])
+	table.append(["Button ", num_button_block])
+	table.append(["Maps ", num_maps_block])
+	result += helpers.table(table)
 
 
 	return SimpleTemplateResponse("insights/base.html", {
 	    "title": "Features",
-	    "insight_content": "Result"
+	    "insight_content": result
 	    })
+
+def line(title, result):
+	return title + ": " + str(result) + "<br />"
+
+def get_result(query):
+	cursor = connection.cursor()
+	cursor.execute(query)
+	return float(cursor.fetchone()[0])

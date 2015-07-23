@@ -1,6 +1,9 @@
 <!doctype html>
 <html>
 <head>
+
+    <meta charset="UTF-8">
+
     
     <!-- 
         BOOTSTRAP CONFIGURATION PLAYER
@@ -23,7 +26,6 @@
     -->
     <title>{{ title }}</title>
     <meta name="description" content="{{ description }}" />
-    <meta charset="UTF-8">
 
 
     <!-- 
@@ -43,6 +45,7 @@
     <meta property="og:description" content="{{ description | truncatewords:20 }}"/>
     <meta property="og:url" content="{{ video_url }}"/>
     <meta property="og:type" content="video.movie" />
+    
 
 
     <!-- 
@@ -127,21 +130,22 @@
                 var node = document.createElement("style");
                 node.innerHTML = style, document.body.appendChild(node);
             }
-            var autoplay = window.location.href.indexOf("autoplay") >= 0, style = "#vp_bootstrap #vp_playbutton {background-color:{{color}};} #vp_bootstrap #vp_playbutton:hover {background-color:{{colorHover}};}", buildMode = window.location.href.indexOf("build") >= 0, apiObj = {
+            var autoplay = window.location.href.indexOf("autoplay") >= 0, style = "#vp_bootstrap #vp_playbutton {background-color:<color>;} #vp_bootstrap #vp_playbutton:hover {background-color:<colorHover>;}", buildMode = window.location.href.indexOf("build") >= 0, apiObj = {
                 loaded: !0
             }, conf = document.videopath.player.conf;
             document.videopath = document.videopath || {}, document.videopath.player = document.videopath.player || {}, 
             document.videopath.player.bootstrap = apiObj;
-            var div_status = document.getElementById("vp_status"), div_playbutton = document.getElementById("vp_playbutton"), div_poster = document.getElementById("vp_poster"), div_bootstrap = document.getElementById("vp_bootstrap");
+            var div_status = document.getElementById("vp_status"), div_playbutton = document.getElementById("vp_playbutton"), div_poster = document.getElementById("vp_poster"), div_bootstrap = document.getElementById("vp_bootstrap"), div_loader = document.getElementById("vp_loader");
             if (apiObj.remove = function() {
                 div_bootstrap.className = "vp_hidden", setTimeout(function() {
                     div_bootstrap.remove(), document.videopath.player.bootstrap = null;
                 }, 200);
             }, apiObj.goToLoadingMode = function() {
                 div_status.innerHTML = "Loading Video", div_playbutton.className = "vp_hidden", 
-                div_poster.className = "vp_hidden";
+                div_poster.className = "vp_hidden", div_loader.className = "vp_rotating";
             }, apiObj.leaveLoadingMode = function() {
-                div_status.innerHTML = "", div_playbutton.className = "", div_poster.className = "";
+                div_status.innerHTML = "", div_playbutton.className = "", div_poster.className = "", 
+                div_loader.className = "vp_hidden";
             }, apiObj.mainAppStarted = function() {
                 buildMode && apiObj.leaveLoadingMode();
             }, apiObj.setThumbnail = function(url) {
@@ -153,7 +157,7 @@
                         div_poster.className = "");
                     }, img.src = url;
                 }
-            }, autoplay && div_playbutton.remove(), style = style.replace("{{color}}", conf.buttonColor).replace("{{colorHover}}", conf.buttonColorHover), 
+            }, autoplay && div_playbutton.remove(), style = style.replace("<color>", conf.buttonColor).replace("<colorHover>", conf.buttonColorHover), 
             addStyle(style), isIE() && isIE() < 9) div_status.innerHTML = "Internet Explorer 8 and earlier are not supported. Please upgrade to a newer Version of your Browser!", 
             div_playbutton.className = "vp_hidden"; else {
                 buildMode && apiObj.goToLoadingMode();

@@ -80,6 +80,7 @@ def delete_export(video):
 # Render an html page template for a video object
 #
 def _render_template(video):
+
     revision = video.current_revision
     vrs = VideoRevisionDetailSerializer(revision)
     data_json = JSONRenderer().render(vrs.data)
@@ -97,6 +98,8 @@ def _render_template(video):
     template_dict = {
         'src_url': settings.PLAYER_SRC + video.player_version + "/",
         'video_url': settings.PLAYER_LOCATION + video.key + "/",
+        'button_color': revision.ui_color_1,
+        'button_color_hover': revision.ui_color_1
     }
     
     # for non production builds omit player version

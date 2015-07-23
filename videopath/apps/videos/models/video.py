@@ -22,7 +22,8 @@ class Video(VideopathBaseModel):
     PLAYER_VERSION_CHOICES = (
         ("1", "1 - Scruffy"),
         ("2", "2 - Bender"),
-        ("3", "3 - Zoidberg")
+        ("3", "3 - Zoidberg"),
+        ("3", "3 - Zap Brannigan"),
     )
 
     # owner

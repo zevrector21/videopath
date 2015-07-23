@@ -23,7 +23,7 @@ class Video(VideopathBaseModel):
         ("1", "1 - Scruffy"),
         ("2", "2 - Bender"),
         ("3", "3 - Zoidberg"),
-        ("3", "3 - Zap Brannigan"),
+        ("4", "4 - Zap Brannigan"),
     )
 
     # owner

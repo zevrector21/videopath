@@ -8,15 +8,30 @@ from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.exceptions import ParseError, ValidationError
+from rest_framework.decorators import permission_classes
 
-from videopath.apps.videos.util import share_mail_util
+from videopath.apps.videos.util import share_mail_util, oembed_util
 from videopath.apps.videos.permissions import MarkerPermissions, VideoPermissions, MarkerContentPermissions, VideoRevisionPermissions, AuthenticatedPermission
 from videopath.apps.videos.models import Video, Marker, MarkerContent, VideoRevision
 from videopath.apps.videos.serializers import VideoRevisionDetailSerializer, VideoSerializer, MarkerSerializer, MarkerContentSerializer, VideoRevisionSerializer
 from videopath.apps.common.services import service_provider
 
 from rest_framework.decorators import api_view
+from rest_framework.permissions import AllowAny
 
+
+@api_view(['GET'])
+@permission_classes((AllowAny,))
+def oembed(request):
+
+    result = oembed_util.parse(request.GET)
+
+    if result == 401:
+        return Response(status=401)
+    elif result == 404:
+        return Response(status=404)
+
+    return Response(result)
 
 #
 # Get revision of a video

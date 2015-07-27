@@ -20,6 +20,11 @@
   <meta property="og:url" content="{{ video_url }}"/>
   <meta property="og:type" content="video.movie" />
 
+  <!-- oembed -->
+  <link rel="alternate" type="application/json+oembed"
+  href="http://api.videopath.com/oembed?url={{ video_url | urlencode}}"
+  title="{{ title }}" />
+
   <!-- error reporting -->
   <script src="//cdn.ravenjs.com/1.1.2/jquery,native/raven.min.js"></script>
   <script>

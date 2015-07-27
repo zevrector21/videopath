@@ -24,6 +24,8 @@ urlpatterns = patterns('',
 
 	# videos app, needs to be last to catch all the remaining video requests
 	url(r'^v1/', include('videopath.apps.videos.urls')),
+	# oembed is in videos app for now
+	url(r'^oembed/', 'videopath.apps.videos.views.oembed'),
 
 	# admin urls
 	url(r'^admin/', include('videopath.apps.vp_admin.urls')),

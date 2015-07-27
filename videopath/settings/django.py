@@ -172,8 +172,8 @@ REST_FRAMEWORK = {
 
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
-        #'rest_framework.renderers.XMLRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
+        'rest_framework.renderers.XMLRenderer',
     ),
 
     'DEFAULT_AUTHENTICATION_CLASSES': (

@@ -8,8 +8,10 @@ from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.exceptions import ParseError, ValidationError
-from rest_framework.decorators import permission_classes
+from rest_framework.decorators import permission_classes, renderer_classes
+from rest_framework.renderers import JSONRenderer
 
+from videopath.apps.videos.util.oembed_xml_renderer import OEmbedXMLRenderer
 from videopath.apps.videos.util import share_mail_util, oembed_util
 from videopath.apps.videos.permissions import MarkerPermissions, VideoPermissions, MarkerContentPermissions, VideoRevisionPermissions, AuthenticatedPermission
 from videopath.apps.videos.models import Video, Marker, MarkerContent, VideoRevision
@@ -22,7 +24,9 @@ from rest_framework.permissions import AllowAny
 
 @api_view(['GET'])
 @permission_classes((AllowAny,))
+@renderer_classes((JSONRenderer,OEmbedXMLRenderer,))
 def oembed(request):
+
 
     result = oembed_util.parse(request.GET)
 

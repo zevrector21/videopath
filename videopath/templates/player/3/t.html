@@ -22,15 +22,11 @@
 
   <!-- oembed -->
   <link rel="alternate" type="application/json+oembed"
-  href="http://api.videopath.com/oembed?url={{ video_url | urlencode}}"
-  title="{{ title }}" />
-
-<link rel="alternate" type="application/json+oembed"
-  href="http://api.videopath.com/oembed?url={{ video_url | urlencode}}&format=json"
-  title="{{ title }}" />
-<link rel="alternate" type="text/xml+oembed"
-  href="http://api.videopath.com/oembed?url={{ video_url | urlencode}}&format=xml"
-  title="{{ title }}" />
+    href="http://api.videopath.com/oembed?url={{ video_url | urlencode}}&format=json"
+    title="{{ title }}" />
+  <link rel="alternate" type="text/xml+oembed"
+    href="http://api.videopath.com/oembed?url={{ video_url | urlencode}}&format=xml"
+    title="{{ title }}" />
 
   <!-- error reporting -->
   <script src="//cdn.ravenjs.com/1.1.2/jquery,native/raven.min.js"></script>

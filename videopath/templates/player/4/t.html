@@ -46,7 +46,16 @@
     <meta property="og:url" content="{{ video_url }}"/>
     <meta property="og:type" content="video.movie" />
     
-
+    
+    <!-- 
+        OEMBED TAGS
+    -->
+    <link rel="alternate" type="application/json+oembed"
+      href="http://api.videopath.com/oembed?url={{ video_url | urlencode}}&format=json"
+      title="{{ title }}" />
+    <link rel="alternate" type="text/xml+oembed"
+      href="http://api.videopath.com/oembed?url={{ video_url | urlencode}}&format=xml"
+      title="{{ title }}" />
 
     <!-- 
         ERROR REPORTING

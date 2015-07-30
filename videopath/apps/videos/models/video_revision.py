@@ -28,9 +28,6 @@ class VideoRevision(VideopathBaseModel):
     # meta
     description = models.TextField(blank=True)
 
-    # custom google analytics tracking code
-    custom_tracking_code = models.CharField(max_length=20, blank=True)
-
     # ui color
     ui_color_1 = ColorField(default="#424242")
     ui_color_2 = ColorField(default="#ffffff")
@@ -40,8 +37,9 @@ class VideoRevision(VideopathBaseModel):
     ui_equal_marker_lengths = models.BooleanField(default=False)
     ui_fit_video = models.BooleanField(default=False)
 
-    #
+    # other settings
     continuous_playback = models.BooleanField(default=False)
+    custom_tracking_code = models.CharField(max_length=20, blank=True)
 
     # iphone support
     iphone_images = models.IntegerField(default=-1)
@@ -58,12 +56,13 @@ class VideoRevision(VideopathBaseModel):
     endscreen_subtitle = models.CharField(
         default="Create your own interactive video", max_length=512, blank=True)
 
+    # tracking pixel support
+
 
     # password protection
     password = models.CharField(max_length=512, blank=True) # stores the salted sha digest
     password_hashed = models.CharField(max_length=512, blank=True) # helper field for updateing the password
     password_salt = models.CharField(max_length=512, blank=True) # stores the salt specific to this video
-
 
     def save(self, *args, **kwargs):
         

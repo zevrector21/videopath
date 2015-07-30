@@ -171,3 +171,86 @@ class VideoSource(VideopathBaseModel):
 
     # special settings
     allow_youtube_clickthrough = models.BooleanField(default=False)
+
+
+#
+# Layout new source class
+#
+class VideoSourceNew(VideopathBaseModel):
+
+    # status
+    STATUS_CREATED = "created"
+    STATUS_FILE_RECEIVED = "file received"
+    STATUS_TRANSCODING = "file received"
+    STATUS_OK = "ok"
+    STATUS_ERROR = "error"
+
+    STATUS_CHOICES = (
+        (STATUS_CREATED, STATUS_CREATED),
+        (STATUS_FILE_RECEIVED, STATUS_FILE_RECEIVED),
+        (STATUS_TRANSCODING, STATUS_TRANSCODING),
+        (STATUS_OK, STATUS_OK),
+        (STATUS_ERROR, STATUS_ERROR),
+    )
+
+    # service
+    SERVICE_NONE = "none"
+    SERVICE_YOUTUBE = "youtube"
+    SERVICE_VIMEO = "vimeo"
+    SERVICE_WISTIA = "wistia"
+    SERVICE_BRIGHTCOVE = "brightcove"
+    SERVICE_VIDEOPATH = "videopath"
+    SERVICE_CUSTOM = "custom"
+    SERVICE_CHOICES = (
+        (SERVICE_NONE, SERVICE_NONE),
+        (SERVICE_YOUTUBE, SERVICE_YOUTUBE),
+        (SERVICE_VIMEO, SERVICE_VIMEO),
+        (SERVICE_WISTIA, SERVICE_WISTIA),
+        (SERVICE_BRIGHTCOVE, SERVICE_BRIGHTCOVE),
+        (SERVICE_VIDEOPATH, SERVICE_VIDEOPATH)
+        (SERVICE_CUSTOM, SERVICE_CUSTOM),
+    )
+
+    # status settings
+    service = models.CharField(
+        max_length=255, choices=SERVICE_CHOICES, default=SERVICE_NONE)
+    status = models.SmallIntegerField(
+        default=STATUS_CREATED, choices=STATUS_CHOICES)
+
+    # identifier, such as youtube or vimeo id
+    service_identifier = models.CharField(max_length=255, default="")
+
+    # media data
+    duration = models.FloatField(default=0)
+    aspect = models.FloatField(default=0)
+    width = models.SmallIntegerField(default=0)
+    height = models.SmallIntegerField(default=0)
+    description = models.CharField(max_length=255, default="")
+
+    # images  
+    thumbnail_small = models.CharField(max_length=2048, default="")
+    thumbnail_large = models.CharField(max_length=2048, default="")
+
+    # source files (for videopath and own hosting)
+    source_mp4 = models.CharField(max_length=512, default="", blank=True)
+    source_webm = models.CharField(max_length=512, default="", blank=True)
+
+    # yt
+    youtube_allow_clickthrough = models.BooleanField(default=False)
+
+    # videopath
+    videopath_transcoding_job_id = models.CharField(max_length=255, blank=True)
+    videopath_transcoding_result = models.CharField(max_length=255, blank=True)
+
+    # iphone settings
+    # not sure if this is the right place for this..
+    iphone_enabled = models.BooleanField(default=False)
+
+    # for now mark as abstract
+    class Meta:
+        abstract = True
+
+
+
+
+

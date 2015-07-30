@@ -101,10 +101,10 @@ class VideoRevisionAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('General', {
-            'fields': ('video', 'title', 'description', 'iphone_images', 'player_appearance', 'password', 'password_salt', 'password_hashed', 'continuous_playback')
+            'fields': ('video', 'title', 'description', 'iphone_images', 'password', 'password_salt', 'password_hashed', 'continuous_playback')
         }),
         ('Appearance', {
-            'fields': ('ui_color_1', 'ui_color_2')
+            'fields': ('ui_color_1', 'ui_color_2', 'player_appearance')
         }),
         ('Endscreen', {
             'fields': ('endscreen_url', 'endscreen_title', 'endscreen_background_color', 'endscreen_button_title', 'endscreen_button_target', 'endscreen_button_color')

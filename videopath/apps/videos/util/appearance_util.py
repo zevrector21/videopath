@@ -23,12 +23,6 @@ def appearance_for_revision(revision):
     except PlayerAppearance.DoesNotExist:
         pass
 
-    # merge appearance from textfield on revision settings
-    try:
-        result.update(convert(revision.video_appearance))
-    except:
-        pass
-
     # merge appearance from model on revision
     try:
         if revision.player_appearance:

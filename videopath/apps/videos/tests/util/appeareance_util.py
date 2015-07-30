@@ -10,19 +10,6 @@ class TestCase(BaseTestCase):
     def setup(self):
         self.create_user()
 
-    def test_appearances_legacy(self):
-        
-        # test default appearance settings
-        video = Video.objects.create(user=self.user)
-       	app = appearance_util.appearance_for_revision(video.draft)
-       	self.assertEqual(app.get("language"), "en")
-
-       	# test appearance setting on video revision
-       	video.draft.video_appearance = 'language="fr"'
-       	video.draft.save()
-       	app = appearance_util.appearance_for_revision(video.draft)
-       	self.assertEqual(app.get("language"), "fr")
-
     def test_appearances_model(self):
         
         # test default appearance settings

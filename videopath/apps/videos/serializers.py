@@ -104,6 +104,7 @@ class NestedMarkerSerializer(MarkerSerializer):
 # Video revision serializer
 #
 revision_fields = (
+    'key',
     'video',
     'id',
     'title',
@@ -129,7 +130,6 @@ revision_fields = (
 revision_detail_fields = (
     'markers',
     'thumbnails',
-    'key',
     'video_sources',
     'appearance',
     'video_files',

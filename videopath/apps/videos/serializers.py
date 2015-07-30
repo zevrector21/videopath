@@ -1,4 +1,3 @@
-
 from rest_framework import serializers
 
 from videopath.apps.videos.models import Video, Marker, MarkerContent, VideoRevision, PlayerAppearance
@@ -101,12 +100,14 @@ class NestedMarkerSerializer(MarkerSerializer):
 
 
 
+#
+# Video revision serializer
+#
 revision_fields = (
     'video',
     'id',
     'title',
     'description',
-    'custom_thumbnail',
     'ui_color_1',
     'ui_color_2',
     'ui_fit_video',
@@ -125,6 +126,15 @@ revision_fields = (
     'password'
 )
 
+revision_detail_fields = (
+    'markers',
+    'thumbnails',
+    'key',
+    'video_sources',
+    'appearance',
+    'video_files',
+) + revision_fields
+
 #
 # Appearance
 #
@@ -132,38 +142,18 @@ class PlayerAppearanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlayerAppearance
         exclude = ('user', )
+
 #
 # Revision
 #
 class VideoRevisionSerializer(serializers.ModelSerializer):
-    custom_thumbnail = ImageFileSerializer(required=False, read_only=True)
-    class Meta:
-        model = VideoRevision
-        fields = (
-            'video',
-        ) + revision_fields
-        read_only_fields = ('id', 'video')
 
-
-class VideoRevisionDetailSerializer(serializers.ModelSerializer):
-
-    markers = NestedMarkerSerializer(read_only=True, many=True)
-
-    # add links to images
-    custom_thumbnail = ImageFileSerializer(required=False, read_only=True)
-
+    # nested serializers
     video_sources = VideoSourceSerializer(required=False, source="video.video_sources", read_only=True, many=True)
     video_files = VideoFileSerializer(required=False, source="video.file", read_only=True,many=True)
+    markers = NestedMarkerSerializer(read_only=True, many=True)
 
-    key = serializers.SerializerMethodField()
-
-    thumbnails = serializers.SerializerMethodField()
-
-    appearance = serializers.SerializerMethodField()
-
-    def get_appearance(self, video_revision):
-        return appearance_util.appearance_for_revision(video_revision)
-
+    # some helper functions
     def get_key(self, video_revision):
         return video_revision.video.key
 
@@ -172,11 +162,42 @@ class VideoRevisionDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = VideoRevision
-        fields = (
-            'markers',
-            'thumbnails',
-            'key',
-            'video_sources',
-            'video_files',
-            'appearance',
-        ) + revision_fields
+        fields = revision_fields
+        read_only_fields = ('id', 'video')
+
+    #
+    # dynamically add extra info
+    #
+    def to_representation(self, instance):
+        ret = super(VideoRevisionSerializer, self).to_representation(instance)
+
+        # inject appearance
+        appearance = appearance_util.appearance_for_revision(instance)
+        for key, value in appearance.iteritems():
+            if value != None:
+                ret[key] = value
+
+        return ret
+
+    
+    #def __init__(self, instance = None, *args, **kwargs):
+    #    super(VideoRevisionSerializer, self).__init__(instance, *args, **kwargs)
+    #
+
+
+#
+# Revision with detailed info
+#
+class VideoRevisionDetailSerializer(VideoRevisionSerializer):
+
+    key = serializers.SerializerMethodField()
+
+    thumbnails = serializers.SerializerMethodField()
+    appearance = serializers.SerializerMethodField()
+
+    def get_appearance(self, video_revision):
+        return appearance_util.appearance_for_revision(video_revision)
+
+    class Meta:
+        model = VideoRevision
+        fields = revision_detail_fields

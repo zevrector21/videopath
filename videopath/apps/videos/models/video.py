@@ -33,7 +33,6 @@ class Video(VideopathBaseModel):
     key = models.CharField(
         max_length=50, blank=True, unique=True, db_index=True)
     published = models.IntegerField(default=PRIVATE, choices=PUBLISH_CHOICES)
-    nice_name = models.CharField(max_length=50, blank=True, db_index=True)
 
     # revisions
     draft = models.OneToOneField(

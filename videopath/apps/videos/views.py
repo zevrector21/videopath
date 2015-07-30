@@ -21,12 +21,13 @@ from videopath.apps.common.services import service_provider
 from rest_framework.decorators import api_view
 from rest_framework.permissions import AllowAny
 
-
+#
+# Support for oEmbed info
+#
 @api_view(['GET'])
 @permission_classes((AllowAny,))
 @renderer_classes((JSONRenderer,OEmbedXMLRenderer,))
 def oembed(request):
-
 
     result = oembed_util.parse(request.GET)
 

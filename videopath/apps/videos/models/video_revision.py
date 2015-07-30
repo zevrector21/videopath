@@ -28,10 +28,6 @@ class VideoRevision(VideopathBaseModel):
     # meta
     description = models.TextField(blank=True)
 
-    # custom configs
-    # TODO merge into new appearance model
-    video_appearance = models.TextField(blank=True)
-
     # custom google analytics tracking code
     custom_tracking_code = models.CharField(max_length=20, blank=True)
 

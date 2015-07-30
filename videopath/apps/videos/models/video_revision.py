@@ -12,6 +12,16 @@ class VideoRevision(VideopathBaseModel):
 
     title = models.CharField(max_length=255, default="New Video")
 
+    # link to source
+    source = models.ForeignKey(
+        "files.VideoSourceNew", 
+        blank=True, 
+        null=True, 
+        default=None, 
+        on_delete=models.SET_NULL,
+        related_name="video_revisions"
+        )
+
     # images (should actually be defined in the files module, works better
     # with a foreign relationship key in this case though)
     custom_thumbnail = models.ForeignKey(

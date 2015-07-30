@@ -4,7 +4,7 @@ from django.conf import settings
 
 from rest_framework import serializers
 
-from videopath.apps.files.models import VideoFile, VideoSource, ImageFile
+from videopath.apps.files.models import VideoFile, VideoSource, ImageFile, VideoSourceNew
 from videopath.apps.files.util import thumbnails_util
 from videopath.apps.files.settings import image_sizes
 
@@ -80,3 +80,12 @@ class ImageFileSerializer(serializers.ModelSerializer):
     class Meta:
         model = ImageFile
         fields = ('status', 'representations')
+
+#
+#
+#
+class VideoSourceNewSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = VideoSourceNew
+        exclude = ('id',)

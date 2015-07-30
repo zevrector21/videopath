@@ -207,14 +207,14 @@ class VideoSourceNew(VideopathBaseModel):
         (SERVICE_VIMEO, SERVICE_VIMEO),
         (SERVICE_WISTIA, SERVICE_WISTIA),
         (SERVICE_BRIGHTCOVE, SERVICE_BRIGHTCOVE),
-        (SERVICE_VIDEOPATH, SERVICE_VIDEOPATH)
+        (SERVICE_VIDEOPATH, SERVICE_VIDEOPATH),
         (SERVICE_CUSTOM, SERVICE_CUSTOM),
     )
 
     # status settings
     service = models.CharField(
         max_length=255, choices=SERVICE_CHOICES, default=SERVICE_NONE)
-    status = models.SmallIntegerField(
+    status = models.CharField(max_length=255,
         default=STATUS_CREATED, choices=STATUS_CHOICES)
 
     # identifier, such as youtube or vimeo id
@@ -245,11 +245,6 @@ class VideoSourceNew(VideopathBaseModel):
     # iphone settings
     # not sure if this is the right place for this..
     iphone_enabled = models.BooleanField(default=False)
-
-    # for now mark as abstract
-    class Meta:
-        abstract = True
-
 
 
 

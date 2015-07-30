@@ -4,11 +4,10 @@ from hashlib import sha256
 from django.db import models
 
 from videopath.apps.common.models import VideopathBaseModel, ColorField
-from videopath.apps.videos.models import Video, PlayerAppearance
 
 class VideoRevision(VideopathBaseModel):
 
-    video = models.ForeignKey(Video, related_name="revisions")
+    video = models.ForeignKey("videos.Video", related_name="revisions")
 
     title = models.CharField(max_length=255, default="New Video")
 
@@ -25,10 +24,14 @@ class VideoRevision(VideopathBaseModel):
     # images (should actually be defined in the files module, works better
     # with a foreign relationship key in this case though)
     custom_thumbnail = models.ForeignKey(
-        "files.ImageFile", related_name="video_thumbnail", blank=True, default=None, null=True)
+        "files.ImageFile", 
+        related_name="video_thumbnail", 
+        blank=True, 
+        default=None, 
+        null=True)
 
     # model can either be attached to a video revision or
-    player_appearance = models.ForeignKey(PlayerAppearance, 
+    player_appearance = models.ForeignKey("videos.PlayerAppearance", 
                                             blank=True,
                                             null=True,
                                             default=None,

@@ -101,14 +101,21 @@ class VideoRevisionAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('General', {
-            'fields': ('video', 'title', 'description', 'iphone_images', 'password', 'password_salt', 'password_hashed', 'continuous_playback')
+            'fields': ('video', 'title', 'description', 'iphone_images')
+        }),
+        ('Password', {
+            'fields': ( 'password', 'password_salt', 'password_hashed' )
+        }),
+        ('Source', {
+            'fields': ('source', )
         }),
         ('Appearance', {
-            'fields': ('ui_color_1', 'ui_color_2', 'player_appearance')
+            'fields': ('ui_color_1', 'ui_color_2', 'player_appearance', 'continuous_playback')
         }),
         ('Endscreen', {
             'fields': ('endscreen_url', 'endscreen_title', 'endscreen_background_color', 'endscreen_button_title', 'endscreen_button_target', 'endscreen_button_color')
         }),
+
         ('Files', {
             'fields': ('custom_thumbnail', )
         })
@@ -177,13 +184,13 @@ class PlayerAppearanceAdmin(admin.ModelAdmin):
                 ('ui_color_overlay_outline',))
         }),
         ('Images', {
-            'fields': ('endscreen_logo', 'icon', 'icon_link_target')
+            'fields': ('endscreen_logo', 'ui_icon', 'ui_icon_link_target')
         }),
         ('Fonts', {
             'fields': ('ui_font_marker', 'ui_font_overlay_titles', 'ui_font_overlay_text')
         }),
         ('Other', {
-            'fields': ('language', 'sharing_disabled')
+            'fields': ('ui_language',)
         })
     )
 

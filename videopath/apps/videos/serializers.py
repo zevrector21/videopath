@@ -141,7 +141,7 @@ revision_detail_fields = (
 class PlayerAppearanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlayerAppearance
-        exclude = ('user', )
+        exclude = ('user', 'description', 'id')
 
 #
 # Revision

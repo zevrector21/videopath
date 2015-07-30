@@ -58,25 +58,23 @@ class PlayerAppearance(VideopathBaseModel):
     # overlays
     ui_color_overlay_outline = ColorField(blank=True, null=True)
 
-
-
     # fonts, takes urls to woff files
     ui_font_marker = models.CharField(max_length=255, blank=True, null=True)
     ui_font_overlay_titles = models.CharField(max_length=255, blank=True, null=True)
     ui_font_overlay_text = models.CharField(max_length=255, blank=True, null=True)
 
-    # images, takes url to png or jpg images
+    # additional endscreen settings
     endscreen_logo = models.CharField(max_length=255, blank=True, null=True)
-    icon = models.CharField(max_length=255, blank=True, null=True)
-    icon_link_target = models.CharField(max_length=1024, blank=True, null=True)
+
+    # icon
+    ui_icon = models.CharField(max_length=255, blank=True, null=True)
+    ui_icon_link_target = models.CharField(max_length=1024, blank=True, null=True)
 
     # language
-    language = models.CharField(max_length=50,choices=LANGUAGE_CHOICES, default=LANG_EN)
+    ui_language = models.CharField(max_length=50,choices=LANGUAGE_CHOICES, default=LANG_EN)
 
-    # functionality
-    sharing_disabled = models.BooleanField(default=False)
 
-     # duplicate the marker content
+    # duplicate the marker content
     def duplicate(self):
         duplicate = copy.copy(self)
         duplicate.pk = None

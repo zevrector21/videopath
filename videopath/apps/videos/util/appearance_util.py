@@ -31,4 +31,9 @@ def appearance_for_revision(revision):
     except PlayerAppearance.DoesNotExist:
         pass
 
+    # can be removed after frontend migration
+    result["icon"] = result.get("ui_icon", None)
+    result["icon_link_target"] = result.get("ui_icon_link_target", None)
+    result["language"] = result.get("ui_language", None)
+
     return result

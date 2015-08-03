@@ -6,8 +6,8 @@ from videopath.apps.vp_admin.views import helpers
 
 EXCLUDED_USER_NAMES = [
 	"anna",
-	"marketing"
-	#"david"
+	"marketing",
+	"david"
 ]
 
 @staff_member_required
@@ -71,11 +71,11 @@ def view(request):
 	result += helpers.header("Video Feature Stats (Published)")
 
 	num_custom_colors = get_result(SELECT_PUBLISHED_REVISIONS + " WHERE vr.ui_color_1 != '#424242'")
-	num_continuous_playback = get_result(SELECT_PUBLISHED_REVISIONS + " WHERE vr.continuous_playback = 1")
-	num_equal_marker_lengths = get_result(SELECT_PUBLISHED_REVISIONS +  "WHERE vr.ui_equal_marker_lengths = 1")
-	num_custom_thumbnail = get_result(SELECT_PUBLISHED_REVISIONS + " WHERE vr.custom_thumbnail_id NOT NULL")
-	num_disable_share_buttons = get_result(SELECT_PUBLISHED_REVISIONS + " WHERE vr.ui_disable_share_buttons = 1")
-	num_fit_video = get_result(SELECT_PUBLISHED_REVISIONS + " WHERE vr.ui_fit_video = 1")
+	num_continuous_playback = get_result(SELECT_PUBLISHED_REVISIONS + " WHERE vr.continuous_playback = true")
+	num_equal_marker_lengths = get_result(SELECT_PUBLISHED_REVISIONS +  "WHERE vr.ui_equal_marker_lengths = true")
+	num_custom_thumbnail = get_result(SELECT_PUBLISHED_REVISIONS + " WHERE vr.custom_thumbnail_id != 0")
+	num_disable_share_buttons = get_result(SELECT_PUBLISHED_REVISIONS + " WHERE vr.ui_disable_share_buttons = true")
+	num_fit_video = get_result(SELECT_PUBLISHED_REVISIONS + " WHERE vr.ui_fit_video = true")
 	num_custom_tracking_code = get_result(SELECT_PUBLISHED_REVISIONS + " WHERE vr.custom_tracking_code != ''")
 	num_password = get_result(SELECT_PUBLISHED_REVISIONS + " WHERE vr.password !=''")
 	num_iphone_enabled = get_result(SELECT_PUBLISHED_REVISIONS + " WHERE vr.iphone_images > 20")

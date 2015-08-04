@@ -197,7 +197,7 @@ class VideoRevisionDetailSerializer(VideoRevisionSerializer):
     # inject source type info, to be fully complete with new video source object
     #
     def to_representation(self, instance):
-        ret = super(VideoRevisionSerializer, self).to_representation(instance)
+        ret = super(VideoRevisionDetailSerializer, self).to_representation(instance)
 
         source_type = "unknown"
         try:

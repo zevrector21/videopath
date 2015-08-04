@@ -49,18 +49,15 @@ PGBACKUPS_URL = os.environ.get("PGBACKUPS_URL")
 DEFAULT_VIDEO_APPEARANCE = {
 
 	# Language of the interface, notably the "click me" alert.
-    "language": "en", 
+    "ui_language": "en", 
 
     # custom colors
     "ui_color_1": None, 
     "ui_color_2": None, 
 
-    # settings
-    "sharing_disabled": False, 
-
     # logos & icons
     "endscreen_logo": None, 
-    "icon": None
+    "ui_icon": None
 }
 
 #

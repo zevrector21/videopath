@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('files', '0005_videosourcenew'),
-        ('videos', '0006_auto_20150730_1251'),
+        ('videos', '0007_auto_20150730_1341'),
     ]
 
     operations = [

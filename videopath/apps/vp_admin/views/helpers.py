@@ -2,7 +2,7 @@ import collections
 import humanize
 
 from django.contrib.auth.models import User
-
+from django.utils.encoding import smart_text
 
 base = "/admin/insights/"
 
@@ -34,13 +34,13 @@ def table(array, header = None):
     if header:
         result = "<tr>"
         for item in header:
-            result += "<th>" + str(item) + "</th>"
+            result += "<th>" + smart_text(item) + "</th>"
         result += "</tr>"
 
     for row in array:
         rowr = "<tr>"
         for item in row:
-            rowr += "<td>" +str(item) + "</td>"
+            rowr += "<td>" +smart_text(item) + "</td>"
         result += rowr + "</tr>"
 
     return "<table>" + result + "</table>"

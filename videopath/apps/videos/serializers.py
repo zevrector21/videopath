@@ -141,17 +141,14 @@ revision_detail_fields = (
 class PlayerAppearanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlayerAppearance
-        exclude = ('user', )
+        exclude = ('user', 'description', 'id')
 
 #
 # Revision
 #
 class VideoRevisionSerializer(serializers.ModelSerializer):
 
-    # nested serializers
-    video_sources = VideoSourceSerializer(required=False, source="video.video_sources", read_only=True, many=True)
-    video_files = VideoFileSerializer(required=False, source="video.file", read_only=True,many=True)
-    markers = NestedMarkerSerializer(read_only=True, many=True)
+    key = serializers.SerializerMethodField()
 
     # some helper functions
     def get_key(self, video_revision):
@@ -190,7 +187,11 @@ class VideoRevisionSerializer(serializers.ModelSerializer):
 #
 class VideoRevisionDetailSerializer(VideoRevisionSerializer):
 
-    key = serializers.SerializerMethodField()
+        # nested serializers
+    video_sources = VideoSourceSerializer(required=False, source="video.video_sources", read_only=True, many=True)
+    video_files = VideoFileSerializer(required=False, source="video.file", read_only=True,many=True)
+    markers = NestedMarkerSerializer(read_only=True, many=True)
+
 
     thumbnails = serializers.SerializerMethodField()
     appearance = serializers.SerializerMethodField()

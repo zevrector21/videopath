@@ -20,13 +20,13 @@ class TestCase(BaseTestCase):
         self.assertEqual(app.get("language"), "en")
 
         # set default user
-        video.user.default_player_appearance = PlayerAppearance.objects.create(language="de")
+        video.user.default_player_appearance = PlayerAppearance.objects.create(ui_language="de")
         video.draft.save()
         app = appearance_util.appearance_for_revision(video.draft)
         self.assertEqual(app.get("language"), "de")
 
         # set video
-        video.draft.player_appearance = PlayerAppearance.objects.create(language="fr")
+        video.draft.player_appearance = PlayerAppearance.objects.create(ui_language="fr")
         video.draft.save()
         app = appearance_util.appearance_for_revision(video.draft)
         self.assertEqual(app.get("language"), "fr")

@@ -175,6 +175,7 @@ class VideoSource(VideopathBaseModel):
 
 #
 # Layout new source class
+# not in use at the moment
 #
 class VideoSourceNew(VideopathBaseModel):
 

@@ -131,7 +131,6 @@ revision_detail_fields = (
     'markers',
     'thumbnails',
     'video_sources',
-    'appearance',
     'video_files',
 ) + revision_fields
 
@@ -187,17 +186,40 @@ class VideoRevisionSerializer(serializers.ModelSerializer):
 #
 class VideoRevisionDetailSerializer(VideoRevisionSerializer):
 
-        # nested serializers
+    # nested serializers
     video_sources = VideoSourceSerializer(required=False, source="video.video_sources", read_only=True, many=True)
     video_files = VideoFileSerializer(required=False, source="video.file", read_only=True,many=True)
     markers = NestedMarkerSerializer(read_only=True, many=True)
 
-
     thumbnails = serializers.SerializerMethodField()
-    appearance = serializers.SerializerMethodField()
 
-    def get_appearance(self, video_revision):
-        return appearance_util.appearance_for_revision(video_revision)
+    #
+    # inject source type info, to be fully complete with new video source object
+    #
+    def to_representation(self, instance):
+        ret = super(VideoRevisionSerializer, self).to_representation(instance)
+
+        source_type = "unknown"
+        try:
+            instance.video.file.latest("created")
+            source_type = "videopath"
+        except:
+            pass
+
+        try:
+            s = instance.video.video_sources.latest("created")
+            source_type = s.service
+        except:
+            pass
+
+
+        ret["source"] = {
+            "type": source_type
+        }
+
+        return ret
+
+        
 
     class Meta:
         model = VideoRevision

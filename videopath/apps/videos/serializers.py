@@ -214,7 +214,8 @@ class VideoRevisionDetailSerializer(VideoRevisionSerializer):
 
 
         ret["source"] = {
-            "type": source_type
+            "type": source_type,
+            "iphone_support": instance.iphone_images > 10
         }
 
         return ret

@@ -4,19 +4,19 @@
 
     <meta charset="UTF-8">
 
-
+    
     <!-- 
-        BOOTSTRAP CONFIGURATION BUILDER
+        BOOTSTRAP CONFIGURATION PLAYER
     -->
     <script>
         document.videopath = document.videopath || {};
         document.videopath.player = document.videopath.player || {};
         document.videopath.player.conf = {
-            video: false,
-            buttonColor: "#333333",
-            buttonColorHover: "#555555",
-            thumbnail: "",
-            srcURL: "scripts/"
+            video: {{ video_data | safe }},
+            buttonColor: "{{ button_color }}",
+            buttonColorHover: "{{ button_color_hover }}",
+            thumbnail: "{{ thumb_urls.large }}",
+            srcURL: "{{ src_url }}scripts/"
         };
     </script>
 

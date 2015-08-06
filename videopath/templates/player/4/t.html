@@ -152,7 +152,7 @@
                 var c = hexcode.substring(1), rgb = parseInt(c, 16), r = rgb >> 16 & 255, g = rgb >> 8 & 255, b = rgb >> 0 & 255;
                 return .2126 * r + .7152 * g + .0722 * b;
             }
-            var autoplay = window.location.href.indexOf("autoplay") >= 0, style = "#vp_bootstrap #vp_playbutton {background-color:<color>;} #vp_bootstrap #vp_playbutton:hover {background-color:<colorHover>;}", buildMode = window.location.href.indexOf("build") >= 0, previewMode = window.location.href.indexOf("preview") >= 0, isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent), isAppleHandHeld = /iPhone|iPod|iPad/i.test(navigator.userAgent), apiObj = {
+            var autoplay = window.location.href.indexOf("autoplay") >= 0, style = "#vp_bootstrap #vp_playbutton {background-color:<color>;} #vp_bootstrap #vp_playbutton:hover {background-color:<colorHover>;}", buildMode = window.location.href.indexOf("build") >= 0, previewMode = window.location.href.indexOf("preview") >= 0, isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent), isIPhone = /iPhone|iPod/i.test(navigator.userAgent), isIPad = /iPad/i.test(navigator.userAgent), apiObj = {
                 loaded: !0
             }, conf = document.videopath.player.conf;
             document.videopath = document.videopath || {}, document.videopath.player = document.videopath.player || {}, 
@@ -184,7 +184,7 @@
                 conf.buttonColor && calculateLuma(buttonColor) > 125 && addClass(div_playbutton, "vp_dark"), 
                 addStyle(style);
             }, autoplay && (div_playbutton.remove(), apiObj.goToLoadingMode(!0)), apiObj.setColors(conf.buttonColor, conf.buttonColorHover), 
-            isAppleHandHeld && !videoSupportsIPhone && addClass(vp_bootstrap, "vp_touch_ready"), 
+            (isIPhone && !videoSupportsIPhone || isIPad) && addClass(vp_bootstrap, "vp_touch_ready"), 
             isIE() && isIE() < 10) apiObj.goToLoadingMode(!0), div_status.innerHTML = "Internet Explorer 9 and earlier are not supported. Please upgrade to a newer Version of your Browser!", 
             addClass(div_playbutton, "vp_hidden"); else {
                 (buildMode || previewMode || isMobileDevice) && apiObj.goToLoadingMode(!1);

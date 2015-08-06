@@ -170,7 +170,7 @@ class VideoRevisionSerializer(serializers.ModelSerializer):
         # inject appearance
         appearance = appearance_util.appearance_for_revision(instance)
         for key, value in appearance.iteritems():
-            if value != None:
+            if value != None and value != "":
                 ret[key] = value
 
         return ret

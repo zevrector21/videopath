@@ -66,8 +66,7 @@ def export_user_videos(user):
 #
 def export_all_videos(verbose=False):
     videos = Video.objects.all()
-    for v in videos:
-        export_video(v, verbose)
+    export_videos(videos, verbose)
 
 #
 # delete an exported video from s3

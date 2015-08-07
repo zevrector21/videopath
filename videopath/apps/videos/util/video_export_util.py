@@ -100,6 +100,11 @@ def _render_template(video):
         'button_color': revision.ui_color_1,
         'button_color_hover': revision.ui_color_1
     }
+
+    try:
+        template_dict['arrow_color'] = data_json['ui_color_button_text']
+    except:
+        pass
     
     # for non production builds omit player version
     if not settings.PRODUCTION:

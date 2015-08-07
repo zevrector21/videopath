@@ -191,7 +191,7 @@
                 arrowColor || (arrowColor = conf.buttonColor && calculateLuma(buttonColor) > 125 ? "#222222" : "#ffffff"), 
                 style = style.replace("<color>", buttonColor).replace("<colorHover>", buttonColorHover).replace("<arrowColor>", arrowColor), 
                 addStyle(style), console.log(style);
-            }, autoplay && (div_playbutton.remove(), apiObj.goToLoadingMode(!0)), apiObj.setColors(conf.buttonColor, conf.buttonColorHover), 
+            }, autoplay && (div_playbutton.remove(), apiObj.goToLoadingMode(!0)), apiObj.setColors(conf.buttonColor, conf.buttonColorHover, conf.arrowColor), 
             (isIPhone && !videoSupportsIPhone || isIPad) && addClass(vp_bootstrap, "vp_touch_ready"), 
             isIE() && isIE() < 10) apiObj.goToLoadingMode(!0), div_status.innerHTML = "Internet Explorer 9 and earlier are not supported. Please upgrade to a newer Version of your Browser!", 
             addClass(div_playbutton, "vp_hidden"); else {

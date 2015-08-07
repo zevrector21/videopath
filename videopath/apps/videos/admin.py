@@ -5,7 +5,7 @@ from django.contrib import admin
 from videopath.apps.files.models import VideoSource, VideoFile
 from videopath.apps.videos.models import Video, Marker, MarkerContent, VideoRevision, PlayerAppearance
 
-from videopath.app.util import video_export_util
+from videopath.apps.videos.util import video_export_util
 
 #
 # Video file inline

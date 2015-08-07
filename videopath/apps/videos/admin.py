@@ -5,6 +5,8 @@ from django.contrib import admin
 from videopath.apps.files.models import VideoSource, VideoFile
 from videopath.apps.videos.models import Video, Marker, MarkerContent, VideoRevision, PlayerAppearance
 
+from videopath.app.util import video_export_util
+
 #
 # Video file inline
 #
@@ -31,7 +33,7 @@ class VideoAdmin(admin.ModelAdmin):
     inlines = (VideoFileInlineAdmin, VideoSourceInlineAdmin)
 
     # actions
-    actions=["make_published", "make_unpublished", "make_duplicated"]
+    actions=["make_published", "make_unpublished", "make_duplicated", "make_reexport"]
     def make_published(self, request, queryset):
         for video in queryset.all():
             video.publish()
@@ -48,6 +50,11 @@ class VideoAdmin(admin.ModelAdmin):
             copy = video.duplicate()
             self.message_user(request, "Duplicated video " + video.key + " -> " + copy.key)
     make_duplicated.short_description = "Duplicate selected videos"
+
+    def make_reexport(self, request, queryset):
+        for video in queryset.all():
+            video_export_util.export_video(video)
+    make_reexport.short_description = "Reexport selected videos"
 
     # custom fields
     def created_humanized(self, obj):

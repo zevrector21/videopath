@@ -102,10 +102,11 @@ def _render_template(video):
     }
 
     try:
-        template_dict['arrow_color'] = data_json['ui_color_button_text']
+        template_dict['arrow_color'] = vrs.data['ui_color_button_text']
     except:
         pass
-    
+
+
     # for non production builds omit player version
     if not settings.PRODUCTION:
         template_dict['src_url'] = settings.PLAYER_SRC
@@ -138,7 +139,8 @@ def _render_template(video):
         })
 
     c = Context(template_dict)
-    return t.render(c)
+    result = t.render(c)
+    return result
 
 #
 # File key for video

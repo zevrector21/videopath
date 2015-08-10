@@ -120,6 +120,11 @@ class UserViewSet(viewsets.ModelViewSet):
         email = serializer.validated_data.get("email").lower()
         password = serializer.validated_data.get("password")
 
+        if len(username) <= 3:
+            raise ValidationError(detail={"username":["Username must be a least 3 characters."]})
+        if len(email) == 0:
+            raise ValidationError(detail={"email":["Please supply a valid email address"]})
+
         if User.objects.filter(email=email).count() > 0:
            raise ValidationError(detail={"email":["Email is taken."]})
         if User.objects.filter(username=username).count() > 0:

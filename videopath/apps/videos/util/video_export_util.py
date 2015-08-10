@@ -96,12 +96,12 @@ def _render_template(video):
 
     template_dict = {
         'src_url': settings.PLAYER_SRC + video.player_version + "/",
-        'video_url': settings.PLAYER_LOCATION + video.key + "/",
-        'button_color': revision.ui_color_1,
-        'button_color_hover': revision.ui_color_1
+        'video_url': settings.PLAYER_LOCATION + video.key + "/"
     }
 
     try:
+        template_dict['button_color'] = vrs.data['ui_color_1']
+        template_dict['button_color_hover'] = vrs.data['ui_color_1']
         template_dict['arrow_color'] = vrs.data['ui_color_button_text']
     except:
         pass

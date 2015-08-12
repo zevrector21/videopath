@@ -125,6 +125,10 @@ class VideoRevisionAdmin(admin.ModelAdmin):
 
         ('Files', {
             'fields': ('custom_thumbnail', )
+        }),
+
+        ('Tracking', {
+            'fields': ('tracking_pixel_start', 'tracking_pixel_q1', 'tracking_pixel_q2', 'tracking_pixel_q3', 'tracking_pixel_end')
         })
     )
 

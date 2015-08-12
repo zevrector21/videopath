@@ -124,7 +124,12 @@ revision_fields = (
     'custom_tracking_code',
     'iphone_images',
     'continuous_playback',
-    'password'
+    'password',
+    'tracking_pixel_start',
+    'tracking_pixel_q1',
+    'tracking_pixel_q2',
+    'tracking_pixel_q3',
+    'tracking_pixel_end'
 )
 
 revision_detail_fields = (

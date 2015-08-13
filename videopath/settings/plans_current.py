@@ -77,6 +77,7 @@ _plans_current = {
         'feature_vimeo': True,
         'feature_wistia': True,
         'feature_custom_analytics': True,
+        'feature_custom_hosting': True,
 
 
         'variants': {
@@ -116,6 +117,7 @@ _plans_current = {
         'feature_vimeo': True,
         'feature_wistia': True,
         'feature_custom_analytics': True,
+        'feature_custom_hosting': True,
 
         'variants': {
             'monthly': {

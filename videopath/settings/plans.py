@@ -18,11 +18,12 @@ class _Plans():
 		'feature_vimeo': False,
 		'feature_brightcove': False,
 		'feature_colors': False,
+		'feature_own_hosting': False,
 		'feature_dev': False,
 		'feature_disable_share': False,
 		'feature_equal_markers': False,
         'feature_wistia': False,
-        'feature_custom_analytics': False,
+        'feature_custom_hosting': False,
 
 		'max_projects': 9999,
         'max_views_month': 2000,

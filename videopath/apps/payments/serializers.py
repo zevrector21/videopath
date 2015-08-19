@@ -40,8 +40,7 @@ class PlanSerializer(serializers.Serializer):
     feature_endscreen = serializers.BooleanField()
     feature_vimeo = serializers.BooleanField()
     feature_dev = serializers.BooleanField()
-    feature_disable_share = serializers.BooleanField()
-    feature_equal_markers = serializers.BooleanField()
+    feature_advanced_settings = serializers.BooleanField()
 
     def __init__(self, *args, **kwargs):
         self.user_currency = kwargs.pop('currency', settings.CURRENCY_EUR)

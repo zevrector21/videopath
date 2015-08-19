@@ -13,7 +13,6 @@ _plans_legacy = {
         'max_views_month': 15000,
         'feature_analytics': True,
         'feature_endscreen': True,
-        'feature_colors': True,
 
         'variants': {
             'yearly': {

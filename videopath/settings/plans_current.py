@@ -34,7 +34,6 @@ _plans_current = {
         # features
         'max_projects': 9999,
         'max_views_month': 10000,
-        'feature_analytics': True,
         'feature_endscreen': True,
         'feature_vimeo': True,
         'feature_wistia': True,
@@ -69,7 +68,6 @@ _plans_current = {
         # features
         'max_projects': 9999,
         'max_views_month': 150000,
-        'feature_analytics': True,
         'feature_endscreen': True,
         'feature_disable_share': True,
         'feature_equal_markers': True,
@@ -108,7 +106,6 @@ _plans_current = {
         # features
         'max_projects': 9999,
         'max_views_month': 1000000,
-        'feature_analytics': True,
         'feature_endscreen': True,
         'feature_disable_share': True,
         'feature_equal_markers': True,

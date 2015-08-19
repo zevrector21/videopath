@@ -26,7 +26,6 @@ _plans_individual = {
                 'payment_interval': 'month',
 
                 'feature_upload': True,
-                'feature_analytics': True,
                 'feature_endscreen': True,
             },
 
@@ -38,7 +37,6 @@ _plans_individual = {
                 'feature_upload': False,
                 'max_projects': 9999,
 
-                'feature_analytics': True,
                 'feature_endscreen': True,
             },
 
@@ -49,7 +47,6 @@ _plans_individual = {
                 'payment_interval': 'month',
                 'max_projects': 9999,
 
-                'feature_analytics': True,
                 'feature_endscreen': True,
                 'feature_vimeo': True,
                 'feature_upload': True,
@@ -60,7 +57,6 @@ _plans_individual = {
                 'name': 'Individual SSPSS',
                 'feature_vimeo': True,
                 'feature_upload': True,
-                'feature_analytics': True,
                 'feature_endscreen': True,
                 'feature_disable_share': True,
                 'feature_equal_markers': True,
@@ -71,7 +67,6 @@ _plans_individual = {
                 'name': 'Agency Evaluation',
                 'feature_vimeo': True,
                 'feature_upload': True,
-                'feature_analytics': True,
                 'feature_endscreen': True,
                 'feature_disable_share': True,
                 'feature_equal_markers': True,
@@ -83,7 +78,6 @@ _plans_individual = {
                 'name': 'Nyia Personal Plan',
                 'feature_vimeo': True,
                 'feature_upload': True,
-                'feature_analytics': True,
                 'feature_endscreen': True,
                 'feature_disable_share': True,
                 'feature_equal_markers': True,
@@ -97,7 +91,6 @@ _plans_individual = {
                 'name': 'Mediacrax Plan',
                 'feature_vimeo': True,
                 'feature_upload': True,
-                'feature_analytics': True,
                 'feature_endscreen': True,
                 'feature_disable_share': True,
                 'feature_equal_markers': True,
@@ -111,7 +104,6 @@ _plans_individual = {
                 'name': 'videopath staff account',
                 'feature_vimeo': True,
                 'feature_upload': True,
-                'feature_analytics': True,
                 'feature_endscreen': True,
                 'feature_disable_share': True,
                 'feature_equal_markers': True,

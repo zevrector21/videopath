@@ -13,7 +13,6 @@ class _Plans():
 
 		# features for reference
 		'feature_upload': False,
-		'feature_analytics': False,
 		'feature_endscreen': False,
 		'feature_vimeo': False,
 		'feature_brightcove': False,
@@ -23,6 +22,7 @@ class _Plans():
 		'feature_equal_markers': False,
         'feature_wistia': False,
         'feature_custom_hosting': False,
+        'feature_custom_analytics': False,
 
 		'max_projects': 9999,
         'max_views_month': 2000,

@@ -6,7 +6,6 @@ connection = S3Connection("AKIAIG2ODXQTVB5HGGLQ", 'sz5HWoVSN9aG9n4/i+JRa0uUlo+NV
 bucket = connection.get_bucket("jpgs.videopath.com")
 
 for key in bucket.list("rC60u1Op"):
-	print key.name
 	filename = os.path.dirname(os.path.abspath(__file__))+"/"+key.name
 	dirname = os.path.dirname(filename)
 	try:

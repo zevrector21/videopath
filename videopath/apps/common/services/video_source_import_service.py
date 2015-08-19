@@ -185,7 +185,6 @@ def _import_brightcove(key):
 
     # get policy key by parsing player result
     player_url = player_url.format(account, player, video_id)
-    print player_url
     response = requests.get(player_url)
     m = re.search(re_policy_key, response.text)
     policy_key = m.group(1)

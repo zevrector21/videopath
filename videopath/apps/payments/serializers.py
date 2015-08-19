@@ -37,10 +37,8 @@ class PlanSerializer(serializers.Serializer):
 
     # features
     feature_upload = serializers.BooleanField()
-    feature_analytics = serializers.BooleanField()
     feature_endscreen = serializers.BooleanField()
     feature_vimeo = serializers.BooleanField()
-    feature_colors = serializers.BooleanField()
     feature_dev = serializers.BooleanField()
     feature_disable_share = serializers.BooleanField()
     feature_equal_markers = serializers.BooleanField()

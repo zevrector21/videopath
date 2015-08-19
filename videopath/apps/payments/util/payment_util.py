@@ -83,7 +83,6 @@ def _charge_payment(payment):
 
     # try stripe
     charge_id = stripe_service.charge_user(payment.user, payment.amount_due, payment.currency)
-    print charge_id
     if charge_id:
         return settings.PAYMENT_PROVIDER_STRIPE, charge_id
     return None, None

@@ -39,7 +39,6 @@ def build_user_info(start_date, end_date):
         has_upgraded = False
         try:
             user.subscription
-            print user.subscription.plan
             if not "free" in user.subscription.plan:
                 has_upgraded = True
         except:

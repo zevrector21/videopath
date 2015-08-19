@@ -121,6 +121,7 @@ revision_fields = (
     'endscreen_button_target',
     'ui_disable_share_buttons',
     'ui_equal_marker_lengths',
+    'ui_icon',
     'custom_tracking_code',
     'iphone_images',
     'continuous_playback',
@@ -153,6 +154,7 @@ class PlayerAppearanceSerializer(serializers.ModelSerializer):
 class VideoRevisionSerializer(serializers.ModelSerializer):
 
     key = serializers.SerializerMethodField()
+    ui_icon = serializers.SerializerMethodField()
 
     # some helper functions
     def get_key(self, video_revision):
@@ -160,6 +162,11 @@ class VideoRevisionSerializer(serializers.ModelSerializer):
 
     def get_thumbnails(self, video_revision):
         return thumbnails_util.thumbnails_for_revision(video_revision)
+
+    def get_ui_icon(self, video_revision):
+        if video_revision.ui_icon:
+            return video_revision.ui_icon
+        return "//images.videopath.com/icon/default.png"
 
     class Meta:
         model = VideoRevision

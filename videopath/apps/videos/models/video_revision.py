@@ -45,6 +45,9 @@ class VideoRevision(VideopathBaseModel):
     ui_color_1 = ColorField(default="#424242")
     ui_color_2 = ColorField(default="#ffffff")
 
+    # reference to custom icon if uploaded
+    ui_icon = models.CharField(max_length=512, blank=True)
+
     # other ui settings
     ui_disable_share_buttons = models.BooleanField(default=False)
     ui_equal_marker_lengths = models.BooleanField(default=False)

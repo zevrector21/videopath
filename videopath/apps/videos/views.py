@@ -1,5 +1,4 @@
 
-from django.conf import settings
 from django.http import Http404
 
 from django.shortcuts import get_object_or_404
@@ -8,18 +7,64 @@ from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.exceptions import ParseError, ValidationError
-from rest_framework.decorators import permission_classes, renderer_classes
+from rest_framework.decorators import permission_classes, renderer_classes, parser_classes
 from rest_framework.renderers import JSONRenderer
+from rest_framework.parsers import MultiPartParser, FormParser
+
 
 from videopath.apps.videos.util.oembed_xml_renderer import OEmbedXMLRenderer
-from videopath.apps.videos.util import share_mail_util, oembed_util
+from videopath.apps.videos.util import share_mail_util, oembed_util, icon_util
 from videopath.apps.videos.permissions import MarkerPermissions, VideoPermissions, MarkerContentPermissions, VideoRevisionPermissions, AuthenticatedPermission
 from videopath.apps.videos.models import Video, Marker, MarkerContent, VideoRevision
 from videopath.apps.videos.serializers import VideoRevisionDetailSerializer, VideoSerializer, MarkerSerializer, MarkerContentSerializer, VideoRevisionSerializer
 from videopath.apps.common.services import service_provider
 
+
 from rest_framework.decorators import api_view
 from rest_framework.permissions import AllowAny
+
+
+#
+# Upload or delete icon
+#
+@api_view(['DELETE', 'PUT'])
+@permission_classes((AllowAny,))
+@parser_classes((MultiPartParser,FormParser))
+def icon_view(request, rid=None):
+
+    try:
+        revision = VideoRevision.objects.get(video__user = request.user, pk=rid)
+        if request.method == "PUT":
+            ok, detail = icon_util.handle_uploaded_icon(revision, request.data["file"])
+            if not ok:
+                raise ValidationError(detail)
+            return Response({},201)
+        elif request.method == "DELETE":
+            revision.ui_icon = None
+            revision.save()
+    except VideoRevision.DoesNotExist:
+        raise Http404
+
+    
+
+#
+# Upload or delete thumbnail
+#
+@api_view(['GET', 'DELETE', 'PUT'])
+@permission_classes((AllowAny,))
+@parser_classes((MultiPartParser,FormParser))
+def thumbnail_view(request, rid=None):
+
+
+
+    if request.method == "PUT":
+        pass
+    elif request.method == "DELETE":
+        pass
+    elif request.method == "GET":
+        pass
+
+    return Response({})
 
 #
 # Support for oEmbed info

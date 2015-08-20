@@ -164,9 +164,10 @@ class VideoRevisionSerializer(serializers.ModelSerializer):
         return thumbnails_util.thumbnails_for_revision(video_revision)
 
     def get_ui_icon(self, video_revision):
+        icon_base_url = "//images.videopath.com/icon/"
         if video_revision.ui_icon:
-            return video_revision.ui_icon
-        return "//images.videopath.com/icon/default.png"
+            return icon_base_url + video_revision.ui_icon
+        return icon_base_url + "default.png"
 
     class Meta:
         model = VideoRevision

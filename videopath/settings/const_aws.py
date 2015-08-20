@@ -28,6 +28,8 @@ AWS_VIDEO_BACKUP_BUCKET = "video-backup.videopath.com"
 # images buckets
 #
 AWS_IMAGE_OUT_BUCKET = 'images.videopath.com'
+AWS_IMAGE_ICON_FOLDER = 'icon'
+AWS_IMAGE_THUMBNAIL_FOLDER = 'thumbnail'
 
 #
 # docs bucket and prefixes

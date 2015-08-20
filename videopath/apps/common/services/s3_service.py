@@ -33,14 +33,17 @@ def upload(source, bucket, key, content_type = None, cache_control = None, verif
 		# read file into string
 		if os.path.exists(source):
 			with open (source, "r") as myfile:
-				source=myfile.read().replace('\n', '')
+				source=myfile.read()
 
-
+		try:
+			source = source.encode('utf8')
+		except:
+			pass
 
 		# gzip string
 		out = StringIO.StringIO()
 		with gzip.GzipFile(fileobj=out, mode="w") as f:
-  			f.write(source.encode('utf8'))
+  			f.write(source)
   		source = out.getvalue()
 
 		# upload from string

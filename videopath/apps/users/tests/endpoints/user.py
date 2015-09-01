@@ -80,7 +80,7 @@ class TestCase(EndpointsBaseTestCase):
         data = {
                 'username': 'dave_new', 
                 'password': 'short',
-                'email': 'dscharf@gmx.de'
+                'email': 'null@videopath.com'
         }
         response = self.client.post_json(USER_URL, data)
         self.assertEqual(response.status_code, 400)
@@ -89,7 +89,7 @@ class TestCase(EndpointsBaseTestCase):
         data = {
             'username': 'dave_new', 
             'password': 'long_passsword',
-            'email': 'dscharfgmx.de'
+            'email': 'nullvideopath.com'
         }
         response = self.client.post_json(USER_URL, data)
         self.assertEqual(response.status_code, 400)
@@ -98,7 +98,7 @@ class TestCase(EndpointsBaseTestCase):
         data = {
             'username': 'dave', 
             'password': 'long_passsword',
-            'email': 'dscharf@gmx.de'
+            'email': 'null@videopath.com'
         }
         response = self.client.post_json(USER_URL, data)
         self.assertEqual(response.status_code, 400)
@@ -107,7 +107,7 @@ class TestCase(EndpointsBaseTestCase):
         data = {
             'username': 'dave_new', 
             'password': 'long_passsword',
-            'email': 'david@videopath.com'
+            'email': 'null-1@videopath.com'
         }
         response = self.client.post_json(USER_URL, data)
         self.assertEqual(response.status_code, 400)
@@ -116,7 +116,7 @@ class TestCase(EndpointsBaseTestCase):
         data = {
             'username': 'dave_new', 
             'password': 'long_passsword',
-            'email': 'dscharf@gmx.de'
+            'email': 'null@videopath.com'
         }
         response = self.client.post_json(USER_URL, data)
         self.assertEqual(response.status_code, 201)
@@ -136,7 +136,7 @@ class TestCase(EndpointsBaseTestCase):
         data = {
             'username': 'dave_new', 
             'password': 'long_passsword',
-            'email': 'dscharf@gmx.de'
+            'email': 'null-4@videopath.com'
         }
         ip = "199.68.216.112" # us ip
         self.client.post_json(USER_URL, data, HTTP_X_FORWARDED_FOR=ip)
@@ -149,7 +149,7 @@ class TestCase(EndpointsBaseTestCase):
         data = {
             'username': 'dave_new_2', 
             'password': 'long_passsword',
-            'email': 'dscharf@gmx.de2'
+            'email': 'null-5@videopath.com'
         }
         ip = "84.159.212.138" # german ip
         self.client.post_json(USER_URL, data, HTTP_X_FORWARDED_FOR=ip)
@@ -163,7 +163,7 @@ class TestCase(EndpointsBaseTestCase):
         data = {
             'username': 'dave_new_3', 
             'password': 'long_passsword',
-            'email': 'dscharf@gmx.de3'
+            'email': 'null-6@videopath.com'
         }
         ip = "212.58.244.20" # british ip
         self.client.post_json(USER_URL, data, HTTP_X_FORWARDED_FOR=ip)

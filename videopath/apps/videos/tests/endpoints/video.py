@@ -84,7 +84,7 @@ class TestCase(EndpointsBaseTestCase):
         self.assertEqual(response.status_code, 200)
 
         # try to send share mail
-        response = self.client_user1.post_json(SEND_SHARE_MAIL_URL.format(vid), {"recipients": "dscharf@gmx.net"})
+        response = self.client_user1.post_json(SEND_SHARE_MAIL_URL.format(vid), {"recipients": "null@videopath.com"})
         self.assertEqual(response.status_code, 200)
 
         

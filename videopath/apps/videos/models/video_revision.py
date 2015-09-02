@@ -42,7 +42,7 @@ class VideoRevision(VideopathBaseModel):
     description = models.TextField(blank=True)
 
     # ui color
-    ui_color_1 = ColorField(default="#424242")
+    ui_color_1 = ColorField(default="#273a45")
     ui_color_2 = ColorField(default="#ffffff")
 
     # reference to custom icon if uploaded

@@ -57,7 +57,8 @@ DEFAULT_VIDEO_APPEARANCE = {
 
     # logos & icons
     "endscreen_logo": None, 
-    "ui_icon": None
+    "ui_icon": None,
+    "ui_icon_link_target": "https://videopath.com"
 }
 
 #

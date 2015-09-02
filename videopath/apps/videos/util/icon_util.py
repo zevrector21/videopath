@@ -16,7 +16,7 @@ def handle_uploaded_icon(video_revision,f):
 			"size":(52,52)
 			})
 	except:
-		return False, "Could not interpret your image file."
+		return False, "Could not interpret your file. Are you sure you uploaded an image?"
 
 	s3_service = service_provider.get_service("s3")
 	key = _random_string()

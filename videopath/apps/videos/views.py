@@ -55,8 +55,6 @@ def icon_view(request, rid=None):
 @parser_classes((MultiPartParser,FormParser))
 def thumbnail_view(request, rid=None):
 
-
-
     if request.method == "PUT":
         pass
     elif request.method == "DELETE":

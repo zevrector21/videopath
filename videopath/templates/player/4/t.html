@@ -20,7 +20,7 @@
             srcURL: "{{ src_url }}scripts/"
         };
     </script>
-
+    
 
     <!-- 
         TITLE AND META TAGS
@@ -168,7 +168,9 @@
             }, conf = document.videopath.player.conf;
             document.videopath = document.videopath || {}, document.videopath.player = document.videopath.player || {}, 
             document.videopath.player.bootstrap = apiObj;
-            var videoSupportsIPhone = conf.video.source && conf.video.source.iphone_support, platformSupported = !(isIE() && isIE() < 10), div_status = document.getElementById("vp_status"), div_playbutton = document.getElementById("vp_playbutton"), div_poster = document.getElementById("vp_poster"), div_bootstrap = document.getElementById("vp_bootstrap"), div_loader = document.getElementById("vp_loader");
+            var videoSupportsIPhone = conf.video.source && conf.video.source.iphone_support;
+            isMobileDevice && (autoplay = !1);
+            var platformSupported = !(isIE() && isIE() < 10), div_status = document.getElementById("vp_status"), div_playbutton = document.getElementById("vp_playbutton"), div_poster = document.getElementById("vp_poster"), div_bootstrap = document.getElementById("vp_bootstrap"), div_loader = document.getElementById("vp_loader");
             if (apiObj.remove = function() {
                 addClass(div_bootstrap, "vp_hidden"), setTimeout(function() {
                     div_bootstrap.parentNode.removeChild(div_bootstrap), document.videopath.player.bootstrap = null;

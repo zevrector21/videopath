@@ -10,13 +10,13 @@ from videopath.apps.users.models import AuthenticationToken
 USER1_DETAILS = {
     "username": "dave",
     "password": "secret",
-    "email": "dscharf@gmx.net"
+    "email": "null-1@videopath.com"
 }
 
 USER2_DETAILS = {
     "username": "dave2",
     "password": "secret2",
-    "email": "david@videopath.com"
+    "email": "null-2@videopath.com"
 }
 
 #

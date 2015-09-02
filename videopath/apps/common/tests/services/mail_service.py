@@ -16,7 +16,7 @@ class TestClass(TestCase):
         message = {
 	        'subject': "Test Mail",
 	        'text': "Test Message",
-	        'to': [{'email': 'dscharf@gmx.net'}],
+	        'to': [{'email': 'null@videopath.com'}],
 	        'from_email': 'david@videopath.com',
 	        'from_name': 'David',
 	        'inline_css': True,

@@ -16,7 +16,7 @@ def subscribe_email(email):
 #
 def check_access():
 	try:
-		subscribe_email("dscharf@gmx.net")
+		subscribe_email("null@videopath.com")
 		return True
 	except Exception as e:
 		return str(e)

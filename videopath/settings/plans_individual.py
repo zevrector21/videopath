@@ -50,6 +50,7 @@ _plans_individual = {
                 'feature_endscreen': True,
                 'feature_vimeo': True,
                 'feature_upload': True,
+                'feature_theme': True,
 
             },
 
@@ -60,6 +61,7 @@ _plans_individual = {
                 'feature_endscreen': True,
                 'feature_advanced_settings': True,
                 'feature_wistia': True,
+                'feature_theme': True,
             },
 
             'agency-evaluation': {
@@ -70,6 +72,7 @@ _plans_individual = {
                 'feature_advanced_settings': True,
                 'feature_wistia': True,
                 'max_views_month': 500,
+                'feature_theme': True,
             },
 
             'nyia': {
@@ -94,6 +97,8 @@ _plans_individual = {
                 'max_views_month': 50000,
                 'price_eur': 18900,
                 'payment_interval': 'month',
+                'feature_theme': True,
+
             },
 
             'staff': {
@@ -107,6 +112,8 @@ _plans_individual = {
                 'feature_custom_analytics': True,
                 'feature_brightcove': True,
                 'feature_custom_hosting': True,
+                'feature_theme': True,
+
 
             }
 

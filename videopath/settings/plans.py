@@ -24,7 +24,7 @@ class _Plans():
 
         'feature_custom_analytics': False,
 
-        'feature_icon': False,
+        'feature_theme': False,
 
         'feature_dev': False,
 

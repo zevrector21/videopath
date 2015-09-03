@@ -78,7 +78,7 @@ _plans_current = {
         'feature_custom_analytics': True,
         'feature_custom_hosting': True,
         'feature_theme': True,
-
+        'feature_icon': True,
 
         'variants': {
             'yearly': {
@@ -116,6 +116,7 @@ _plans_current = {
         'feature_custom_analytics': True,
         'feature_custom_hosting': True,
         'feature_theme': True,
+        'feature_icon': True,
 
         'variants': {
             'monthly': {

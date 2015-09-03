@@ -73,6 +73,7 @@ _plans_individual = {
                 'feature_wistia': True,
                 'max_views_month': 500,
                 'feature_theme': True,
+                'feature_icon': True
             },
 
             'nyia': {
@@ -113,6 +114,7 @@ _plans_individual = {
                 'feature_brightcove': True,
                 'feature_custom_hosting': True,
                 'feature_theme': True,
+                'feature_icon': True,
 
 
             }

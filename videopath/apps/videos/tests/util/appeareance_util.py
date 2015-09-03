@@ -17,16 +17,16 @@ class TestCase(BaseTestCase):
 
         # default lang is english
         app = appearance_util.appearance_for_revision(video.draft)
-        self.assertEqual(app.get("language"), "en")
+        self.assertEqual(app.get("ui_language"), "en")
 
         # set default user
         video.user.default_player_appearance = PlayerAppearance.objects.create(ui_language="de")
         video.draft.save()
         app = appearance_util.appearance_for_revision(video.draft)
-        self.assertEqual(app.get("language"), "de")
+        self.assertEqual(app.get("ui_language"), "de")
 
         # set video
         video.draft.player_appearance = PlayerAppearance.objects.create(ui_language="fr")
         video.draft.save()
         app = appearance_util.appearance_for_revision(video.draft)
-        self.assertEqual(app.get("language"), "fr")
+        self.assertEqual(app.get("ui_language"), "fr")

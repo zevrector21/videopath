@@ -25,8 +25,9 @@ _plans_current = {
         }
     },
 
+
     # starter plan with 2 variants
-    '201412-starter': {
+    '201509-starter': {
 
         'group': 'starter',
         'subscribable': True,
@@ -35,11 +36,6 @@ _plans_current = {
         'max_projects': 9999,
         'max_views_month': 10000000,
         'feature_endscreen': True,
-        'feature_vimeo': True,
-        'feature_wistia': True,
-        'feature_advanced_settings': True,
-        'feature_theme': True,
-
 
         'variants': {
             'yearly': {
@@ -57,6 +53,15 @@ _plans_current = {
                 'price_gbp': 5900,
                 'payment_interval': 'month',
                 'value': 10,
+            },
+            'monthly-15': {
+                'name': 'Basic Monthly',
+                'price_eur': 1500,
+                'price_usd': 2000,
+                'price_gbp': 1200,
+                'payment_interval': 'month',
+                'value': 9,
+                'subscribable': False
             }
         }
 

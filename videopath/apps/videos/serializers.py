@@ -3,7 +3,7 @@ from rest_framework import serializers
 from videopath.apps.videos.models import Video, Marker, MarkerContent, VideoRevision, PlayerAppearance
 from videopath.apps.files.util.files_util import file_url_for_markercontent
 from videopath.apps.files.util import thumbnails_util
-from videopath.apps.files.serializers import VideoSourceSerializer, VideoFileSerializer, ImageFileSerializer
+from videopath.apps.files.serializers import VideoSourceSerializer, VideoFileSerializer
 from videopath.apps.videos.util import appearance_util
 
 #

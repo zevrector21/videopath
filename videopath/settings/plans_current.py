@@ -108,7 +108,8 @@ _plans_current = {
                 'price_usd': 29900,
                 'price_gbp': 22500,
                 'payment_interval': 'month',
-                'value': 149
+                'value': 149,
+                'subscribable': False
             }
         }
     },

@@ -9,8 +9,8 @@ mail_service = service_provider.get_service("mail")
 # agents
 agents = {
     "dave": {
-        "email": "david@videopath.com",
-        "name": "David Scharf"
+        "email": "desiree@videopath.com",
+        "name": "Desiree dela Rosa"
     }
 }
 

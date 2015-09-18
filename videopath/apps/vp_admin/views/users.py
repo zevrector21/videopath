@@ -53,7 +53,7 @@ def listview_sales(request):
             'campaign_name': 'SELECT name FROM users_usercampaigndata WHERE users_usercampaigndata.user_id = auth_user.id',
             'num_videos': 'SELECT COUNT(*) FROM videos_video WHERE videos_video.user_id = auth_user.id AND videos_video.archived != True',
             'num_videos_published': 'SELECT COUNT(*) FROM videos_video WHERE videos_video.user_id = auth_user.id AND videos_video.published = 1 AND videos_video.archived != True',
-        }):
+        }).order_by('-date_joined'):
         user = [
             "<span>" + helpers.userlink(u) + "</span>",
             "" + str(u.campaign_name if u.campaign_name else '') + "",

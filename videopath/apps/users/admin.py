@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as _UserAdmin
 
-from videopath.apps.users.models import AuthenticationToken,UserActivityDay, OneTimeAuthenticationToken, UserActivity, AutomatedMail, UserSettings, User
+from videopath.apps.users.models import UserCampaignData, AuthenticationToken,UserActivityDay, OneTimeAuthenticationToken, UserActivity, AutomatedMail, UserSettings, User
 
 
 class UserAdmin(_UserAdmin):
@@ -54,6 +54,7 @@ admin.site.register(AuthenticationToken, TokenAdmin)
 admin.site.register(OneTimeAuthenticationToken, OTTokenAdmin)
 admin.site.register(UserActivity, UserActivityAdmin)
 admin.site.register(UserActivityDay, UserActivityDayAdmin)
+admin.site.register(UserCampaignData, admin.ModelAdmin)
 
 admin.site.register(AutomatedMail, AutomatedMailAdmin)
 admin.site.register(UserSettings, UserSettingsAdmin)

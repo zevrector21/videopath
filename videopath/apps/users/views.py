@@ -16,7 +16,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
 from videopath.apps.common.services import service_provider
-from videopath.apps.users.models import AuthenticationToken, OneTimeAuthenticationToken
+from videopath.apps.users.models import AuthenticationToken, OneTimeAuthenticationToken, UserCampaignData
 from videopath.apps.users.serializers import UserSerializer
 from videopath.apps.common.mailer import send_signup_email, send_forgot_pw_mail
 from videopath.apps.users.util import login_util
@@ -140,6 +140,21 @@ class UserViewSet(viewsets.ModelViewSet):
         # send a signup email
         send_signup_email(user)
 
+        # create campaign information if available
+        campaign = request.data.get('campaign', None)
+        if campaign:
+            try:
+                UserCampaignData.objects.create(
+                    user = user,
+                    source=campaign.get('source', ''),
+                    medium=campaign.get('medium', ''),
+                    name=campaign.get('name',''),
+                    content=campaign.get('content', ''),
+                    term=campaign.get('term', '')
+                    )
+            except:
+                None
+                
         # subscribe to mailchimp if they want to
         if serializer.validated_data.get("newsletter", False):
             try:

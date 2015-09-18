@@ -40,6 +40,22 @@ class UserSettings(UserenaBaseProfile):
         return "Settings of " + self.user.__unicode__() 
 
 #
+# Campaign Data
+class UserCampaignData(VideopathBaseModel):
+    user = models.OneToOneField(_User, 
+                                unique=True, 
+                                verbose_name=('user'),
+                                related_name='campaign_data'
+                                )
+
+    source = models.CharField(max_length=512)
+    medium = models.CharField(max_length=512)
+    name = models.CharField(max_length=512)
+    content = models.CharField(max_length=512)
+    term = models.CharField(max_length=512)
+
+
+#
 # remember when users have last been seen
 #
 class UserActivity(VideopathBaseModel):

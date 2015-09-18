@@ -171,6 +171,27 @@ class TestCase(EndpointsBaseTestCase):
         self.assertEqual(user.settings.currency, "GBP")
 
 
+    def test_campaign_data(self):
+        from videopath.apps.users.models import User
+        self.setup_users_and_clients()
+        data = {
+            'username': 'dave_new', 
+            'password': 'long_passsword',
+            'email': 'null-4@videopath.com',
+            'campaign': {
+                'source':'source',
+                'name':'name',
+                'medium': 'medium'
+            }
+        }
+        response = self.client.post_json(USER_URL, data)
+        self.assertEqual(response.status_code, 201)
+        user = User.objects.get(username='dave_new')
+        self.assertEqual(user.campaign_data.source,'source')
+        self.assertEqual(user.campaign_data.medium,'medium')
+        self.assertEqual(user.campaign_data.name,'name')
+
+
 
 
 

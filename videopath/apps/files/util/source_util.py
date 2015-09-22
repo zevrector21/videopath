@@ -8,7 +8,7 @@ from django.conf import settings
 def source_for_video(v, vr = None):
 
 	result = {
-		'iphone_support': False
+		'jpg_sequence_support': False
 	}
 
 	# if we have a sourceo object
@@ -63,10 +63,9 @@ def source_for_video(v, vr = None):
 	# inject iphone playback info
 	if vr and vr.iphone_images > 0:
 		result.update({
-			'iphone_support': {
-				'length': vr.iphone_images,
-				'base_url': settings.JPGS_CDN + v.key + '/'
-			}
+			'jpg_sequence_support': True,
+			'jpg_sequence_length': vr.iphone_images,
+			'jpg_sequence_base_url': settings.JPGS_CDN + v.key + '/'
 		})
 
 

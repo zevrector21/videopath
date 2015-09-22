@@ -13,11 +13,11 @@ class SourceTest(TestCase):
         self.video.save()
 
 
-    def test_iphone_support(self):
+    def test_jpg_sequence_support(self):
         self.video.draft.iphone_images = 200
         self.video.draft.save()
         source = source_util.source_for_revision(self.video.draft)
-        self.assertEqual(source['iphone_support']['length'], 200)
+        self.assertEqual(source['jpg_sequence_length'], 200)
 
     def test_old_source_object(self):
         VideoSource.objects.create(

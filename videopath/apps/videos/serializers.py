@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from videopath.apps.videos.models import Video, Marker, MarkerContent, VideoRevision, PlayerAppearance
 from videopath.apps.files.util.files_util import file_url_for_markercontent
-from videopath.apps.files.util import thumbnails_util
+from videopath.apps.files.util import thumbnails_util, source_util
 from videopath.apps.files.serializers import VideoSourceSerializer, VideoFileSerializer
 from videopath.apps.videos.util import appearance_util
 
@@ -38,6 +38,15 @@ class VideoSerializer(serializers.ModelSerializer):
 
     def get_queryset(self):
         return Video.objects.filter(user=self.request.user)
+
+    #
+    # inject source info
+    #
+    def to_representation(self, instance):
+        ret = super(VideoSerializer, self).to_representation(instance)
+        ret["source"] = source_util.source_for_video(instance)
+        return ret
+
 
     class Meta:
         model = Video
@@ -211,27 +220,28 @@ class VideoRevisionDetailSerializer(VideoRevisionSerializer):
     #
     def to_representation(self, instance):
         ret = super(VideoRevisionDetailSerializer, self).to_representation(instance)
-
-        source_type = "unknown"
-        try:
-            instance.video.file.latest("created")
-            source_type = "videopath"
-        except:
-            pass
-
-        try:
-            s = instance.video.video_sources.latest("created")
-            source_type = s.service
-        except:
-            pass
-
-
-        ret["source"] = {
-            "type": source_type,
-            "iphone_support": instance.iphone_images > 10
-        }
-
+        ret["source"] = source_util.source_for_revision(instance)
         return ret
+
+        # source_type = "unknown"
+        # try:
+        #     instance.video.file.latest("created")
+        #     source_type = "videopath"
+        # except:
+        #     pass
+
+        # try:
+        #     s = instance.video.video_sources.latest("created")
+        #     source_type = s.service
+        # except:
+        #     pass
+
+
+        # ret["source"] = {
+        #     "type": source_type,
+        #     "iphone_support": instance.iphone_images > 10
+        # }
+
 
         
 

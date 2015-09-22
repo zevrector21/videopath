@@ -44,6 +44,11 @@ INVOICE_START_NUMBER = 32049
 PGBACKUPS_URL = os.environ.get("PGBACKUPS_URL")
 
 #
+# Endpoint for JPG engine streaming
+#
+JPGS_CDN = '//az744831.vo.msecnd.net/'
+
+#
 # Default values for appearance
 #
 DEFAULT_VIDEO_APPEARANCE = {

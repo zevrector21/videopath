@@ -20,7 +20,8 @@
             srcURL: "{{ src_url }}scripts/"
         };
     </script>
-    
+
+
 
     <!-- 
         TITLE AND META TAGS
@@ -168,7 +169,7 @@
             }, conf = document.videopath.player.conf;
             document.videopath = document.videopath || {}, document.videopath.player = document.videopath.player || {}, 
             document.videopath.player.bootstrap = apiObj;
-            var videoSupportsIPhone = conf.video.source && conf.video.source.iphone_support;
+            var videoSupportsIPhone = conf.video.source && (conf.video.source.iphone_support || conf.video.source.jpg_sequence_support);
             isMobileDevice && (autoplay = !1);
             var platformSupported = !(isIE() && isIE() < 10), div_status = document.getElementById("vp_status"), div_playbutton = document.getElementById("vp_playbutton"), div_poster = document.getElementById("vp_poster"), div_bootstrap = document.getElementById("vp_bootstrap"), div_loader = document.getElementById("vp_loader");
             if (apiObj.remove = function() {

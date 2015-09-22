@@ -32,12 +32,27 @@ def source_for_video(v, vr = None):
 			'file_mp4': video_source.source_mp4,
 			'file_webm': video_source.source_webm,
 
+			'status': 'ok',
+
+			# special settings, might need to move out of here eventually
+			'allow_youtube_clickthrough': video_source.allow_youtube_clickthrough
+
 		}
 	except ObjectDoesNotExist:
 		pass
 
 	# if we have a file object
 	try:
+
+		status_map = {
+			-1:'error',
+			0: 'awaiting_upload',
+			1: 'processing',
+			2: 'processing',
+			3: 'processing',
+			4: 'ok'
+		}
+
 		video_file = v.file.latest('created')
 		result = {
 			# basic
@@ -55,6 +70,8 @@ def source_for_video(v, vr = None):
 			# files
 			'file_mp4': settings.VIDEO_CDN + video_file.key + '.mp4',
 			'file_webm': settings.VIDEO_CDN + video_file.key + '.webm',
+
+			'status': status_map[video_file.status]
 			
 		}
 	except ObjectDoesNotExist:

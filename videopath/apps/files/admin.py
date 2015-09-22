@@ -15,7 +15,7 @@ admin.site.register(ImageFile, ImageFileAdmin)
 
 class VideoSourceAdmin(admin.ModelAdmin):
 	list_display = ('service', 'title', 'service_identifier', 'status', 'created')
-	search_fields = ['video__key', 'service_identifier', 'video__user__username']
+	search_fields = ['video__key', 'service_identifier', 'video__user__username', 'service']
 admin.site.register(VideoSource, VideoSourceAdmin)
 
 

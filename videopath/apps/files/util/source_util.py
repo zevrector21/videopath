@@ -61,7 +61,7 @@ def source_for_video(v, vr = None):
 
 			# params
 			'duration': video_file.video_duration,
-			'aspect': float(video_file.video_width) / float(video_file.video_height),
+			'aspect': float(video_file.video_width) / float(video_file.video_height) if video_file.video_height else 0,
 
 			# thumbs
 			'thumbnail_small': '',

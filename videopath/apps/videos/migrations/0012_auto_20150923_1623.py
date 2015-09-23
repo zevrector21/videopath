@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='VideoSource',
+            name='Source',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
@@ -37,5 +37,9 @@ class Migration(migrations.Migration):
                 'abstract': False,
             },
             bases=(models.Model,),
+        ),
+        migrations.RemoveField(
+            model_name='videorevision',
+            name='source',
         ),
     ]

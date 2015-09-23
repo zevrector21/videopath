@@ -5,7 +5,7 @@ from videopath.apps.common.models import VideopathBaseModel
 # Layout new source class
 # not in use at the moment
 #
-class VideoSource(VideopathBaseModel):
+class Source(VideopathBaseModel):
 
     # status
     STATUS_WAITING = "awaiting_upload"

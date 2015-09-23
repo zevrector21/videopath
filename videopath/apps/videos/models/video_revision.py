@@ -4,23 +4,21 @@ from hashlib import sha256
 from django.db import models
 
 from videopath.apps.common.models import VideopathBaseModel, ColorField
+from videopath.apps.videos.models import Source
 
 class VideoRevision(VideopathBaseModel):
 
     video = models.ForeignKey("videos.Video", related_name="revisions")
-    source = models.ForeignKey("Videos.VideoSource", related_name="source")
+    source = models.ForeignKey(
+        Source, 
+        related_name="revisions",
+        blank=True,
+        null=True,
+        default=None,
+        on_delete=models.SET_NULL
+    )
 
     title = models.CharField(max_length=255, default="New Video")
-
-    # link to source
-    source = models.ForeignKey(
-        "files.VideoSourceNew", 
-        blank=True, 
-        null=True, 
-        default=None, 
-        on_delete=models.SET_NULL,
-        related_name="video_revisions"
-        )
 
     # images (should actually be defined in the files module, works better
     # with a foreign relationship key in this case though)

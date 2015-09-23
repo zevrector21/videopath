@@ -1,12 +1,13 @@
 from django.core.management.base import BaseCommand
-from videopath.apps.videos.models import Video, VideoSource
+from videopath.apps.videos.models import Video, Source
+from django.core.exceptions import ObjectDoesNotExist
 
 
 def convert_file(file):
-	return VideoSource.objects.create()
+	return Source.objects.create()
 
 def convert_source(file):
-	return VideoSource.objects.create()
+	return Source.objects.create()
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
@@ -16,13 +17,13 @@ class Command(BaseCommand):
 			try:
 				video_file = v.file.latest('created')
 				source = convert_file(video_file)
-			except:
+			except ObjectDoesNotExist:
 				pass
 
 			try:
 				video_source = v.video_sources.latest('created')
 				source = convert_source(video_source)
-			except:
+			except ObjectDoesNotExist:
 				pass
 
 
@@ -35,7 +36,7 @@ class Command(BaseCommand):
 
 
        	print "videos: " + str(Video.objects.count())
-       	print "sources: " + str(VideoSource.objects.count())
+       	print "sources: " + str(Source.objects.count())
 
 
 	

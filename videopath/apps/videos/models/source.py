@@ -75,4 +75,4 @@ class Source(VideopathBaseModel):
     def save(self, *args, **kwargs):
         if not self.key:
             self.key = self.generate_key(32)
-        super(VideoSource, self).save(*args, **kwargs)
+        super(Source, self).save(*args, **kwargs)

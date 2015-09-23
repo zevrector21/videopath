@@ -189,6 +189,12 @@ admin.site.register(MarkerContent, MarkerContentAdmin)
 # Appearance
 #
 class PlayerAppearanceAdmin(admin.ModelAdmin):
+
+    raw_id_fields = ['user',]
+    autocomplete_lookup_fields = {
+        'fk': ['user',],
+    }
+
     fieldsets = (
         ('General', {
             'fields': ('description', 'user')

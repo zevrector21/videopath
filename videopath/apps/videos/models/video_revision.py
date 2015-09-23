@@ -8,6 +8,7 @@ from videopath.apps.common.models import VideopathBaseModel, ColorField
 class VideoRevision(VideopathBaseModel):
 
     video = models.ForeignKey("videos.Video", related_name="revisions")
+    source = models.ForeignKey("Videos.VideoSource", related_name="source")
 
     title = models.CharField(max_length=255, default="New Video")
 

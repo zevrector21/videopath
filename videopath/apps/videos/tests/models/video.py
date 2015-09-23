@@ -21,22 +21,22 @@ class TestCase(BaseTestCase):
 
     def test_publish_unpublish(self):
       	video = Video.objects.create(user=self.user)
-      	video.publish()
-      	video.unpublish()
+        self.assertIsNotNone(video.draft)
 
+      	video.publish()
+        self.assertIsNotNone(video.draft)
+        self.assertIsNotNone(video.current_revision)
+        self.assertNotEqual(video.draft_id, video.current_revision_id)
+
+      	video.unpublish()
+        self.assertIsNotNone(video.draft)
+        self.assertIsNone(video.current_revision)
 
     def test_create_new_draft(self):
         video = Video.objects.create(user=self.user)
         video.publish()
-        video.create_new_draft()
-
         self.assertIsNotNone(video.current_revision)
         self.assertIsNotNone(video.draft)
-
-    def test_delete_draft(self):
-        video = Video.objects.create(user=self.user)
-        video.delete_draft()
-        self.assertIsNone(video.draft)
 
     def test_duplication(self):
 

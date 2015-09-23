@@ -21,12 +21,12 @@ class VideoSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='video-detail')
 
     def get_thumbnails(self, video):
-        revision = video.get_draft_or_current_revision()
+        revision = video.draft
         return thumbnails_util.thumbnails_for_revision(revision)
 
     # also provide some info about the most recent revision for overviews
     def get_revision_info(self, video):
-        revision = video.get_draft_or_current_revision()
+        revision = video.draft
         if revision:
             return {
                 "title": revision.title,

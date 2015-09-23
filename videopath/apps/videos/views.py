@@ -100,7 +100,7 @@ def get_revision(request, vid=None, rev_type='published'):
     if published and video.current_revision_id:
         revision = video.current_revision
     elif not published:
-        revision = video.get_or_create_draft()
+        revision = video.draft
     else:
         raise Http404
 

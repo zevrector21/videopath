@@ -33,6 +33,9 @@ class VideoAdmin(admin.ModelAdmin):
     inlines = (VideoFileInlineAdmin, VideoSourceInlineAdmin)
 
     raw_id_fields = ['user',]
+    autocomplete_lookup_fields = {
+        'fk': ['user',],
+    }
 
     # actions
     actions=["make_published", "make_unpublished", "make_duplicated", "make_reexport"]
@@ -107,8 +110,11 @@ class VideoRevisionAdmin(admin.ModelAdmin):
     ordering = ('-created',)
     list_filter = ('video__key', 'id')
     inlines = (MarkerInlineAdmin, )
-    raw_id_fields = ['video',]
 
+    raw_id_fields = ['video',]
+    autocomplete_lookup_fields = {
+        'fk': ['video',],
+    }
 
     fieldsets = (
         ('General', {

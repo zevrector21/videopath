@@ -51,6 +51,10 @@ class Video(VideopathBaseModel):
     # define wether video is archived
     archived = models.BooleanField(default=False)
 
+    @staticmethod
+    def autocomplete_search_fields():
+        return ("id__iexact", "key__icontains",)
+
 
     def duplicate(self):
 

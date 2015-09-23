@@ -104,6 +104,12 @@ TEMPLATE_DIRS = (
 
 GRAPPELLI_ADMIN_TITLE = "Videopath Admin"
 
+GRAPPELLI_AUTOCOMPLETE_SEARCH_FIELDS = {
+    "auth": {
+        "user": ("email__icontains", "username__icontains",)
+    }
+}
+
 #
 #
 #

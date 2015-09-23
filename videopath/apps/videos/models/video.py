@@ -65,7 +65,7 @@ class Video(VideopathBaseModel):
 
         # make sure we only have one revision as draft
         # and the video is marked as unpublished
-        duplicate.draft = self.get_draft_or_current_revision().duplicate()
+        duplicate.draft = self.draft.duplicate()
         duplicate.current_revision = None
         duplicate.published = 0
 
@@ -87,24 +87,15 @@ class Video(VideopathBaseModel):
 
         return duplicate
 
-    # manage revisions/drafts
-    def delete_draft(self):
-        d = self.draft
-        self.draft = None
-        d.delete()
+    #
+    # Can be removed again after migration
+    #
+    def ensure_draft(self):
+        if self.draft_id == None:
+            if self.current_revision_id != None:
+                self.draft = self.current_revision.duplicate()
+                self.save()
 
-    def get_or_create_draft(self):
-        if self.draft_id != None:
-            return self.draft
-        else:
-            self.create_new_draft()
-            return self.draft
-
-    def get_draft_or_current_revision(self):
-        if self.draft_id != None:
-            return self.draft
-        else:
-            return self.current_revision
 
     def get_current_revision_or_draft(self):
         if self.current_revision_id != None:
@@ -112,20 +103,13 @@ class Video(VideopathBaseModel):
         else:
             return self.draft  
 
-    def create_new_draft(self):
-        if self.current_revision == None:
-            return
-
-        self.draft = self.current_revision.duplicate()
-        self.save()
-
     # publish / unpublish
     def publish(self):
         if self.draft == None:
             return
+
         old_current_revision = self.current_revision
-        self.current_revision = self.draft
-        self.draft = None
+        self.current_revision = self.draft.duplicate()
         self.published = 1
         self.save()
         if old_current_revision != None:
@@ -137,16 +121,12 @@ class Video(VideopathBaseModel):
 
     def unpublish(self):
         if self.current_revision == None:
-            return
-        if self.draft == None:
-            self.draft = self.current_revision
-            self.current_revision = None
+            pass
         else:
             self.current_revision.delete()
             self.current_revision = None
         self.published = 0
         self.save()
-        
         from videopath.apps.videos.util import video_export_util
         video_export_util.delete_export(self)
 

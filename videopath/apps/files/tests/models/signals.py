@@ -31,7 +31,6 @@ class ImageTests(BaseTestCase):
 
         # create new draft
         v.publish()
-        v.create_new_draft()
         self.assertEqual(ImageFile.objects.count(), 1)
         self.assertEqual(v.revisions.count(), 2)
         self.assertEqual(imf.markercontent.count(), 2)

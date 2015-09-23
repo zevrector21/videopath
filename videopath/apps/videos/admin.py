@@ -32,6 +32,8 @@ class VideoAdmin(admin.ModelAdmin):
     exclude = ['draft','current_revision']
     inlines = (VideoFileInlineAdmin, VideoSourceInlineAdmin)
 
+    raw_id_fields = ['user',]
+
     # actions
     actions=["make_published", "make_unpublished", "make_duplicated", "make_reexport"]
     def make_published(self, request, queryset):
@@ -105,6 +107,8 @@ class VideoRevisionAdmin(admin.ModelAdmin):
     ordering = ('-created',)
     list_filter = ('video__key', 'id')
     inlines = (MarkerInlineAdmin, )
+    raw_id_fields = ['video',]
+
 
     fieldsets = (
         ('General', {

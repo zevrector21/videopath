@@ -100,6 +100,10 @@ def process_notification(request, type):
         source.aspect = float( message['outputs'][0]['width'] ) / float(message['outputs'][0]['height'])
         source.duration = message['outputs'][0]['duration']
         source.status = Source.STATUS_OK
+        source.file_mp4 = key + '.mp4'
+        source.file_webm = key + '.webm'
+        source.thumbnail_small = key + '/00001.jpg'
+        source.thumbnail_big = key + '/00001-hd.jpg'
         send_transcode_succeeded_mail(source)
 
     elif state == 'ERROR':

@@ -18,7 +18,6 @@ def source_for_video(v, vr = None):
 			# basic
 			'service': video_source.service,
 			'service_identifier': video_source.service_identifier,
-			'status': True,	
 
 			# params
 			'duration': video_source.video_duration,
@@ -57,7 +56,6 @@ def source_for_video(v, vr = None):
 		result = {
 			# basic
 			'service': 'videopath',
-			'status': True,	
 
 			# params
 			'duration': video_file.video_duration,

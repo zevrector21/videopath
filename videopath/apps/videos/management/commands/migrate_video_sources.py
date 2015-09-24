@@ -91,6 +91,11 @@ class Command(BaseCommand):
 			if source and v.draft_id:
 				v.draft.source = source
 				v.draft.save()
+				if v.draft.iphone_images > 0:
+					source.jpg_sequence_support = True
+					source.jpg_sequence_length = v.draft.iphone_images
+
+
 			if source and v.current_revision_id:
 				v.current_revision.source = source
 				v.current_revision.save()

@@ -21,12 +21,6 @@ def current_thumbnail_index_for_video( v):
         return 1
     return file.thumbnail_index
 
-def available_thumbs_for_video( v):
-    result = []
-    for i in range(thumbnail_count_for_video(v)):
-        result.append(thumbnail_url_for_video(v, i + 1))
-    return result
-
 def thumbnail_count_for_video( v):
     amount = 1
     file = current_file_for_video(v)
@@ -60,10 +54,6 @@ def large_thumbnail_url_for_videofile( vfile, number=-1):
         vfile.key + "/" + filename + "-hd.jpg"
     return filename
 
-def set_thumbnail_index_for_video(v, index):
-    file = current_file_for_video(v)
-    file.thumbnail_index = index
-    file.save()
 
 # get thumb
 # helpers

@@ -5,11 +5,27 @@ from videopath.apps.files.util.files_util import file_url_for_markercontent
 from videopath.apps.files.util import thumbnails_util
 from videopath.apps.videos.util import appearance_util
 
+from django.conf import settings
 
 #
 # Source
 #
 class SourceSerializer(serializers.ModelSerializer):
+
+    #
+    # dynamically add extra info
+    #
+    def to_representation(self, instance):
+        ret = super(SourceSerializer, self).to_representation(instance)
+
+        # if we're hosting this video, prepend some urls with our cdns
+        if instance.service == 'videopath':
+            ret['thumbnail_small'] = settings.THUMBNAIL_CDN + ret['thumbnail_small']
+            ret['thumbnail_large'] = settings.THUMBNAIL_CDN + ret['thumbnail_large']
+            ret['file_mp4'] = settings.VIDEO_CDN + ret['file_mp4']
+            ret['file_webm'] = settings.VIDEO_CDN + ret['file_webm']
+
+        return ret
 
     class Meta:
         model = Source

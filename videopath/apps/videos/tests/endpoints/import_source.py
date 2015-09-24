@@ -1,7 +1,6 @@
 from videopath.apps.common.test_utils import BaseTestCase
 
 from videopath.apps.videos.models import Video
-from videopath.apps.files.models import VideoSource
 
 IMPORT_URL = '/v1/video/{0}/import_source/'
 
@@ -16,7 +15,9 @@ class TestCase(BaseTestCase):
 
         response = self.client_user1.post(IMPORT_URL.format(v.pk), {'url':'https://www.youtube.com/watch?v=PPN3KTtrnZM'})
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(VideoSource.objects.first().service, "youtube")
+
+        v = Video.objects.get(pk=v.id)
+        self.assertEqual(v.draft.source.service, "youtube")
 
     def test_vimeo_import(self):
         # create user and video
@@ -25,7 +26,9 @@ class TestCase(BaseTestCase):
 
         response = self.client_user1.post(IMPORT_URL.format(v.pk), {'url':'https://vimeo.com/36579366'})
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(VideoSource.objects.first().service, "vimeo")
+
+        v = Video.objects.get(pk=v.id)
+        self.assertEqual(v.draft.source.service, "vimeo")
 
     def test_wistia_import(self):
         # create user and video
@@ -34,7 +37,9 @@ class TestCase(BaseTestCase):
 
         response = self.client_user1.post(IMPORT_URL.format(v.pk), {'url':'http://home.wistia.com/medias/1gaiqzxu03'})
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(VideoSource.objects.first().service, "wistia")
+
+        v = Video.objects.get(pk=v.id)
+        self.assertEqual(v.draft.source.service, "wistia")
 
     def test_brightcove_import(self):
         # create user and video
@@ -43,6 +48,7 @@ class TestCase(BaseTestCase):
 
         #response = self.client_user1.post(IMPORT_URL.format(v.pk), {'url':'http://players.brightcove.net/4328472451001/default_default/index.html?videoId=4332059708001'})
         #self.assertEqual(response.status_code, 200)
+        v = Video.objects.get(pk=v.id)
         #self.assertEqual(VideoSource.objects.first().service, "brightcove")
 
         # disable brightcove import for now
@@ -59,5 +65,7 @@ class TestCase(BaseTestCase):
           }
         response = self.client_user1.post(IMPORT_URL.format(v.pk), data)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(VideoSource.objects.first().service, "custom")
+
+        v = Video.objects.get(pk=v.id)
+        self.assertEqual(v.draft.source.service, "custom")
         

@@ -15,7 +15,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from videopath.apps.videos.util.oembed_xml_renderer import OEmbedXMLRenderer
 from videopath.apps.videos.util import share_mail_util, oembed_util, icon_util
 from videopath.apps.videos.permissions import MarkerPermissions, VideoPermissions, MarkerContentPermissions, VideoRevisionPermissions, AuthenticatedPermission
-from videopath.apps.videos.models import Video, Marker, MarkerContent, VideoRevision
+from videopath.apps.videos.models import Video, Marker, MarkerContent, VideoRevision, Source
 from videopath.apps.videos.serializers import VideoRevisionDetailSerializer, VideoSerializer, MarkerSerializer, MarkerContentSerializer, VideoRevisionSerializer
 from videopath.apps.common.services import service_provider
 
@@ -225,3 +225,41 @@ class MarkerContentViewSet(viewsets.ModelViewSet):
             return MarkerContent.objects.filter(marker__video_revision__video__user=self.request.user, marker__id=mid)
         else:
             return MarkerContent.objects.filter(marker__video_revision__video__user=self.request.user)
+
+#
+# Import a video from youtube etc.
+#
+@api_view(['POST', 'GET'])
+def import_source(request, key=None):
+
+    # get video
+    video = get_object_or_404(Video, pk=key)
+    if video.user != request.user:
+        return Response(status=403)
+
+    service = service_provider.get_service("video_source_import")
+
+    try:
+        if "url" in request.data:
+            source = service.import_video_from_url(request.data["url"])
+        else:
+            source = service.import_video_from_server(request.data)
+    except Exception as e:
+        return Response({"error": e.message}, 400)
+
+    # create video source objects    
+    video.draft.source = Source.objects.create(status=Source.STATUS_OK, **source)
+    video.draft.save()
+
+    if "url" in request.data:
+        slack = service_provider.get_service("slack")
+        slack.notify("User " + request.user.email + " just imported video " + request.data["url"] + ".")
+
+    # try to set title on draft
+    try:
+        video.draft.title = source["description"]
+        video.draft.save()
+    except:
+        pass
+
+    return Response()

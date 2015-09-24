@@ -20,10 +20,6 @@ urlpatterns = patterns('',
    url(r'^image/upload/requestticket/(?P<type>.+)/(?P<related_id>[0-9]+)/$', 'videopath.apps.files.views.image_request_upload_ticket'),
    url(r'^image/upload/complete/(?P<ticket_id>.+)/$', 'videopath.apps.files.views.image_upload_complete'),
 
-   #
-   # video source import
-   #
-   url(r'^video/(?P<key>[0-9]+)/import_source/$','videopath.apps.files.views.import_source'),
 )
 
 

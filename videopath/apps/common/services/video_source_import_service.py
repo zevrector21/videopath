@@ -104,8 +104,8 @@ def _import_youtube(key):
     	"title": title,
     	"service_identifier": key,
     	"service": "youtube",
-    	"video_duration": duration,
-    	"video_aspect": aspect,
+    	"duration": duration,
+    	"aspect": aspect,
     	"thumbnail_url": thumbnail_url
     }
 
@@ -137,12 +137,13 @@ def _import_vimeo(key):
         j = simplejson.load(response)
         item = j[0]
         return {
-            "title":item["title"],
+            "description":item["title"],
             "service_identifier":key,
             "service":"vimeo",
-            "video_duration":item["duration"],
-            "video_aspect":float(item["width"]) / float(item["height"]),
-            "thumbnail_url":item["thumbnail_large"]
+            "duration":item["duration"],
+            "aspect":float(item["width"]) / float(item["height"]),
+            "thumbnail_url":item["thumbnail_large"],
+            "thumbnail_large":item["thumbnail_large"]
         }
     except urllib2.HTTPError:
         _raise()
@@ -158,12 +159,13 @@ def _import_wistia(key):
         response = requests.get(wistia_url)
         item = response.json()
         return {
-            "title":item["title"],
+            "description":item["title"],
             "service_identifier":key,
             "service":"wistia",
-            "video_duration":item["duration"],
-            "video_aspect":float(item["width"]) / float(item["height"]),
-            "thumbnail_url":item["thumbnail_url"]
+            "duration":item["duration"],
+            "aspect":float(item["width"]) / float(item["height"]),
+            "thumbnail_small":item["thumbnail_url"],
+            "thumbnail_large":item["thumbnail_url"]
         }
     except urllib2.HTTPError:
         _raise()
@@ -208,9 +210,11 @@ def _import_brightcove(key):
             'video_id': str(video_id),
             'player': str(player)
         }),
-        "video_duration": duration / 1000.0,
-        "video_aspect": float(width) / float(height),
-        "thumbnail_url": thumbnail_url
+        "duration": duration / 1000.0,
+        "aspect": float(width) / float(height),
+        "thumbnail_small": thumbnail_url,
+        "thumbnail_large": thumbnail_url
+
     }
 
     return result
@@ -263,10 +267,10 @@ def import_video_from_server(vars):
 
 	return {
 		"service":"custom",
-		"video_duration": duration,
-		"video_aspect": aspect,
-		"source_mp4": mp4,
-		"source_webm": webm
+		"duration": duration,
+		"aspect": aspect,
+		"file_mp4": mp4,
+		"file_webm": webm
 	}
 
 

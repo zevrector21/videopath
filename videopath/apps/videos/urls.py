@@ -34,6 +34,11 @@ urlpatterns = patterns('',
    url(r'^video-revision/(?P<rid>[0-9]+)/icon', icon_view),
    url(r'^video-revision/(?P<rid>[0-9]+)/thumbnail', thumbnail_view),
 
+   #
+   # video source import
+   #
+   url(r'^video/(?P<key>[0-9]+)/import_source/$','videopath.apps.videos.views.import_source'),
+
    # regular api urls
    url(r'', include(router.urls)),
 )

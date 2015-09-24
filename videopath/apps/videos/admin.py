@@ -106,7 +106,7 @@ class MarkerInlineAdmin(admin.TabularInline):
 class VideoRevisionAdmin(admin.ModelAdmin):
     list_display = (
         'title', 'marker_link', 'created_humanized', 'modified_humanized')
-    search_fields = ['title']
+    search_fields = ['title', 'video__key']
     ordering = ('-created',)
     list_filter = ('video__key', 'id')
     inlines = (MarkerInlineAdmin, )

@@ -32,6 +32,11 @@ class VideoAdmin(admin.ModelAdmin):
     exclude = ['draft','current_revision']
     inlines = (VideoFileInlineAdmin, VideoSourceInlineAdmin)
 
+    raw_id_fields = ['user',]
+    autocomplete_lookup_fields = {
+        'fk': ['user',],
+    }
+
     # actions
     actions=["make_published", "make_unpublished", "make_duplicated", "make_reexport"]
     def make_published(self, request, queryset):
@@ -106,6 +111,11 @@ class VideoRevisionAdmin(admin.ModelAdmin):
     list_filter = ('video__key', 'id')
     inlines = (MarkerInlineAdmin, )
 
+    raw_id_fields = ['video',]
+    autocomplete_lookup_fields = {
+        'fk': ['video',],
+    }
+
     fieldsets = (
         ('General', {
             'fields': ('video', 'title', 'description', 'iphone_images')
@@ -179,6 +189,12 @@ admin.site.register(MarkerContent, MarkerContentAdmin)
 # Appearance
 #
 class PlayerAppearanceAdmin(admin.ModelAdmin):
+
+    raw_id_fields = ['user',]
+    autocomplete_lookup_fields = {
+        'fk': ['user',],
+    }
+
     fieldsets = (
         ('General', {
             'fields': ('description', 'user')

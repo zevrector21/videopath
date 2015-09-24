@@ -14,32 +14,52 @@ class UserAdmin(_UserAdmin):
         link = "/admin/videos/video/?user__username=" + obj.username
         return "<a href = '" + link + "'>List of Videos</a> (" + str(obj.videos.count()) + ")"
     videos_link.allow_tags = True
-    pass
+    
 
 
 class UserSettingsAdmin(admin.ModelAdmin):
     search_fields = ['user__username', 'user__email']
+    raw_id_fields = ['user',]
+    autocomplete_lookup_fields = {
+        'fk': ['user',],
+    }
 
 
 class UserActivityAdmin(admin.ModelAdmin):
     list_display = ('user', 'last_seen')
     ordering = ('-last_seen',)
+    raw_id_fields = ['user',]
+    autocomplete_lookup_fields = {
+        'fk': ['user',],
+    }
     
 
 class UserActivityDayAdmin(admin.ModelAdmin):
     list_display = ('user', 'day')
     ordering = ('-day',)
+    raw_id_fields = ['user',]
+    autocomplete_lookup_fields = {
+        'fk': ['user',],
+    }
 
 
 class AutomatedMailAdmin(admin.ModelAdmin):
     list_display = ('user', 'mailtype', 'created')
     ordering = ('-created',)
+    raw_id_fields = ['user',]
+    autocomplete_lookup_fields = {
+        'fk': ['user',],
+    }
 
 
 class TokenAdmin(admin.ModelAdmin):
     list_display = ('key', 'user', 'created', 'last_used')
     fields = ('user',)
     ordering = ('-last_used',)
+    raw_id_fields = ['user',]
+    autocomplete_lookup_fields = {
+        'fk': ['user',],
+    }
 
 
 class OTTokenAdmin(admin.ModelAdmin):

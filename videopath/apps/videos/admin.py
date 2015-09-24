@@ -3,7 +3,7 @@ import humanize
 from django.contrib import admin
 
 from videopath.apps.files.models import VideoSource, VideoFile
-from videopath.apps.videos.models import Video, Marker, MarkerContent, VideoRevision, PlayerAppearance
+from videopath.apps.videos.models import Video, Marker, MarkerContent, VideoRevision, PlayerAppearance, Source
 
 from videopath.apps.videos.util import video_export_util
 
@@ -222,4 +222,12 @@ class PlayerAppearanceAdmin(admin.ModelAdmin):
     )
 
 admin.site.register(PlayerAppearance, PlayerAppearanceAdmin)
+
+#
+# Video Source
+#
+class SourceAdmin(admin.ModelAdmin):
+    list_display = ( 'service', 'key')
+
+admin.site.register(Source, SourceAdmin)
 

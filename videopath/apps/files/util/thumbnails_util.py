@@ -87,21 +87,12 @@ def thumbnails_for_revision( revision):
     # try video source
     try:
         return {
-            "normal": revision.video.video_sources.all()[0].thumbnail_url,
-            "large": revision.video.video_sources.all()[0].thumbnail_url
+            "normal": revision.source.thumbnail_small,
+            "large": revision.source.thumbnail_large
         }
     except:
         pass
 
-    # try video file
-    try:
-        videofile = revision.video.file.all()[0]
-        return {
-            "normal": thumbnail_url_for_videofile(videofile),
-            "large": large_thumbnail_url_for_videofile(videofile)
-        }
-    except:
-        pass
 
     return {
             "normal": "",

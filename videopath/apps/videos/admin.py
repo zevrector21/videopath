@@ -228,6 +228,7 @@ admin.site.register(PlayerAppearance, PlayerAppearanceAdmin)
 #
 class SourceAdmin(admin.ModelAdmin):
     list_display = ( 'service', 'key')
+    search_fields = ['key', 'revisions__video__key']
 
     fieldsets = (
         ('General', {

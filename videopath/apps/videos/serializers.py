@@ -223,25 +223,6 @@ class VideoRevisionDetailSerializer(VideoRevisionSerializer):
         ret["source"] = source_util.source_for_revision(instance)
         return ret
 
-        # source_type = "unknown"
-        # try:
-        #     instance.video.file.latest("created")
-        #     source_type = "videopath"
-        # except:
-        #     pass
-
-        # try:
-        #     s = instance.video.video_sources.latest("created")
-        #     source_type = s.service
-        # except:
-        #     pass
-
-
-        # ret["source"] = {
-        #     "type": source_type,
-        #     "iphone_support": instance.iphone_images > 10
-        # }
-
 
         
 

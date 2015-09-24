@@ -21,12 +21,6 @@ urlpatterns = patterns('',
    url(r'^image/upload/complete/(?P<ticket_id>.+)/$', 'videopath.apps.files.views.image_upload_complete'),
 
    #
-   # manage thumbs api
-   #
-   url(r'^video/thumbs/(?P<video_id>[0-9]+)/delete_custom/$', 'videopath.apps.files.views.delete_custom_thumb'), 
-   url(r'^video/thumbs/(?P<video_id>[0-9]+)/$', 'videopath.apps.files.views.video_thumbs'),
-
-   #
    # video source import
    #
    url(r'^video/(?P<key>[0-9]+)/import_source/$','videopath.apps.files.views.import_source'),

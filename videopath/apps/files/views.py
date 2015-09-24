@@ -70,37 +70,6 @@ def image_upload_complete(request, ticket_id=None):
         'file_url': settings.IMAGE_CDN + ifile.key
     })
 
-#
-# Handle thumbnails
-#
-@api_view(['GET'])
-def video_thumbs(request, video_id=None):
-
-    video = get_object_or_404(Video, pk=video_id)
-    file = current_file_for_video(video)
-    if video.user != request.user or file == None or file.status != VideoFile.TRANSCODING_COMPLETE:
-        return Response(status=403)
-
-    if request.method == 'POST':
-        post = json.loads(request.body)
-        thumbnails_util.set_thumbnail_index_for_video(video, post["index"])
-
-    return Response({
-        'index': thumbnails_util.current_thumbnail_index_for_video(video), 
-        'available': thumbnails_util.available_thumbs_for_video(video)
-    })
-
-
-@api_view(['POST'])
-def delete_custom_thumb(request, video_id=None):
-    # only allow request if video is found and user is owner
-    video_revision = get_object_or_404(VideoRevision, pk=video_id)
-    if video_revision.video.user != request.user:
-        return Response(status=403)
-    video_revision.custom_thumbnail = None
-    video_revision.save()
-    return Response()
-
 
 #
 # Handle file uploads

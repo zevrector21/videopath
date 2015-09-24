@@ -94,6 +94,7 @@ class Command(BaseCommand):
 				if v.draft.iphone_images > 0:
 					source.jpg_sequence_support = True
 					source.jpg_sequence_length = v.draft.iphone_images
+					print "jpg migrate: " + v.key + " -> " + source.key
 
 
 			if source and v.current_revision_id:

@@ -32,3 +32,17 @@ class TestCase(BaseTestCase):
         self.assertEqual(ss.data['thumbnail_small'],'http://t1.jpg')
         self.assertEqual(ss.data['thumbnail_large'],'http://t2.jpg')
         self.assertEqual(ss.data['service'],'youtube')
+
+    def test_jpg_sequence(self):
+    	source = Source.objects.create(
+        		service = 'youtube',
+        		duration=100,
+        		thumbnail_small = 'http://t1.jpg',
+        		thumbnail_large = 'http://t2.jpg',
+        		jpg_sequence_support=True,
+        		jpg_sequence_length=100
+        	)
+        ss = SourceSerializer(source)
+    	self.assertEqual(ss.data['jpg_sequence_support'],True)
+        self.assertEqual(ss.data['jpg_sequence_length'],100)
+        self.assertEqual(ss.data['jpg_sequence_base_url'], settings.JPGS_CDN + source.key.lower() + '/')

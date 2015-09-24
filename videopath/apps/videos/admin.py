@@ -229,5 +229,26 @@ admin.site.register(PlayerAppearance, PlayerAppearanceAdmin)
 class SourceAdmin(admin.ModelAdmin):
     list_display = ( 'service', 'key')
 
+    fieldsets = (
+        ('General', {
+            'fields': ('key', 'status')
+        }),
+        ('Service info', {
+            'fields': ('service', 'service_identifier')
+        }),
+        ('Metadata', {
+            'fields': ('duration', 'aspect')
+        }),
+        ('Sources', {
+            'fields': ('file_mp4', 'file_webm', 'thumbnail_large', 'thumbnail_small')
+        }),
+        ('JPG Support', {
+            'fields': ('jpg_sequence_support', 'jpg_sequence_length')
+        }),
+        ('Other', {
+            'fields': ('description','youtube_allow_clickthrough')
+        })
+    )
+
 admin.site.register(Source, SourceAdmin)
 

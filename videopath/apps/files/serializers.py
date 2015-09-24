@@ -1,66 +1,10 @@
-import json
-
 from django.conf import settings
 
 from rest_framework import serializers
 
-from videopath.apps.files.models import VideoFile, VideoSource, ImageFile, VideoSourceNew
-from videopath.apps.files.util import thumbnails_util
+from videopath.apps.files.models import  ImageFile
 from videopath.apps.files.settings import image_sizes
 
-
-
-#
-#
-#
-class VideoSourceSerializer(serializers.ModelSerializer):
-
-    large_thumbnail_url = serializers.ReadOnlyField(source='thumbnail_url')
-
-
-    service_identifier = serializers.SerializerMethodField()
-
-    def get_service_identifier(self, video_source):
-        try:
-            return json.loads(video_source.service_identifier)
-        except:
-            return video_source.service_identifier
-
-
-    class Meta:
-        model = VideoSource
-        fields = ('status', 'service', 'service_identifier', 'video_duration',
-                  'video_aspect', 'thumbnail_url', 'large_thumbnail_url', 'source_webm', 'source_mp4', 'allow_youtube_clickthrough')
-
-
-#
-#
-#
-class VideoFileSerializer(serializers.ModelSerializer):
-
-    base_url = serializers.SerializerMethodField()
-    thumbnail_url = serializers.SerializerMethodField()
-    video_aspect = serializers.SerializerMethodField()
-    large_thumbnail_url = serializers.SerializerMethodField()
-
-    def get_thumbnail_url(self, videofile):
-        return thumbnails_util.thumbnail_url_for_videofile(videofile)
-
-    def get_large_thumbnail_url(self, videofile):
-        return thumbnails_util.large_thumbnail_url_for_videofile(videofile)
-
-    def get_base_url(self, videofile):
-        return settings.VIDEO_CDN + videofile.key
-
-    def get_video_aspect(self, videofile, *args, **kwargs):
-        if videofile.video_height == 0:
-            return 0
-        return float(videofile.video_width) / float(videofile.video_height)
-
-    class Meta:
-        model = VideoFile
-        fields = ('status', 'video_aspect', 'video_duration',
-                  'thumbnail_url', 'status', 'base_url', 'large_thumbnail_url')
 
 #
 #

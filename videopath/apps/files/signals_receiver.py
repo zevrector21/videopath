@@ -4,7 +4,7 @@ from django.core.management import call_command
 from django.conf import settings
 
 from videopath.apps.files.util.aws_util import delete_image_files_for_key
-from videopath.apps.files.models import VideoFile, ImageFile
+from videopath.apps.files.models import ImageFile
 from videopath.apps.videos.models import MarkerContent
 from videopath.apps.vp_admin.signals import daily_jobs
 
@@ -15,12 +15,6 @@ def delete_image_file_object(sender, instance=None, **kwargs):
     for image_file in instance.image_file.all():
         if image_file.markercontent.count() == 1:
             image_file.delete()
-
-# delete files on s3 if file object is deleted
-@receiver(pre_delete, sender=VideoFile)
-def delete_all_video_files(sender, instance=None, **kwargs):
-    pass
-    # delete_video_files_for_key(instance.key)
 
 # delete files on s3 if file object is deleted
 @receiver(pre_delete, sender=ImageFile)

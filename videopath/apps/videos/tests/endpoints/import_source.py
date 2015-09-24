@@ -49,7 +49,6 @@ class TestCase(BaseTestCase):
         #response = self.client_user1.post(IMPORT_URL.format(v.pk), {'url':'http://players.brightcove.net/4328472451001/default_default/index.html?videoId=4332059708001'})
         #self.assertEqual(response.status_code, 200)
         v = Video.objects.get(pk=v.id)
-        #self.assertEqual(VideoSource.objects.first().service, "brightcove")
 
         # disable brightcove import for now
 

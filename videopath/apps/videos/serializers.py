@@ -3,7 +3,6 @@ from rest_framework import serializers
 from videopath.apps.videos.models import Video, Marker, MarkerContent, VideoRevision, PlayerAppearance, Source
 from videopath.apps.files.util.files_util import file_url_for_markercontent
 from videopath.apps.files.util import thumbnails_util
-from videopath.apps.files.serializers import VideoSourceSerializer, VideoFileSerializer
 from videopath.apps.videos.util import appearance_util
 
 
@@ -24,9 +23,6 @@ class SourceSerializer(serializers.ModelSerializer):
 class VideoSerializer(serializers.ModelSerializer):
 
     revision_info = serializers.SerializerMethodField()
-
-    video_sources = VideoSourceSerializer(required=False, read_only=True, many=True)
-    video_files = VideoFileSerializer(required=False, source="file", read_only=True, many=True)
 
     thumbnails = serializers.SerializerMethodField()
 
@@ -56,7 +52,7 @@ class VideoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Video
-        fields = ('id', 'video_files', 'thumbnails', 'video_sources', 'key', 'published',
+        fields = ('id', 'thumbnails', 'key', 'published',
                   'created', 'draft', 'current_revision', 'total_plays', 'total_views', 'revision_info', 'url', 'source')
         read_only_fields = ('user', 'draft', 'current_revision', 'archived', 'url', 'total_plays', 'total_views', 'key', 'published')
 

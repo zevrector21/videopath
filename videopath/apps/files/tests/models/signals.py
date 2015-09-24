@@ -1,7 +1,7 @@
 
 from videopath.apps.common.test_utils import BaseTestCase
 from videopath.apps.videos.models import Video, Marker, MarkerContent
-from videopath.apps.files.models import VideoFile, ImageFile
+from videopath.apps.files.models import ImageFile
 
 
 # Uses the standard django frame testing client
@@ -10,12 +10,6 @@ class ImageTests(BaseTestCase):
     def setUp(self):
         self.setup_users()
 
-    # not working right now
-    def test_signals(self):
-
-        # create video file
-        v = Video.objects.create(user=self.user1)
-        vf = VideoFile.objects.create(video=v)
 
 
     def test_image_file_delete(self):

@@ -101,12 +101,13 @@ def _import_youtube(key):
     aspect = float(max_width) / float(max_height)
     
     return {
-    	"title": title,
+    	"description": title,
     	"service_identifier": key,
     	"service": "youtube",
     	"duration": duration,
     	"aspect": aspect,
-    	"thumbnail_url": thumbnail_url
+    	"thumbnail_small": thumbnail_url,
+        "thumbnail_large": thumbnail_url
     }
 
 
@@ -142,7 +143,7 @@ def _import_vimeo(key):
             "service":"vimeo",
             "duration":item["duration"],
             "aspect":float(item["width"]) / float(item["height"]),
-            "thumbnail_url":item["thumbnail_large"],
+            "thumbnail_small":item["thumbnail_large"],
             "thumbnail_large":item["thumbnail_large"]
         }
     except urllib2.HTTPError:

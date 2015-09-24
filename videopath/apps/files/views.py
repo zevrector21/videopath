@@ -1,13 +1,10 @@
-import json
 
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 
-from videopath.apps.videos.models import MarkerContent, Video, VideoRevision
-from videopath.apps.files.util.files_util import current_file_for_video
-from videopath.apps.files.util import thumbnails_util
-from videopath.apps.files.models import ImageFile, VideoFile, VideoSource
-from videopath.apps.files.util.aws_util import get_upload_endpoint, verify_upload, start_transcoding_video
+from videopath.apps.videos.models import MarkerContent, VideoRevision
+from videopath.apps.files.models import ImageFile
+from videopath.apps.files.util.aws_util import get_upload_endpoint, verify_upload
 from videopath.apps.common.services import service_provider
 
 from rest_framework.decorators import api_view
@@ -69,58 +66,5 @@ def image_upload_complete(request, ticket_id=None):
         'file_found': file_found,
         'file_url': settings.IMAGE_CDN + ifile.key
     })
-
-
-#
-# Handle file uploads
-#
-@api_view(['POST', 'GET'])
-def video_request_upload_ticket(request, video_id=None):
-
-    # only allow request if video is found and user is owner
-    video = get_object_or_404(Video, pk=video_id)
-    if video.user != request.user:
-        return Response(status=403)
-
-    file = VideoFile()
-    video.file.add(file)
-    file.save()
-
-    return Response({
-        'ticket_id': file.key, 
-        'endpoint': get_upload_endpoint(key=file.key), 
-        'video_id': video.id
-    })
-
-
-@api_view(['POST', 'GET'])
-def video_upload_complete(request, ticket_id=None):
-
-    vfile = get_object_or_404(VideoFile, key=ticket_id)
-
-    file_found = verify_upload(ticket_id=ticket_id)
-    jobStarted = 0
-    if file_found:
-        vfile.status = VideoFile.FILE_RECEIVED
-        vfile.save()
-        job = start_transcoding_video(vfile)
-
-        # save data in file
-        if job:
-            jobStarted = 1
-            vfile.transcoding_job_id = job
-            vfile.state = VideoFile.TRANSCODE_SUBMITTED
-            vfile.save()
-        else:
-            vfile.state = VideoFile.TRANSCODING_ERROR
-            
-    return Response({
-        'ticket_id': ticket_id,
-        'file_found': file_found, 
-        'job_started': jobStarted
-    })
-
-
-
 
     

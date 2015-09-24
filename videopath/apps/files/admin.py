@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from videopath.apps.files.models import VideoFile, ImageFile, VideoSource, VideoSourceNew
+from videopath.apps.files.models import VideoFile, ImageFile, VideoSource
 
 class VideoFileAdmin(admin.ModelAdmin):
 	list_display = ('key', 'created', 'status', 'transcoding_job_id',
@@ -25,8 +25,3 @@ class VideoSourceAdmin(admin.ModelAdmin):
 	    'fk': ['video',],
 	}
 admin.site.register(VideoSource, VideoSourceAdmin)
-
-
-class VideoSourceNewAdmin(admin.ModelAdmin):
-	list_display = ('service', 'description', 'service_identifier', 'status', 'created')
-admin.site.register(VideoSourceNew, VideoSourceNewAdmin)

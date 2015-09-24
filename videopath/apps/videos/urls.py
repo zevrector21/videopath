@@ -39,6 +39,17 @@ urlpatterns = patterns('',
    #
    url(r'^video/(?P<key>[0-9]+)/import_source/$','videopath.apps.videos.views.import_source'),
 
+   #
+   # external notifications (for from aws)
+   #
+   url(r'^notifications/transcode/(?P<type>.+)/$', 'videopath.apps.videos.video_file_views.process_notification'),
+
+   #
+   # video file uploads
+   #
+   url(r'^video/upload/requestticket/(?P<video_id>[0-9]+)/$', 'videopath.apps.videos.video_file_views.video_request_upload_ticket'),
+   url(r'^video/upload/complete/(?P<ticket_id>.+)/$', 'videopath.apps.videos.video_file_views.video_upload_complete'),
+
    # regular api urls
    url(r'', include(router.urls)),
 )

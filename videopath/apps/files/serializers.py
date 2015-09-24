@@ -80,12 +80,3 @@ class ImageFileSerializer(serializers.ModelSerializer):
     class Meta:
         model = ImageFile
         fields = ('status', 'representations')
-
-#
-#
-#
-class VideoSourceNewSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = VideoSourceNew
-        exclude = ('id',)

@@ -179,26 +179,26 @@ def send_signup_email(user):
 
 
 # transcoding mails
-def send_transcode_succeeded_mail(file):
-    revision = file.video.get_current_revision_or_draft()
+def send_transcode_succeeded_mail(source):
+    revision = source.revisions.first()
 
     send_templated_mail(
-        file.video.user,
+        revision.video.user,
         "\"" + revision.title + "\" is ready to edit!",
         "transcode_complete",
         {
             "title": revision.title,
-            "video_id": file.video.id
+            "video_id": revision.video.id
         },
         ["transcode_succeed"]
     )
 
 
-def send_transcode_failed_mail(file):
-    revision = file.video.get_current_revision_or_draft()
+def send_transcode_failed_mail(source):
+    revision = source.revisions.first()
 
     send_templated_mail(
-        file.video.user,
+        revision.video.user,
         "Error processing \"" + revision.title + "\"",
         "transcode_error",
         {

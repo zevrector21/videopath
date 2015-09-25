@@ -96,6 +96,7 @@ def view(request):
 	# Content Block Stats
 	#
 	result += helpers.header("Content Block Stats (Published)")
+	
 
 	num_text_block = get_result(SELECT_PUBLISHED_CONTENT_BLOCKS + " WHERE vmc.type = 'text'")
 	num_image_block = get_result(SELECT_PUBLISHED_CONTENT_BLOCKS + " WHERE vmc.type = 'image'")

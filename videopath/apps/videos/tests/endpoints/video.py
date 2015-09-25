@@ -49,7 +49,7 @@ class TestCase(EndpointsBaseTestCase):
         response = self.client_user1.post_json(VIDEO_URL, {"demo_project":"1"})
         self.assertEqual(response.status_code, 201)
         # assert that this video now has a video source (the youtube demo)
-        self.assertNotNone(Video.objects.get(pk=response.data["id"]).draft.source) 
+        self.assertIsNotNone(Video.objects.get(pk=response.data["id"]).draft.source) 
 
     def test_publish(self):
         self.setup_users_clients_and_videos()

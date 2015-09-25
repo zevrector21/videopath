@@ -76,10 +76,7 @@ def thumbnails_for_revision( revision):
 
     # try video source
     try:
-        return {
-            "normal": revision.source.thumbnail_small,
-            "large": revision.source.thumbnail_large
-        }
+        return revision.source.get_thumbnails()
     except:
         pass
 

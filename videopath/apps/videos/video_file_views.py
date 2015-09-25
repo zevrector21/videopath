@@ -104,7 +104,7 @@ def process_notification(request, type):
         source.file_mp4 = key + '.mp4'
         source.file_webm = key + '.webm'
         source.thumbnail_small = key + '/'+ thumbs_no + '.jpg'
-        source.thumbnail_big = key + '/' + thumbs_no + '-hd.jpg'
+        source.thumbnail_large = key + '/' + thumbs_no + '-hd.jpg'
         send_transcode_succeeded_mail(source)
 
     elif state == 'ERROR':

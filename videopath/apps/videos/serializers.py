@@ -27,6 +27,8 @@ class SourceSerializer(serializers.ModelSerializer):
 
         ret['jpg_sequence_base_url'] = settings.JPGS_CDN + instance.key.lower() + '/'
 
+        print ret
+
         return ret
 
     class Meta:

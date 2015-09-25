@@ -1,6 +1,8 @@
 from django.db import models
 from videopath.apps.common.models import VideopathBaseModel
 
+from django.conf import settings
+
 #
 # Layout new source class
 # not in use at the moment
@@ -71,6 +73,18 @@ class Source(VideopathBaseModel):
     # save support for jpgs
     jpg_sequence_support = models.BooleanField(default=False)
     jpg_sequence_length = models.IntegerField(default=0)
+
+    def get_thumbnails(self):
+        if self.service == 'videopath':
+            return {
+                "normal": settings.THUMBNAIL_CDN + self.thumbnail_small,
+                "large": settings.THUMBNAIL_CDN + self.thumbnail_large
+            }
+        else:
+            return {
+                "normal": self.thumbnail_small,
+                "large": self.thumbnail_large
+            } 
 
     def save(self, *args, **kwargs):
         if not self.key:

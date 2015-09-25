@@ -34,6 +34,11 @@ DEMO_VIDEOS = {
 }
 
 #
+# Maintenance mode
+#
+MAINTENANCE_IP = ''
+
+#
 # Invoice Numbers
 #
 INVOICE_START_NUMBER = 32049

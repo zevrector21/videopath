@@ -87,6 +87,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 
     'videopath.middleware.corsheader.CorsHeaderMiddleware',
+    'videopath.middleware.maintenance_mode.MaintenanceModeMiddleware',
     'videopath.middleware.token_auth.TokenAuthMiddleware',
     'videopath.apps.users.middleware.manipulate_path.ManipulatePathMiddleware',
     # Uncomment the next line for simple clickjacking protection:

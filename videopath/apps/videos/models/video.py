@@ -80,12 +80,6 @@ class Video(VideopathBaseModel):
 
         duplicate.save()
 
-        # copy over video sources
-        for source in self.video_sources.all():
-            duplicate_source = source.duplicate()
-            duplicate_source.video = duplicate
-            duplicate_source.save()
-
         duplicate.draft.video = duplicate
         duplicate.draft.save()
 

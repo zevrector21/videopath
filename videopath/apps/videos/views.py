@@ -163,9 +163,11 @@ class VideoViewSet(viewsets.ModelViewSet):
         try:
             demo = self.request.DATA.get("demo_project", None)
             if demo:
-                from videopath.apps.files.models import VideoSource
-                data = {'service': 'youtube', 'title': 'Videopath Demo Video', 'video_aspect': 1.7777777777777777, 'thumbnail_url': 'https://i.ytimg.com/vi/2rtGFAnyf-s/maxresdefault.jpg', 'video_duration': 46, 'service_identifier': '2rtGFAnyf-s'}
-                VideoSource.objects.create(video=instance, status=VideoSource.STATUS_OK, **data)
+                from videopath.apps.videos.models import Source
+                thumb = 'https://i.ytimg.com/vi/2rtGFAnyf-s/maxresdefault.jpg'
+                data = {'service': 'youtube', 'description': 'Videopath Demo Video', 'aspect': 1.7777777777777777, 'thumbnail_small': thumb, 'thumbnail_large': thumb, 'duration': 46, 'service_identifier': '2rtGFAnyf-s'}
+                instance.draft.source = Source.objects.create( status=Source.STATUS_OK, **data)
+                instance.draft.save()
         except:
             raise ValidationError(detail="Unknown demo project")
         

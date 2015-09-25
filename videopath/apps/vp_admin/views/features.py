@@ -20,8 +20,7 @@ def view(request):
 	SELECT_PUBLISHED_REVISIONS = "SELECT COUNT(*) FROM videos_video as v JOIN videos_videorevision as vr ON(v.current_revision_id = vr.id) JOIN auth_user as u ON (u.id = v.user_id)"
 	SELECT_PUBLISHED_MARKERS = SELECT_PUBLISHED_REVISIONS + " JOIN videos_marker vm ON (vm.video_revision_id = vr.id)"
 	SELECT_PUBLISHED_CONTENT_BLOCKS = SELECT_PUBLISHED_MARKERS + " JOIN videos_markercontent vmc ON (vmc.marker_id = vm.id)"
-	SELECT_VIDEO_SOURCES = SELECT_PUBLISHED_REVISIONS + " JOIN files_videosource as vs ON (vs.video_id = v.id)"
-	SELECT_VIDEO_FILES = SELECT_PUBLISHED_REVISIONS + " JOIN files_videofile as vf ON (vf.video_id = v.id)"
+	SELECT_VIDEO_SOURCES = SELECT_PUBLISHED_REVISIONS + " JOIN videos_source as s ON (vr.source_id = s.id)"
 
 	result = "Staff videos are not included in these statistics. <br />Only published videos are counted."
 
@@ -49,12 +48,12 @@ def view(request):
 	#
 	result += helpers.header("Import Source Stats (Published)")
 
-	num_uploaded = get_result(SELECT_VIDEO_FILES)
+	num_uploaded = get_result(SELECT_VIDEO_SOURCES + " WHERE s.service like 'videopath'")
 
-	num_youtube = get_result(SELECT_VIDEO_SOURCES + " WHERE vs.service like 'youtube'")
-	num_vimeo = get_result(SELECT_VIDEO_SOURCES + " WHERE vs.service like 'vimeo'")
-	num_wistia = get_result(SELECT_VIDEO_SOURCES + " WHERE vs.service like 'wistia'")
-	num_brightcove = get_result(SELECT_VIDEO_SOURCES + " WHERE vs.service like 'brightcove'")
+	num_youtube = get_result(SELECT_VIDEO_SOURCES + " WHERE s.service like 'youtube'")
+	num_vimeo = get_result(SELECT_VIDEO_SOURCES + " WHERE s.service like 'vimeo'")
+	num_wistia = get_result(SELECT_VIDEO_SOURCES + " WHERE s.service like 'wistia'")
+	num_brightcove = get_result(SELECT_VIDEO_SOURCES + " WHERE s.service like 'brightcove'")
 
 	table = []
 	table.append(["Uploaded Files", num_uploaded])

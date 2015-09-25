@@ -6,7 +6,6 @@ from django.template.response import SimpleTemplateResponse
 
 from videopath.apps.users.models import UserActivity
 from videopath.apps.videos.models import Video
-from videopath.apps.files.models import VideoSource
 from videopath.apps.vp_admin.views import helpers
 
 
@@ -21,11 +20,11 @@ def view(request):
 
     # general stats videos
     all_videos = Video.objects.all()
-    all_demos = VideoSource.objects.filter(
-        service_identifier="2rtGFAnyf-s").count()
+    all_demos = Video.objects.filter(
+        draft__source__service_identifier="2rtGFAnyf-s").count()
     all_videos_published = Video.objects.filter(published=Video.PUBLIC)
-    all_demos_published = VideoSource.objects.filter(
-        service_identifier="2rtGFAnyf-s", video__published=Video.PUBLIC).count()
+    all_demos_published = Video.objects.filter(
+        draft__source__service_identifier="2rtGFAnyf-s", published=Video.PUBLIC).count()
     result += "Number of video projects: " + \
         str(all_videos.count()) + " (" + str(all_demos) + " demos) \n"
     result += "Number of published video projects: " + \

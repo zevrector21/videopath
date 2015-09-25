@@ -3,11 +3,9 @@ import humanize
 from django.contrib.auth.models import User
 from django.contrib.admin.views.decorators import staff_member_required
 from django.template.response import SimpleTemplateResponse
-from django.db.models import Count
 
 
 from videopath.apps.videos.models import Video
-from videopath.apps.files.models import VideoSource
 from videopath.apps.vp_admin.views import helpers
 
 @staff_member_required
@@ -19,7 +17,7 @@ def listview(request):
 
         # published
         videos_published = u.videos.filter(published=Video.PUBLIC, archived=False).count()
-        demo_videos = VideoSource.objects.filter(
+        demo_videos = Video.objects.filter(
             video__user=u, service_identifier="2rtGFAnyf-s").count()
 
         if videos == 0:

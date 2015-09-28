@@ -153,7 +153,7 @@ class VideoViewSet(viewsets.ModelViewSet):
         videos = Video.objects.filter(user=self.request.user, archived=False)
         q = self.request.GET.get('q')
         if q:
-            videos = videos.filter(draft__title__contains = q)
+            videos = videos.filter(draft__title__icontains = q)
         return videos.extra(order_by=['-created'])
 
 

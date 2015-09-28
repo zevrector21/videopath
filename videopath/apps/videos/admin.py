@@ -2,22 +2,9 @@ import humanize
 
 from django.contrib import admin
 
-from videopath.apps.files.models import VideoSource, VideoFile
 from videopath.apps.videos.models import Video, Marker, MarkerContent, VideoRevision, PlayerAppearance, Source
 
 from videopath.apps.videos.util import video_export_util
-
-#
-# Video file inline
-#
-class VideoFileInlineAdmin(admin.TabularInline):
-    model = VideoFile
-
-#
-# Video source inline
-#
-class VideoSourceInlineAdmin(admin.TabularInline):
-    model = VideoSource
 
 #
 # Video
@@ -30,7 +17,6 @@ class VideoAdmin(admin.ModelAdmin):
     ordering = ('-created',)
     search_fields = ['key', 'id', 'user__username', 'user__email']
     exclude = ['draft','current_revision']
-    inlines = (VideoFileInlineAdmin, VideoSourceInlineAdmin)
 
     raw_id_fields = ['user',]
     autocomplete_lookup_fields = {

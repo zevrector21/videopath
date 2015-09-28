@@ -1,3 +1,5 @@
+import json
+
 from videopath.apps.videos.tests.endpoints.endpoints_base import EndpointsBaseTestCase
 
 from videopath.apps.videos.models import Video
@@ -86,6 +88,52 @@ class TestCase(EndpointsBaseTestCase):
         # try to send share mail
         response = self.client_user1.post_json(SEND_SHARE_MAIL_URL.format(vid), {"recipients": "null@videopath.com"})
         self.assertEqual(response.status_code, 200)
+
+
+    #
+    # Test pagination and searching
+    #
+    def create_videos(self, amount = 30):
+        while amount:
+            v = Video.objects.create(user=self.user)
+            v.draft.title = 'Video ' + str(amount)
+            v.draft.save()
+            amount-=1
+
+
+    def test_searching_videos(self):
+        self.setup_users_and_clients()
+        self.create_videos()
+
+        # should have all videos
+        response = self.client_user1.get(VIDEO_URL)
+        self.assertEqual(json.loads(response.content)['count'], 30)
+
+        # should have no videos
+        response = self.client_user1.get(VIDEO_URL + '?q=blabla')
+        self.assertEqual(json.loads(response.content)['count'], 0)
+
+        # should have one video
+        response = self.client_user1.get(VIDEO_URL + '?q=Video 30')
+        self.assertEqual(json.loads(response.content)['count'], 1)
+
+
+    def test_paginating_videos(self):
+        self.setup_users_and_clients()
+        self.create_videos()
+
+        response = self.client_user1.get(VIDEO_URL)
+
+        # first page should have 20 results 
+        self.assertEqual(json.loads(response.content)['count'], 30)
+        self.assertEqual(len(json.loads(response.content)['results']), 20)
+
+        # second page should have 10 results
+        response = self.client_user1.get(VIDEO_URL + '?page=2')
+        self.assertEqual(json.loads(response.content)['count'], 30)
+        self.assertEqual(len(json.loads(response.content)['results']), 10)
+
+
 
         
 

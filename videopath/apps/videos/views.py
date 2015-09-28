@@ -148,9 +148,12 @@ class VideoViewSet(viewsets.ModelViewSet):
     serializer_class = VideoSerializer
     permission_classes = (VideoPermissions,AuthenticatedPermission)
 
-    # Can see only your videos
+    # Can see only your videos, filterable by q
     def get_queryset(self):
         videos = Video.objects.filter(user=self.request.user, archived=False)
+        q = self.request.GET.get('q')
+        if q:
+            videos = videos.filter(draft__title__contains = q)
         return videos.extra(order_by=['-created'])
 
 

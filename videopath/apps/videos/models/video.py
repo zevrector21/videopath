@@ -58,10 +58,6 @@ class Video(VideopathBaseModel):
 
     def duplicate(self):
 
-        # don't duplicate video with uploaded file
-        if self.file.count() > 0:
-            return None
-
         # create a copy of the draft
         duplicate = copy.copy(self)
         duplicate.pk = None

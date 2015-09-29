@@ -159,6 +159,13 @@ class VideoViewSet(viewsets.ModelViewSet):
             videos = videos.filter(Q(draft__title__icontains = q) | Q(draft__description__icontains = q))
         return videos.extra(order_by=['-created'])
 
+    def create(self, request, *args, **kwargs):
+        copy_source=self.request.DATA.get("copy_source", None)
+        if copy_source:
+            copy_source = Video.objects.get(pk=copy_source, user=self.request.user)
+            copy_source.duplicate() 
+            return Response({}, status=status.HTTP_201_CREATED)
+        return super(VideoViewSet, self).create(request,*args, **kwargs)
 
     def perform_create(self, serializer):
         # add user

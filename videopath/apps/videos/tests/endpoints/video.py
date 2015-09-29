@@ -89,6 +89,14 @@ class TestCase(EndpointsBaseTestCase):
         response = self.client_user1.post_json(SEND_SHARE_MAIL_URL.format(vid), {"recipients": "null@videopath.com"})
         self.assertEqual(response.status_code, 200)
 
+    def test_duplication(self):
+        self.setup_users_and_clients()
+        video = Video.objects.create(user=self.user)
+
+        response = self.client_user1.post_json(VIDEO_URL, {"copy_source": video.pk})
+        self.assertEqual(response.status_code, 201)
+
+        self.assertEqual(Video.objects.count(), 2)
 
     #
     # Test pagination and searching

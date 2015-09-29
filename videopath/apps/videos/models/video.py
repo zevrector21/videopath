@@ -60,6 +60,7 @@ class Video(VideopathBaseModel):
 
         # create a copy of the draft
         duplicate = copy.copy(self)
+
         duplicate.pk = None
         duplicate.key = None
 

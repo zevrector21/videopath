@@ -3,6 +3,8 @@ from django.http import Http404
 
 from django.shortcuts import get_object_or_404
 
+from django.db.models import Q
+
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
@@ -154,7 +156,7 @@ class VideoViewSet(viewsets.ModelViewSet):
         q = self.request.GET.get('q')
         if q:
             q = q.strip()
-            videos = videos.filter(draft__title__icontains = q)
+            videos = videos.filter(Q(draft__title__icontains = q) | Q(draft__description__icontains = q))
         return videos.extra(order_by=['-created'])
 
 

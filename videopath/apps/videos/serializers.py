@@ -159,7 +159,9 @@ revision_fields = (
     'tracking_pixel_q1',
     'tracking_pixel_q2',
     'tracking_pixel_q3',
-    'tracking_pixel_end'
+    'tracking_pixel_end',
+    'created',
+    'revision_type'
 )
 
 revision_detail_fields = (
@@ -183,6 +185,7 @@ class VideoRevisionSerializer(serializers.ModelSerializer):
 
     key = serializers.SerializerMethodField()
     ui_icon = serializers.SerializerMethodField()
+    revision_type = serializers.SerializerMethodField()
 
     # some helper functions
     def get_key(self, video_revision):
@@ -196,6 +199,16 @@ class VideoRevisionSerializer(serializers.ModelSerializer):
         if video_revision.ui_icon:
             return icon_base_url + video_revision.ui_icon
         return icon_base_url + "default.png"
+
+    def get_revision_type(self, video_revision):
+        if video_revision.video.draft == video_revision:
+            return 'draft'
+        if video_revision.video.current_revision == video_revision:
+            return 'published'
+        return ''
+
+
+    order_by = '-created'
 
     class Meta:
         model = VideoRevision

@@ -169,6 +169,8 @@ class VideoViewSet(viewsets.ModelViewSet):
         if copy_source:
             copy_source = Video.objects.get(pk=copy_source, user=self.request.user)
             r = copy_source.draft.duplicate()
+            r.video = instance
+            r.save()
             instance.draft.delete()
             instance.draft = r 
             instance.save()
@@ -200,8 +202,13 @@ class VideoViewSet(viewsets.ModelViewSet):
 class VideoRevisionViewSet(viewsets.ModelViewSet):
 
     model = VideoRevision
-    serializer_class = VideoRevisionSerializer
     permission_classes = (VideoRevisionPermissions,AuthenticatedPermission)
+
+    def get_serializer_class(self):
+        if self.request.GET.get('expanded', '0'):
+            return VideoRevisionDetailSerializer
+        else:
+            return VideoRevisionSerializer
 
     # revisions will always be created through the system
     def create(self, request):
@@ -213,7 +220,12 @@ class VideoRevisionViewSet(viewsets.ModelViewSet):
 
     # Can see only your videos
     def get_queryset(self):
-        return VideoRevision.objects.filter(video__user=self.request.user)
+        result = VideoRevision.objects.filter(video__user=self.request.user)
+        vid = self.kwargs.get('vid', None)
+
+        if vid:
+            result = result.filter(video__pk=vid)
+        return result
 
 #
 # Marker View Set

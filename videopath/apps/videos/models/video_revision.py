@@ -41,7 +41,7 @@ class VideoRevision(VideopathBaseModel):
     description = models.TextField(blank=True)
 
     # date when this revision was published (if it was)
-    published_date = models.DateField(blank=True, null=True)
+    published_date = models.DateTimeField(blank=True, null=True)
 
     # ui color
     ui_color_1 = ColorField(default="#273a45")

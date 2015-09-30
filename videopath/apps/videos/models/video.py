@@ -104,7 +104,7 @@ class Video(VideopathBaseModel):
             return
 
         self.current_revision = self.draft.duplicate()
-        self.current_revision.published_date = datetime.date.today()
+        self.current_revision.published_date = datetime.datetime.now()
         self.current_revision.save()
 
         self.published = 1

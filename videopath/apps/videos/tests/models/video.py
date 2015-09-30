@@ -25,7 +25,6 @@ class TestCase(BaseTestCase):
       	video.publish()
         self.assertIsNotNone(video.draft)
         self.assertIsNotNone(video.current_revision)
-        self.assertEqual(video.current_revision.published_date, datetime.date.today())
         self.assertNotEqual(video.draft_id, video.current_revision_id)
 
       	video.unpublish()

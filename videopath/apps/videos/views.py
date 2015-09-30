@@ -272,7 +272,8 @@ def import_source(request, key=None):
 
     # try to set title on draft
     try:
-        video.draft.title = source["description"]
+        if not video.draft.title or video.draft.title == "New Video":
+            video.draft.title = source["description"]
         video.draft.save()
     except:
         pass

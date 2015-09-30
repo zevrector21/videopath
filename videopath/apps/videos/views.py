@@ -177,8 +177,8 @@ class VideoViewSet(viewsets.ModelViewSet):
             demo = self.request.DATA.get("demo_project", None)
             if demo:
                 from videopath.apps.videos.models import Source
-                thumb = 'https://i.ytimg.com/vi/2rtGFAnyf-s/maxresdefault.jpg'
-                data = {'service': 'youtube', 'description': 'Videopath Demo Video', 'aspect': 1.7777777777777777, 'thumbnail_small': thumb, 'thumbnail_large': thumb, 'duration': 46, 'service_identifier': '2rtGFAnyf-s'}
+                thumb = 'https://i.ytimg.com/vi/CovpUAzI6jY/maxresdefault.jpg'
+                data = {'service': 'youtube', 'description': 'Videopath Sample Video', 'aspect': 1.7777777777777777, 'thumbnail_small': thumb, 'thumbnail_large': thumb, 'duration': 32.0, 'service_identifier': 'CovpUAzI6jY'}
                 instance.draft.source = Source.objects.create( status=Source.STATUS_OK, **data)
                 instance.draft.save()
         except:

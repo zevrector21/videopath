@@ -1,3 +1,4 @@
+import datetime
 
 from videopath.apps.videos.models import Video, Source
 from videopath.apps.common.test_utils import BaseTestCase
@@ -24,11 +25,15 @@ class TestCase(BaseTestCase):
       	video.publish()
         self.assertIsNotNone(video.draft)
         self.assertIsNotNone(video.current_revision)
+        self.assertEqual(video.current_revision.published_date, datetime.date.today())
         self.assertNotEqual(video.draft_id, video.current_revision_id)
 
       	video.unpublish()
         self.assertIsNotNone(video.draft)
         self.assertIsNone(video.current_revision)
+
+        # both revision should still be here
+        self.assertEqual(video.revisions.count(), 2)
 
     def test_create_new_draft(self):
         video = Video.objects.create(user=self.user)

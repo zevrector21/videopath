@@ -1,4 +1,4 @@
-import copy
+import copy, datetime
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -105,6 +105,9 @@ class Video(VideopathBaseModel):
 
         old_current_revision = self.current_revision
         self.current_revision = self.draft.duplicate()
+        self.current_revision.published_date = datetime.date.today()
+        self.current_revision.save()
+
         self.published = 1
         self.save()
         if old_current_revision != None:
@@ -118,7 +121,6 @@ class Video(VideopathBaseModel):
         if self.current_revision == None:
             pass
         else:
-            self.current_revision.delete()
             self.current_revision = None
         self.published = 0
         self.save()

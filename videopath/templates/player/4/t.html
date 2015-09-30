@@ -60,7 +60,6 @@
         title="{{ title }}" />
     
 
-
     <!-- 
         ERROR REPORTING
     -->
@@ -69,7 +68,7 @@
         if ( window.location.href.indexOf('localhost') == -1 ) {
             console.log('raven started');
             Raven.config(sentryURL, {
-              whitelistUrls: ['.*videopath.com.*','.*cloudfront.net.*']
+              whitelistUrls: [/.*videopath.com.*/,/.*cloudfront.net.*/]
             }).install();
         }
     </script>

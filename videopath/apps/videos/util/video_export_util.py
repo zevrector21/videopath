@@ -21,7 +21,7 @@ cloudfront_service = service_provider.get_service("cloudfront")
 def export_video(video, verbose=False, invalidate = True):
 
     # 
-    if video.current_revision == None or video.archived:
+    if video.current_revision == None:
         return
 
     if verbose:

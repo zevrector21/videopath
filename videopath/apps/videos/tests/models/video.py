@@ -35,6 +35,13 @@ class TestCase(BaseTestCase):
         # both revision should still be here
         self.assertEqual(video.revisions.count(), 2)
 
+        #
+        # we should now have 3 revisions
+        #
+        video.publish()
+        self.assertEqual(video.revisions.count(), 3)
+
+
     def test_create_new_draft(self):
         video = Video.objects.create(user=self.user)
         video.publish()

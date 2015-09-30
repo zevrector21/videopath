@@ -159,21 +159,46 @@ class VideoViewSet(viewsets.ModelViewSet):
             videos = videos.filter(Q(draft__title__icontains = q) | Q(draft__description__icontains = q))
         return videos.extra(order_by=['-created'])
 
-    
+    def perform_update(self, serializer):
+        instance = serializer.save()
+
+        revert_revision = self.request.DATA.get("revert_revision", None)
+        if revert_revision:
+            try:
+                revision = VideoRevision.objects.get(pk = revert_revision, video=instance)
+                instance.draft.delete()
+                instance.draft = revision.duplicate()
+                instance.save()
+            except VideoRevision.DoesNotExist:
+                pass
+
 
     def perform_create(self, serializer):
         # add user
         instance = serializer.save(user=self.request.user)
 
+        #
+        # see if this video should be a copy of an existing one
+        #
         copy_source=self.request.DATA.get("copy_source", None)
         if copy_source:
-            copy_source = Video.objects.get(pk=copy_source, user=self.request.user)
-            r = copy_source.draft.duplicate()
-            r.video = instance
-            r.save()
-            instance.draft.delete()
-            instance.draft = r 
-            instance.save()
+            revision = None
+            try:
+                video = Video.objects.get(pk=copy_source, user=self.request.user)
+                revision = video.draft
+            except Video.DoesNotExist:
+                try:
+                    revision = VideoRevision.objects.get(pk=copy_source, video__user = self.request.user)
+                except VideoRevision.DoesNotExist:
+                    pass
+
+            if revision:
+                revision_copy = revision.duplicate()
+                revision_copy.video = instance
+                revision_copy.save()
+                instance.draft.delete()
+                instance.draft = revision_copy
+                instance.save()
 
         # if the demo attribute is present in the request
         # import demo video for this video

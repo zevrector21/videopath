@@ -41,6 +41,9 @@ class TestCase(BaseTestCase):
         video.publish()
         self.assertEqual(video.revisions.count(), 3)
 
+        video.publish()
+        self.assertEqual(video.revisions.count(), 4)
+
 
     def test_create_new_draft(self):
         video = Video.objects.create(user=self.user)

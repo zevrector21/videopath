@@ -103,15 +103,12 @@ class Video(VideopathBaseModel):
         if self.draft == None:
             return
 
-        old_current_revision = self.current_revision
         self.current_revision = self.draft.duplicate()
         self.current_revision.published_date = datetime.date.today()
         self.current_revision.save()
 
         self.published = 1
         self.save()
-        if old_current_revision != None:
-            old_current_revision.delete()
 
         from videopath.apps.videos.util import video_export_util
         video_export_util.export_video(self)

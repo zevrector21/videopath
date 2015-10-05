@@ -43,18 +43,19 @@ def listview(request):
         })
 
 
+def referral_link(url):
+        if url:
+            parsed_uri = urlparse( url )
+            return '<a href="' + url + '">' + parsed_uri.netloc +'</a><br />';
+        return ''
+
 @staff_member_required
 def listview_sales(request):
 
     result = ""
     users = []
 
-    def referral_link(url):
-
-        if url:
-            parsed_uri = urlparse( url )
-            return '<a href="' + url + '">' + parsed_uri.netloc +'</a><br />';
-        return ''
+    
 
     for u in User.objects.extra(select={
             'campaign_name': 'SELECT name FROM users_usercampaigndata WHERE users_usercampaigndata.user_id = auth_user.id',
@@ -117,7 +118,7 @@ def userview(request, username):
     result += helpers.header("Campaign Info")
     try:
         result += "Country: " + user.campaign_data.country + "<br />"
-        result += "Referrer: " + user.campaign_data.referrer + "<br />"
+        result += "Referrer: " + referral_link(user.campaign_data.referrer) + "<br />"
         result += "<br />"
         result += "Name: " + user.campaign_data.name + "<br />"
         result += "Source: " + user.campaign_data.source + "<br />"

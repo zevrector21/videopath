@@ -299,7 +299,7 @@ def import_source(request, key=None):
         else:
             source = service.import_video_from_server(request.data)
     except Exception as e:
-        return Response({"error": e.message}, 400)
+        return Response({"error": e.message, "detail": e.message}, 400)
 
     # create video source objects    
     video.draft.source = Source.objects.create(status=Source.STATUS_OK, **source)

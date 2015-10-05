@@ -48,11 +48,16 @@ class UserCampaignData(VideopathBaseModel):
                                 related_name='campaign_data'
                                 )
 
-    source = models.CharField(max_length=512)
-    medium = models.CharField(max_length=512)
-    name = models.CharField(max_length=512)
-    content = models.CharField(max_length=512)
-    term = models.CharField(max_length=512)
+    # utm terms
+    source = models.CharField(max_length=512, default='')
+    medium = models.CharField(max_length=512, default='')
+    name = models.CharField(max_length=512, default='')
+    content = models.CharField(max_length=512, default='')
+    term = models.CharField(max_length=512, default='')
+
+    # other info
+    country = models.CharField(max_length=512, default='')
+    referrer = models.CharField(max_length=512, default='')
 
 
 #

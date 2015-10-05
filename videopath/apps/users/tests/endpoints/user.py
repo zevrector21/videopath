@@ -178,18 +178,23 @@ class TestCase(EndpointsBaseTestCase):
             'username': 'dave_new', 
             'password': 'long_passsword',
             'email': 'null-4@videopath.com',
+            'referrer': 'videopath.com',
             'campaign': {
                 'source':'source',
                 'name':'name',
                 'medium': 'medium'
             }
         }
-        response = self.client.post_json(USER_URL, data)
+        ip = "84.159.212.138" # german ip
+        response = self.client.post_json(USER_URL, data, HTTP_X_FORWARDED_FOR=ip)
         self.assertEqual(response.status_code, 201)
         user = User.objects.get(username='dave_new')
         self.assertEqual(user.campaign_data.source,'source')
         self.assertEqual(user.campaign_data.medium,'medium')
         self.assertEqual(user.campaign_data.name,'name')
+        self.assertEqual(user.campaign_data.referrer,'videopath.com')
+        self.assertEqual(user.campaign_data.country,'Germany')
+
 
 
 

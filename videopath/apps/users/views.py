@@ -140,21 +140,28 @@ class UserViewSet(viewsets.ModelViewSet):
         # send a signup email
         send_signup_email(user)
 
+        # users geo record
+        geo_service = service_provider.get_service("geo_ip")
+        geo_record = geo_service.record_from_request(request)
+
         # create campaign information if available
-        campaign = request.data.get('campaign', None)
+        campaign_data = UserCampaignData.objects.create(user=user)
+        campaign_data.country = geo_record['country_full']
+        campaign_data.referrer = request.data.get('referrer', '')
+
+        campaign = request.data.get('campaign', {})
         if campaign:
             try:
-                UserCampaignData.objects.create(
-                    user = user,
-                    source=campaign.get('source', ''),
-                    medium=campaign.get('medium', ''),
-                    name=campaign.get('name',''),
-                    content=campaign.get('content', ''),
-                    term=campaign.get('term', '')
-                    )
+                campaign_data.source = campaign.get('source', '')
+                campaign_data.medium = campaign.get('medium', '')
+                campaign_data.name = campaign.get('name', '')
+                campaign_data.content = campaign.get('content', '')
+                campaign_data.term = campaign.get('term', '')
             except:
                 None
-                
+        
+        campaign_data.save()
+
         # subscribe to mailchimp if they want to
         if serializer.validated_data.get("newsletter", False):
             try:
@@ -168,15 +175,13 @@ class UserViewSet(viewsets.ModelViewSet):
         token = AuthenticationToken.objects.create(user=user)
         ottoken = OneTimeAuthenticationToken.objects.create(token=token)
 
-        # select users currency
-        geo_service = service_provider.get_service("geo_ip")
-        record = geo_service.record_from_request(request)
+        
 
         # greate britain
-        if record["country"] in ["UK", "GB"]:
+        if geo_record["country"] in ["UK", "GB"]:
             user.settings.currency = settings.CURRENCY_GBP
         # rest of europe
-        elif record["continent"] == "EU":
+        elif geo_record["continent"] == "EU":
             user.settings.currency = settings.CURRENCY_EUR
         # rest of world
         else:
@@ -189,8 +194,7 @@ class UserViewSet(viewsets.ModelViewSet):
         data["api_token_once"] = ottoken.key
 
         slack = service_provider.get_service("slack")
-        geo = service_provider.get_service("geo_ip")
-        slack.notify("User " + user.email + " just signed up from " + geo.record_from_request(request)["country_full"] + ".")
+        slack.notify("User " + user.email + " just signed up from " + geo_record["country_full"] + ".")
 
         # possibly return some tokens and shit
         return Response(data, status=status.HTTP_201_CREATED)

@@ -52,6 +52,7 @@ _plans_individual = {
                 'feature_upload': True,
                 'feature_theme': True,
                 'feature_advanced_library': True,
+                
             },
 
             'sspss': {

@@ -1,4 +1,5 @@
 import humanize
+from urlparse import urlparse
 
 from django.contrib.auth.models import User
 from django.contrib.admin.views.decorators import staff_member_required
@@ -41,24 +42,35 @@ def listview(request):
         "insight_content": result
         })
 
+
 @staff_member_required
 def listview_sales(request):
 
     result = ""
     users = []
 
+    def referral_link(url):
+
+        if url:
+            parsed_uri = urlparse( url )
+            return '<a href="' + url + '">' + parsed_uri.netloc +'</a><br />';
+        return ''
+
     for u in User.objects.extra(select={
             'campaign_name': 'SELECT name FROM users_usercampaigndata WHERE users_usercampaigndata.user_id = auth_user.id',
+            'country': 'SELECT country FROM users_usercampaigndata WHERE users_usercampaigndata.user_id = auth_user.id',
+            'referrer': 'SELECT referrer FROM users_usercampaigndata WHERE users_usercampaigndata.user_id = auth_user.id',
             'num_videos': 'SELECT COUNT(*) FROM videos_video WHERE videos_video.user_id = auth_user.id AND videos_video.archived != True',
             'num_videos_published': 'SELECT COUNT(*) FROM videos_video WHERE videos_video.user_id = auth_user.id AND videos_video.published = 1 AND videos_video.archived != True',
         }).order_by('-date_joined'):
         user = [
             "<span>" + helpers.userlink(u) + "</span>",
+            "" + str(u.country if u.country else '') + "",
             "" + str(u.campaign_name if u.campaign_name else '') + "",
-            "<b>" + str(u.num_videos) + "</b> videos",
-            "<b>" + str(u.num_videos_published) + "</b> published",
+            referral_link(u.referrer),
+            "<b>" + str(u.num_videos) + "</b> v",
+            "<b>" + str(u.num_videos_published) + "</b> p",
             "<b>"+str(u.date_joined.date())+ "</b>",
-            "<a target = '_blank' href='mailto:"+u.email+"'>"+u.email+"</a>",
         ]
         users.append(user)
 
@@ -104,6 +116,9 @@ def userview(request, username):
     # billing info
     result += helpers.header("Campaign Info")
     try:
+        result += "Country: " + user.campaign_data.country + "<br />"
+        result += "Referrer: " + user.campaign_data.referrer + "<br />"
+        result += "<br />"
         result += "Name: " + user.campaign_data.name + "<br />"
         result += "Source: " + user.campaign_data.source + "<br />"
         result += "Medium: " + user.campaign_data.medium + "<br />"

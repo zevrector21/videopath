@@ -67,6 +67,11 @@ class OTTokenAdmin(admin.ModelAdmin):
     #fields = ('key',)
     ordering = ('created',)
 
+class UserCampaignDataAdmin(admin.ModelAdmin):
+    search_fields = ['user__username', 'user__email']
+    list_display = ('user', 'created')
+    ordering = ('created',)
+
 #admin.site.unregister(User)
 admin.site.unregister(UserSettings)
 admin.site.register(User, UserAdmin)
@@ -74,7 +79,7 @@ admin.site.register(AuthenticationToken, TokenAdmin)
 admin.site.register(OneTimeAuthenticationToken, OTTokenAdmin)
 admin.site.register(UserActivity, UserActivityAdmin)
 admin.site.register(UserActivityDay, UserActivityDayAdmin)
-admin.site.register(UserCampaignData, admin.ModelAdmin)
+admin.site.register(UserCampaignData, UserCampaignDataAdmin)
 
 admin.site.register(AutomatedMail, AutomatedMailAdmin)
 admin.site.register(UserSettings, UserSettingsAdmin)

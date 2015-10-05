@@ -51,7 +51,7 @@ _plans_individual = {
                 'feature_vimeo': True,
                 'feature_upload': True,
                 'feature_theme': True,
-
+                'feature_advanced_library': True,
             },
 
             'sspss': {
@@ -62,6 +62,7 @@ _plans_individual = {
                 'feature_advanced_settings': True,
                 'feature_wistia': True,
                 'feature_theme': True,
+                'feature_advanced_library': True
             },
 
             'agency-evaluation': {
@@ -73,7 +74,9 @@ _plans_individual = {
                 'feature_wistia': True,
                 'max_views_month': 500,
                 'feature_theme': True,
-                'feature_icon': True
+                'feature_icon': True,
+                'feature_advanced_library': True,
+
             },
 
             'nyia': {
@@ -99,6 +102,7 @@ _plans_individual = {
                 'price_eur': 18900,
                 'payment_interval': 'month',
                 'feature_theme': True,
+                'feature_advanced_library': True,
 
             },
 
@@ -115,7 +119,7 @@ _plans_individual = {
                 'feature_custom_hosting': True,
                 'feature_theme': True,
                 'feature_icon': True,
-
+                'feature_advanced_library': True    
 
             }
 

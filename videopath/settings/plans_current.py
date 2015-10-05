@@ -31,6 +31,7 @@ _plans_current = {
 
         'group': 'starter',
         'subscribable': True,
+        'feature_advanced_library': True,
 
         # features
         'max_projects': 9999,
@@ -84,6 +85,7 @@ _plans_current = {
         'feature_custom_hosting': True,
         'feature_theme': True,
         'feature_icon': True,
+        'feature_advanced_library': True,
 
         'variants': {
             'yearly': {
@@ -131,6 +133,7 @@ _plans_current = {
         'feature_custom_hosting': True,
         'feature_theme': True,
         'feature_icon': True,
+        'feature_advanced_library': True,
 
         'variants': {
             'monthly': {

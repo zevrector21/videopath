@@ -132,7 +132,7 @@ class UserViewSet(viewsets.ModelViewSet):
         
 
         # create via userena
-        user = UserenaSignup.objects.create_user(username,
+        user = UserenaSignup.objects.create_user(username[:30],
                                      email,
                                      password,
                                      active=True, send_email=False)

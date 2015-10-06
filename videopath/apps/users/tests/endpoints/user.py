@@ -126,6 +126,16 @@ class TestCase(EndpointsBaseTestCase):
         login = self.client.login(username="dave_new", password="long_passsword")
         self.assertEqual(login, True)
 
+
+        # test very long username etc:
+        data = {
+            'username': 'newer_dave-superlongsuperlongsuperlongsuperlong',
+            'password': '0i1029i3poljlsajfdoiajwef',
+            'email': 'superlongandsuperduperlongblablabalablemail@blah.com'
+        }
+        response = self.client.post_json(USER_URL, data)
+        self.assertEqual(response.status_code, 201)
+
     def test_currency_selection(self):
         from videopath.apps.users.models import User
 

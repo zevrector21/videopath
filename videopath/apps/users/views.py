@@ -146,17 +146,17 @@ class UserViewSet(viewsets.ModelViewSet):
 
         # create campaign information if available
         campaign_data = UserCampaignData.objects.create(user=user)
-        campaign_data.country = geo_record['country_full']
-        campaign_data.referrer = request.data.get('referrer', '')
+        campaign_data.country = geo_record['country_full'][:500]
+        campaign_data.referrer = request.data.get('referrer', '')[:500]
 
         campaign = request.data.get('campaign', {})
         if campaign:
             try:
-                campaign_data.source = campaign.get('source', '')
-                campaign_data.medium = campaign.get('medium', '')
-                campaign_data.name = campaign.get('name', '')
-                campaign_data.content = campaign.get('content', '')
-                campaign_data.term = campaign.get('term', '')
+                campaign_data.source = campaign.get('source', '')[:500]
+                campaign_data.medium = campaign.get('medium', '')[:500]
+                campaign_data.name = campaign.get('name', '')[:500]
+                campaign_data.content = campaign.get('content', '')[:500]
+                campaign_data.term = campaign.get('term', '')[:500]
             except:
                 None
         

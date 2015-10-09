@@ -230,7 +230,7 @@ class VideoRevisionViewSet(viewsets.ModelViewSet):
     permission_classes = (VideoRevisionPermissions,AuthenticatedPermission)
 
     def get_serializer_class(self):
-        if self.request.GET.get('expanded', '0'):
+        if self.request.GET.get('expanded', False):
             return VideoRevisionDetailSerializer
         else:
             return VideoRevisionSerializer

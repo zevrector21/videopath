@@ -1,5 +1,11 @@
 #!/bin/bash
-if [ "$1" == "run" ]; then
+if [ "$1" == "setup" ]; then
+	# setup basic thigs
+	python manage.py syncdb --noinput
+	python manage.py migrate
+	python manage.py createsuperuser
+	python manage.py check_permissions
+elif [ "$1" == "run" ]; then
     echo "Starting app"
     python manage.py runserver
 elif [ "$1" == "run_worker" ]; then

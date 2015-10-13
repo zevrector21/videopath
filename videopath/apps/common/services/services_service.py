@@ -45,6 +45,12 @@ def receive_messages(queue, handler):
 	receivers[queue] = handler
 	channel = get_channel()
 	channel.basic_consume(callback, queue=queue)
+
+	def start_consuming(channel):
+		channel.start_consuming()
+
+	start_new_thread(start_consuming, (channel,))
+
 	
 def receive(result):
 	print 'received'

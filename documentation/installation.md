@@ -18,6 +18,10 @@ You will need these things to start
 	libmemcached (brew install libmemcached)
 	postgres (for exampel via postgres.app on mac)
 
+### Recommended 
+
+	Use pyflakes for linting your python code
+
 See the internet on how to install these for your OS.
 
 You then need to create a virtualenv to run in. See internet also.

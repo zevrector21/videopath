@@ -4,7 +4,6 @@ import pika, time, json
 
 RABBIT_MQ_URL = settings.CLOUDAMQP_URL
 url_parameters = pika.connection.URLParameters(RABBIT_MQ_URL)
-
 properties = pika.BasicProperties(
    content_type='application/json',
    content_encoding='utf-8',
@@ -22,13 +21,25 @@ def test_connection():
 	connection.close()
 	return is_open
 
+#
+# connection
+#
+connection = pika.BlockingConnection(url_parameters)
+def get_channel():
+	return connection.channel()
 
-
-def receive_messages():
-	pass
 
 #
-# queue message
+# message receiving
+#
+def receive_messages():
+	pass
+start_new_thread(receive_messages, ())
+
+
+
+#
+# message sending
 #
 message_queue = []
 
@@ -39,24 +50,12 @@ def send_message(exchange, message):
 		})
 
 #
-# manage processing of messages
+# 
 #
 def process_messages():
-
-	def connect():
-		connection = pika.BlockingConnection(url_parameters) 
-		return connection.channel()
-
-	channel = None
 	while True:
-		
-		if not channel:
-			try:
-				channel = connect()
-			except pika.exceptions.ConnectionClosed:
-				pass
-
 		try:
+			channel = get_channel()
 			if len(message_queue) and channel:
 				message = message_queue.pop(0)
 				channel.publish(
@@ -72,4 +71,3 @@ def process_messages():
 		time.sleep(1)
 
 start_new_thread(process_messages, ())
-start_new_thread(receive_messages, ())

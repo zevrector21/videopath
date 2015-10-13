@@ -13,10 +13,10 @@ class TestCase(BaseTestCase):
         Source.objects.create()
 
     def test_jpgs_export(self):
-    	source = Source.objects.create({
-    		'service': 'youtube',
-    		'service_identifier': '092834sdf'
-    		})
+    	source = Source.objects.create(
+    		service= 'youtube',
+    		service_identifier = '092834sdf'
+    		)
     	source.export_jpgs()
 
 

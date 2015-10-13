@@ -1,6 +1,6 @@
 
 
-def send_message(exchange, routing_key, message):
+def send_message(exchange, message):
 	return True
 
 def test_connection():

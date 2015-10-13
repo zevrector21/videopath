@@ -32,9 +32,25 @@ def get_channel():
 #
 # message receiving
 #
-def receive_messages():
-	pass
-start_new_thread(receive_messages, ())
+receivers = {}
+def receive_messages(queue, handler):
+
+	if receivers.get(queue,None):
+		return
+
+	def callback(ch, method, properties, body):
+		receivers[queue](body)
+		ch.basic_ack(method.delivery_tag)
+
+	receivers[queue] = handler
+	channel = get_channel()
+	channel.basic_consume(callback, queue=queue)
+	
+def receive(result):
+	print 'received'
+	print result
+receive_messages('q-transcoder', receive)
+
 
 
 

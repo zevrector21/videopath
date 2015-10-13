@@ -125,6 +125,11 @@ class Video(VideopathBaseModel):
         video_export_util.delete_export(self)
 
 
+    def export_jpgs(self):
+        if self.draft.source:
+            return self.draft.source.export_jpgs()
+        return False
+
 
     # generate key on save
     def save(self, *args, **kwargs):

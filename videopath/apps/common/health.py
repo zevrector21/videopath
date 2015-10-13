@@ -30,15 +30,14 @@ def check_mailchimp_access():
 	service = service_provider.get_service("mailchimp")
 	return service.check_access()
 
-
 def check_raven_sentry_connection():
 	from raven.scripts.runner import send_test_message
 	from raven.contrib.django.models import client
 	try:
 		send_test_message(client, {})
 		return True
-	except Exception as e:
-		return str(e)
+	except:
+		return "could not connect to sentry"
 
 def check_geo_ip():
 	service = service_provider.get_service("geo_ip")
@@ -71,6 +70,10 @@ def check_video_import_wistia():
 		return source["service"] == "wistia"
 	except:
 		return "Wistia import failed"
+
+def check_services_connection():
+	service = service_provider.get_service("services")
+	return service.test_connection()
 
 #
 # Django stuff

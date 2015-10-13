@@ -3,6 +3,8 @@ from videopath.apps.common.models import VideopathBaseModel
 
 from django.conf import settings
 
+from videopath.apps.common.services import service_provider
+
 #
 # Layout new source class
 # not in use at the moment
@@ -74,6 +76,24 @@ class Source(VideopathBaseModel):
     jpg_sequence_support = models.BooleanField(default=False)
     jpg_sequence_length = models.IntegerField(default=0)
 
+
+    #
+    # send a message to services that we want to transcode jpgs for this source
+    #
+    def export_jpgs(self):
+        service_connection = service_provider.get_service('services')
+        service_connection.send_message('x-transcoder', {'source': 
+                {
+                'id':self.key,
+                'key':self.key,
+                'service': self.service,
+                'service_identifier': self.service_identifier
+                }
+            })
+
+    #
+    # get correct tumbnails for this source object
+    #
     def get_thumbnails(self):
         if self.service == 'videopath':
             return {
@@ -86,6 +106,9 @@ class Source(VideopathBaseModel):
                 "large": self.thumbnail_large
             } 
 
+    #
+    #
+    #
     def save(self, *args, **kwargs):
         if not self.key:
             self.key = self.generate_key(32)

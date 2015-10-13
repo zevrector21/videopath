@@ -1,3 +1,4 @@
+
 import humanize
 
 from django.contrib import admin
@@ -24,7 +25,7 @@ class VideoAdmin(admin.ModelAdmin):
     }
 
     # actions
-    actions=["make_published", "make_unpublished", "make_duplicated", "make_reexport"]
+    actions=["make_published", "make_unpublished", "make_duplicated", "make_reexport", "make_export_jpgs"]
     def make_published(self, request, queryset):
         for video in queryset.all():
             video.publish()
@@ -46,6 +47,11 @@ class VideoAdmin(admin.ModelAdmin):
         for video in queryset.all():
             video_export_util.export_video(video)
     make_reexport.short_description = "Reexport selected videos"
+
+    def make_export_jpgs(self, request,queryset):
+        for video in queryset.all():
+            video.export_jpgs()
+    make_export_jpgs.short_description = "Export JPGs"
 
     # custom fields
     def created_humanized(self, obj):

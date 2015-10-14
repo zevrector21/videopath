@@ -47,7 +47,7 @@ def receive_messages(queue, handler):
 			ch.basic_ack(method.delivery_tag)
 		except:
 			raven_client.captureException()
-			ch.basic_nack(method.delivery_tag, False, True)
+			ch.basic_nack(method.delivery_tag, False, False)
 
 	receivers[queue] = handler
 	receive_channel.basic_consume(callback, queue=queue)

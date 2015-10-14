@@ -33,6 +33,8 @@ def _run_module_test(module):
 	succeeded = 0
 	for func in dir(module): 
 		if "check_" in func:
+			print 'running health check on module ' + module.__name__ + ' ' + func
+
 			function = getattr(module, func)
 			check_result = function()
 			name = func.replace("check_", "").replace("_", " ")

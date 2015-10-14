@@ -16,10 +16,7 @@ properties = pika.BasicProperties(
 
 
 def test_connection():
-	connection = pika.BlockingConnection(url_parameters)
-	is_open = connection.is_open
-	connection.close()
-	return is_open
+	return connection and connection.is_open
 
 #
 # connection

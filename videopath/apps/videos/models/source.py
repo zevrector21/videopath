@@ -84,7 +84,6 @@ class Source(VideopathBaseModel):
         service_connection = service_provider.get_service('services')
         service_connection.send_message('x-transcoder', {'source': 
                 {
-                'id':self.key,
                 'key':self.key,
                 'service': self.service,
                 'service_identifier': self.service_identifier

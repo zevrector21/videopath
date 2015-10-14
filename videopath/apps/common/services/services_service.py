@@ -1,6 +1,10 @@
 from thread import start_new_thread
 from django.conf import settings
+from raven import Client
+
 import pika, time, json
+
+raven_client = Client(settings.RAVEN_CONFIG['dsn'])
 
 RABBIT_MQ_URL = settings.CLOUDAMQP_URL
 url_parameters = pika.connection.URLParameters(RABBIT_MQ_URL)
@@ -25,8 +29,13 @@ def test_connection():
 # connection
 #
 connection = pika.BlockingConnection(url_parameters)
-def get_channel():
-	return connection.channel()
+send_channel = connection.channel()
+receive_channel = connection.channel()
+
+# start consuming receive channel
+def start_consuming(channel):
+	channel.start_consuming()
+start_new_thread(start_consuming, (receive_channel,))
 
 
 #
@@ -39,23 +48,20 @@ def receive_messages(queue, handler):
 		return
 
 	def callback(ch, method, properties, body):
-		receivers[queue](body)
-		ch.basic_ack(method.delivery_tag)
+		try:
+			receivers[queue](body)
+			ch.basic_ack(method.delivery_tag)
+		except:
+			raven_client.captureException()
 
 	receivers[queue] = handler
-	channel = get_channel()
-	channel.basic_consume(callback, queue=queue)
-
-	def start_consuming(channel):
-		channel.start_consuming()
-
-	start_new_thread(start_consuming, (channel,))
+	receive_channel.basic_consume(callback, queue=queue)
 
 	
-def receive(result):
-	print 'received'
-	print result
-receive_messages('q-transcoder', receive)
+# def receive(result):
+# 	print 'received'
+# 	print result
+# receive_messages('q-transcoder', receive)
 
 
 
@@ -77,18 +83,17 @@ def send_message(exchange, message):
 def process_messages():
 	while True:
 		try:
-			channel = get_channel()
-			if len(message_queue) and channel:
+			if len(message_queue):
 				message = message_queue.pop(0)
-				channel.publish(
+				send_channel.publish(
 					exchange=message['exchange'], 
 					routing_key='', 
 					body=json.dumps(message['message']),
 					properties=properties
 				)
-		except pika.exceptions.ConnectionClosed:
-			channel = None
+		except:
 			message_queue.insert(0, message)
+			raven_client.captureException()
 
 		time.sleep(1)
 

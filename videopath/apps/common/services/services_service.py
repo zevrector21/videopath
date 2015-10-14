@@ -15,10 +15,6 @@ properties = pika.BasicProperties(
 )
 
 
-def message_callback(queue, callback):
-	pass
-
-
 def test_connection():
 	connection = pika.BlockingConnection(url_parameters)
 	is_open = connection.is_open
@@ -31,6 +27,7 @@ def test_connection():
 connection = pika.BlockingConnection(url_parameters)
 send_channel = connection.channel()
 receive_channel = connection.channel()
+
 
 # start consuming receive channel
 def start_consuming(channel):

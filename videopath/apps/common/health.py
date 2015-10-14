@@ -71,9 +71,9 @@ def check_video_import_wistia():
 	except:
 		return "Wistia import failed"
 
-#def check_services_connection():
-#	service = service_provider.get_service("services")
-#	return service.test_connection()
+def check_services_connection():
+	service = service_provider.get_service("services")
+	return service.test_connection()
 
 #
 # Django stuff

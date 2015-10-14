@@ -30,7 +30,7 @@ def jpg_transcode_success(message):
 		# update source object
 		source = Source.objects.get(key=key)
 		source.jpg_sequence_support = True
-		source.jpg_sequence_length = message['results']['j']
+		source.jpg_sequence_length = message['results']['frames']
 		source.save()
 
 		# reexport all attached video objects

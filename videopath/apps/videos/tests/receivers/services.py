@@ -40,7 +40,7 @@ class TestCase(BaseTestCase):
 
     	jpg_transcode_success({
     		"results":{
-    			"j":24
+    			"frames":24
     		},
     		"key":source.key
     	})

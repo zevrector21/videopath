@@ -242,6 +242,28 @@ def send_invoice_created_mail(user, invoice, link):
         ["payment"]
     )
 
+# transcoding jpgs
+def send_jpgs_trancode_failed_mail(video):
+    send_templated_mail(
+        video.user,
+        "iPhone Trancoding Failed",
+        "jpg_transcode_failed",
+        {
+            "video_title": video.draft.title,
+        },
+        ["jpg_transcoder"]
+    )
+
+def send_jpgs_trancode_succeeded_mail(video):
+    send_templated_mail(
+        video.user,
+        "iPhone Trancoding Succeeded",
+        "jpg_transcode_succeeded",
+        {
+            "video_title": video.draft.title,
+        },
+        ["jpg_transcoder"]
+    )
 
 # subscription emails
 def send_subscription_changed_mail(user, plan, interval, is_free):

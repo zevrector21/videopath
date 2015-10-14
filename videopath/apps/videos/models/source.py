@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models import Q
+
 from videopath.apps.common.models import VideopathBaseModel
 
 from django.conf import settings
@@ -75,6 +77,13 @@ class Source(VideopathBaseModel):
     # save support for jpgs
     jpg_sequence_support = models.BooleanField(default=False)
     jpg_sequence_length = models.IntegerField(default=0)
+
+    #
+    # get a list of all video objects associated with this source
+    #
+    def get_attached_videos(self):
+        from videopath.apps.videos.models import Video
+        return Video.objects.filter( Q(draft__source__key = self.key) | Q(current_revision__source__key = self.key))
 
 
     #

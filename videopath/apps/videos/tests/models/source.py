@@ -1,5 +1,5 @@
 
-from videopath.apps.videos.models import Source
+from videopath.apps.videos.models import Source, Video
 from videopath.apps.common.test_utils import BaseTestCase
 
 # Uses the standard django frame testing client
@@ -18,6 +18,25 @@ class TestCase(BaseTestCase):
     		service_identifier = '092834sdf'
     		)
     	source.export_jpgs()
+
+
+    def test_get_attached_vidoes(self):
+        v1 = Video.objects.create(user=self.user)
+        v2 = Video.objects.create(user=self.user)
+
+        s = Source.objects.create()
+
+        v1.draft.source = s
+        v1.draft.save()
+
+        v2.draft.source = s
+        v2.draft.save()
+
+        s = Source.objects.get(pk=s.pk)
+
+        vids = s.get_attached_videos()
+
+        self.assertEqual(vids.count(),2)
 
 
 

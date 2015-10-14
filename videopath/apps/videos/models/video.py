@@ -124,6 +124,9 @@ class Video(VideopathBaseModel):
         from videopath.apps.videos.util import video_export_util
         video_export_util.delete_export(self)
 
+    def reexport(self):
+        from videopath.apps.videos.util import video_export_util
+        video_export_util.export_video(self)
 
     def export_jpgs(self):
         if self.draft.source:

@@ -46,7 +46,7 @@ def receive_messages(queue, handler):
 
 	def callback(ch, method, properties, body):
 		try:
-			receivers[queue](body)
+			receivers[queue](json.loads(body))
 			ch.basic_ack(method.delivery_tag)
 		except:
 			raven_client.captureException()

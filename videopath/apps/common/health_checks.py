@@ -12,6 +12,7 @@ def run():
 	for app in installed_apps:
 		health_module = app + ".health"
 
+		module = None
 		try:
 			module = importlib.import_module(health_module)
 		except ImportError:

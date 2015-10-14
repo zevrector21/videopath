@@ -10,15 +10,18 @@ def run():
 	installed_apps = settings.INSTALLED_APPS + ('videopath.apps.common',)
 
 	for app in installed_apps:
+		health_module = app + ".health"
+
 		try:
-			health_module = app + ".health"
 			module = importlib.import_module(health_module)
+		except ImportError:
+			pass
+
+		if module:
 			result, s, f = _run_module_test(module)
 			apps[app] = result
 			succeeded += s
 			failed += f
-		except ImportError:
-			pass
 
 
 	return {

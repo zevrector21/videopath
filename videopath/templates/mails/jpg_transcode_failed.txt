@@ -2,6 +2,6 @@
 {% load mathfilters %}
 {% block content %}
 
-Preparing your video {{title}} for iPhone playback failed. Please try again or get in touch at support@videopath.com.
+Preparing your video '{{title}}' for iPhone playback failed. Please try again or get in touch at support@videopath.com.
 
 {% endblock %}

@@ -249,7 +249,7 @@ def send_jpgs_trancode_failed_mail(video):
         "iPhone Trancoding Failed",
         "jpg_transcode_failed",
         {
-            "video_title": video.draft.title,
+            "title": video.draft.title,
         },
         ["jpg_transcoder"]
     )
@@ -260,7 +260,7 @@ def send_jpgs_trancode_succeeded_mail(video):
         "iPhone Trancoding Succeeded",
         "jpg_transcode_succeeded",
         {
-            "video_title": video.draft.title,
+            "title": video.draft.title,
         },
         ["jpg_transcoder"]
     )

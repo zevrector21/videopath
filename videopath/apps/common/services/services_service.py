@@ -57,13 +57,6 @@ def receive_messages(queue, handler):
 	receivers[queue] = handler
 	receive_channel.basic_consume(callback, queue=queue)
 
-	
-# def receive(result):
-# 	print 'received'
-# 	print result
-# receive_messages('q-transcoder', receive)
-
-
 
 
 #

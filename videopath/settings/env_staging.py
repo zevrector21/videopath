@@ -18,3 +18,8 @@ if dj_database_url.config():
 AWS_PLAYER_BUCKET = "player-dev.videopath.com"
 PLAYER_SRC = '//player-dev.videopath.com/develop/'
 PLAYER_LOCATION = 'http://player-dev.videopath.com/'
+
+#
+# Endpoint for JPG engine streaming
+#
+JPGS_CDN = '//videopathmobilefilesdev.blob.core.windows.net/'

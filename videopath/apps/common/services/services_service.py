@@ -21,6 +21,8 @@ def test_connection():
 #
 # connection
 #
+send_channel = None
+receive_channel = None
 try:
 	connection = pika.BlockingConnection(url_parameters)
 	send_channel = connection.channel()

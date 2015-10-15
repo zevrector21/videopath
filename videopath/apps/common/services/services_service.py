@@ -21,9 +21,13 @@ def test_connection():
 #
 # connection
 #
-connection = pika.BlockingConnection(url_parameters)
-send_channel = connection.channel()
-receive_channel = connection.channel()
+try:
+	connection = pika.BlockingConnection(url_parameters)
+	send_channel = connection.channel()
+	receive_channel = connection.channel()
+except:
+	raven_client.captureException()
+	pass
 
 
 # start consuming receive channel
@@ -50,7 +54,8 @@ def receive_messages(queue, handler):
 			ch.basic_nack(method.delivery_tag, False, False)
 
 	receivers[queue] = handler
-	receive_channel.basic_consume(callback, queue=queue)
+	if receive_channel:
+		receive_channel.basic_consume(callback, queue=queue)
 
 
 
@@ -71,7 +76,7 @@ def send_message(exchange, message):
 def process_messages():
 	while True:
 		try:
-			if len(message_queue):
+			if len(message_queue) and send_channel:
 				message = message_queue.pop(0)
 				send_channel.publish(
 					exchange=message['exchange'], 

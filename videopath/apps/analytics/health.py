@@ -5,8 +5,8 @@ from django.conf import settings
 from videopath.apps.analytics.services import ga_import_service
 from videopath.apps.analytics.models import DailyAnalyticsData
 
-#def check_access_to_google_analytics():
-#	return ga_import_service.check_access()
+def check_access_to_google_analytics():
+	return ga_import_service.check_access()
 
 def check_imports():
 	if settings.STAGING:

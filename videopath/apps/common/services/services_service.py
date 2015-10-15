@@ -21,19 +21,21 @@ def test_connection():
 #
 # connection
 #
+send_channel = None
+receive_channel = None
 try:
 	connection = pika.BlockingConnection(url_parameters)
 	send_channel = connection.channel()
 	receive_channel = connection.channel()
 except:
 	raven_client.captureException()
-	pass
 
 
 # start consuming receive channel
 def start_consuming(channel):
 	channel.start_consuming()
-start_new_thread(start_consuming, (receive_channel,))
+if receive_channel:
+	start_new_thread(start_consuming, (receive_channel,))
 
 
 #

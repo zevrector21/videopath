@@ -65,4 +65,5 @@ static3==0.6.1
 stripe==1.14.0
 uritemplate==0.6
 yolk==0.4.3
+cryptography==0.9
 pika==0.10.0

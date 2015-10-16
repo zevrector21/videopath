@@ -18,6 +18,9 @@ connection = None
 in_channel = None
 out_channel = None
 
+def test_connection():
+	return connection != None and connection.is_open
+
 #
 # start consuming incoming events
 #

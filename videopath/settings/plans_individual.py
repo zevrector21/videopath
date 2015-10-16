@@ -120,7 +120,9 @@ _plans_individual = {
                 'feature_custom_hosting': True,
                 'feature_theme': True,
                 'feature_icon': True,
-                'feature_advanced_library': True    
+                'feature_advanced_library': True,
+                'feature_advanced_video_settings': True, 
+
 
             }
 

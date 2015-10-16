@@ -50,7 +50,7 @@ class VideoAdmin(admin.ModelAdmin):
 
     def make_export_jpgs(self, request,queryset):
         for video in queryset.all():
-            video.export_jpgs()
+            video.export_jpg_sequence()
     make_export_jpgs.short_description = "Export JPGs"
 
     # custom fields

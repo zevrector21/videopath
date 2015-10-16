@@ -253,6 +253,19 @@ class VideoRevisionViewSet(viewsets.ModelViewSet):
         return result
 
 #
+# Prepare for iphone transcoding
+#
+@api_view(['PUT'])
+def jpg_sequence_view(request, rid=None):
+    source = get_object_or_404(Source, revisions__pk=rid, revisions__video__user=request.user)
+    success, message = source.export_jpg_sequence()
+    if not success:
+        return Response({"detail": message}, 400)
+    return Response({}, 201)
+
+
+
+#
 # Marker View Set
 #
 class MarkerViewSet(viewsets.ModelViewSet):

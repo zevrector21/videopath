@@ -89,7 +89,15 @@ class Source(VideopathBaseModel):
     #
     # send a message to services that we want to transcode jpgs for this source
     #
-    def export_jpgs(self):
+    def export_jpg_sequence(self):
+
+        if self.jpg_sequence_support:
+            return  False, "Project is already transcoded for iPhone."
+        if self.duration > 600:
+            return False, "Currently only projects shorter than 10 Minutes can be transcoded."
+        if self.service != Source.SERVICE_YOUTUBE:
+            return False, "Currently only youtube projects can be transcoded."
+
         service_connection = service_provider.get_service('services')
         service_connection.send_message('x-transcoder', {'source': 
                 {
@@ -98,6 +106,7 @@ class Source(VideopathBaseModel):
                 'service_identifier': self.service_identifier
                 }
             })
+        return True, ''
 
     #
     # get correct tumbnails for this source object

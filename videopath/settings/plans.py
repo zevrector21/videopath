@@ -27,6 +27,7 @@ class _Plans():
 
         'feature_theme': False,
         'feature_icon': False,
+        'feature_advanced_video_settings': False, 
 
         'feature_dev': False,
 

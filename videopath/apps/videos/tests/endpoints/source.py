@@ -1,8 +1,9 @@
 from videopath.apps.common.test_utils import BaseTestCase
 
-from videopath.apps.videos.models import Video
+from videopath.apps.videos.models import Video, Source
 
 IMPORT_URL = '/v1/video/{0}/import_source/'
+JPG_URL = '/v1/video-revision/{0}/source/jpg_sequence/'
 
 # Uses the standard django frame testing client
 class TestCase(BaseTestCase):
@@ -67,4 +68,44 @@ class TestCase(BaseTestCase):
 
         v = Video.objects.get(pk=v.id)
         self.assertEqual(v.draft.source.service, "custom")
+
+    def test_jpg_transcoding(self):
+        self.setup_users_and_clients()
+        v = Video.objects.create(user=self.user)
         
+
+        # should not work without source
+        response = self.client_user1.put(JPG_URL.format(v.draft.pk))
+        self.assertEqual(response.status_code, 404)
+
+        # should work
+        s = Source.objects.create(service=Source.SERVICE_YOUTUBE, duration=400)
+        v.draft.source = s
+        v.draft.save()
+
+        response = self.client_user1.put(JPG_URL.format(v.draft.pk))
+        self.assertEqual(response.status_code, 201)
+
+        # access check
+        response = self.client_user2.put(JPG_URL.format(v.draft.pk))
+        self.assertEqual(response.status_code, 404)
+
+        # wrong service
+        s.service=Source.SERVICE_VIMEO
+        s.save() 
+        response = self.client_user1.put(JPG_URL.format(v.draft.pk))
+        self.assertEqual(response.status_code, 400)
+
+        # already transcoded
+        s.service=Source.SERVICE_YOUTUBE
+        s.jpg_sequence_support = True
+        s.save()
+        response = self.client_user1.put(JPG_URL.format(v.draft.pk))
+        self.assertEqual(response.status_code, 400)
+
+        # too long
+        s.jpg_sequence_support = False
+        s.duration=10000
+        s.save()
+        response = self.client_user1.put(JPG_URL.format(v.draft.pk))
+        self.assertEqual(response.status_code, 400)

@@ -3,7 +3,7 @@ from django.conf.urls import url, patterns, include
 from rest_framework import routers
 
 from videopath.apps.videos.views import MarkerViewSet, MarkerContentViewSet, VideoViewSet, VideoRevisionViewSet
-from videopath.apps.videos.views import video_publish, get_revision, send_share_mail
+from videopath.apps.videos.views import video_publish, get_revision, send_share_mail, jpg_sequence_view
 from videopath.apps.videos.views import icon_view, thumbnail_view
 
 # Register view sets
@@ -33,6 +33,9 @@ urlpatterns = patterns('',
    # file uploads, icon and thumbnail respectively
    url(r'^video-revision/(?P<rid>[0-9]+)/icon', icon_view),
    url(r'^video-revision/(?P<rid>[0-9]+)/thumbnail', thumbnail_view),
+
+   # source operations
+   url(r'^video-revision/(?P<rid>[0-9]+)/source/jpg_sequence/$', jpg_sequence_view),
 
    #
    # video source import

@@ -17,7 +17,7 @@ class TestCase(BaseTestCase):
     		service= 'youtube',
     		service_identifier = '092834sdf'
     		)
-    	source.export_jpgs()
+    	source.export_jpg_sequence()
 
 
     def test_get_attached_vidoes(self):

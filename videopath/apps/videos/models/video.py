@@ -128,9 +128,9 @@ class Video(VideopathBaseModel):
         from videopath.apps.videos.util import video_export_util
         video_export_util.export_video(self)
 
-    def export_jpgs(self):
+    def export_jpg_sequence(self):
         if self.draft.source:
-            return self.draft.source.export_jpgs()
+            return self.draft.source.export_jpg_sequence()
         return False
 
 

@@ -125,9 +125,9 @@ class UserViewSet(viewsets.ModelViewSet):
         if len(email) == 0:
             raise ValidationError(detail={"email":["Please supply a valid email address"]})
 
-        if User.objects.filter(email=email).count() > 0:
+        if User.objects.filter(email__iexact=email).count() > 0:
            raise ValidationError(detail={"email":["Email is taken."]})
-        if User.objects.filter(username=username).count() > 0:
+        if User.objects.filter(username__iexact=username).count() > 0:
            raise ValidationError(detail={"username":["Username is taken."]})
         
 

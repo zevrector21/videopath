@@ -14,39 +14,51 @@ properties = pika.BasicProperties(
    delivery_mode=2,
 )
 
+connection = None
+in_channel = None
+out_channel = None
 
-def test_connection():
+#
+# start consuming incoming events
+#
+def start_consuming():
+	global in_channel, out_channel, connection
+	try:
+		# start consuming messaged
+		in_channel.start_consuming()
+	except:
+		# reconnect when connection is lost
+		in_channel = None
+		out_channel = None
+		connection = None
+		connect()
+
 	return connection and connection.is_open
 
 #
-# connection
+# 
 #
-send_channel = None
-receive_channel = None
-try:
+def connect():
+	time.sleep(5)
+
+	global connection, in_channel, out_channel
 	connection = pika.BlockingConnection(url_parameters)
-	send_channel = connection.channel()
-	receive_channel = connection.channel()
-except:
-	raven_client.captureException()
+	in_channel = connection.channel()
+	out_channel = connection.channel()
 
+	# attach receiving handlers to channel
+	for queue in receivers:
+		handler = receivers[queue]
+		attach_handler(queue, handler)
+	start_new_thread(start_consuming, ());
 
-# start consuming receive channel
-def start_consuming(channel):
-	channel.start_consuming()
-if receive_channel:
-	start_new_thread(start_consuming, (receive_channel,))
+start_new_thread(connect, ())
 
 
 #
 # message receiving
 #
-receivers = {}
-def receive_messages(queue, handler):
-
-	if receivers.get(queue,None):
-		return
-
+def attach_handler(queue, handler):
 	def callback(ch, method, properties, body):
 		try:
 			receivers[queue](json.loads(body))
@@ -54,10 +66,18 @@ def receive_messages(queue, handler):
 		except:
 			raven_client.captureException()
 			ch.basic_nack(method.delivery_tag, False, False)
+	if in_channel:
+		in_channel.basic_consume(callback, queue=queue)
 
+
+receivers = {}
+def receive_messages(queue, handler):
+
+	if receivers.get(queue,None):
+		return
 	receivers[queue] = handler
-	if receive_channel:
-		receive_channel.basic_consume(callback, queue=queue)
+
+	attach_handler(queue,handler)
 
 
 
@@ -78,9 +98,9 @@ def send_message(exchange, message):
 def process_messages():
 	while True:
 		try:
-			if len(message_queue) and send_channel:
+			if len(message_queue) and out_channel:
 				message = message_queue.pop(0)
-				send_channel.publish(
+				out_channel.publish(
 					exchange=message['exchange'], 
 					routing_key='', 
 					body=json.dumps(message['message']),
@@ -90,6 +110,6 @@ def process_messages():
 			message_queue.insert(0, message)
 			raven_client.captureException()
 
-		time.sleep(1)
+		time.sleep(2)
 
 start_new_thread(process_messages, ())

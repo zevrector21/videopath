@@ -66,6 +66,7 @@ def listview_sales(request):
         }).order_by('-date_joined'):
         user = [
             "<span>" + helpers.userlink(u) + "</span>",
+            u.email,
             "" + str(u.country if u.country else '') + "",
             "" + str(u.campaign_name if u.campaign_name else '') + "",
             referral_link(u.referrer),

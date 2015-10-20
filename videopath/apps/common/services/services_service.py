@@ -7,7 +7,6 @@ import pika, time, json
 raven_client = Client(settings.RAVEN_CONFIG['dsn'])
 
 RABBIT_MQ_URL = settings.CLOUDAMQP_URL
-url_parameters = pika.connection.URLParameters(RABBIT_MQ_URL)
 properties = pika.BasicProperties(
    content_type='application/json',
    content_encoding='utf-8',
@@ -43,8 +42,10 @@ def start_consuming():
 #
 def connect():
 	time.sleep(5)
-
+	if not RABBIT_MQ_URL:
+		return
 	global connection, in_channel, out_channel
+	url_parameters = pika.connection.URLParameters(RABBIT_MQ_URL)
 	connection = pika.BlockingConnection(url_parameters)
 	in_channel = connection.channel()
 	out_channel = connection.channel()
@@ -68,7 +69,7 @@ def attach_handler(queue, handler):
 			ch.basic_ack(method.delivery_tag)
 		except:
 			raven_client.captureException()
-			ch.basic_nack(method.delivery_tag, False, False)
+			
 	if in_channel:
 		in_channel.basic_consume(callback, queue=queue)
 

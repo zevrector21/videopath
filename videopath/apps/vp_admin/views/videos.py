@@ -48,7 +48,7 @@ def listview(request):
         .annotate(score=Sum("plays_all"))\
         .order_by('-score')
     videos = []
-    max_rows = 10
+    max_rows = 25
     for entry in count:
         videos.append(Video.objects.get(pk=entry["video_id"]))
         max_rows = max_rows - 1

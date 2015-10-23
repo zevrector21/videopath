@@ -21,7 +21,7 @@ class TestCase(BaseTestCase):
         v.draft.save()
 
     	jpg_transcode_error({
-    		'api_command': {
+    		'request': {
                 'source': {
                     'key': source.key
                 }
@@ -38,12 +38,13 @@ class TestCase(BaseTestCase):
         v.draft.source = source
         v.draft.save()
 
-    	jpg_transcode_success({
+    	jpg_transcode_success({'result':
+                {
     		"results":{
     			"frames":24
     		},
     		"key":source.key
-    	})
+    	}})
     	source = Source.objects.get(key=source.key)
     	self.assertEqual(source.jpg_sequence_support, True)
     	self.assertEqual(source.jpg_sequence_length, 24)

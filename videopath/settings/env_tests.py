@@ -9,7 +9,7 @@ DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'}
 #
 TEST_RUNNER = "django_nose.NoseTestSuiteRunner"
 NOSE_ARGS = [
-	'--nocapture'
+	'--nocapture',
     # '--with-coverage',
     # '--cover-package=videos',
 ]

@@ -20,16 +20,18 @@ def get_integration_info(user, service):
     except Integration.DoesNotExist:
         integration = None
 
-    if integration:
-        return {
-           'id': service,
-           'configured': True 
-        }
-
-    return {
+    result = {
+        'configured': False,
         'id': service,
-        'configured': False
+        'title': service_config.get('title'),
+        'oauth2': 'some_url'
     }
+
+    if integration:
+        result['configured'] = True
+        result['created'] = integration.created
+
+    return result
 
 #
 # get list of integration infos for one user

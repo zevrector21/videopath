@@ -64,6 +64,7 @@ def _import_youtube(key):
     # build api urls
     v3_api_url = "https://www.googleapis.com/youtube/v3/videos?id=_KEY_&part=snippet,statistics,contentDetails,status&key=AIzaSyBLmIRp_0JZDxWDGl8ZkIzmwT1W1NSOfLk".replace(
         "_KEY_", key)
+    oembed_url = "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=_KEY_&format=json".replace("_KEY_", key)
 
     try:
         response = urllib2.urlopen(v3_api_url)
@@ -99,6 +100,15 @@ def _import_youtube(key):
             thumbnail_url = thumb["url"]
 
     aspect = float(max_width) / float(max_height)
+
+    # try hitting the oembed url and getting more correct video dimensions
+    try:
+        response = urllib2.urlopen(oembed_url)
+        result_json = simplejson.load(response)
+        aspect = float(result_json['width']) / float(result_json['height'])
+        print aspect
+    except:
+        pass
     
     return {
     	"description": title,

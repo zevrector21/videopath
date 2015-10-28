@@ -29,6 +29,7 @@ urlpatterns = patterns('',
 
 	# integrations urls
 	url(r'^oauth/', include('videopath.apps.integrations.oauth_urls')),
+	url(r'^v1/', include('videopath.apps.integrations.urls')),
 
 	# admin urls
 	url(r'^admin/', include('videopath.apps.vp_admin.urls')),

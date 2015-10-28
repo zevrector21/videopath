@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 import requests
 
 # redirect urls
-FAIL_URL = 'https://localhost/app/dist/#integrations?result=failed'
-SUCCESS_URL = 'https://localhost/app/dist/#integrations?result=success'
+FAIL_URL = 'http://localhost/app/dist/#integrations?result=failure'
+SUCCESS_URL = 'http://localhost/app/dist/#integrations?result=success'
 
 # mailchimp urls
 MAILCHIMP_TOKEN_URL = 'https://login.mailchimp.com/oauth2/token'

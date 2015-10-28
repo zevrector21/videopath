@@ -149,7 +149,8 @@ INSTALLED_APPS = (
     'videopath.apps.files',
     'videopath.apps.videos',
     'videopath.apps.analytics',
-    'videopath.apps.payments'
+    'videopath.apps.payments',
+    'videopath.apps.integrations'
 )
 
 #

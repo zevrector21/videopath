@@ -42,10 +42,11 @@ def oauth_mailchimp(request, user):
 		'redirect_uri': 'http://127.0.0.1:5000/oauth/receive/mailchimp/1/'
 	}
 
-
 	response = requests.post(MAILCHIMP_TOKEN_URL, headers = headers, data=data)
-	print response
-	print response.text
-	print response.json()
+	token = response.json().get('access_token', '')
 
+	if not token:
+		return HttpResponseRedirect(FAIL_URL)
+	
 	return HttpResponseRedirect(SUCCESS_URL)
+

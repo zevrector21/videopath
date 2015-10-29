@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 
 from services import config
 
+from .models import Integration
+
 from django.conf import settings
 
 # redirect urls
@@ -28,7 +30,15 @@ def oauth_receive(request, service, uid):
 		return HttpResponseRedirect(FAIL_URL)	
 
 	# try to handle oauth in service module
-	if service_config['module'].handle_oauth2_request(request, user):
+	credentials = service_config['module'].handle_oauth2_request(request, user)
+	if credentials:
+		try:
+			integration = Integration.objects.get(user=user, service=service)
+			integration.delete()
+		except Integration.DoesNotExist:
+			pass
+		Integration.objects.create(user=user, service=service, credentials=credentials)
+
 		return HttpResponseRedirect(SUCCESS_URL)
 
 	return HttpResponseRedirect(FAIL_URL)

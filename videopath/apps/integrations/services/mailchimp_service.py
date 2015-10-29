@@ -26,6 +26,7 @@ def oauth2_endpoint_for_user(user):
 def handle_oauth2_request(request, user):
 	code = request.GET.get('code', '')
 
+	# convert the code into an access token
 	headers = {
 		'content-type': 'application/x-www-form-urlencoded'
 	}
@@ -43,18 +44,16 @@ def handle_oauth2_request(request, user):
 	if not token:
 		return False
 
-	# get mailchimp meta data 
+	# complete the token to an api_key by getting the metadata for the datacenter
 	headers = {
 		'Authorization': 'OAuth ' + token,
 		'Accept': 'application/json'
 	}
 	response = requests.get(MAILCHIMP_METADATA_URL, headers = headers)
 	datacenter = response.json().get('dc', None)
-
 	api_key = token + '-' + datacenter
 
-	# test token
-	mc = mailchimp.Mailchimp(api_key)
-	print mc.lists.list()
 	
-	return True
+	return {
+		'api_key': api_key
+	}

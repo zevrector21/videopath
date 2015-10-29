@@ -24,7 +24,7 @@ def get_integration_info(user, service):
         'configured': False,
         'id': service,
         'title': service_config.get('title'),
-        'oauth2': 'some_url'
+        'oauth2_endpoint': service_config['module'].oauth2_endpoint_for_user(user)
     }
 
     if integration:

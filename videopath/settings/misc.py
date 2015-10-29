@@ -114,3 +114,13 @@ PAYMENT_PROVIDER_CHOICES = (
 #
 CLOUDAMQP_URL = os.environ.get('CLOUDAMQP_URL', '')
 
+#
+# Own URL
+#
+API_ENDPOINT = 'https://api.videopath.com'
+
+#
+# App address
+#
+APP_URL = 'https://app.videopath.com'
+

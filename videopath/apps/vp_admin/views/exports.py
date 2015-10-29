@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 
 
 def build_csv_response(data):
-	response = HttpResponse()  #(content_type='text/csv') 
+	response = HttpResponse(content_type='text/csv') 
 	writer = csv.writer(response)
 
 	for row in data:

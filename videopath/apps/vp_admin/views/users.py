@@ -2,14 +2,14 @@ import humanize
 from urlparse import urlparse
 
 from django.contrib.auth.models import User
-from django.contrib.admin.views.decorators import staff_member_required
+from .decorators import group_membership_required
 from django.template.response import SimpleTemplateResponse
 
 
 from videopath.apps.videos.models import Video
 from videopath.apps.vp_admin.views import helpers
 
-@staff_member_required
+@group_membership_required('insights')
 def listview(request):
     result = ""
     users = []
@@ -49,7 +49,7 @@ def referral_link(url):
             return '<a href="' + url + '">' + parsed_uri.netloc +'</a><br />';
         return ''
 
-@staff_member_required
+@group_membership_required('insights')
 def listview_sales(request):
 
     result = ""
@@ -83,7 +83,7 @@ def listview_sales(request):
         "insight_content": result
         })
 
-@staff_member_required
+@group_membership_required('insights')
 def userview(request, username):
 
     # load user

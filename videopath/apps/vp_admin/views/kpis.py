@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.template.response import SimpleTemplateResponse
 from django.contrib.auth.models import User
 from django.core.cache import cache
-from django.contrib.admin.views.decorators import staff_member_required
+from .decorators import group_membership_required
 
 from videopath.apps.vp_admin.views import helpers
 from videopath.apps.videos.models import Video
@@ -159,7 +159,7 @@ def build_retention_table(groups):
 
 
 # build the view
-@staff_member_required
+@group_membership_required('insights')
 def view(request):
     
     # default to year weeks

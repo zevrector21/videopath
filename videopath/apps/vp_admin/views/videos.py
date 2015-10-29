@@ -2,14 +2,14 @@ from datetime import timedelta, datetime, date
 
 from django.template.response import SimpleTemplateResponse
 from django.db.models import Sum
-from django.contrib.admin.views.decorators import staff_member_required
+from .decorators import group_membership_required
 
 from videopath.apps.videos.models import Video
 from videopath.apps.analytics.models import DailyAnalyticsData
 from videopath.apps.vp_admin.views import helpers
 
 
-@staff_member_required
+@group_membership_required('insights')
 def listview(request):
 
     # video plays
@@ -81,7 +81,7 @@ def listview(request):
 
 
 
-@staff_member_required
+@group_membership_required('insights')
 def videoview(request, key):
     video = Video.objects.get(key=key)
 

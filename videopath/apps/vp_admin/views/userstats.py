@@ -4,13 +4,13 @@ import humanize
 from django.template.response import SimpleTemplateResponse
 
 from django.contrib.auth.models import User
-from django.contrib.admin.views.decorators import staff_member_required
+from .decorators import group_membership_required
 
 from videopath.apps.users.models import UserActivityDay
 from videopath.apps.vp_admin.views import helpers
 
 
-@staff_member_required
+@group_membership_required('insights')
 def view(request):
     result = ""
 

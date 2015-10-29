@@ -1,5 +1,5 @@
 
-from django.contrib.admin.views.decorators import staff_member_required
+from .decorators import group_membership_required
 from django.template.response import SimpleTemplateResponse
 from django.db import connection
 from videopath.apps.vp_admin.views import helpers
@@ -10,7 +10,7 @@ EXCLUDED_USER_NAMES = [
 	"david"
 ]
 
-@staff_member_required
+@group_membership_required('insights')
 def view(request):
 
 

@@ -43,5 +43,5 @@ if 'test' in sys.argv:
     execfile(os.path.join(SITE_ROOT, 'settings/env_tests.py'))
 
 # Check if we're on the continous integration server
-if os.environ.get("CI") == "true":
+if os.environ.get("CI") == "TRUE":
     execfile(os.path.join(SITE_ROOT, 'settings/env_ci.py'))

@@ -27,6 +27,10 @@ urlpatterns = patterns('',
 	# oembed is in videos app for now
 	url(r'^oembed/', 'videopath.apps.videos.views.oembed'),
 
+	# integrations urls
+	url(r'^oauth/', include('videopath.apps.integrations.oauth_urls')),
+	url(r'^v1/', include('videopath.apps.integrations.urls')),
+
 	# admin urls
 	url(r'^admin/', include('videopath.apps.vp_admin.urls')),
 	url(r'^admin/', include(admin.site.urls)),

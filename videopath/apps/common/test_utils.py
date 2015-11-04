@@ -45,6 +45,9 @@ class BaseAPIClient(APIClient):
     def get_json(self, url, **kwargs):
         return self.get(url, format='json', **kwargs)
 
+    def delete_json(self, url, **kwargs):
+        return self.delete(url, format='json', **kwargs)
+
 
 #
 # Base test class

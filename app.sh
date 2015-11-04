@@ -7,7 +7,7 @@ if [ "$1" == "setup" ]; then
 	python manage.py check_permissions
 elif [ "$1" == "run" ]; then
     echo "Starting app"
-    python manage.py runserver
+    python manage.py runserver 0.0.0.0:5000
 elif [ "$1" == "run_worker" ]; then
     # start redis server in background
 	redis-server & 

@@ -23,3 +23,14 @@ PLAYER_LOCATION = 'http://player-dev.videopath.com/'
 # Endpoint for JPG engine streaming
 #
 JPGS_CDN = '//videopathmobilefilesdev.blob.core.windows.net/'
+
+#
+# Integrations
+#
+
+#
+# Endpoint
+#
+API_ENDPOINT = 'https://videopath-api-dev.herokuapp.com'
+
+APP_URL = 'https://app-dev.videopath.com/develop'

@@ -54,10 +54,10 @@ def attach_handler(queue, handler, channel):
 	def callback(ch, method, properties, body):
 		try:
 			receivers[queue](json.loads(body))
-			ch.basic_ack(method.delivery_tag)
 		except:
 			raven_client.captureException()
-			
+		ch.basic_ack(method.delivery_tag)
+
 	channel.basic_consume(callback, queue=queue)
 
 

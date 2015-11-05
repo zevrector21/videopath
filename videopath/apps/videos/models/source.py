@@ -95,7 +95,7 @@ class Source(VideopathBaseModel):
             return  False, "Project is already transcoded for iPhone."
         if self.duration > 600:
             return False, "Currently only projects shorter than 10 Minutes can be transcoded."
-        if self.service not in [Source.SERVICE_YOUTUBE or Source.SERVICE_YOUTUBE]:
+        if self.service not in [Source.SERVICE_YOUTUBE, Source.SERVICE_YOUTUBE]:
             return False, "Currently only youtube projects can be transcoded."
 
         service_connection = service_provider.get_service('services')

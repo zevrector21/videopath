@@ -44,3 +44,8 @@ SLACK_API_TOCKEN = os.environ.get("SLACK_API_TOCKEN")
 #
 MAILCHIMP_CLIENT_ID = os.environ.get("MAILCHIMP_CLIENT_ID")
 MAILCHIMP_CLIENT_SECRET = os.environ.get("MAILCHIMP_CLIENT_SECRET")
+
+#
+# Pipedrive
+#
+PIPEDRIVE_API_KEY = os.environ.get("PIPEDRIVE_API_KEY")

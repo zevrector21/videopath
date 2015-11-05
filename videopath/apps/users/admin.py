@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as _UserAdmin
 
-from videopath.apps.users.models import UserCampaignData, AuthenticationToken,UserActivityDay, OneTimeAuthenticationToken, UserActivity, AutomatedMail, UserSettings, User
+from .models import UserCampaignData, UserSalesInfo, AuthenticationToken,UserActivityDay, OneTimeAuthenticationToken, UserActivity, AutomatedMail, UserSettings, User
+from videopath.apps.users.actions import move_user_to_pipedrive
 
 
 class UserAdmin(_UserAdmin):
@@ -15,6 +16,14 @@ class UserAdmin(_UserAdmin):
         return "<a href = '" + link + "'>List of Videos</a> (" + str(obj.videos.count()) + ")"
     videos_link.allow_tags = True
     
+    actions=["make_move_to_pipedrive"]
+    def make_move_to_pipedrive(self, request, queryset):
+        for user in queryset.all():
+            move_user_to_pipedrive.run(user)
+    make_move_to_pipedrive.short_description = "Move to pipedrive"
+
+class UserSalesInfoAdmin(admin.ModelAdmin):
+    list_display = ('user', 'pipedrive_person_id')
 
 
 class UserSettingsAdmin(admin.ModelAdmin):
@@ -80,6 +89,7 @@ admin.site.register(OneTimeAuthenticationToken, OTTokenAdmin)
 admin.site.register(UserActivity, UserActivityAdmin)
 admin.site.register(UserActivityDay, UserActivityDayAdmin)
 admin.site.register(UserCampaignData, UserCampaignDataAdmin)
+admin.site.register(UserSalesInfo, UserSalesInfoAdmin)
 
 admin.site.register(AutomatedMail, AutomatedMailAdmin)
 admin.site.register(UserSettings, UserSettingsAdmin)

@@ -21,7 +21,7 @@ urlpatterns = patterns('',
    url(r'^insights/', 'videopath.apps.vp_admin.views.base.view'),
 
    # exports
-   url(r'^exports/newest-users.csv', 'videopath.apps.vp_admin.views.exports.newest_users'),
+   url(r'^sales/inbound-users/', 'videopath.apps.vp_admin.views.sales.inbound_users'),
 
    # url for external health check
    url(r'^YT58Pc3u6ZlK/health/', 'videopath.apps.vp_admin.views.health_check.view'),

@@ -40,7 +40,8 @@ class UserSettings(UserenaBaseProfile):
         return "Settings of " + self.user.__unicode__() 
 
 #
-# Campaign Data
+# Campaign Data to store info about where the user came from
+#
 class UserCampaignData(VideopathBaseModel):
     user = models.OneToOneField(_User, 
                                 unique=True, 
@@ -58,6 +59,17 @@ class UserCampaignData(VideopathBaseModel):
     # other info
     country = models.CharField(max_length=512, default='', null=True)
     referrer = models.CharField(max_length=512, default='', null=True)
+
+#
+# SalesInfo, saves connection to crm (pipedrive atm)
+#
+class UserSalesInfo(VideopathBaseModel):
+    user = models.OneToOneField(_User, 
+                                unique=True, 
+                                verbose_name=('user'),
+                                related_name='sales_info'
+                                )
+    pipedrive_person_id = models.IntegerField(default=-1, null=True)
 
 
 #

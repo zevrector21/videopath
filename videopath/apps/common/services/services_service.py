@@ -14,47 +14,35 @@ properties = pika.BasicProperties(
 )
 
 connection = None
-in_channel = None
-out_channel = None
 
 def test_connection():
 	return connection != None and connection.is_open
 
 #
-# start consuming incoming events
-#
-def start_consuming():
-	global in_channel, out_channel, connection
-	try:
-		# start consuming messaged
-		in_channel.start_consuming()
-	except:
-		# reconnect when connection is lost
-		in_channel = None
-		out_channel = None
-		connection = None
-		connect()
-
-	return connection and connection.is_open
-
-#
 # 
 #
 def connect():
-	time.sleep(5)
-	if not RABBIT_MQ_URL:
-		return
-	global connection, in_channel, out_channel
-	url_parameters = pika.connection.URLParameters(RABBIT_MQ_URL)
-	connection = pika.BlockingConnection(url_parameters)
-	in_channel = connection.channel()
-	out_channel = connection.channel()
 
-	# attach receiving handlers to channel
-	for queue in receivers:
-		handler = receivers[queue]
-		attach_handler(queue, handler)
-	start_new_thread(start_consuming, ());
+	if not RABBIT_MQ_URL: return
+
+	while True:
+		time.sleep(5)
+		try:
+
+			if not RABBIT_MQ_URL:
+				return
+			global connection
+
+			url_parameters = pika.connection.URLParameters(RABBIT_MQ_URL)
+			connection = pika.BlockingConnection(url_parameters)
+			channel = connection.channel()
+
+			# attach receiving handlers to channel
+			for queue in receivers:
+				handler = receivers[queue]
+				attach_handler(queue, handler, channel)
+		except:
+			pass
 
 start_new_thread(connect, ())
 
@@ -62,7 +50,7 @@ start_new_thread(connect, ())
 #
 # message receiving
 #
-def attach_handler(queue, handler):
+def attach_handler(queue, handler, channel):
 	def callback(ch, method, properties, body):
 		try:
 			receivers[queue](json.loads(body))
@@ -70,8 +58,7 @@ def attach_handler(queue, handler):
 		except:
 			raven_client.captureException()
 			
-	if in_channel:
-		in_channel.basic_consume(callback, queue=queue)
+	channel.basic_consume(callback, queue=queue)
 
 
 receivers = {}
@@ -81,7 +68,6 @@ def receive_messages(queue, handler):
 		return
 	receivers[queue] = handler
 
-	attach_handler(queue,handler)
 
 
 
@@ -102,14 +88,22 @@ def send_message(exchange, message):
 def process_messages():
 	while True:
 		try:
-			if len(message_queue) and out_channel:
+			if len(message_queue):
+
 				message = message_queue.pop(0)
-				out_channel.publish(
+
+				url_parameters = pika.connection.URLParameters(RABBIT_MQ_URL)
+				connection = pika.BlockingConnection(url_parameters)
+				channel = connection.channel()
+
+				channel.publish(
 					exchange=message['exchange'], 
 					routing_key='', 
 					body=json.dumps(message['message']),
 					properties=properties
 				)
+
+				connection.close()
 		except:
 			message_queue.insert(0, message)
 			raven_client.captureException()

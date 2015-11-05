@@ -91,7 +91,7 @@ class TestCase(BaseTestCase):
         self.assertEqual(response.status_code, 404)
 
         # wrong service
-        s.service=Source.SERVICE_VIMEO
+        s.service=Source.SERVICE_WISTIA
         s.save() 
         response = self.client_user1.put(JPG_URL.format(v.draft.pk))
         self.assertEqual(response.status_code, 400)

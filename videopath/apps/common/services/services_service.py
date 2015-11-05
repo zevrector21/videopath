@@ -18,31 +18,40 @@ connection = None
 def test_connection():
 	return connection != None and connection.is_open
 
+def get_connection_and_channel():
+	url_parameters = pika.connection.URLParameters(RABBIT_MQ_URL)
+	connection = pika.BlockingConnection(url_parameters)
+	channel = connection.channel()
+	return connection, channel
+
+def close_connection(c):
+	try:
+		c.close()
+	except:
+		pass
+
 #
 # 
 #
 def connect():
 
 	if not RABBIT_MQ_URL: return
+	global connection
 
 	while True:
 		time.sleep(5)
 		try:
-
-			if not RABBIT_MQ_URL:
-				return
-			global connection
-
-			url_parameters = pika.connection.URLParameters(RABBIT_MQ_URL)
-			connection = pika.BlockingConnection(url_parameters)
-			channel = connection.channel()
-
+			connection, channel = get_connection_and_channel()
 			# attach receiving handlers to channel
 			for queue in receivers:
 				handler = receivers[queue]
 				attach_handler(queue, handler, channel)
+
+			channel.start_consuming()
 		except:
 			pass
+		finally:
+			close_connection(connection)
 
 start_new_thread(connect, ())
 
@@ -60,22 +69,17 @@ def attach_handler(queue, handler, channel):
 
 	channel.basic_consume(callback, queue=queue)
 
-
 receivers = {}
 def receive_messages(queue, handler):
-
 	if receivers.get(queue,None):
 		return
 	receivers[queue] = handler
-
-
 
 
 #
 # message sending
 #
 message_queue = []
-
 def send_message(exchange, message):
 	message_queue.append({
 		'exchange': exchange,
@@ -86,15 +90,13 @@ def send_message(exchange, message):
 # 
 #
 def process_messages():
+	connection = None
 	while True:
 		try:
 			if len(message_queue):
 
 				message = message_queue.pop(0)
-
-				url_parameters = pika.connection.URLParameters(RABBIT_MQ_URL)
-				connection = pika.BlockingConnection(url_parameters)
-				channel = connection.channel()
+				connection, channel = get_connection_and_channel()
 
 				channel.publish(
 					exchange=message['exchange'], 
@@ -103,10 +105,11 @@ def process_messages():
 					properties=properties
 				)
 
-				connection.close()
 		except:
 			message_queue.insert(0, message)
 			raven_client.captureException()
+		finally:
+			close_connection(connection)
 
 		time.sleep(2)
 

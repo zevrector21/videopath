@@ -149,7 +149,10 @@ class UserViewSet(viewsets.ModelViewSet):
         campaign_data.country = geo_record['country_full'][:500]
 
         if request.data:
-            campaign_data.referrer = request.data.get('referrer', '')[:500]
+
+            try:
+                campaign_data.referrer = request.data.get('referrer', '')[:500]
+            except: pass
 
             campaign = request.data.get('campaign', {})
             if campaign:
@@ -159,8 +162,7 @@ class UserViewSet(viewsets.ModelViewSet):
                     campaign_data.name = campaign.get('name', '')[:500]
                     campaign_data.content = campaign.get('content', '')[:500]
                     campaign_data.term = campaign.get('term', '')[:500]
-                except:
-                    None
+                except: pass
         
         campaign_data.save()
 
@@ -170,8 +172,7 @@ class UserViewSet(viewsets.ModelViewSet):
                 email = user.email  
                 service = service_provider.get_service("mailchimp")      
                 service.subscribe_email(email)      
-            except:
-                None
+            except: pass
 
         # create tokens
         token = AuthenticationToken.objects.create(user=user)

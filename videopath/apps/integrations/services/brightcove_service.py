@@ -27,6 +27,9 @@ def handle_credential_request(credentials):
 	client_id = credentials.get('client_id')
 	client_secret = credentials.get('client_secret')
 
-	print get_token(client_id, client_secret)
+	if get_token(client_id, client_secret):
+		return credentials
+	else:
+		return None
 
 	

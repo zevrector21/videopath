@@ -25,7 +25,8 @@ def get_integration_info(user, service):
         'id': service,
         'title': service_config.get('title'),
         'oauth2_endpoint': service_config['module'].oauth2_endpoint_for_user(user),
-        'description': service_config.get('description')
+        'description': service_config.get('description'),
+        'credentials': service_config.get('credentials')
     }
 
     if integration:
@@ -50,6 +51,9 @@ def get_integration_list(user):
         'previous': None
     }
 
+def authorize_with_credentials(service, credentials):
+    service_config = config.get(service, None)
+    service_config['module'].handle_credential_request(credentials)
 
 #
 # Manage the integrations for a user
@@ -70,6 +74,10 @@ class IntegrationViewSet(viewsets.ViewSet):
         return Response(data)
 
     def update(self, request, pk=None):
+
+        # see if this is a request to authorize with credentials
+        authorize_with_credentials(pk, request.data.get('credentials', None))
+
         return self.retrieve(request, pk)
 
     def partial_update(self, request, pk=None):

@@ -1,4 +1,4 @@
-import requests, urllib, mailchimp
+import requests, urllib
 from django.conf import settings
 
 
@@ -53,7 +53,6 @@ def handle_oauth2_request(request, user):
 	datacenter = response.json().get('dc', None)
 	api_key = token + '-' + datacenter
 
-	
 	return {
 		'api_key': api_key
 	}

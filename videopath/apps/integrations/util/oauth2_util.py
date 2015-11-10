@@ -32,12 +32,14 @@ def handle_redirect(request, service):
 	state = request.GET.get('state','')
 	code = request.GET.get('code','')
 
-	print state + ' ' + code
-
 	# try to load user
 	try:
 		uid = int(state.split(' ')[0])
+		uhash = state.split(' ')[1]
 		user = User.objects.get(pk=uid)
+		# check hash
+		if uhash != hash_user(user):
+			return False
 	except User.DoesNotExist:
 		return False
 

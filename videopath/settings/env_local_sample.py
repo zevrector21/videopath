@@ -103,3 +103,9 @@ GA_PASSWORD = ''
 AWS_PLAYER_BUCKET = "player-dev.videopath.com"
 PLAYER_SRC = '//player-dev.videopath.com/develop/'
 PLAYER_LOCATION = 'http://player-dev.videopath.com/'
+
+#
+# Integrations
+#
+MAILCHIMP_CLIENT_ID = ""
+MAILCHIMP_CLIENT_SECRET = ""

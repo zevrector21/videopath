@@ -11,6 +11,8 @@ class Integration(VideopathBaseModel):
 
     SERVICE_CHOICES = (
     	('mailchimp', 'mailchimp'),
+        ('vimeo', 'vimeo'),
+        ('brightcove', 'brightcove')
     )
 
     service = models.CharField(max_length=255, default='', choices=SERVICE_CHOICES)

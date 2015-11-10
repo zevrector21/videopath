@@ -1,6 +1,8 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
 
+from .util import oauth2_util
+
 from .services import config
 from .models import Integration
 
@@ -24,9 +26,9 @@ def get_integration_info(user, service):
         'configured': False,
         'id': service,
         'title': service_config.get('title'),
-        'oauth2_endpoint': service_config['module'].oauth2_endpoint_for_user(user),
+        'oauth2_endpoint': oauth2_util.authorize_uri_for_user(service_config, user),
         'description': service_config.get('description'),
-        'credentials': service_config.get('credentials')
+        'credentials': service_config.get('credentials', False)
     }
 
     if integration:

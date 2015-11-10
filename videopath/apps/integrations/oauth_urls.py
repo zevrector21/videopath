@@ -8,6 +8,6 @@ from .oauth_views import oauth_receive
 urlpatterns = patterns('',   
 
    # oauth endpoint
-   url(r'^receive/(?P<service>mailchimp)/(?P<uid>[0-9]+)/$', oauth_receive),
+   url(r'^receive/(?P<service>mailchimp|vimeo)/$', oauth_receive),
 
 )

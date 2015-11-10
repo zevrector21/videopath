@@ -1,30 +1,12 @@
-import requests, urllib
+import requests
 from django.conf import settings
 
 
-MAILCHIMP_TOKEN_URL = 'https://login.mailchimp.com/oauth2/token'
-MAILCHIMP_METADATA_URL = 'https://login.mailchimp.com/oauth2/metadata'
-
-
-def redirect_uri_for_user(user):
-	return settings.API_ENDPOINT + '/oauth/receive/mailchimp/' + str(user.pk) + '/'
-
-#
-# Build oauth 2 starting point
-#
-def oauth2_endpoint_for_user(user):
-	params = urllib.urlencode({
-		'redirect_uri': redirect_uri_for_user(user),
-		'client_id': settings.MAILCHIMP_CLIENT_ID,
-		'response_type': 'code'
-		})
-	return 'https://login.mailchimp.com/oauth2/authorize?' + params
 
 #
 # handling incoming oauth request
 #
-def handle_oauth2_request(request, user):
-	code = request.GET.get('code', '')
+def handle_redirect(service, user, code):
 
 	# convert the code into an access token
 	headers = {
@@ -35,10 +17,10 @@ def handle_oauth2_request(request, user):
 		'client_id': settings.MAILCHIMP_CLIENT_ID,
 		'client_secret': settings.MAILCHIMP_CLIENT_SECRET,
 		'code': code,
-		'redirect_uri': redirect_uri_for_user(user)
+		'redirect_uri': service['oauth2']['redirect_url']
 	}
 
-	response = requests.post(MAILCHIMP_TOKEN_URL, headers = headers, data=data)
+	response = requests.post(service['oauth2']['token_url'], headers = headers, data=data)
 	token = response.json().get('access_token', '')
 
 	if not token:
@@ -49,7 +31,7 @@ def handle_oauth2_request(request, user):
 		'Authorization': 'OAuth ' + token,
 		'Accept': 'application/json'
 	}
-	response = requests.get(MAILCHIMP_METADATA_URL, headers = headers)
+	response = requests.get(service['oauth2']['metadata_url'], headers = headers)
 	datacenter = response.json().get('dc', None)
 	api_key = token + '-' + datacenter
 

@@ -5,8 +5,6 @@ from requests.auth import HTTPBasicAuth
 ACCESS_TOKEN_URL = 'https://oauth.brightcove.com/v3/access_token'
 
 
-def oauth2_endpoint_for_user(user):
-	return ''
 
 def get_token(client_id, client_secret):
 	headers = {

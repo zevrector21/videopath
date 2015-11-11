@@ -90,7 +90,7 @@ _plans_current = {
         'variants': {
             'yearly': {
                 'name': 'Professional Plus Yearly',
-                'price_eur': 380000,
+                'price_eur': 350000,
                 'price_usd': 425000,
                 'price_gbp': 300000,
                 'payment_interval': 'year',

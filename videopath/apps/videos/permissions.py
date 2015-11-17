@@ -44,7 +44,6 @@ class MarkerPermissions(permissions.BasePermission):
             return True
         return False
 
-
 class VideoPermissions(permissions.BasePermission):
 
     def has_permission(self, request, view):
@@ -54,7 +53,6 @@ class VideoPermissions(permissions.BasePermission):
         if obj.user == request.user and not obj.archived:
             return True
         return False
-
 
 class MarkerContentPermissions(permissions.BasePermission):
 

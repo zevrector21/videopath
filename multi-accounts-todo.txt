@@ -1,0 +1,45 @@
+
+URL namespace changes
+===
+* Video list namespaced to team
+* Integrations list namespaced to team
+
+
+New Api functions
+===
+* Create Team
+* Delete Team
+* Add member to team
+* Remove member from team
+* Switch Team owner?
+
+
+Data Structure changes:
+===
+
+User 
+* Default Team
+
+Team
+* Name
+* Owner
+* Members 
+
+TeamMember
+* User
+* Team
+* Type 
+
+Video
+* Change User to Team
+
+Integration
+* Change User to Team
+
+
+Other things
+===
+* Features will be dependent on current team
+* Admin pages need to swap user for team
+* Search for video.user to see all other implications
+* Quota information?

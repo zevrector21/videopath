@@ -35,6 +35,8 @@ def handle_redirect(service, user, code):
 	datacenter = response.json().get('dc', None)
 	api_key = token + '-' + datacenter
 
+	# list our projects
+
 	return {
 		'api_key': api_key
 	}

@@ -205,6 +205,20 @@ class TestCase(EndpointsBaseTestCase):
         self.assertEqual(user.campaign_data.referrer,'videopath.com')
         self.assertEqual(user.campaign_data.country,'Germany')
 
+    def test_phone(self):
+        from videopath.apps.users.models import User
+        self.setup_users_and_clients()
+        data = {
+            'username': 'dave_new', 
+            'password': 'long_passsword',
+            'email': 'null-4@videopath.com',
+            'phone': '1234567890',
+        }
+        response = self.client.post_json(USER_URL, data)
+        self.assertEqual(response.status_code, 201)
+        user = User.objects.get(username='dave_new')
+        self.assertEqual(user.settings.phone_number, '1234567890')
+
 
 
 

@@ -189,6 +189,11 @@ class UserViewSet(viewsets.ModelViewSet):
         # rest of world
         else:
             user.settings.currency = settings.CURRENCY_USD
+
+        try:
+            user.settings.phone_number = request.data.get('phone', '')
+        except: pass
+
         user.settings.save()
 
         # create response

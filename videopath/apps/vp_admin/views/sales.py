@@ -15,8 +15,6 @@ from .helpers import table
 BASE_URL = '/admin/sales/inbound-users/'
 PIPEDRIVE_PERSON_URL = 'https://videopath.pipedrive.com/person/'
 
-
-
 def referral_link(url):
         if url:
             parsed_uri = urlparse( url )
@@ -44,7 +42,7 @@ def inbound_users(request):
 
 	rows = []
 
-	header = ['ID', 'Email', 'Date Joined',
+	header = ['ID', 'Email', 'Phone', 'Date Joined',
 		 'Country', 'Referrer', 'Campaign',
 		 'Created', 'Published', 'Plan', 'Pipedrive', 'Pro Demo', 
 		]
@@ -58,8 +56,13 @@ def inbound_users(request):
 	# build row from user
 	for user in User.objects.filter(date_joined__gte=date).order_by('-date_joined'):
 
+		try:
+			phone = user.settings.phone_number
+		except:
+			phone = ''
+
 		# standard data
-		row = [user.pk, user.username,  user.date_joined.date()]
+		row = [user.pk, user.username,  phone, user.date_joined.date()]
 
 		# signup data
 		try:

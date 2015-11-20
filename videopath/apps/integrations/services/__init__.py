@@ -1,9 +1,9 @@
 
 from django.conf import settings
 
-from . import mailchimp_service
-from . import brightcove_service
-from . import vimeo_service
+from .mailchimp import auth as mailchimp
+from .brightcove import auth as brightcove
+from .vimeo import auth as vimeo
 
 config = {
 
@@ -11,7 +11,8 @@ config = {
 		'id': 'mailchimp',
 		'title': 'Mailchimp',
 		'description': 'Use Mailchimp to capture your viewers email addresses.',
-		'module': mailchimp_service,
+		'type': 'e-mail-collector',
+		'module': mailchimp,
 		'oauth2': {
 			'client_id': settings.MAILCHIMP_CLIENT_ID,
 			'client_secret': settings.MAILCHIMP_CLIENT_SECRET,
@@ -26,7 +27,8 @@ config = {
 		'id': 'vimeo',
 		'title': 'Vimeo',
 		'description': 'Use Vimeo to host your videos',
-		'module': vimeo_service,
+		'type': 'video-source',
+		'module': brightcove,
 		'oauth2': {
 			'client_id': settings.VIMEO_CLIENT_ID,
 			'client_secret': settings.VIMEO_CLIENT_SECRET,
@@ -41,6 +43,7 @@ config = {
 		'id': 'brightcove',
 		'title': 'Brightcove',
 		'description': 'Use Brightcove to host your videos',
+		'type': 'video-source',
 		'credentials': [{
 				'name': 'Brightcove Client ID',
 				'id': 'client_id'
@@ -49,9 +52,7 @@ config = {
 				'id': 'client_secret'
 			}
 		],
-		'module': brightcove_service
+		'module': vimeo
 	},
-
-	
 	
 }

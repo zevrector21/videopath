@@ -29,7 +29,7 @@ def handle_credential_request(credentials):
 	list_videos(credentials)
 
 	if get_token(credentials):
-		return '{ok}'
+		return credentials
 	else:
 		return None
 

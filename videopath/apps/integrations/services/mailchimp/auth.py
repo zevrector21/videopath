@@ -33,10 +33,9 @@ def handle_redirect(service, user, code):
 	}
 	response = requests.get(service['oauth2']['metadata_url'], headers = headers)
 	datacenter = response.json().get('dc', None)
-	api_key = token + '-' + datacenter
+	api_key = token + '-' + datacenter	
 
 	# list our projects
-
 	return {
 		'api_key': api_key
 	}

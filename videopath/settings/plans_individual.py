@@ -122,7 +122,8 @@ _plans_individual = {
                 'feature_icon': True,
                 'feature_advanced_library': True,
                 'feature_advanced_video_settings': True, 
-                'feature_integrations': True
+                'feature_integrations': True,
+                'feature_email_collector': True
             }
 
         }

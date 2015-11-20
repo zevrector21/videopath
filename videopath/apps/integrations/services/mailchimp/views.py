@@ -17,7 +17,7 @@ class ListsViewSet(viewsets.ViewSet):
 		mc = mailchimp.Mailchimp(credentials['api_key'])
 		result = mc.lists.list()
 
-		results = map(lambda item: {'id': item['id'], 'name': item['name']}, result['data'] )
+		results = map(lambda item: {'id': item['id'], 'title': item['name']}, result['data'] )
 
 		return Response({
 			'count': len(results),

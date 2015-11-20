@@ -11,7 +11,7 @@ config = {
 		'id': 'mailchimp',
 		'title': 'Mailchimp',
 		'description': 'Use Mailchimp to capture your viewers email addresses.',
-		'type': 'e-mail-collector',
+		'type': 'email-collector',
 		'module': mailchimp,
 		'oauth2': {
 			'client_id': settings.MAILCHIMP_CLIENT_ID,

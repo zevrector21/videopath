@@ -34,7 +34,7 @@ def authenticate_service_beacon(service):
 			video_key = request.GET.get('video_key', '')
 			v = get_object_or_404(Video, key=video_key)
 			s = get_object_or_404(Integration, user=v.user, service=service)
-			return view(request, json.loads(s.credentials), *args, **kwargs)
+			return view(request, json.loads(s.credentials), v.user, *args, **kwargs)
 		return _wrapped_view
 
 	return decorator

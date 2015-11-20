@@ -32,7 +32,7 @@ class ListsViewSet(viewsets.ViewSet):
 @api_view(['GET'])
 @permission_classes((AllowAny,))
 @authenticate_service_beacon('mailchimp')
-def beacon(request, credentials):
+def beacon(request, credentials, owner):
 	list_id = request.GET.get('list_id', 'f557548df1')
 	email = request.GET.get('email', '')
 	try:

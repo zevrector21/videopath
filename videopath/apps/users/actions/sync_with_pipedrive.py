@@ -17,7 +17,6 @@ def run():
 	}
 	persons = requests.get(PIPEDRIVE_PERSON_URL, params=params).json()
 
-
 	for u in persons['data']:
 
 		email = u['email'][0]['value']

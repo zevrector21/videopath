@@ -12,7 +12,6 @@ def authenticate_token(key):
 	# try to load user and token from key	
 	user, token = _load_user_and_token(key)
 
-	
 	try:
 		# last seen
 		_track_activity(user)

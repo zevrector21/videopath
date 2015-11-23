@@ -8,7 +8,7 @@ mail_service = service_provider.get_service("mail")
 
 # agents
 agents = {
-    "dave": {
+    "ree": {
         "email": "desiree@videopath.com",
         "name": "Desiree dela Rosa"
     }
@@ -46,7 +46,7 @@ def send_agent_mail(user, subject, template_name, agent):
 
 
 def send_welcome_mail(user):
-    send_agent_mail(user, "How's Videopath working?", "welcome", "dave")
+    send_agent_mail(user, "How's Videopath working?", "welcome", "ree")
 
 # share mail
 
@@ -181,7 +181,6 @@ def send_signup_email(user):
 # transcoding mails
 def send_transcode_succeeded_mail(source):
     revision = source.revisions.first()
-
     send_templated_mail(
         revision.video.user,
         "\"" + revision.title + "\" is ready to edit!",

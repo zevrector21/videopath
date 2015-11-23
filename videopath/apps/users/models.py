@@ -100,15 +100,13 @@ class UserActivityDay(VideopathBaseModel):
 class AutomatedMail(VideopathBaseModel):
 
     TYPE_WELCOME = "welcome"
-    TYPE_RETENTION1 = "retention1"
-    TYPE_RETENTION2 = "retention2"
-    TYPE_RETENTION3 = "retention3"
+    TYPE_FOLLOW_UP_21 = "follow_up_21"
+    TYPE_FOLLOW_UP_42 = "follow_up_42"
 
     TYPE_CHOICES = (
         (TYPE_WELCOME, TYPE_WELCOME),
-        (TYPE_RETENTION1, TYPE_RETENTION1),
-        (TYPE_RETENTION2, TYPE_RETENTION2),
-        (TYPE_RETENTION3, TYPE_RETENTION3),
+        (TYPE_FOLLOW_UP_21, TYPE_FOLLOW_UP_21),
+        (TYPE_FOLLOW_UP_42, TYPE_FOLLOW_UP_42),
     )
     user = models.ForeignKey(_User, related_name="automated_mails")
     mailtype = models.CharField(

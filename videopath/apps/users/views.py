@@ -19,8 +19,9 @@ from videopath.apps.common.services import service_provider
 from videopath.apps.users.models import AuthenticationToken, OneTimeAuthenticationToken, UserCampaignData
 from videopath.apps.users.serializers import UserSerializer
 from videopath.apps.common.mailer import send_signup_email, send_forgot_pw_mail
-from videopath.apps.users.util import login_util
 from videopath.apps.users.permissions import UserPermissions
+
+from videopath.apps.users.actions import login_user
 
 
 #
@@ -50,7 +51,7 @@ def api_token(request):
     if request.method == "POST":
         username = request.data.get("username", "").lower()
         password = request.data.get("password", "")
-        user, token, ottoken = login_util.login(username, password)    
+        user, token, ottoken = login_user.run(username, password)    
         if token:
             serializer = UserSerializer(user, context={'request': request})
             return Response({

@@ -1,4 +1,0 @@
-{% extends "mails/base_1.txt" %}
-{% block content %}
-Retention 3
-{% endblock %}

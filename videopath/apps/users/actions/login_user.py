@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 from videopath.apps.users.models import OneTimeAuthenticationToken, AuthenticationToken
 
-def login(id, password):
+def run(id, password):
 
 	# try to authenticate
     token = None

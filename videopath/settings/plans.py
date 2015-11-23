@@ -22,6 +22,7 @@ class _Plans():
        	'feature_endscreen': False,
 		'feature_advanced_settings': False,
 		'feature_advanced_library': False,
+		'feature_email_collector': False,
 
         'feature_custom_analytics': False,
 

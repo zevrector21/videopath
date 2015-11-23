@@ -71,6 +71,15 @@ def check_video_import_wistia():
 	except:
 		return "Wistia import failed"
 
+def check_import_brightcove():
+	service = service_provider.get_service("video_source_import")
+	try:
+		source = service.import_video_from_url("http://players.brightcove.net/4602926337001/default_default/index.html?videoId=4602980509001")
+		return source["service"] == "brightcove"
+	except:
+		return "Brightcove import failed"
+	
+
 def check_services_connection():
 	service = service_provider.get_service("services")
 	return service.test_connection()

@@ -90,9 +90,9 @@ _plans_current = {
         'variants': {
             'yearly': {
                 'name': 'Professional Plus Yearly',
-                'price_eur': 380000,
+                'price_eur': 350000,
                 'price_usd': 425000,
-                'price_gbp': 300000,
+                'price_gbp': 280000,
                 'payment_interval': 'year',
                 'value': 151,
             },
@@ -113,6 +113,8 @@ _plans_current = {
                 'value': 149,
                 'subscribable': False
             },
+
+            # individual monthly plans
             'monthly-25-jobviddy': {
                 'name': 'Professional Plus Monthly (25% Discount) Andy',
                 'price_eur': 25900,
@@ -122,6 +124,15 @@ _plans_current = {
                 'value': 149,
                 'subscribable': False,
                 'feature_advanced_video_settings': True
+            },
+            'monthly-imbfitness': {
+                'name': 'Professional Plus Monthly (imbfitness)',
+                'price_eur': 10900,
+                'price_usd': 10900,
+                'price_gbp': 10900,
+                'payment_interval': 'month',
+                'value': 149,
+                'subscribable': False
             }
         }
     },

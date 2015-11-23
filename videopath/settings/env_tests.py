@@ -1,8 +1,10 @@
 #
 # Some optimizations for the tests
 #
-SOUTH_TESTS_MIGRATE = False
-DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'}
+DATABASES['default'] = {
+	'ENGINE': 'django.db.backends.sqlite3',
+	'NAME': ':memory:',
+}
 
 #
 # Nose
@@ -25,3 +27,15 @@ REST_FRAMEWORK['DEFAULT_THROTTLE_RATES'] = {
 # Load mock services
 #
 SERVICE_MOCKS = True
+
+
+#
+# Workaround to disable migrations in Django 1.7
+# https://gist.github.com/NotSqrt/5f3c76cd15e40ef62d09
+#
+class DisableMigrations(object):
+    def __contains__(self, item):
+        return True
+    def __getitem__(self, item):
+        return "notmigrations"
+MIGRATION_MODULES = DisableMigrations()

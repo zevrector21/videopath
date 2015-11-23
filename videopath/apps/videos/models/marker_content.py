@@ -16,7 +16,8 @@ class MarkerContent(VideopathBaseModel):
         ("media", "media"),
         ("audio", "audio"),
         ("simple_button", "simple_button"),
-        ("social", "social")
+        ("social", "social"),
+        ("email_collector", "email_collector")
     )
 
     # key

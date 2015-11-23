@@ -10,4 +10,10 @@ router.register(r'integration', IntegrationViewSet, base_name="integration")
 
 urlpatterns = patterns('',   
    url(r'', include(router.urls)),
+
+   # wire up services
+   url(r'^integration/mailchimp/', include('videopath.apps.integrations.services.mailchimp.urls')),
+   url(r'^integration/vimeo/', include('videopath.apps.integrations.services.vimeo.urls')),
+   url(r'^integration/brightcove/', include('videopath.apps.integrations.services.brightcove.urls')),
+
 )

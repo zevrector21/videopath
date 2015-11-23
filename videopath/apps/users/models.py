@@ -31,6 +31,8 @@ class UserSettings(UserenaBaseProfile):
         max_length=3, default=settings.CURRENCY_EUR, choices=settings.CURRENCY_CHOICES)
     payment_provider = models.CharField(
         max_length=150, default=settings.PAYMENT_PROVIDER_STRIPE, choices=settings.PAYMENT_PROVIDER_CHOICES)
+    phone_number = models.CharField(
+        max_length=100, default='')
 
     class Meta:
         verbose_name = 'User Settings'

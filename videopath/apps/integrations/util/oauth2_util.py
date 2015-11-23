@@ -1,5 +1,7 @@
 import urllib, hashlib
 
+import json
+
 from datetime import date
 
 from ..models import Integration
@@ -51,6 +53,7 @@ def handle_redirect(request, service):
 			integration.delete()
 		except Integration.DoesNotExist:
 			pass
+		credentials = json.dumps(credentials)
 		Integration.objects.create(user=user, service=service['id'], credentials=credentials)
 
 		return True

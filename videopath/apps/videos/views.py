@@ -322,6 +322,11 @@ def import_source(request, key=None):
         slack = service_provider.get_service("slack")
         slack.notify("User " + request.user.email + " just imported video " + request.data["url"] + ".")
 
+    # hack to enabled yt annotations for babbel. needs to go soon!
+    if request.user.username == 'babbel':
+        video.draft.source.youtube_allow_clickthrough = True
+        video.draft.source.save()
+
     # try to set title on draft
     try:
         if not video.draft.title or video.draft.title == "New Video":

@@ -50,11 +50,17 @@ def _create_person_in_pipedrive(user):
 
 	email = user.email
 
+	try:
+		phone = user.settings.phone_number
+	except:
+		phone = ''
+
 	# create person
 	data = {
 		'email': email,
 		'name': email,
 		'visible_to': 3,
+		'phone': phone,
 		'owner_id': USER_ID
 	}
 	person_id = _pipedrive_post(PIPEDRIVE_PERSON_URL, data=data)['data']['id']

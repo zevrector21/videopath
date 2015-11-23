@@ -1,3 +1,5 @@
+import json
+
 from rest_framework import viewsets
 from rest_framework.response import Response
 
@@ -28,7 +30,8 @@ def get_integration_info(user, service):
         'title': service_config.get('title'),
         'oauth2_endpoint': oauth2_util.authorize_uri_for_user(service_config, user),
         'description': service_config.get('description'),
-        'credentials': service_config.get('credentials', False)
+        'credentials': service_config.get('credentials', False),
+        'type': service_config.get('type')
     }
 
     if integration:
@@ -57,6 +60,7 @@ def authorize_with_credentials(user, service, credentials):
     service_config = config.get(service, None)
     credentials = service_config['module'].handle_credential_request(credentials)
     if credentials:
+        credentials = json.dumps(credentials)
         Integration.objects.create(user=user, service=service, credentials=credentials)
         return True
     else:
@@ -86,7 +90,6 @@ class IntegrationViewSet(viewsets.ViewSet):
         if authorize_with_credentials(request.user, pk, request.data.get('authorize', None)):
             return self.retrieve(request, pk)
         else:
-            data = get_integration_info(request.user, pk)
             return Response(status=403)
 
     def partial_update(self, request, pk=None):

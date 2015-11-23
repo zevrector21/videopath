@@ -9,7 +9,6 @@ def run():
 			user.email
 		}
 
-
 	for key, value in users.iteritems():
 		print key + ","
 

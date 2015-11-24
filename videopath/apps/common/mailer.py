@@ -32,16 +32,7 @@ def send_agent_mail(user, subject, template_name, agent, tags):
         'to': [{'email': user.email}],
         'from_email': agent["email"],
         'from_name': agent["name"],
-        'inline_css': True,
         'tags': tags,
-        "recipient_metadata": [
-            {
-                "rcpt": user.email,
-                "values": {
-                    "user_id": user.pk
-                }
-            }
-        ],
     }
 
     mail_service.mandrill_send(message)
@@ -99,11 +90,8 @@ def send_share_mail(video, recipients, message):
         'to': recipientsmap,
         'from_email': 'no-reply@videopath.com',
         'from_name': 'Videopath Team',
-        'inline_css': True,
         'tags': ['share'],
-        "headers": {
-            "Reply-To": video.user.email
-        }
+        'replyto': video.user.email
     }
     mail_service.mandrill_send(message)
 
@@ -123,19 +111,8 @@ def send_mail(user, subject, message_plain, message_html, tags=[], force = False
         'to': [{'email': user.email}],
         'from_email': 'no-reply@videopath.com',
         'from_name': 'Videopath Team',
-        'inline_css': True,
         'tags': tags,
-        "headers": {
-            "Reply-To": "support@videopath.com"
-        },
-        "recipient_metadata": [
-            {
-                "rcpt": user.email,
-                "values": {
-                    "user_id": user.pk
-                }
-            }
-        ],
+        'replyto': "support@videopath.com"
     }
     mail_service.mandrill_send(message)
 

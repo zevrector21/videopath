@@ -34,6 +34,10 @@ class UserSettings(UserenaBaseProfile):
     phone_number = models.CharField(
         max_length=100, default='')
 
+    # email settings
+    receive_system_emails = models.BooleanField(default=True)
+    receive_retention_emails = models.BooleanField(default=True)
+
     class Meta:
         verbose_name = 'User Settings'
         verbose_name_plural = 'User Settings'

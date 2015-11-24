@@ -15,7 +15,6 @@ agents = {
 }
 
 
-
 def send_agent_mail(user, subject, template_name, agent):
 
     if not user.settings.receive_retention_emails:
@@ -51,6 +50,11 @@ def send_agent_mail(user, subject, template_name, agent):
 def send_welcome_mail(user):
     send_agent_mail(user, "How's Videopath working?", "welcome", "ree")
 
+def send_follow_up_three_weeks(user):
+    send_agent_mail(user, "Get the most out of Videopath", "follow_up_three_weeks", "ree")
+
+def send_follow_up_six_weeks(user):
+    send_agent_mail(user, "Make Videopath work for you!", "follow_up_six_weeks", "ree")
 
 # share mail
 def send_share_mail(video, recipients, message):

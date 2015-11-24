@@ -53,3 +53,9 @@ VIMEO_CLIENT_SECRET = os.environ.get("VIMEO_CLIENT_SECRET")
 # Pipedrive
 #
 PIPEDRIVE_API_KEY = os.environ.get("PIPEDRIVE_API_KEY")
+
+
+#
+# Sendgrid
+#
+SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY")

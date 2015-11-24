@@ -9,7 +9,7 @@ from videopath.apps.users.actions import sync_with_pipedrive
 from videopath.apps.users.actions import expire_authentication_tokens
 from videopath.apps.users.actions import clear_example_users
 from videopath.apps.users.actions import send_welcome_mails
-
+from videopath.apps.users.actions import send_follow_up_mails
 
 @receiver(pre_delete, sender=AuthenticationToken)
 def delete_auth_token_cache(sender, instance=None, **kwargs):
@@ -22,6 +22,11 @@ def run_send_welcome_mails(sender, **kwargs):
 @receiver(hourly_jobs)
 def run_expire_authentication_tokens(sender, **kwargs):
     expire_authentication_tokens.run()
+
+@receiver(hourly_jobs)
+def run_send_follow_up_mails(sender, **kwargs):
+    #send_follow_up_mails.run()
+    pass
 
 @receiver(daily_jobs)
 def run_sync_with_pipedrive(sender, **kwargs):

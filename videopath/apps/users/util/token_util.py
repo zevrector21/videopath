@@ -12,7 +12,6 @@ def authenticate_token(key):
 	# try to load user and token from key	
 	user, token = _load_user_and_token(key)
 
-	
 	try:
 		# last seen
 		_track_activity(user)
@@ -88,4 +87,6 @@ def _track_activity_daily(user):
             cache.set(cachekey, activity)
             if created:
 				slack = service_provider.get_service("slack")
-				slack.notify("User " + user.email + " just seen for the first time today.")
+				visitors_today = UserActivityDay.objects.filter(day=today).count()
+				visited_days = UserActivityDay.objects.filter(user=user).count()
+				slack.notify("User " + user.email + " just seen for the first time today. This is our " + str(visitors_today) + ". visitor today. This user has been seen on " + str(visited_days) + " days since he has signed up.")

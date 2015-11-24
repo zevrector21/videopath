@@ -34,6 +34,10 @@ class UserSettings(UserenaBaseProfile):
     phone_number = models.CharField(
         max_length=100, default='')
 
+    # email settings
+    receive_system_emails = models.BooleanField(default=True)
+    receive_retention_emails = models.BooleanField(default=True)
+
     class Meta:
         verbose_name = 'User Settings'
         verbose_name_plural = 'User Settings'
@@ -100,15 +104,13 @@ class UserActivityDay(VideopathBaseModel):
 class AutomatedMail(VideopathBaseModel):
 
     TYPE_WELCOME = "welcome"
-    TYPE_RETENTION1 = "retention1"
-    TYPE_RETENTION2 = "retention2"
-    TYPE_RETENTION3 = "retention3"
+    TYPE_FOLLOW_UP_21 = "follow_up_21"
+    TYPE_FOLLOW_UP_42 = "follow_up_42"
 
     TYPE_CHOICES = (
         (TYPE_WELCOME, TYPE_WELCOME),
-        (TYPE_RETENTION1, TYPE_RETENTION1),
-        (TYPE_RETENTION2, TYPE_RETENTION2),
-        (TYPE_RETENTION3, TYPE_RETENTION3),
+        (TYPE_FOLLOW_UP_21, TYPE_FOLLOW_UP_21),
+        (TYPE_FOLLOW_UP_42, TYPE_FOLLOW_UP_42),
     )
     user = models.ForeignKey(_User, related_name="automated_mails")
     mailtype = models.CharField(

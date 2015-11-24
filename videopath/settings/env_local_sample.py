@@ -109,3 +109,8 @@ PLAYER_LOCATION = 'http://player-dev.videopath.com/'
 #
 MAILCHIMP_CLIENT_ID = ""
 MAILCHIMP_CLIENT_SECRET = ""
+
+#
+# Sendgrid
+#
+SENDGRID_API_KEY = ""

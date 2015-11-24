@@ -8,15 +8,17 @@ mail_service = service_provider.get_service("mail")
 
 # agents
 agents = {
-    "dave": {
+    "ree": {
         "email": "desiree@videopath.com",
         "name": "Desiree dela Rosa"
     }
 }
 
 
+def send_agent_mail(user, subject, template_name, agent, tags):
 
-def send_agent_mail(user, subject, template_name, agent):
+    if not user.settings.receive_retention_emails:
+        return
 
     # get template
     c = Context({})
@@ -31,7 +33,7 @@ def send_agent_mail(user, subject, template_name, agent):
         'from_email': agent["email"],
         'from_name': agent["name"],
         'inline_css': True,
-        'tags': ['agent'],
+        'tags': tags,
         "recipient_metadata": [
             {
                 "rcpt": user.email,
@@ -46,11 +48,15 @@ def send_agent_mail(user, subject, template_name, agent):
 
 
 def send_welcome_mail(user):
-    send_agent_mail(user, "How's Videopath working?", "welcome", "dave")
+    send_agent_mail(user, "How's Videopath working?", "welcome", "ree", ['follow up one week'])
+
+def send_follow_up_three_weeks(user):
+    send_agent_mail(user, "Get the most out of Videopath", "follow_up_three_weeks", "ree", ['follow up three weeks'])
+
+def send_follow_up_six_weeks(user):
+    send_agent_mail(user, "Make Videopath work for you!", "follow_up_six_weeks", "ree", ['follow up six weeks'])
 
 # share mail
-
-
 def send_share_mail(video, recipients, message):
 
     try:
@@ -105,7 +111,10 @@ def send_share_mail(video, recipients, message):
 
 
 # regular system mails
-def send_mail(user, subject, message_plain, message_html, tags=[]):
+def send_mail(user, subject, message_plain, message_html, tags=[], force = False):
+
+    if not force and not user.settings.receive_system_emails:
+        return
 
     message = {
         'subject': subject,
@@ -131,7 +140,7 @@ def send_mail(user, subject, message_plain, message_html, tags=[]):
     mail_service.mandrill_send(message)
 
 
-def send_templated_mail(user, subject, template_name, vars, tags):
+def send_templated_mail(user, subject, template_name, vars, tags, force = False):
 
     vars["username"] = user.username
 
@@ -145,7 +154,7 @@ def send_templated_mail(user, subject, template_name, vars, tags):
     t = get_template("mails/" + template_name + ".txt")
     message_plain = t.render(c)
 
-    send_mail(user, subject, message_plain, message_html, tags)
+    send_mail(user, subject, message_plain, message_html, tags, force)
 
 
 ### admin  & dev
@@ -181,7 +190,6 @@ def send_signup_email(user):
 # transcoding mails
 def send_transcode_succeeded_mail(source):
     revision = source.revisions.first()
-
     send_templated_mail(
         revision.video.user,
         "\"" + revision.title + "\" is ready to edit!",
@@ -302,5 +310,6 @@ def send_forgot_pw_mail(user, password):
         {
             "password": password
         },
-        ["forgot_passord"]
+        ["forgot_passord"],
+        force=True
     )

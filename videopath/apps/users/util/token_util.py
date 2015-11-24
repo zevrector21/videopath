@@ -89,4 +89,4 @@ def _track_activity_daily(user):
 				slack = service_provider.get_service("slack")
 				visitors_today = UserActivityDay.objects.filter(day=today).count()
 				visited_days = UserActivityDay.objects.filter(user=user).count()
-				slack.notify("User " + user.email + " just seen for the first time today. This is our " + str(visitors_today) + ". visitor today. This user has been seen on " + str(visited_days) + " since he has signed up.")
+				slack.notify("User " + user.email + " just seen for the first time today. This is our " + str(visitors_today) + ". visitor today. This user has been seen on " + str(visited_days) + " days since he has signed up.")

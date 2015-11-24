@@ -39,6 +39,9 @@ def sendgrid_send(m):
     sg.send(message)
 
 
+def mandrill_send(m):
+    return sendgrid_send(m)
+
 #
 # for now, just abstract the mandrill sending here
 #

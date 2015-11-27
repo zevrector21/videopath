@@ -87,7 +87,8 @@ def printgraph(values, maxlength=30.0):
     count = len(values)
     width = 100.0 / float(count)
 
-    result = reduce(lambda x, item: x + "<div class ='vp_graph_item' style='width:{0}%'><div class = 'vp_graph_label_top'>{2}</div><div class = 'vp_graph_label_bottom'>{3}</div><div class = 'vp_graph_item_inner' style='height:{1}%'></div></div>".format(width, float(values[item]) / max_value * 100, values[item], item), values, '')
+    if count > 0 and max_value > 0:
+        result = reduce(lambda x, item: x + "<div class ='vp_graph_item' style='width:{0}%'><div class = 'vp_graph_label_top'>{2}</div><div class = 'vp_graph_label_bottom'>{3}</div><div class = 'vp_graph_item_inner' style='height:{1}%'></div></div>".format(width, float(values[item]) / max_value * 100, values[item], item), values, '')
 
     return "<div class='vp_graph'>" + result + "</div>"
 

@@ -23,13 +23,13 @@ elif [ "$1" == "deploy" ]; then
 	heroku run python manage.py migrate --app videopath-api
 elif [ "$1" == "import_heroku_db" ]; then
 	# capture remote db and import to local postgres instance
-	 heroku pg:backups capture --app videopath-api
-	 backup_url=$(heroku pg:backups public-url --app videopath-api)
-	 curl -o latest.dump $backup_url
-	 psql -h 127.0.0.1 -p 5432 -c "drop database videopath_import"
-	 psql -h 127.0.0.1 -p 5432 -c "create database videopath_import"
-	 pg_restore --verbose --clean --no-acl --no-owner -h localhost -U David -d videopath_import latest.dump
-	 rm latest.dump
+	heroku pg:backups capture --app videopath-api
+	backup_url=$(heroku pg:backups public-url --app videopath-api)
+	curl -o latest.dump $backup_url
+	psql -h 127.0.0.1 -p 5432 -c "drop database videopath_import"
+	psql -h 127.0.0.1 -p 5432 -c "create database videopath_import"
+	pg_restore --verbose --clean --no-acl --no-owner -h localhost -U david -d videopath_import latest.dump
+	rm latest.dump
 elif [ "$1" == "heroku_login" ]; then
 	#capture db state
 	spawn heroku login 

@@ -8,6 +8,7 @@ from django.template.response import SimpleTemplateResponse
 
 from videopath.apps.videos.models import Video
 from videopath.apps.vp_admin.views import helpers
+from videopath.apps.vp_admin.views import viewsets
 
 @group_membership_required('insights')
 def listview(request):
@@ -54,8 +55,6 @@ def listview_sales(request):
 
     result = ""
     users = []
-
-    
 
     for u in User.objects.extra(select={
             'campaign_name': 'SELECT name FROM users_usercampaigndata WHERE users_usercampaigndata.user_id = auth_user.id',
@@ -115,7 +114,7 @@ def userview(request, username):
     except:
         pass
 
-    # billing info
+    # camaign info
     result += helpers.header("Campaign Info")
     try:
         result += "Country: " + user.campaign_data.country + "<br />"
@@ -128,6 +127,12 @@ def userview(request, username):
         result += "Term: " + user.campaign_data.term + "<br />"
     except:
         pass
+
+    result += helpers.header("Video plays")
+    result += helpers.dategraph(
+        viewsets.all_daily_stats().filter(video__user=user), 
+        "date", 
+        aggregate_field='plays_all')
 
 
     # published videos 

@@ -1,13 +1,17 @@
 
 from django.contrib.auth.models import User
 from videopath.apps.videos.models import Video
-from videopath.apps.analytics.models import DailyAnalyticsData
+from videopath.apps.users.models import UserActivityDay
+
+from videopath.apps.analytics.models import TotalAnalyticsData
+
 
 
 company_accounts = [
     "david",
     "product_demo", #company
     "marketing", # company
+    "huesforalice", # dave
     "anna",
     "tim t", #tim 2
     "tim", # tim 1
@@ -21,6 +25,9 @@ company_accounts = [
     "vp_test_basic",
     "vp_test_pro",
     "vp_test_enterprise",
+    "desiree@videopath.com",
+    "anila@videopath.com",
+    "adillon_88@hotmail.com"
 ]
 
 non_paid_plans = [
@@ -46,6 +53,10 @@ def upgraded_users():
 def active_users():
 	pass
 
+def user_activity_daily():
+	viewset = UserActivityDay.objects.exclude(user__username__in=company_accounts)
+	return viewset
+
 #
 # videos
 #
@@ -62,9 +73,20 @@ def shared_videos():
 	return viewset
 
 #
+# VIdeo stats
+#
+def all_total_analytics():
+	viewset = TotalAnalyticsData.objects.exclude(video__user__username__in=company_accounts)
+	return viewset
+	
+
+#
 # daily stats
 #
 def all_daily_stats():
+	from videopath.apps.analytics.models import DailyAnalyticsData
 	viewset = DailyAnalyticsData.objects.exclude(video__user__username__in=company_accounts)
 	return viewset
+
+
 

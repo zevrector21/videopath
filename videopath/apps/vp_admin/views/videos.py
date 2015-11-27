@@ -17,7 +17,6 @@ def listview(request):
     last_day = date.today()
     first_day = last_day - timedelta(days=7)
     count = DailyAnalyticsData.objects.filter(
-        # video__user=user,
         date__gte=first_day,
         date__lt=last_day)\
         .values('video__user__username')\
@@ -32,37 +31,48 @@ def listview(request):
                 str(entry["score"])
             ])
         rows += 1
-        if rows > 7:
-            break
+        if rows >= 10: break
     result += helpers.table(result_array, ["username", "plays"])
 
-
+    #
+    # Popular videos
+    #
     result += helpers.header("Most popular video the last 7 days")
     last_day = date.today()
     first_day = last_day - timedelta(days=7)
     count = DailyAnalyticsData.objects.filter(
-        # video__user=user,
         date__gte=first_day,
         date__lt=last_day)\
         .values('video_id')\
         .annotate(score=Sum("plays_all"))\
         .order_by('-score')
-    videos = []
+
+
+    result_array = []
     max_rows = 25
     for entry in count:
-        videos.append(Video.objects.get(pk=entry["video_id"]))
-        max_rows = max_rows - 1
-        if max_rows <= 0:
-            break
-    result += helpers.videolist(videos)
+        video = Video.objects.get(pk=entry["video_id"])
+        link = helpers.videolink(video)
+        if link:
+            link.append(entry['score'])
+            result_array.append(link)
+        max_rows -= 1
+        if max_rows == 0: break
 
+
+    result += helpers.table(result_array, ["Title", "User", "Modified", "Plays all", "Plays last 7"])
+
+
+
+    #
     # published vids
+    #
     startdate = datetime.now()
     enddate = startdate - timedelta(days=30)
     result += helpers.header("Recently published videos")
-    videos = Video.objects.filter(current_revision__modified__range=[
-                                  enddate, startdate]).order_by('-current_revision__modified')
+    videos = Video.objects.filter(current_revision__modified__range=[enddate, startdate]).order_by('-current_revision__modified')
     result += helpers.videolist(videos) 
+
 
     return SimpleTemplateResponse("insights/base.html", {
         "title": "Videos",

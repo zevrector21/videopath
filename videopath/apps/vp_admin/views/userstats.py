@@ -49,10 +49,6 @@ def view(request):
         ])
     result += helpers.table(userlist)
 
-    # signups per week
-    result += helpers.header("Signups per week")
-    result += helpers.dategraph(User.objects.all(), "date_joined", "%Y %V")
-
     return SimpleTemplateResponse("insights/base.html", {
         "title": "User statistics",
         "insight_content": result

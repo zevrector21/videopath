@@ -1,6 +1,7 @@
 
 from django.contrib.auth.models import User
 from videopath.apps.videos.models import Video
+from videopath.apps.analytics.models import DailyAnalyticsData
 
 
 company_accounts = [
@@ -60,5 +61,10 @@ def shared_videos():
 	viewset = all_videos().filter(total_plays__gte=50)
 	return viewset
 
-
+#
+# daily stats
+#
+def all_daily_stats():
+	viewset = DailyAnalyticsData.objects.exclude(video__user__username__in=company_accounts)
+	return viewset
 

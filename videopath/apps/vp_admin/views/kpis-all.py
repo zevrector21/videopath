@@ -26,11 +26,11 @@ def build_graphs():
 		"date_joined", 
 		accumulate=False)
 
-	result += helpers.header("Active Users")
-	result += helpers.dategraph(
-		viewsets.all_users(), 
-		"date_joined", 
-		accumulate=False)
+	#result += helpers.header("Active Users")
+	#result += helpers.dategraph(
+	#	viewsets.all_users(), 
+	#	"date_joined", 
+	#	accumulate=False)
 
 	result += helpers.header("Projects (incl. deleted)")
 	result += helpers.dategraph(
@@ -49,6 +49,18 @@ def build_graphs():
 		viewsets.shared_videos(), 
 		"created", 
 		accumulate=False)
+
+	result += helpers.header("Plays")
+	result += helpers.dategraph(
+		viewsets.all_daily_stats(), 
+		"date", 
+		aggregate_field='plays_all')
+
+	result += helpers.header("Player loads")
+	result += helpers.dategraph(
+		viewsets.all_daily_stats(), 
+		"date", 
+		aggregate_field='sessions')
 
 	result += helpers.header("Upgraded")
 	result += helpers.dategraph(

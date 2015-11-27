@@ -56,16 +56,6 @@ def listview(request):
             break
     result += helpers.videolist(videos)
 
-    # videos created per week
-    result += helpers.header("Videos created per week")
-    result += "Excludes videos created by staff. <br /><br />"
-    result += helpers.dategraph(Video.objects.all().exclude(user__username__in=helpers.company_accounts), "created")
-
-    # videos published per week
-    result += helpers.header("Videos published per week")
-    result += "Excludes videos created by staff. <br /><br />"
-    result += helpers.dategraph(Video.objects.filter(published=1).exclude(user__username__in=helpers.company_accounts), "created")
-
     # published vids
     startdate = datetime.now()
     enddate = startdate - timedelta(days=30)

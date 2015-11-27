@@ -1,6 +1,6 @@
 import collections
 import humanize
-
+from datetime import date, timedelta
 from django.contrib.auth.models import User
 from django.utils.encoding import smart_text
 
@@ -92,25 +92,30 @@ def printgraph(values, maxlength=30.0):
     return "<div class='vp_graph'>" + result + "</div>"
 
 
-groupings = {
-    
-}
+#
+# Build weekly date graph
+#
+def dategraph(models, datefield, accumulate=False, aggregate_field = None):
 
-def dategraph(models, datefield, accumulate=False):
+    timestring = "week %Y %V"
 
     # build dict
     values = {}
     for model in models:
         value = getattr(model, datefield)
-        key = value.strftime("week %Y %V")
-        values[key] = values.get(key, 0) + 1
+        key = value.strftime(timestring)
 
-    # fill in empty fields
-    for year in range(2014,2016):
-        for week in range(1,53):
-            key = "week {0} {num:02d}".format(year, num=week)
-            print key
-            values[key] = values.get(key, 0)
+        count = 1
+        if aggregate_field:
+            count = getattr(model, aggregate_field)
+
+        values[key] = values.get(key, 0) + count
+
+    datecount = date(2014,1,1)
+    while datecount < date.today():
+        datecount += timedelta(days=7)
+        key = datecount.strftime(timestring)
+        values[key] = values.get(key, 0)
 
     # sort
     values = collections.OrderedDict(sorted(values.items()))

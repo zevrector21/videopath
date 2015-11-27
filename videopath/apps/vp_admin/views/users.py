@@ -134,6 +134,11 @@ def userview(request, username):
         "date", 
         aggregate_field='plays_all')
 
+    result += helpers.header("Days seen per week")
+    result += helpers.dategraph(
+        user.user_activity_day.all(), 
+        "day")
+
 
     # published videos 
     result += helpers.header("Published Videos")

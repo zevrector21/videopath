@@ -1,7 +1,8 @@
 from django.conf.urls import url, patterns
 
 urlpatterns = patterns('',
-   url(r'^insights/kpis/', 'videopath.apps.vp_admin.views.kpis.view'),
+   url(r'^insights/kpis-cohort/', 'videopath.apps.vp_admin.views.kpis-cohort.view'),
+   url(r'^insights/kpis-all/', 'videopath.apps.vp_admin.views.kpis-all.view'),
 
    url(r'^insights/users/sales/', 'videopath.apps.vp_admin.views.users.listview_sales'),
    url(r'^insights/users/(?P<username>.+)/', 'videopath.apps.vp_admin.views.users.userview'),

@@ -57,16 +57,7 @@ def videolink(v):
     try:
         revision = v.draft
     except:
-        pass
-
-    try:
-        revision = v.current_revision
-    except:
-        pass
-
-    if not revision:
         return None
-
     return [
         "<a href ='" + detail_url + "'>" + smart_truncate(revision.title, 50) + "</a>",
         v.user.username,
@@ -89,29 +80,46 @@ def userlink(user):
     return "<a href = '"+url+"'>"+username+"</a>"
 
 
-
-
 def printgraph(values, maxlength=30.0):
-    result_array = []
-    maxval = max(values.values())
-    ratio = maxlength / maxval
 
-    orderedvalues = collections.OrderedDict(sorted(values.items()))
-    for k in orderedvalues:
-        length = ratio * orderedvalues[k]
-        xs = "<b>" + str(orderedvalues[k]) + "</b> "
-        while length > 0:
-            xs += "X"
-            length -= 1
-        result_array.append([k, xs])
-    return table(result_array)
+    result = ""
+    max_value = float(max(values.values()))
+    count = len(values)
+    width = 100.0 / float(count)
+
+    result = reduce(lambda x, item: x + "<div class ='vp_graph_item' style='width:{0}%'><div class = 'vp_graph_label_top'>{2}</div><div class = 'vp_graph_label_bottom'>{3}</div><div class = 'vp_graph_item_inner' style='height:{1}%'></div></div>".format(width, float(values[item]) / max_value * 100, values[item], item), values, '')
+
+    return "<div class='vp_graph'>" + result + "</div>"
 
 
-def dategraph(models, datefield, timeselector="%y %m"):
+groupings = {
+    
+}
 
+def dategraph(models, datefield, accumulate=False):
+
+    # build dict
     values = {}
     for model in models:
         value = getattr(model, datefield)
-        key = value.strftime(timeselector)
+        key = value.strftime("week %Y %V")
         values[key] = values.get(key, 0) + 1
+
+    # fill in empty fields
+    for year in range(2014,2016):
+        for week in range(1,53):
+            key = "week {0} {num:02d}".format(year, num=week)
+            print key
+            values[key] = values.get(key, 0)
+
+    # sort
+    values = collections.OrderedDict(sorted(values.items()))
+
+    # accumulate if needed
+    if accumulate:
+        total = 0
+        for key in values:
+            total = total + values[key]
+            values[key] = total
+
     return printgraph(values)

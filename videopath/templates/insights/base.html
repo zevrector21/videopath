@@ -100,6 +100,58 @@
             text-align: center;
             margin-top:30px;
         }
+
+
+        .vp_graph {
+            height:150px;
+            width: 800px;
+        }
+
+        .vp_graph_item {
+            height:150px;
+            display: inline-block;
+            position: relative;
+            opacity: 0.7;
+        }
+        .vp_graph_item:hover {
+            opacity: 1;
+            background-color: #ccc;
+        }
+
+        .vp_graph_item .vp_graph_item_inner {
+            background-color:#444;
+            position: absolute;
+            bottom:0px;
+            left:0px;
+            right:0px;
+
+        }
+        .vp_graph_item:nth-child(even) .vp_graph_item_inner {
+            background-color: #555;
+        }
+
+        .vp_graph_item .vp_graph_label_bottom,
+        .vp_graph_item .vp_graph_label_top
+         {
+            display: none;
+        }
+
+        .vp_graph_item:hover .vp_graph_label_bottom,
+        .vp_graph_item:hover .vp_graph_label_top{
+            
+            position: absolute;
+            display: block;
+        }
+
+        .vp_graph_item:hover .vp_graph_label_bottom {
+            bottom:-20px;
+        }
+
+        .vp_graph_item:hover .vp_graph_label_top {
+            left:15px;
+        }
+
+
     </style>
 </head>
 <body>
@@ -107,7 +159,8 @@
                                         
 <header>
     <a href = "/admin/insights" class = "logo"></a>
-    <a href='/admin/insights/kpis/'>KPIs</a> |
+    <a href='/admin/insights/kpis-cohort/'>KPIs cohort</a> |
+    <a href='/admin/insights/kpis-all/'>KPIs all</a> |
     <a href='/admin/insights/userstats/'>Userstats</a> | 
     <a href='/admin/insights/users/sales/'>Userlist</a> | 
     <a href='/admin/insights/subscriptions/'>Subscriptions</a> |

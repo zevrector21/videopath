@@ -209,7 +209,7 @@ class PlayerAppearanceAdmin(admin.ModelAdmin):
             'fields': ('ui_font_marker', 'ui_font_overlay_titles', 'ui_font_overlay_text')
         }),
         ('Other', {
-            'fields': ('ui_language',)
+            'fields': ('ui_language','ui_click_hint_appearences','ui_click_hint_color')
         })
     )
 

@@ -70,6 +70,10 @@ class PlayerAppearance(VideopathBaseModel):
     ui_icon = models.CharField(max_length=255, blank=True, null=True)
     ui_icon_link_target = models.CharField(max_length=1024, blank=True, null=True)
 
+    #
+    ui_click_hint_color = ColorField(default='#ffffff')
+    ui_click_hint_appearences = models.IntegerField(default=1)
+
     # language
     ui_language = models.CharField(max_length=50,choices=LANGUAGE_CHOICES, default=LANG_EN)
 

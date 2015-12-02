@@ -23,36 +23,37 @@ config = {
 		}
 	},
 
-	'vimeo': {
-		'id': 'vimeo',
-		'title': 'Vimeo',
-		'description': 'Use Vimeo to host your videos',
-		'type': 'video-source',
-		'module': brightcove,
-		'oauth2': {
-			'client_id': settings.VIMEO_CLIENT_ID,
-			'client_secret': settings.VIMEO_CLIENT_SECRET,
-			'authorize_url': 'https://api.vimeo.com/oauth/authorize',
-			'token_url': 'https://api.vimeo.com/oauth/access_token',
-			'scope': 'private',
-			'redirect_url': settings.API_ENDPOINT + '/oauth/receive/vimeo/'
-		}
-	},
+	
+	# 'vimeo': {
+	# 	'id': 'vimeo',
+	# 	'title': 'Vimeo',
+	# 	'description': 'Use Vimeo to host your videos',
+	# 	'type': 'video-source',
+	# 	'module': brightcove,
+	# 	'oauth2': {
+	# 		'client_id': settings.VIMEO_CLIENT_ID,
+	# 		'client_secret': settings.VIMEO_CLIENT_SECRET,
+	# 		'authorize_url': 'https://api.vimeo.com/oauth/authorize',
+	# 		'token_url': 'https://api.vimeo.com/oauth/access_token',
+	# 		'scope': 'private',
+	# 		'redirect_url': settings.API_ENDPOINT + '/oauth/receive/vimeo/'
+	# 	}
+	# },
 
-	'brightcove': {
-		'id': 'brightcove',
-		'title': 'Brightcove',
-		'description': 'Use Brightcove to host your videos',
-		'type': 'video-source',
-		'credentials': [{
-				'name': 'Brightcove Client ID',
-				'id': 'client_id'
-			}, {
-				'name': 'Brightcove Client Secret',
-				'id': 'client_secret'
-			}
-		],
-		'module': vimeo
-	},
+	# 'brightcove': {
+	# 	'id': 'brightcove',
+	# 	'title': 'Brightcove',
+	# 	'description': 'Use Brightcove to host your videos',
+	# 	'type': 'video-source',
+	# 	'credentials': [{
+	# 			'name': 'Brightcove Client ID',
+	# 			'id': 'client_id'
+	# 		}, {
+	# 			'name': 'Brightcove Client Secret',
+	# 			'id': 'client_secret'
+	# 		}
+	# 	],
+	# 	'module': vimeo
+	# },
 	
 }

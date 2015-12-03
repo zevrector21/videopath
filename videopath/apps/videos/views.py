@@ -123,7 +123,6 @@ def video_publish(request, vid=None):
         slack = service_provider.get_service("slack")
         slack.notify("User " + request.user.email + " just published video http://player.videopath.com/" + video.key + ". ")
 
-
     if request.method == 'DELETE':
         video.unpublish()
 
@@ -146,6 +145,7 @@ def send_share_mail(request, vid=None):
 # View Set of Videos
 #
 class VideoViewSet(viewsets.ModelViewSet):
+
     model = Video
     serializer_class = VideoSerializer
     permission_classes = (VideoPermissions,AuthenticatedPermission)

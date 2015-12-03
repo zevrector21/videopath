@@ -1,6 +1,7 @@
 from django.conf.urls import url, patterns
 
 urlpatterns = patterns('',
+   
    url(r'^insights/kpis-cohort/', 'videopath.apps.vp_admin.views.kpis-cohort.view'),
    url(r'^insights/kpis-all/', 'videopath.apps.vp_admin.views.kpis-all.view'),
 
@@ -27,9 +28,7 @@ urlpatterns = patterns('',
    # url for external health check
    url(r'^YT58Pc3u6ZlK/health/', 'videopath.apps.vp_admin.views.health_check.view'),
 
-
-
-   )
+)
 
 
 #from django.contrib.admin.views.decorators import staff_member_required

@@ -1,11 +1,11 @@
 #
 # Removes all example users from the DB
 #
+from videopath.apps.common.actions import ActionException
 
 from videopath.apps.users.models import User
 
 EMAIL_SUFFIX = 'example.com'
-
 
 def run():
 	

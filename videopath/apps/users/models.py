@@ -60,7 +60,7 @@ class Team(VideopathBaseModel):
     # not really mutable
     is_default_team_of_user = models.OneToOneField(_User,
                                                 unique=True,
-                                                verbose_name=('user'),
+                                                verbose_name=('default_team_of_user'),
                                                 related_name='default_team')
 
     def is_a_default_team(self):

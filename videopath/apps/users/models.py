@@ -78,8 +78,8 @@ class Team(VideopathBaseModel):
         except TeamMember.DoesNotExist: pass
 
     def __unicode__(self):
-        if hasattr(self, 'is_default_team_of_user'):
-            return "Default team of " + self.is_default_team_of_user.email
+        if self.is_a_default_team():
+            return "Default team ({0})".format(self.is_default_team_of_user.email)
         return "Team {0} ({1})".format(self.name, self.owner)
 
 

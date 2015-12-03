@@ -24,11 +24,12 @@ class UserAdmin(_UserAdmin):
 
 
 class TeamAdmin(admin.ModelAdmin):
-    list_display = ('name', 'owner', 'is_default_team_of_user')
+    list_display = ('__unicode__', 'owner', 'is_default_team_of_user')
+    search_fields = ['owner__username', 'owner__email']
 
 class TeamMemberAdmin(admin.ModelAdmin):
     list_display = ('user', 'team', 'member_type')
-
+    search_fields = ['user__username', 'user__email']
 
 class UserSalesInfoAdmin(admin.ModelAdmin):
     list_display = ('user', 'pipedrive_person_id')

@@ -8,6 +8,4 @@ router.register(r'list', ListsViewSet, base_name="list")
 
 urlpatterns = patterns('',   
    url(r'', include(router.urls)),
-   url(r'^beacon/', 'videopath.apps.integrations.services.mailchimp.views.beacon'),
-
 )

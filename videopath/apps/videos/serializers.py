@@ -90,29 +90,37 @@ class MarkerSerializer(serializers.ModelSerializer):
 # Marker Content
 #
 class MarkerContentSerializer(serializers.ModelSerializer):
-    image_url = serializers.SerializerMethodField()
 
+    image_url = serializers.SerializerMethodField()
     def get_image_url(self, content):
         return file_url_for_markercontent(content)
+
+    video_key = serializers.SerializerMethodField()
+    def get_video_key(self, content):
+        return content.marker.video_revision.video.key
 
     class Meta:
         model = MarkerContent
         fields = ('id', 'type', 'marker', 'ordinal', 'text',
-                  'data', 'title', 'url', 'image_url', 'key')
+                  'data', 'title', 'url', 'image_url', 'key', 'video_key')
 
 #
 # Marker Content Nested
 #
 class NestedContentsSerializer(serializers.ModelSerializer):
-    image_url = serializers.SerializerMethodField()
 
+    image_url = serializers.SerializerMethodField()
     def get_image_url(self, content):
         return file_url_for_markercontent(content)
+
+    video_key = serializers.SerializerMethodField()
+    def get_video_key(self, content):
+        return content.marker.video_revision.video.key
 
     class Meta:
         model = MarkerContent
         fields = ('type', 'text', 'ordinal', 'data', 'title',
-                  'image_url', 'url', 'id', 'marker', 'key')
+                  'image_url', 'url', 'id', 'marker', 'key', 'video_key')
 
 #
 # Marker Nested

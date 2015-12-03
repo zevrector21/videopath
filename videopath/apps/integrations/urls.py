@@ -16,4 +16,6 @@ urlpatterns = patterns('',
    url(r'^integration/vimeo/', include('videopath.apps.integrations.services.vimeo.urls')),
    url(r'^integration/brightcove/', include('videopath.apps.integrations.services.brightcove.urls')),
 
+   # wire up beacons
+
 )

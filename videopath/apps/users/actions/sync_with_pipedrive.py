@@ -1,3 +1,7 @@
+#
+# Mark all users which are also in pipedrive as contacted, therefor disable the 1 week welcome emails
+#
+
 import requests
 
 from django.conf import settings

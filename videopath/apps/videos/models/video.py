@@ -113,7 +113,6 @@ class Video(VideopathBaseModel):
         from videopath.apps.videos.util import video_export_util
         video_export_util.export_video(self)
 
-
     def unpublish(self):
         if self.current_revision == None:
             pass
@@ -132,7 +131,6 @@ class Video(VideopathBaseModel):
         if self.draft.source:
             return self.draft.source.export_jpg_sequence()
         return False
-
 
     # generate key on save
     def save(self, *args, **kwargs):

@@ -1,3 +1,7 @@
+#
+# Send the welcome emails sent after 1 week
+#
+
 from datetime import timedelta, datetime
 
 from django.contrib.auth.models import User

@@ -1,3 +1,7 @@
+#
+# Send follow up emails after 3 and 6 weeks
+#
+
 from datetime import timedelta, datetime
 
 from django.contrib.auth.models import User

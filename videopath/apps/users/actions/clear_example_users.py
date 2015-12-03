@@ -1,3 +1,6 @@
+#
+# Removes all example users from the DB
+#
 
 from videopath.apps.users.models import User
 

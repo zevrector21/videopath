@@ -16,7 +16,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
 from videopath.apps.common.services import service_provider
-from videopath.apps.users.models import AuthenticationToken, OneTimeAuthenticationToken, UserCampaignData
+from videopath.apps.users.models import AuthenticationToken, OneTimeAuthenticationToken, UserCampaignData, Team
 from videopath.apps.users.serializers import UserSerializer
 from videopath.apps.common.mailer import send_signup_email, send_forgot_pw_mail
 from videopath.apps.users.permissions import UserPermissions
@@ -130,13 +130,15 @@ class UserViewSet(viewsets.ModelViewSet):
            raise ValidationError(detail={"email":["Email is taken."]})
         if User.objects.filter(username__iexact=username).count() > 0:
            raise ValidationError(detail={"username":["Username is taken."]})
-        
 
         # create via userena
         user = UserenaSignup.objects.create_user(username[:30],
                                      email,
                                      password,
                                      active=True, send_email=False)
+
+        # create default team
+        Team.objects.create(owner=user, is_default_team_of_user=user, name='My Projects')
 
         # send a signup email
         send_signup_email(user)
@@ -178,7 +180,6 @@ class UserViewSet(viewsets.ModelViewSet):
         # create tokens
         token = AuthenticationToken.objects.create(user=user)
         ottoken = OneTimeAuthenticationToken.objects.create(token=token)
-
         
 
         # greate britain

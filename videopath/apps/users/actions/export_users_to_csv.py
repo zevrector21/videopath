@@ -1,3 +1,7 @@
+#
+# Output list of users to csv
+#
+
 from django.contrib.auth.models import User
 
 def run():

@@ -1,3 +1,7 @@
+#
+# Expires unused authentication tokens
+#
+
 import datetime
 
 from videopath.apps.users.models import AuthenticationToken

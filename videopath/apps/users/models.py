@@ -45,6 +45,61 @@ class UserSettings(UserenaBaseProfile):
     def __unicode__(self):
         return "Settings of " + self.user.__unicode__() 
 
+
+#
+# Team model, all videos are organized beneath a team
+#
+class Team(VideopathBaseModel):
+
+    owner = models.ForeignKey(_User, related_name='owned_teams')
+    name = models.CharField(max_length=150, default='My Projects')
+    members = models.ManyToManyField(_User, through='TeamMember')
+
+    # each user has a default team where his projects go
+    # this is defined on team, as the django user object is 
+    # not really mutable
+    is_default_team_of_user = models.OneToOneField(_User,
+                                                unique=True,
+                                                verbose_name=('user'),
+                                                related_name='default_team')
+
+    def is_a_default_team(self):
+        return hasattr(self, 'is_default_team_of_user')
+
+    def add_member(self, user, member_type='editor'):
+        if self.is_a_default_team():
+            return
+        TeamMember.objects.get_or_create(team=self, user=user, member_type=member_type)
+
+    def remove_member(self,user):
+        try:
+            member = TeamMember.objects.get(team=self, user=user)
+            member.delete()
+        except TeamMember.DoesNotExist: pass
+
+    def __unicode__(self):
+        if hasattr(self, 'is_default_team_of_user'):
+            return "Default team of " + self.is_default_team_of_user.email
+        return "Team {0} ({1})".format(self.name, self.owner)
+
+
+#
+# Team member, connects people to teams
+#
+class TeamMember(VideopathBaseModel):
+
+    TYPE_EDITOR = "editor"
+    TYPE_ADMIN = "admin"
+
+    TYPE_CHOICES = (
+        (TYPE_EDITOR, TYPE_EDITOR),
+        (TYPE_ADMIN, TYPE_ADMIN),
+    )
+
+    team = models.ForeignKey(Team)
+    user = models.ForeignKey(_User)
+    member_type = models.CharField(max_length=20, choices=TYPE_CHOICES, default=TYPE_EDITOR)
+
 #
 # Campaign Data to store info about where the user came from
 #

@@ -1,3 +1,7 @@
+#
+# Login a user with email and passoword or token
+#
+
 from datetime import datetime, timedelta
 
 from django.contrib.auth import authenticate

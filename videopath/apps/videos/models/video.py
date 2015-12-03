@@ -2,6 +2,7 @@ import copy, datetime
 
 from django.db import models
 from django.contrib.auth.models import User
+from videopath.apps.users.models import Team
 from django.conf import settings
 
 from videopath.apps.common.models import VideopathBaseModel
@@ -28,6 +29,7 @@ class Video(VideopathBaseModel):
 
     # owner
     user = models.ForeignKey(User, related_name='videos')
+    team = models.ForeignKey(Team, related_name='videos', null=True)
 
     # public stuff
     key = models.CharField(

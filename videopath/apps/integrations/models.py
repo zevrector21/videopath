@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from videopath.apps.users.models import Team
+
 from videopath.apps.common.models import VideopathBaseModel
 
 
@@ -8,6 +10,7 @@ class Integration(VideopathBaseModel):
 
 	# owner
     user = models.ForeignKey(User, related_name='integrations')
+    team = models.ForeignKey(Team, related_name='integrations', null=True)
 
     SERVICE_CHOICES = (
     	('mailchimp', 'mailchimp'),

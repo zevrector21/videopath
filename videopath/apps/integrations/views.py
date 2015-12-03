@@ -61,7 +61,7 @@ def authorize_with_credentials(user, service, credentials):
     credentials = service_config['module'].handle_credential_request(credentials)
     if credentials:
         credentials = json.dumps(credentials)
-        Integration.objects.create(user=user, service=service, credentials=credentials)
+        Integration.objects.create(user=user, team=user.default_team, service=service, credentials=credentials)
         return True
     else:
         return False

@@ -175,7 +175,7 @@ class VideoViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         # add user
-        instance = serializer.save(user=self.request.user)
+        instance = serializer.save(user=self.request.user, team=self.request.user.default_team)
 
         #
         # see if this video should be a copy of an existing one

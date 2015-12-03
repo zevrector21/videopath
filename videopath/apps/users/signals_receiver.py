@@ -1,8 +1,10 @@
-from django.db.models.signals import pre_delete
+from django.db.models.signals import pre_delete, post_save
 from django.dispatch import receiver
 from django.core.cache import cache
 
-from videopath.apps.users.models import AuthenticationToken
+from django.contrib.auth.models import User
+
+from videopath.apps.users.models import AuthenticationToken, Team
 from videopath.apps.vp_admin.signals import hourly_jobs, daily_jobs
 
 from videopath.apps.users.actions import sync_with_pipedrive
@@ -14,6 +16,11 @@ from videopath.apps.users.actions import send_follow_up_mails
 @receiver(pre_delete, sender=AuthenticationToken)
 def delete_auth_token_cache(sender, instance=None, **kwargs):
     cache.delete(instance.key + "-token")
+
+@receiver(post_save, sender=User)
+def create_default_team(sender, instance=None, **kwargs):
+	 if instance:
+	 	Team.objects.get_or_create(owner=instance, is_default_team_of_user=instance, name='My Projects')
 
 @receiver(hourly_jobs)
 def run_send_welcome_mails(sender, **kwargs):

@@ -31,7 +31,7 @@ def start_transcoding_video(video):
     composition = [{
         'TimeSpan': {
             'StartTime': '00000.000',
-            'Duration': '00600.000',  # 10 minutes limit on clips
+            'Duration': '01200.000',  # 20 minutes limit on clips
         }
     }]
 

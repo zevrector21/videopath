@@ -49,7 +49,14 @@ class UserSettings(UserenaBaseProfile):
 #
 # Team model, all videos are organized beneath a team
 #
+class Teams(models.Manager):
+
+    def teams_for_user(self, user):
+        return self.filter(owner = user)
+
 class Team(VideopathBaseModel):
+
+    objects = Teams()
 
     owner = models.ForeignKey(_User, related_name='owned_teams')
     name = models.CharField(max_length=150, default='My Projects')
@@ -61,15 +68,17 @@ class Team(VideopathBaseModel):
     is_default_team_of_user = models.OneToOneField(_User,
                                                 unique=True,
                                                 verbose_name=('default_team_of_user'),
-                                                related_name='default_team')
+                                                related_name='default_team',
+                                                null=True,
+                                                blank=True)
 
     def is_a_default_team(self):
-        return hasattr(self, 'is_default_team_of_user')
+        return self.is_default_team_of_user != None
 
-    def add_member(self, user, member_type='editor'):
+    def add_member(self, user, role='editor'):
         if self.is_a_default_team():
             return
-        TeamMember.objects.get_or_create(team=self, user=user, member_type=member_type)
+        TeamMember.objects.get_or_create(team=self, user=user, role=role)
 
     def remove_member(self,user):
         try:
@@ -77,10 +86,29 @@ class Team(VideopathBaseModel):
             member.delete()
         except TeamMember.DoesNotExist: pass
 
+    def is_user_member(self, user):
+        return user in self.members.all() or user == self.owner
+
+    def is_user_admin(self, user):
+        if user == self.owner: return True
+        return TeamMember.objects.filter(user=user, team=self, role='admin').count() > 0
+
+    def is_user_owner(self, user):
+        return self.owner == user
+
+    def delete(self):
+        if self.videos.count() > 0:
+            return
+        if self.is_default_team_of_user():
+            return
+        super(Team, self).delete()
+
     def __unicode__(self):
         if self.is_a_default_team():
             return "Default team ({0})".format(self.is_default_team_of_user.email)
         return "Team {0} ({1})".format(self.name, self.owner)
+
+
 
 
 #
@@ -88,17 +116,17 @@ class Team(VideopathBaseModel):
 #
 class TeamMember(VideopathBaseModel):
 
-    TYPE_EDITOR = "editor"
-    TYPE_ADMIN = "admin"
+    ROLE_EDITOR = "editor"
+    ROLE_ADMIN = "admin"
 
     TYPE_CHOICES = (
-        (TYPE_EDITOR, TYPE_EDITOR),
-        (TYPE_ADMIN, TYPE_ADMIN),
+        (ROLE_EDITOR, ROLE_EDITOR),
+        (ROLE_ADMIN, ROLE_ADMIN),
     )
 
     team = models.ForeignKey(Team)
     user = models.ForeignKey(_User)
-    member_type = models.CharField(max_length=20, choices=TYPE_CHOICES, default=TYPE_EDITOR)
+    role = models.CharField(max_length=20, choices=TYPE_CHOICES, default=ROLE_EDITOR)
 
 #
 # Campaign Data to store info about where the user came from

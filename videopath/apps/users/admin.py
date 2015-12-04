@@ -29,7 +29,7 @@ class TeamAdmin(admin.ModelAdmin):
     search_fields = ['owner__username', 'owner__email']
 
 class TeamMemberAdmin(admin.ModelAdmin):
-    list_display = ('user', 'team', 'member_type')
+    list_display = ('user', 'team', 'role')
     search_fields = ['user__username', 'user__email']
 
 class UserSalesInfoAdmin(admin.ModelAdmin):

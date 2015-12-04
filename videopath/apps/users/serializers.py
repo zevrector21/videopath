@@ -37,11 +37,26 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class TeamSerializer(serializers.ModelSerializer):
+    role = serializers.SerializerMethodField()
+    is_default_team = serializers.SerializerMethodField()
+
+    # todo
+    def get_role(self, team):
+        user = self.context.get('request').user
+        if team.is_user_owner(user): return 'owner'
+        if team.is_user_admin(user): return 'admin'
+        if team.is_user_member(user): return 'editor'
+        return None
+
+    def get_is_default_team(self, team):
+        return team.is_a_default_team() 
+
     class Meta:
         model = Team
-        fields = ('name', 'id')
+        fields = ('owner', 'name', 'id', 'role', 'is_default_team')
+        read_only_fields = ('owner')
 
 class TeamMemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = TeamMember
-        fields = ('user')
+        fields = ('user', 'team', 'role')

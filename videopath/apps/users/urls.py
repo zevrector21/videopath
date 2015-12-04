@@ -8,7 +8,8 @@ router = routers.DefaultRouter()
 router.register(r'user', UserViewSet, base_name="user")
 
 router.register(r'team', TeamViewSet, base_name="team")
-router.register(r'team/(?P<tid>[0-9]+)/member', TeamMemberViewSet, base_name="team_member")
+router.register(r'team/(?P<team_id>[0-9]+)/team-member', TeamMemberViewSet, base_name="team_member")
+router.register(r'team-member', TeamMemberViewSet, base_name="team_member")
 
 urlpatterns = patterns('',
 

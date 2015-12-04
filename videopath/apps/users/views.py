@@ -19,7 +19,7 @@ from videopath.apps.common.services import service_provider
 from videopath.apps.users.models import AuthenticationToken, OneTimeAuthenticationToken, UserCampaignData, Team, TeamMember
 from videopath.apps.users.serializers import UserSerializer, TeamSerializer, TeamMemberSerializer
 from videopath.apps.common.mailer import send_signup_email, send_forgot_pw_mail
-from videopath.apps.users.permissions import UserPermissions, TeamPermissions, TeamMemberPermissions
+from videopath.apps.users.permissions import UserPermissions, TeamPermissions, TeamMemberPermissions, AuthenticatedPermission
 
 from videopath.apps.users.actions import login_user
 
@@ -214,10 +214,10 @@ class TeamViewSet(viewsets.ModelViewSet):
 
     model = Team
     serializer_class = TeamSerializer
-    permission_classes = (TeamPermissions,)
+    permission_classes = (TeamPermissions,AuthenticatedPermission)
 
     def get_queryset(self):
-        return Team.objects.all()
+        return Team.objects.teams_for_user(self.request.user)
 
 #
 # Team Members
@@ -226,9 +226,11 @@ class TeamMemberViewSet(viewsets.ModelViewSet):
 
     model = TeamMember
     serializer_class = TeamMemberSerializer
-    permission_classes = (TeamMemberPermissions,)
+    permission_classes = (TeamMemberPermissions,AuthenticatedPermission)
 
-    def get_queryset(self):
-        return TeamMember.objects.all()
-
+    def get_queryset(self, team_id = None):
+        members = TeamMember.objects.all()
+        if team_id:
+            members.filter(team_id=team_id)
+        return members
     

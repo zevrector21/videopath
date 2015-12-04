@@ -9,8 +9,7 @@ from videopath.apps.common.models import VideopathBaseModel
 class Integration(VideopathBaseModel):
 
 	# owner
-    user = models.ForeignKey(User, related_name='integrations')
-    team = models.ForeignKey(Team, related_name='integrations', null=True)
+    team = models.ForeignKey(Team, related_name='integrations')
 
     SERVICE_CHOICES = (
     	('mailchimp', 'mailchimp'),
@@ -26,4 +25,4 @@ class Integration(VideopathBaseModel):
 
     # meta settings
     class Meta:
-        unique_together = ("user", "service")
+        unique_together = ("team", "service")

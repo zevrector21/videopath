@@ -13,15 +13,15 @@ from videopath.apps.videos.util import video_export_util
 class VideoAdmin(admin.ModelAdmin):
 
     # fields
-    list_display = ('key', 'id', 'user', 'revision_link', 'created_humanized',
+    list_display = ('key', 'id', 'team', 'revision_link', 'created_humanized',
                     'modified_humanized',  'draft_link', 'current_revision_link', 'archived')
     ordering = ('-created',)
     search_fields = ['key', 'id', 'user__username', 'user__email']
     exclude = ['draft','current_revision']
 
-    raw_id_fields = ['user',]
+    raw_id_fields = ['team',]
     autocomplete_lookup_fields = {
-        'fk': ['user',],
+        'fk': ['team',],
     }
 
     # actions

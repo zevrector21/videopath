@@ -9,9 +9,9 @@ from .models import Integration
 class IntegrationAdmin(admin.ModelAdmin):
 
     # fields
-    list_display = ('user', 'service')
+    list_display = ('team', 'service')
     ordering = ('-created',)
-    search_fields = ['user', 'service']
+    search_fields = ['team', 'team__owner', 'service']
 
 
 admin.site.register(Integration, IntegrationAdmin)

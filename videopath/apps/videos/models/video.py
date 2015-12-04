@@ -28,8 +28,7 @@ class Video(VideopathBaseModel):
     )
 
     # owner
-    user = models.ForeignKey(User, related_name='videos')
-    team = models.ForeignKey(Team, related_name='videos', null=True)
+    team = models.ForeignKey(Team, related_name='videos')
 
     # public stuff
     key = models.CharField(

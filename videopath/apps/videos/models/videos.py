@@ -23,4 +23,4 @@ class Videos(models.Manager):
 
 
 	def filter_for_user(self,user):
-		return self.filter(team__owner = user)
+		return self.filter( models.Q(team__owner = user) | models.Q(team__member = user) )

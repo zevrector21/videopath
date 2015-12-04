@@ -8,6 +8,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('integrations', '0004_add_default_teams'),
+        ('users', '0015_auto_20151203_1746'),
     ]
 
     operations = [

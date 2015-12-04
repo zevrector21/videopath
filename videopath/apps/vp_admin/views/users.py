@@ -60,8 +60,8 @@ def listview_sales(request):
             'campaign_name': 'SELECT name FROM users_usercampaigndata WHERE users_usercampaigndata.user_id = auth_user.id',
             'country': 'SELECT country FROM users_usercampaigndata WHERE users_usercampaigndata.user_id = auth_user.id',
             'referrer': 'SELECT referrer FROM users_usercampaigndata WHERE users_usercampaigndata.user_id = auth_user.id',
-            'num_videos': 'SELECT COUNT(*) FROM videos_video JOIN users_team  ON (videos_video.team_id = users_team.id) WHERE users_team.owner_id = auth_user.id AND videos_video.archived != 1',
-            'num_videos_published': 'SELECT COUNT(*) FROM videos_video JOIN users_team  ON (videos_video.team_id = users_team.id) WHERE users_team.owner_id = auth_user.id AND videos_video.archived != 1 AND videos_video.published = 1',
+            'num_videos': 'SELECT COUNT(*) FROM videos_video JOIN users_team  ON (videos_video.team_id = users_team.id) WHERE users_team.owner_id = auth_user.id AND videos_video.archived != True',
+            'num_videos_published': 'SELECT COUNT(*) FROM videos_video JOIN users_team  ON (videos_video.team_id = users_team.id) WHERE users_team.owner_id = auth_user.id AND videos_video.archived != True AND videos_video.published = 1',
         }).order_by('-date_joined'):
         user = [
             "<span>" + helpers.userlink(u) + "</span>",

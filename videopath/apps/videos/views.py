@@ -245,12 +245,10 @@ class VideoRevisionViewSet(viewsets.ModelViewSet):
 
     # Can see only your videos
     def get_queryset(self):
-        result = VideoRevision.objects.filter(video__team__owner=self.request.user)
+        objects = VideoRevision.objects.filter(video__team__owner=self.request.user)
         vid = self.kwargs.get('vid', None)
-
-        if vid:
-            result = result.filter(video__pk=vid)
-        return result
+        if vid: objects = objects.filter(video__pk=vid)
+        return objects
 
 #
 # Prepare for iphone transcoding
@@ -274,10 +272,9 @@ class MarkerViewSet(viewsets.ModelViewSet):
     permission_classes = (MarkerPermissions,AuthenticatedPermission)
 
     def get_queryset(self, vid = None):
-        if vid:
-            return Marker.objects.filter(video_revision__video__team__owner=self.request.user, video_revision__id=vid)
-        else:
-            return Marker.objects.filter(video_revision__video__team__owner=self.request.user)
+        objects = Marker.objects.filter(video_revision__video__team__owner=self.request.user)
+        if vid: objects = objects.filter(video_revision__id=vid) 
+        return objects
 
 #
 # Marker Content View Set
@@ -288,10 +285,9 @@ class MarkerContentViewSet(viewsets.ModelViewSet):
     permission_classes = (MarkerContentPermissions,AuthenticatedPermission)
 
     def get_queryset(self, mid = None):
-        if mid:
-            return MarkerContent.objects.filter(marker__video_revision__video__team__owner=self.request.user, marker__id=mid)
-        else:
-            return MarkerContent.objects.filter(marker__video_revision__video__team__owner=self.request.user)
+        objects = MarkerContent.objects.filter(marker__video_revision__video__team__owner=self.request.user)
+        if mid: objects = objects.filter(marker__id=mid)
+        return objects
 
 #
 # Import a video from youtube etc.

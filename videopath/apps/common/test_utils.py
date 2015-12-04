@@ -21,13 +21,13 @@ USER2_DETAILS = {
 
 USER3_DETAILS = {
     "username": "dave3",
-    "password": "secret2",
+    "password": "secret3",
     "email": "null-3@videopath.com"
 }
 
 USER4_DETAILS = {
     "username": "dave4",
-    "password": "secret2",
+    "password": "secret4",
     "email": "null-4@videopath.com"
 }
 
@@ -92,7 +92,7 @@ class BaseTestCase(APITestCase):
     #
     # Setup users and test api clients
     #
-    def setup_users_and_clients(self):
+    def setup_users_and_clients(self, num=2):
         self.setup_users()
 
         # anonymous client
@@ -102,16 +102,19 @@ class BaseTestCase(APITestCase):
         self.client_user1 = BaseAPIClient()
         token = AuthenticationToken.objects.create(user=self.user1)
         self.client_user1.credentials( HTTP_AUTHORIZATION='Token %s' % token.key)
+        if num < 2: return
 
         # user 2 client, authenticate with token
         self.client_user2 = BaseAPIClient()
         token = AuthenticationToken.objects.create(user=self.user2)
         self.client_user2.credentials( HTTP_AUTHORIZATION='Token %s' % token.key)
+        if num < 3: return
 
         # user 3 client, authenticate with token
         self.client_user3 = BaseAPIClient()
         token = AuthenticationToken.objects.create(user=self.user3)
         self.client_user3.credentials( HTTP_AUTHORIZATION='Token %s' % token.key)
+        if num < 4: return
 
         # user 4 client, authenticate with token
         self.client_user4 = BaseAPIClient()

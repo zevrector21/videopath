@@ -14,3 +14,4 @@ venv/
 
 # node
 */node_modules
+*.noseids

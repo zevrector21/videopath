@@ -96,12 +96,11 @@ class Team(VideopathBaseModel):
     def is_user_owner(self, user):
         return self.owner == user
 
+    def can_be_deleted(self):
+        return not self.videos.count() > 0 and not self.is_default_team_of_user()
+
     def delete(self):
-        if self.videos.count() > 0:
-            return
-        if self.is_default_team_of_user():
-            return
-        super(Team, self).delete()
+        if self.can_be_deleted(): super(Team, self).delete()
 
     def __unicode__(self):
         if self.is_a_default_team():

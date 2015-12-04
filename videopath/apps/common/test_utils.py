@@ -83,17 +83,20 @@ class BaseTestCase(APITestCase):
     #
     # Setup Test Users
     #
-    def setup_users(self):
+    def setup_users(self, num=2):
         self.user = self.user1 = create_simple_user(username=USER1_DETAILS["username"], password = USER1_DETAILS["password"], email=USER1_DETAILS["email"])
+        if num < 2: return
         self.user2 = create_simple_user(username=USER2_DETAILS["username"], password = USER2_DETAILS["password"], email=USER2_DETAILS["email"])
+        if num < 3: return
         self.user3 = create_simple_user(username=USER3_DETAILS["username"], password = USER3_DETAILS["password"], email=USER3_DETAILS["email"])
+        if num < 4: return
         self.user4 = create_simple_user(username=USER4_DETAILS["username"], password = USER4_DETAILS["password"], email=USER4_DETAILS["email"])
 
     #
     # Setup users and test api clients
     #
     def setup_users_and_clients(self, num=2):
-        self.setup_users()
+        self.setup_users(num)
 
         # anonymous client
         self.client = BaseAPIClient()

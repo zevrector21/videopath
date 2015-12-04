@@ -76,9 +76,10 @@ class Team(VideopathBaseModel):
         return self.is_default_team_of_user != None
 
     def add_member(self, user, role='editor'):
-        if self.is_a_default_team():
+        if self.is_a_default_team() or user == self.owner:
             return
-        TeamMember.objects.get_or_create(team=self, user=user, role=role)
+        member, created = TeamMember.objects.get_or_create(team=self, user=user, role=role)
+        return member
 
     def remove_member(self,user):
         try:

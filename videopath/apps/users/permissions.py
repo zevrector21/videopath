@@ -1,4 +1,7 @@
+import json
+
 from rest_framework import permissions
+from videopath.apps.users.models import Team
 
 
 class AuthenticatedPermission(permissions.BasePermission):
@@ -44,7 +47,14 @@ class TeamPermissions(permissions.BasePermission):
 class TeamMemberPermissions(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        if request.method in permissions.SAFE_METHODS: return True
+        if request.method in ["GET", "DELETE"]:
+            return True
+        try:
+            data = json.loads(request.body)
+            team = Team.objects.get(pk=data["team"])
+            return team.is_user_admin(request.user)
+        except Exception:
+            return False
 
     def has_object_permission(self, request, view, obj):
         team = obj.team

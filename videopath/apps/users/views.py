@@ -3,6 +3,7 @@ import string
 
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 from django.conf import settings
 
 from userena.models import UserenaSignup
@@ -231,6 +232,20 @@ class TeamMemberViewSet(viewsets.ModelViewSet):
     model = TeamMember
     serializer_class = TeamMemberSerializer
     permission_classes = (TeamMemberPermissions,AuthenticatedPermission)
+
+    # get and validate data
+    def create(self, request, team_id = None ):
+        email = self.request.data.get('email', 'none')
+        tid = self.request.data.get('team')
+
+        user = get_object_or_404(User, email=email)
+        team = get_object_or_404(Team, pk=tid)
+
+        member = team.add_member(user)
+
+        data = TeamMemberSerializer(member).data
+        return Response(data, 201)
+
 
     def get_queryset(self, team_id = None):
         members = TeamMember.objects.all()

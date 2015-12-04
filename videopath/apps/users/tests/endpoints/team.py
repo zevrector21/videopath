@@ -53,4 +53,4 @@ class TestCase(EndpointsBaseTestCase):
 
 		t1 = Team.objects.create(owner=self.user1)
 		response = self.client_user1.delete_json(TEAM_URL + str(t1.pk) + '/')
-		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.status_code, 204)

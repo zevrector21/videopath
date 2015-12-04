@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.conf import settings
+from django.http import Http404
 
 from userena.models import UserenaSignup
 
@@ -249,8 +250,8 @@ class TeamMemberViewSet(viewsets.ModelViewSet):
 
 
     def get_queryset(self, team_id = None):
-        members = TeamMember.objects.all()
-        if team_id:
-            members.filter(team_id=team_id)
-        return members
+        team = get_object_or_404(Team, pk=self.kwargs.get('team_id'))
+        if team.is_user_member(self.request.user):
+            return TeamMember.objects.filter(team=team)
+        raise Http404
     

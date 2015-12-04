@@ -64,8 +64,37 @@ class TestCase(EndpointsBaseTestCase):
 		self.assertEqual(response.data.get('count'), 1)
 
 
+	def test_listing_all_members(self):
+		self.setup_users_and_clients(2)
+
+		# should be disabled if not scoped to a team
+		response = self.client_user1.get_json(TEAMMEMBER_URL)
+		self.assertEqual(response.status_code, 404)
+
+
 	def test_listing_members_as_members(self):
+
 		self.setup_users_and_clients(4)
+
+		team = Team.objects.create(owner=self.user1)
+		team.add_member(self.user2)
+		team.add_member(self.user3, role='admin')
+
+		# owner should be able to see list
+		response = self.client_user1.get_json(TEAMMEMBER_NESTED_URL.format(team.pk))
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.data.get('count'), 2)
+
+		# other member should be able to see all members in this team
+		response = self.client_user2.get_json(TEAMMEMBER_NESTED_URL.format(team.pk))
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.data.get('count'), 2)
+
+		# user not in this team should not have access
+		response = self.client_user4.get_json(TEAMMEMBER_NESTED_URL.format(team.pk))
+		self.assertEqual(response.status_code, 404)
+
+
 
 
 	def chaging_user_access_level(self):

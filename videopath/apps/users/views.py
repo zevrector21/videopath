@@ -237,11 +237,12 @@ class TeamMemberViewSet(viewsets.ModelViewSet):
     def create(self, request, team_id = None ):
         email = self.request.data.get('email', 'none')
         tid = self.request.data.get('team')
+        role = self.request.data.get('role', None)
 
         user = get_object_or_404(User, email=email)
         team = get_object_or_404(Team, pk=tid)
 
-        member = team.add_member(user)
+        member = team.add_member(user, role=role)
 
         data = TeamMemberSerializer(member).data
         return Response(data, 201)

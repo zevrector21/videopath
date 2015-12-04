@@ -52,7 +52,7 @@ class UserSettings(UserenaBaseProfile):
 class Teams(models.Manager):
 
     def teams_for_user(self, user):
-        return self.filter(owner = user)
+        return self.filter(models.Q(owner = user) | models.Q(members = user)  )
 
 class Team(VideopathBaseModel):
 
@@ -75,7 +75,8 @@ class Team(VideopathBaseModel):
     def is_a_default_team(self):
         return self.is_default_team_of_user != None
 
-    def add_member(self, user, role='editor'):
+    def add_member(self, user, role=None):
+        if not role: role = 'editor'
         if self.is_a_default_team() or user == self.owner:
             return
         member, created = TeamMember.objects.get_or_create(team=self, user=user, role=role)

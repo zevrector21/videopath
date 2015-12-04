@@ -108,6 +108,9 @@ GRAPPELLI_ADMIN_TITLE = "Videopath Admin"
 GRAPPELLI_AUTOCOMPLETE_SEARCH_FIELDS = {
     "auth": {
         "user": ("email__icontains", "username__icontains",)
+    },
+    "users": {
+        "team": ("owner__email__icontains", "owner__username__icontains",)
     }
 }
 

@@ -12,8 +12,9 @@ class UserAdmin(_UserAdmin):
     search_fields = ['username', 'email']
 
     def videos_link(self, obj):
-        link = "/admin/videos/video/?user__username=" + obj.username
-        return "<a href = '" + link + "'>List of Videos</a> (" + str(obj.videos.count()) + ")"
+        from videopath.apps.videos.models import Video
+        link = "/admin/videos/video/?team__owner__username=" + obj.username
+        return "<a href = '" + link + "'>List of Videos</a> (" + str(Video.objects.filter(team__owner_id = obj.pk).count()) + ")"
     videos_link.allow_tags = True
     
     actions=["make_move_to_pipedrive"]

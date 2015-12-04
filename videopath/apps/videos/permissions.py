@@ -45,9 +45,7 @@ class VideoPermissions(permissions.BasePermission):
         return True
 
     def has_object_permission(self, request, view, obj):
-        if obj.user == request.user and not obj.archived:
-            return True
-        return False
+        return obj.has_user_access(request.user) and not obj.archived
 
 class MarkerContentPermissions(permissions.BasePermission):
 

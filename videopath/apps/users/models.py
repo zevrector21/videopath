@@ -97,7 +97,7 @@ class Team(VideopathBaseModel):
         return self.owner == user
 
     def can_be_deleted(self):
-        return not self.videos.count() > 0 and not self.is_default_team_of_user()
+        return not self.videos.count() > 0 and not self.is_a_default_team()
 
     def delete(self):
         if self.can_be_deleted(): super(Team, self).delete()

@@ -43,4 +43,14 @@ class TestCase(EndpointsBaseTestCase):
 		response = self.client_user1.get_json(TEAM_URL + str(t2.pk) + '/')
 		self.assertEqual(response.status_code, 404)
 
+	def test_deleting(self):
 
+		self.setup_users_and_clients()
+
+		# can't delete default team
+		response = self.client_user1.delete_json(TEAM_URL + str(self.user1.default_team.pk) + '/')
+		self.assertEqual(response.status_code, 403)
+
+		t1 = Team.objects.create(owner=self.user1)
+		response = self.client_user1.delete_json(TEAM_URL + str(t1.pk) + '/')
+		self.assertEqual(response.status_code, 200)

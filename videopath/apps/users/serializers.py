@@ -3,7 +3,7 @@ from django.conf import settings
 
 from rest_framework import serializers
 
-from videopath.apps.users.models import UserSettings
+from videopath.apps.users.models import UserSettings, Team, TeamMember
 
 
 class UserSettingsSerializer(serializers.ModelSerializer):
@@ -14,9 +14,7 @@ class UserSettingsSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
 
-    # settings = UserSettingsSerializer()
     plan = serializers.SerializerMethodField()
-    # url = serializers.HyperlinkedIdentityField(view_name='user-detail')
     username = serializers.CharField(min_length=3, required=False)
 
     newsletter = serializers.BooleanField(required=False)
@@ -36,3 +34,14 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('username', 'email', 'id', 'plan', 'url', 'new_password', 'password', 'newsletter')
         read_only_fields = ('username', 'id')
+
+
+class TeamSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Team
+        fields = ('name', 'id')
+
+class TeamMemberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TeamMember
+        fields = ('user')

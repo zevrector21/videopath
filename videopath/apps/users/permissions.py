@@ -21,3 +21,19 @@ class UserPermissions(permissions.BasePermission):
             return True
 
         return False
+
+class TeamPermissions(permissions.BasePermission):
+
+    def has_permission(self, request, view):
+        return False
+
+    def has_object_permission(self, request, view, obj):
+        return False
+
+class TeamMemberPermissions(permissions.BasePermission):
+
+    def has_permission(self, request, view):
+        return False
+
+    def has_object_permission(self, request, view, obj):
+        return False

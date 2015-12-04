@@ -16,10 +16,10 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
 from videopath.apps.common.services import service_provider
-from videopath.apps.users.models import AuthenticationToken, OneTimeAuthenticationToken, UserCampaignData
-from videopath.apps.users.serializers import UserSerializer
+from videopath.apps.users.models import AuthenticationToken, OneTimeAuthenticationToken, UserCampaignData, Team, TeamMember
+from videopath.apps.users.serializers import UserSerializer, TeamSerializer, TeamMemberSerializer
 from videopath.apps.common.mailer import send_signup_email, send_forgot_pw_mail
-from videopath.apps.users.permissions import UserPermissions
+from videopath.apps.users.permissions import UserPermissions, TeamPermissions, TeamMemberPermissions
 
 from videopath.apps.users.actions import login_user
 
@@ -206,5 +206,29 @@ class UserViewSet(viewsets.ModelViewSet):
 
         # possibly return some tokens and shit
         return Response(data, status=status.HTTP_201_CREATED)
+
+#
+# Teams
+#
+class TeamViewSet(viewsets.ModelViewSet):
+
+    model = Team
+    serializer_class = TeamSerializer
+    permission_classes = (TeamPermissions,)
+
+    def get_queryset(self):
+        return Team.objects.all()
+
+#
+# Team Members
+#
+class TeamMemberViewSet(viewsets.ModelViewSet):
+
+    model = TeamMember
+    serializer_class = TeamMemberSerializer
+    permission_classes = (TeamMemberPermissions,)
+
+    def get_queryset(self):
+        return TeamMember.objects.all()
 
     

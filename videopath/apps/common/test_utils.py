@@ -19,6 +19,18 @@ USER2_DETAILS = {
     "email": "null-2@videopath.com"
 }
 
+USER3_DETAILS = {
+    "username": "dave3",
+    "password": "secret2",
+    "email": "null-3@videopath.com"
+}
+
+USER4_DETAILS = {
+    "username": "dave4",
+    "password": "secret2",
+    "email": "null-4@videopath.com"
+}
+
 #
 # util functions
 #
@@ -74,6 +86,8 @@ class BaseTestCase(APITestCase):
     def setup_users(self):
         self.user = self.user1 = create_simple_user(username=USER1_DETAILS["username"], password = USER1_DETAILS["password"], email=USER1_DETAILS["email"])
         self.user2 = create_simple_user(username=USER2_DETAILS["username"], password = USER2_DETAILS["password"], email=USER2_DETAILS["email"])
+        self.user3 = create_simple_user(username=USER3_DETAILS["username"], password = USER3_DETAILS["password"], email=USER3_DETAILS["email"])
+        self.user4 = create_simple_user(username=USER4_DETAILS["username"], password = USER4_DETAILS["password"], email=USER4_DETAILS["email"])
 
     #
     # Setup users and test api clients
@@ -93,6 +107,16 @@ class BaseTestCase(APITestCase):
         self.client_user2 = BaseAPIClient()
         token = AuthenticationToken.objects.create(user=self.user2)
         self.client_user2.credentials( HTTP_AUTHORIZATION='Token %s' % token.key)
+
+        # user 3 client, authenticate with token
+        self.client_user3 = BaseAPIClient()
+        token = AuthenticationToken.objects.create(user=self.user3)
+        self.client_user3.credentials( HTTP_AUTHORIZATION='Token %s' % token.key)
+
+        # user 4 client, authenticate with token
+        self.client_user4 = BaseAPIClient()
+        token = AuthenticationToken.objects.create(user=self.user4)
+        self.client_user4.credentials( HTTP_AUTHORIZATION='Token %s' % token.key)
 
 
     # deprecated

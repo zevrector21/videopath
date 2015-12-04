@@ -1,5 +1,7 @@
 from videopath.apps.videos.tests.endpoints.endpoints_base import EndpointsBaseTestCase
 
+from videopath.apps.users.models import Team
+
 TEAM_URL = '/v1/team/'
 TEAMMEMBER_URL = '/v1/team/{1}/'
 
@@ -15,5 +17,30 @@ class TestCase(EndpointsBaseTestCase):
 		self.setup_users_and_clients()
 		response = self.client_user1.get_json(TEAM_URL)
 		self.assertEqual(response.data.get('count'), 1)
+
+	def test_create_team(self):
+		
+		self.setup_users_and_clients()
+		response = self.client_user1.post_json(TEAM_URL, {'name': 'New Team'})
+		self.assertEqual(response.status_code, 201)
+		team_id = response.data.get('id')
+
+		team = Team.objects.get(pk=team_id)
+		self.assertEqual(team.is_user_owner(self.user1), True)
+
+		# should now have default team and the new team
+		self.assertEqual(self.user1.owned_teams.count(), 2)
+
+	def test_access(self):
+		self.setup_users_and_clients()
+
+		t1 = Team.objects.create(owner=self.user1)
+		t2 = Team.objects.create(owner=self.user2)
+
+		response = self.client_user1.get_json(TEAM_URL + str(t1.pk) + '/')
+		self.assertEqual(response.status_code, 200)
+
+		response = self.client_user1.get_json(TEAM_URL + str(t2.pk) + '/')
+		self.assertEqual(response.status_code, 404)
 
 

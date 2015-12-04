@@ -216,6 +216,10 @@ class TeamViewSet(viewsets.ModelViewSet):
     serializer_class = TeamSerializer
     permission_classes = (TeamPermissions,AuthenticatedPermission)
 
+    # get and validate data
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
     def get_queryset(self):
         return Team.objects.teams_for_user(self.request.user)
 

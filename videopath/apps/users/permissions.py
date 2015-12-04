@@ -33,7 +33,7 @@ class TeamPermissions(permissions.BasePermission):
         return True
 
     def has_object_permission(self, request, view, obj):
-        if obj.user_is_admin(request.user):
+        if obj.is_user_admin(request.user):
             return True
         return False
 
@@ -43,5 +43,5 @@ class TeamMemberPermissions(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS: return True
 
     def has_object_permission(self, request, view, obj):
-        if obj.team.user_is_admin(request.user):
+        if obj.team.is_user_admin(request.user):
             return True

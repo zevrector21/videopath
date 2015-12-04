@@ -53,7 +53,7 @@ class TeamSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Team
-        fields = ('owner', 'name', 'id', 'role', 'is_default_team')
+        fields = ('name', 'id', 'role', 'is_default_team')
         read_only_fields = ('owner')
 
 class TeamMemberSerializer(serializers.ModelSerializer):

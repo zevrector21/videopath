@@ -13,14 +13,14 @@ class TestCase(BaseTestCase):
     def test_appearances_model(self):
         
         # test default appearance settings
-        video = Video.objects.create(user=self.user)
+        video = Video.objects.create(team=self.user.default_team)
 
         # default lang is english
         app = appearance_util.appearance_for_revision(video.draft)
         self.assertEqual(app.get("ui_language"), "en")
 
         # set default user
-        video.user.default_player_appearance = PlayerAppearance.objects.create(ui_language="de")
+        video.team.owner.default_player_appearance = PlayerAppearance.objects.create(ui_language="de")
         video.draft.save()
         app = appearance_util.appearance_for_revision(video.draft)
         self.assertEqual(app.get("ui_language"), "de")

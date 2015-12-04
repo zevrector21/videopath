@@ -15,7 +15,7 @@ class ImageTests(BaseTestCase):
     def test_image_file_delete(self):
 
         # create one video with an image file attached
-        v = Video.objects.create(user=self.user1)
+        v = Video.objects.create(team=self.user1.default_team)
         m = Marker.objects.create(video_revision=v.draft)
         c = MarkerContent.objects.create(marker=m)
         imf = ImageFile.objects.create()

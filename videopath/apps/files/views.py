@@ -21,7 +21,7 @@ def image_request_upload_ticket(request, type=None, related_id=None):
     # file for marker content
     if type == "marker_content":
         marker_content = get_object_or_404(MarkerContent, pk=related_id)
-        if marker_content.marker.video_revision.video.user != request.user:
+        if not marker_content.has_user_access(request.user):
             return Response(status=403)
 
         file.image_type = file.MARKER_CONTENT
@@ -31,7 +31,7 @@ def image_request_upload_ticket(request, type=None, related_id=None):
     # file as thumbnail
     elif type == "custom_thumbnail":
         revision = get_object_or_404(VideoRevision, pk=related_id)
-        if revision.video.user != request.user:
+        if not revision.has_user_access(request.user):
             return Response(status=403)
         file.image_type = file.CUSTOM_THUMBNAIL
         file.save()

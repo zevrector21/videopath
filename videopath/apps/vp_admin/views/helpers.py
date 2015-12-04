@@ -60,7 +60,7 @@ def videolink(v):
         return None
     return [
         "<a href ='" + detail_url + "'>" + smart_truncate(revision.title, 50) + "</a>",
-        v.user.username,
+        v.team.owner.username,
         humanize.naturalday(revision.modified),
         str(v.total_plays) 
     ] 

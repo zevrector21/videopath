@@ -11,6 +11,6 @@ class TestCase(BaseTestCase):
         self.create_user()
 
     def test_creation(self):
-    	video = Video.objects.create(user=self.user)
+    	video = Video.objects.create(team=self.user.default_team)
     	data = DailyAnalyticsData.objects.create(video=video, date=datetime.date.today())
         self.assertIsNotNone(data)

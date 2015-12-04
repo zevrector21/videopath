@@ -12,14 +12,14 @@ class TestCase(BaseTestCase):
     def test_creation(self):
         
         # video should be creatable 
-        video = Video.objects.create(user=self.user)
+        video = Video.objects.create(team=self.user.default_team)
        	self.assertIsNotNone(video)
 
        	# video should have draft revision
        	self.assertIsNotNone(video.draft)
 
     def test_publish_unpublish(self):
-      	video = Video.objects.create(user=self.user)
+        video = Video.objects.create(team=self.user.default_team)
         self.assertIsNotNone(video.draft)
 
       	video.publish()
@@ -45,7 +45,7 @@ class TestCase(BaseTestCase):
 
 
     def test_create_new_draft(self):
-        video = Video.objects.create(user=self.user)
+        video = Video.objects.create(team=self.user.default_team)
         video.publish()
         self.assertIsNotNone(video.current_revision)
         self.assertIsNotNone(video.draft)
@@ -53,7 +53,7 @@ class TestCase(BaseTestCase):
     def test_duplication(self):
 
         # duplicating video object with file should fail
-        video = Video.objects.create(user=self.user)
+        video = Video.objects.create(team=self.user.default_team)
         video.draft.source = Source.objects.create()
         video.draft.save()
         duplicate = video.duplicate()

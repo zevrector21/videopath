@@ -25,9 +25,7 @@ from videopath.apps.files.util.aws_util import get_upload_endpoint, verify_uploa
 def video_request_upload_ticket(request, video_id=None):
 
     # only allow request if video is found and user is owner
-    video = get_object_or_404(Video, pk=video_id)
-    if video.user != request.user:
-        return Response(status=403)
+    video = Video.objects.get_video_for_user(request.user, pk=video_id)
 
     source = Source.objects.create(service='videopath', status=Source.STATUS_WAITING)
     video.draft.source = source

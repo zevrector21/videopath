@@ -25,7 +25,7 @@ class TestCase(EndpointsBaseTestCase):
 		self.assertEqual(response.status_code, 200)
 
 		# create integration and see if the return is correct
-		Integration.objects.create(user=self.user1, service='mailchimp')
+		Integration.objects.create(team=self.user1.default_team, service='mailchimp')
 		response = self.client_user1.get_json(INTEGRATION_URL + 'mailchimp/')
 		self.assertEqual(response.data.get('id'), 'mailchimp')
 		self.assertEqual(response.data.get('configured'), True)

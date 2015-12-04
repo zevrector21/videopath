@@ -50,7 +50,7 @@ def _get_quota_info():
     qresult = DailyAnalyticsData.objects.filter(
         date__gte=first_day,
         date__lt=last_day)\
-        .values('video__user__pk', 'video__user__subscription__plan')\
+        .values('video__team__owner__pk', 'video__team__owner__subscription__plan')\
         .annotate(views=Sum("plays_all"))\
         .order_by('-views')
 
@@ -58,8 +58,8 @@ def _get_quota_info():
     result = []
     for row in qresult:
         result.append({
-            "user_id": row["video__user__pk"],
-            "plan": settings.PLANS.plan_for_id(row["video__user__subscription__plan"]),
+            "user_id": row["video__team__owner__pk"],
+            "plan": settings.PLANS.plan_for_id(row["video__team__owner__subscription__plan"]),
             "views": row["views"],
         })
     return result

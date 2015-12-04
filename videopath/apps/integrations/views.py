@@ -11,7 +11,7 @@ from .models import Integration
 #
 # get object description of integration for one user
 #
-def get_integration_info(user, service):
+def get_integration_info(team, service):
 
     # get config of this service
     service_config = config.get(service, None)
@@ -20,7 +20,7 @@ def get_integration_info(user, service):
 
     # see if this config has been enabled
     try:
-        integration = Integration.objects.get(user=user, service=service)
+        integration = Integration.objects.get(team=team, service=service)
     except Integration.DoesNotExist:
         integration = None
 
@@ -28,7 +28,7 @@ def get_integration_info(user, service):
         'configured': False,
         'id': service,
         'title': service_config.get('title'),
-        'oauth2_endpoint': oauth2_util.authorize_uri_for_user(service_config, user),
+        'oauth2_endpoint': oauth2_util.authorize_uri_for_team(service_config, team),
         'description': service_config.get('description'),
         'credentials': service_config.get('credentials', False),
         'type': service_config.get('type')
@@ -43,11 +43,11 @@ def get_integration_info(user, service):
 #
 # get list of integration infos for one user
 #
-def get_integration_list(user):
+def get_integration_list(team):
     results = []
 
     for service in config:
-        results.append(get_integration_info(user, service))
+        results.append(get_integration_info(team, service))
 
     return {
         'count': len(results),
@@ -56,12 +56,12 @@ def get_integration_list(user):
         'previous': None
     }
 
-def authorize_with_credentials(user, service, credentials):
+def authorize_with_credentials(team, service, credentials):
     service_config = config.get(service, None)
     credentials = service_config['module'].handle_credential_request(credentials)
     if credentials:
         credentials = json.dumps(credentials)
-        Integration.objects.create(user=user, team=user.default_team, service=service, credentials=credentials)
+        Integration.objects.create(team=team, service=service, credentials=credentials)
         return True
     else:
         return False
@@ -72,7 +72,7 @@ def authorize_with_credentials(user, service, credentials):
 class IntegrationViewSet(viewsets.ViewSet):
 
     def list(self, request):
-        data = get_integration_list(request.user)
+        data = get_integration_list(request.user.default_team)
         return Response(data)
 
     # create is disabled
@@ -81,13 +81,13 @@ class IntegrationViewSet(viewsets.ViewSet):
 
     #
     def retrieve(self, request, pk=None):
-        data = get_integration_info(request.user, pk)
+        data = get_integration_info(request.user.default_team, pk)
         return Response(data)
 
     def update(self, request, pk=None):
 
         # see if this is a request to authorize with credentials
-        if authorize_with_credentials(request.user, pk, request.data.get('authorize', None)):
+        if authorize_with_credentials(request.user.default_team, pk, request.data.get('authorize', None)):
             return self.retrieve(request, pk)
         else:
             return Response(status=403)
@@ -100,10 +100,10 @@ class IntegrationViewSet(viewsets.ViewSet):
     #
     def destroy(self, request, pk=None):
         try:
-            integration = Integration.objects.get(user=request.user, service=pk)
+            integration = Integration.objects.get(team=request.user.default_team, service=pk)
             integration.delete()
         except Integration.DoesNotExist:
             pass
-        data = get_integration_info(request.user, pk)
+        data = get_integration_info(request.user.default_team, pk)
         return Response(data)
 

@@ -65,14 +65,14 @@ class VideoSerializer(serializers.ModelSerializer):
             return {}
 
     def get_queryset(self):
-        return Video.objects.filter(user=self.request.user)
+        return Video.objects.filter(team__owner=self.request.user)
 
 
     class Meta:
         model = Video
         fields = ('id', 'thumbnails', 'key', 'published',
                   'created', 'draft', 'current_revision', 'total_plays', 'total_views', 'revision_info', 'url', 'source')
-        read_only_fields = ('user', 'draft', 'current_revision', 'archived', 'url', 'total_plays', 'total_views', 'key', 'published')
+        read_only_fields = ('team', 'draft', 'current_revision', 'archived', 'url', 'total_plays', 'total_views', 'key', 'published')
 
 #
 # Marker

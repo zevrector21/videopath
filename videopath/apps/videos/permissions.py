@@ -11,19 +11,16 @@ class AuthenticatedPermission(permissions.BasePermission):
 class VideoRevisionPermissions(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        if request.method == "GET":
-            return True
+        if request.method == "GET": return True
         try:
             data = json.loads(request.body)
             revision = VideoRevision.objects.get(pk=data["id"])
-            return revision.video.user == request.user
+            return revision.has_user_access(request.user)
         except Exception:
             return False
 
     def has_object_permission(self, request, view, obj):
-        if obj.video.user == request.user:
-            return True
-        return False
+        return obj.has_user_access(request.user)
 
 
 class MarkerPermissions(permissions.BasePermission):
@@ -35,14 +32,12 @@ class MarkerPermissions(permissions.BasePermission):
         try:
             data = json.loads(request.body)
             revision = VideoRevision.objects.get(pk=data["video_revision"])
-            return revision.video.user == request.user
+            return revision.has_user_access(request.user)
         except Exception:
             return False
 
     def has_object_permission(self, request, view, obj):
-        if obj.video_revision.video.user == request.user:
-            return True
-        return False
+        return obj.has_user_access(request.user)
 
 class VideoPermissions(permissions.BasePermission):
 
@@ -58,16 +53,13 @@ class MarkerContentPermissions(permissions.BasePermission):
 
     # make sure the marker content belongs to a video we have access to
     def has_permission(self, request, view):
-        if request.method in ["GET", "DELETE"]:
-            return True
+        if request.method in ["GET", "DELETE"]: return True
         try:
             data = json.loads(request.body)
             marker = Marker.objects.get(pk=data["marker"])
-            return marker.video_revision.video.user == request.user
+            return marker.has_user_access(request.user)
         except Exception:
             return False
 
     def has_object_permission(self, request, view, obj):
-        if obj.marker.video_revision.video.user == request.user:
-            return True
-        return False
+        return obj.has_user_access(request.user)

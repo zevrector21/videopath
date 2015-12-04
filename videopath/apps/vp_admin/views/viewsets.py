@@ -61,7 +61,7 @@ def user_activity_daily():
 # videos
 #
 def all_videos():
-	viewset = Video.objects.exclude(user__username__in=company_accounts)
+	viewset = Video.objects.exclude(team__owner__username__in=company_accounts)
 	return viewset
 
 def published_videos():
@@ -76,7 +76,7 @@ def shared_videos():
 # VIdeo stats
 #
 def all_total_analytics():
-	viewset = TotalAnalyticsData.objects.exclude(video__user__username__in=company_accounts)
+	viewset = TotalAnalyticsData.objects.exclude(video__team__owner__username__in=company_accounts)
 	return viewset
 	
 
@@ -85,7 +85,7 @@ def all_total_analytics():
 #
 def all_daily_stats():
 	from videopath.apps.analytics.models import DailyAnalyticsData
-	viewset = DailyAnalyticsData.objects.exclude(video__user__username__in=company_accounts)
+	viewset = DailyAnalyticsData.objects.exclude(video__team__owner__username__in=company_accounts)
 	return viewset
 
 

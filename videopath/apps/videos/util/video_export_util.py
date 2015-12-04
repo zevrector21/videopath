@@ -58,7 +58,7 @@ def export_videos(videos, verbose = False):
 # export all videos of a user
 #
 def export_user_videos(user):
-    videos = Video.objects.filter(user=user)
+    videos = Video.objects.filter(team__owner=user)
     export_videos(videos)
 
 #

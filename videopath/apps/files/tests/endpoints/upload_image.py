@@ -10,7 +10,7 @@ class TestCase(BaseTestCase):
 
     def test_upload_thumbnail(self):
 		self.setup_users_and_clients()
-		v=Video.objects.create(user=self.user)
+		v=Video.objects.create(team=self.user.default_team)
 
 		# test creation of ticket
 		response = self.client_user1.get(REQUEST_URL.format("custom_thumbnail", v.draft.pk))
@@ -25,7 +25,7 @@ class TestCase(BaseTestCase):
 
     def test_upload_marker_content_image(self):
 		self.setup_users_and_clients()
-		v=Video.objects.create(user=self.user)
+		v=Video.objects.create(team=self.user.default_team)
 		m=Marker.objects.create(video_revision=v.draft)
 		c=MarkerContent.objects.create(marker=m)
 

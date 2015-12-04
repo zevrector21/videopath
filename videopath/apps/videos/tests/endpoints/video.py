@@ -91,7 +91,7 @@ class TestCase(EndpointsBaseTestCase):
 
     def test_duplication(self):
         self.setup_users_and_clients()
-        video = Video.objects.create(user=self.user)
+        video = Video.objects.create(team=self.user.default_team)
 
         response = self.client_user1.post_json(VIDEO_URL, {"copy_source": video.pk})
         self.assertEqual(response.status_code, 201)
@@ -103,7 +103,7 @@ class TestCase(EndpointsBaseTestCase):
     #
     def create_videos(self, amount = 30):
         while amount:
-            v = Video.objects.create(user=self.user)
+            v = Video.objects.create(team=self.user.default_team)
             v.draft.title = 'Video ' + str(amount)
             v.draft.save()
             amount-=1

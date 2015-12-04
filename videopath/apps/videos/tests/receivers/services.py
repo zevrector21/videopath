@@ -16,7 +16,7 @@ class TestCase(BaseTestCase):
     		service= 'youtube',
     		service_identifier = '092834sdf'
     		)
-        v = Video.objects.create(user=self.user)
+        v = Video.objects.create(team=self.user.default_team)
         v.draft.source = source
         v.draft.save()
 
@@ -34,7 +34,7 @@ class TestCase(BaseTestCase):
     		service= 'youtube',
     		service_identifier = '092834sdf'
     		)
-        v = Video.objects.create(user=self.user)
+        v = Video.objects.create(team=self.user.default_team)
         v.draft.source = source
         v.draft.save()
 

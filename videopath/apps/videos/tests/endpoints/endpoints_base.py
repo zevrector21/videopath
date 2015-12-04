@@ -8,7 +8,7 @@ class EndpointsBaseTestCase(BaseTestCase):
     def setup_users_clients_and_videos(self):
         self.setup_users_and_clients()
 
-        self.video = Video.objects.create(user=self.user1)
+        self.video = Video.objects.create(team=self.user1.default_team)
 
         self.markers = [
             Marker.objects.create(video_revision=self.video.draft),

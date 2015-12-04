@@ -6,12 +6,13 @@ from datetime import date
 
 from ..models import Integration
 from django.contrib.auth.models import User
+from videopath.apps.users.models import Team
 
 
-def hash_user(user):
-	return hashlib.sha224(str(user.pk) + user.email + str(date.today)).hexdigest()
+def hash_team(team):
+	return hashlib.sha224(str(team.owner.pk) + team.owner.email + str(date.today)).hexdigest()
 
-def authorize_uri_for_user(service, user):
+def authorize_uri_for_team(service, team):
 
 	if not 'oauth2' in service:
 		return ''
@@ -20,7 +21,7 @@ def authorize_uri_for_user(service, user):
 		'redirect_uri': service['oauth2']['redirect_url'],
 		'client_id': service['oauth2']['client_id'],
 		'response_type': 'code',
-		'state': str(user.pk) + ' ' + hash_user(user)
+		'state': str(team.pk) + ' ' + hash_team(team)
 	}
 
 	if 'scope' in service['oauth2']:
@@ -36,25 +37,25 @@ def handle_redirect(request, service):
 
 	# try to load user
 	try:
-		uid = int(state.split(' ')[0])
-		uhash = state.split(' ')[1]
-		user = User.objects.get(pk=uid)
+		tid = int(state.split(' ')[0])
+		thash = state.split(' ')[1]
+		team = Team.objects.get(pk=tid)
 		# check hash
-		if uhash != hash_user(user):
+		if thash != hash_team(team):
 			return False
 	except User.DoesNotExist:
 		return False
 
 	# try to handle oauth in service module
-	credentials = service['module'].handle_redirect(service, user, code)
+	credentials = service['module'].handle_redirect(service, team, code)
 	if credentials:
 		try:
-			integration = Integration.objects.get(user=user, service=service)
+			integration = Integration.objects.get(team=team, service=service)
 			integration.delete()
 		except Integration.DoesNotExist:
 			pass
 		credentials = json.dumps(credentials)
-		Integration.objects.create(user=user, service=service['id'], credentials=credentials)
+		Integration.objects.create(team=team, service=service['id'], credentials=credentials)
 
 		return True
 

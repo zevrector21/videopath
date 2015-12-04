@@ -15,12 +15,12 @@ def listview(request):
     result = ""
     users = []
     for u in User.objects.all():
-        videos = u.videos.filter(archived=False).count()
+        videos = Video.objects.filter_for_user.filter(archived=False).count()
 
         # published
         videos_published = u.videos.filter(published=Video.PUBLIC, archived=False).count()
         demo_videos = Video.objects.filter(
-            video__user=u, service_identifier="2rtGFAnyf-s").count()
+            video__team__owner=u, service_identifier="2rtGFAnyf-s").count()
 
         if videos == 0:
             color = "red"
@@ -60,8 +60,8 @@ def listview_sales(request):
             'campaign_name': 'SELECT name FROM users_usercampaigndata WHERE users_usercampaigndata.user_id = auth_user.id',
             'country': 'SELECT country FROM users_usercampaigndata WHERE users_usercampaigndata.user_id = auth_user.id',
             'referrer': 'SELECT referrer FROM users_usercampaigndata WHERE users_usercampaigndata.user_id = auth_user.id',
-            'num_videos': 'SELECT COUNT(*) FROM videos_video WHERE videos_video.user_id = auth_user.id AND videos_video.archived != True',
-            'num_videos_published': 'SELECT COUNT(*) FROM videos_video WHERE videos_video.user_id = auth_user.id AND videos_video.published = 1 AND videos_video.archived != True',
+            'num_videos': 'SELECT COUNT(*) FROM videos_video JOIN users_team  ON (videos_video.team_id = users_team.id) WHERE users_team.owner_id = auth_user.id AND videos_video.archived != 1',
+            'num_videos_published': 'SELECT COUNT(*) FROM videos_video JOIN users_team  ON (videos_video.team_id = users_team.id) WHERE users_team.owner_id = auth_user.id AND videos_video.archived != 1 AND videos_video.published = 1',
         }).order_by('-date_joined'):
         user = [
             "<span>" + helpers.userlink(u) + "</span>",
@@ -130,7 +130,7 @@ def userview(request, username):
 
     result += helpers.header("Video plays")
     result += helpers.dategraph(
-        viewsets.all_daily_stats().filter(video__user=user), 
+        viewsets.all_daily_stats().filter(video__team__owner=user), 
         "date", 
         aggregate_field='plays_all')
 
@@ -142,17 +142,17 @@ def userview(request, username):
 
     # published videos 
     result += helpers.header("Published Videos")
-    videos = user.videos.filter(archived=False, published=Video.PUBLIC).order_by('-current_revision__modified')
+    videos = Video.objects.filter(team__owner=user, archived=False, published=Video.PUBLIC).order_by('-current_revision__modified')
     result += helpers.videolist(videos)
 
     # unpublished videos
     result += helpers.header("Unpublished Videos")
-    videos = user.videos.filter(archived=False, published=Video.PRIVATE).order_by('-current_revision__modified')
+    videos = Video.objects.filter(team__owner=user,archived=False, published=Video.PRIVATE).order_by('-current_revision__modified')
     result += helpers.videolist(videos)
 
     # deleted projects videos
     result += helpers.header("Deleted Videos")
-    videos = user.videos.filter(archived=True).order_by('-current_revision__modified')
+    videos = Video.objects.filter(team__owner=user, archived=True).order_by('-current_revision__modified')
     result += helpers.videolist(videos)
 
 

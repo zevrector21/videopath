@@ -21,8 +21,8 @@ class TestCase(BaseTestCase):
 
 
     def test_get_attached_vidoes(self):
-        v1 = Video.objects.create(user=self.user)
-        v2 = Video.objects.create(user=self.user)
+        v1 = Video.objects.create(team=self.user.default_team)
+        v2 = Video.objects.create(team=self.user.default_team)
 
         s = Source.objects.create()
 

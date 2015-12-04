@@ -19,6 +19,9 @@ class Marker(VideopathBaseModel):
     overlay_width = models.IntegerField(default=-1)
     overlay_height = models.IntegerField(default=-1)
 
+    def has_user_access(self, user):
+        return self.video_revision.has_user_access(user)
+
     # duplicate the marker
     def duplicate(self):
         duplicate = copy.copy(self)

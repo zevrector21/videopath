@@ -7,7 +7,7 @@ class ThumbnailsTest(TestCase):
 
     def setUp(self):
         self.user1 = create_simple_user()
-        self.video = Video.objects.create(user=self.user1)
+        self.video = Video.objects.create(team=self.user1.default_team)
         self.video.save()
 
 

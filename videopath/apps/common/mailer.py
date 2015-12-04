@@ -63,7 +63,7 @@ def send_share_mail(video, recipients, message):
 
     c = Context({
         "thumb_url": thumb_url,
-        "user": video.user,
+        "user": video.team.owner,
         "message": message,
         "link": "http://player.videopath.com/" + video.key,
         "description": video.current_revision.description,
@@ -84,14 +84,14 @@ def send_share_mail(video, recipients, message):
 
     # send
     message = {
-        'subject': video.user.username + " shared a video with you!",
+        'subject': video.team.owner.username + " shared a video with you!",
         'text': message_plain,
         'html': message_html,
         'to': recipientsmap,
         'from_email': 'no-reply@videopath.com',
         'from_name': 'Videopath Team',
         'tags': ['share'],
-        'replyto': video.user.email
+        'replyto': video.team.owner.email
     }
     mail_service.mandrill_send(message)
 
@@ -168,7 +168,7 @@ def send_signup_email(user):
 def send_transcode_succeeded_mail(source):
     revision = source.revisions.first()
     send_templated_mail(
-        revision.video.user,
+        revision.video.team.owner,
         "\"" + revision.title + "\" is ready to edit!",
         "transcode_complete",
         {
@@ -183,7 +183,7 @@ def send_transcode_failed_mail(source):
     revision = source.revisions.first()
 
     send_templated_mail(
-        revision.video.user,
+        revision.video.team.owner,
         "Error processing \"" + revision.title + "\"",
         "transcode_error",
         {
@@ -230,7 +230,7 @@ def send_invoice_created_mail(user, invoice, link):
 # transcoding jpgs
 def send_jpgs_trancode_failed_mail(video):
     send_templated_mail(
-        video.user,
+        video.team.owner,
         "iPhone Trancoding Failed",
         "jpg_transcode_failed",
         {
@@ -241,7 +241,7 @@ def send_jpgs_trancode_failed_mail(video):
 
 def send_jpgs_trancode_succeeded_mail(video):
     send_templated_mail(
-        video.user,
+        video.team.owner,
         "iPhone Trancoding Succeeded",
         "jpg_transcode_succeeded",
         {

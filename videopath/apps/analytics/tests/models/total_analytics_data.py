@@ -10,6 +10,6 @@ class TestCase(BaseTestCase):
         self.create_user()
 
     def test_creation(self):
-    	video = Video.objects.create(user=self.user)
+    	video = Video.objects.create(team=self.user.default_team)
     	data = TotalAnalyticsData.objects.create(video=video)
         self.assertIsNotNone(data)

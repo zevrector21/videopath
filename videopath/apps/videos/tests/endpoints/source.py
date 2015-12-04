@@ -12,7 +12,7 @@ class TestCase(BaseTestCase):
 
         # create user and video
         self.setup_users_and_clients()
-        v=Video.objects.create(user=self.user)
+        v=Video.objects.create(team=self.user.default_team)
 
         response = self.client_user1.post(IMPORT_URL.format(v.pk), {'url':'https://www.youtube.com/watch?v=PPN3KTtrnZM'})
         self.assertEqual(response.status_code, 200)
@@ -23,7 +23,7 @@ class TestCase(BaseTestCase):
     def test_vimeo_import(self):
         # create user and video
         self.setup_users_and_clients()
-        v=Video.objects.create(user=self.user)
+        v=Video.objects.create(team=self.user.default_team)
 
         response = self.client_user1.post(IMPORT_URL.format(v.pk), {'url':'https://vimeo.com/36579366'})
         self.assertEqual(response.status_code, 200)
@@ -34,7 +34,7 @@ class TestCase(BaseTestCase):
     def test_wistia_import(self):
         # create user and video
         self.setup_users_and_clients()
-        v=Video.objects.create(user=self.user)
+        v=Video.objects.create(team=self.user.default_team)
 
         response = self.client_user1.post(IMPORT_URL.format(v.pk), {'url':'http://home.wistia.com/medias/1gaiqzxu03'})
         self.assertEqual(response.status_code, 200)
@@ -45,7 +45,7 @@ class TestCase(BaseTestCase):
     def test_brightcove_import(self):
         # create user and video
         self.setup_users_and_clients()
-        v=Video.objects.create(user=self.user)
+        v=Video.objects.create(team=self.user.default_team)
 
         #response = self.client_user1.post(IMPORT_URL.format(v.pk), {'url':'http://players.brightcove.net/4328472451001/default_default/index.html?videoId=4332059708001'})
         #self.assertEqual(response.status_code, 200)
@@ -55,7 +55,7 @@ class TestCase(BaseTestCase):
 
     def test_custom_import(self):
         self.setup_users_and_clients()
-        v=Video.objects.create(user=self.user)
+        v=Video.objects.create(team=self.user.default_team)
         data = {
             "mp4":"http://videos.videopath.com/m35T1YU0KHQ8ZEr28fKgM4sS0zfEOQW3.mp4",
             "webm": "http://videos.videopath.com/m35T1YU0KHQ8ZEr28fKgM4sS0zfEOQW3.webm",
@@ -71,7 +71,7 @@ class TestCase(BaseTestCase):
 
     def test_jpg_transcoding(self):
         self.setup_users_and_clients()
-        v = Video.objects.create(user=self.user)
+        v=Video.objects.create(team=self.user.default_team)
         
 
         # should not work without source

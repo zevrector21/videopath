@@ -16,8 +16,8 @@ class TestCase(EndpointsBaseTestCase):
         self.assertEqual(response.status_code, 404)
 
         # posting to existing video should work
-        Integration.objects.create(service='mailchimp', user=self.user1, credentials='{"api_key": "something-else"}')
-        v = Video.objects.create(user=self.user1)
+        Integration.objects.create(service='mailchimp', team=self.user1.default_team, credentials='{"api_key": "something-else"}')
+        v = Video.objects.create(team=self.user1.default_team)
         url = MAILCHIMP_BEACON_URL + '?video_key={0}'.format(v.key)
         response = self.client.get_json(url)
         self.assertEqual(response.status_code, 200)

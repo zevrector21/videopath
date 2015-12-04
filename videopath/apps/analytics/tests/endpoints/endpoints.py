@@ -13,7 +13,7 @@ class EndpointsBaseTestCase(BaseTestCase):
     def setup(self):
         self.setup_users_and_clients()
 
-        self.video = Video.objects.create(user=self.user1)
+        self.video = Video.objects.create(team=self.user1.default_team)
 
         DailyAnalyticsData.objects.create(video=self.video, date=datetime.date.today())
         TotalAnalyticsData.objects.create(video=self.video)

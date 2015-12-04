@@ -35,7 +35,7 @@ from rest_framework.permissions import AllowAny
 def icon_view(request, rid=None):
 
     try:
-        revision = VideoRevision.objects.get(video__user = request.user, pk=rid)
+        revision = VideoRevision.objects.get(video__team__owner = request.user, pk=rid)
         if request.method == "PUT":
             ok, detail = icon_util.handle_uploaded_icon(revision, request.data["file"])
             if not ok:
@@ -96,7 +96,7 @@ def get_revision(request, vid=None, rev_type='published'):
     expanded = request.GET.get('expanded', '0')
 
     # load the video and the correct serializer
-    video = Video.objects.get_video_or_404(vid, request.user)
+    video = Video.objects.get_video_for_user(request.user, pk = vid)
 
     # find the correct revision
     if published and video.current_revision_id:
@@ -116,7 +116,7 @@ def get_revision(request, vid=None, rev_type='published'):
 @api_view(['PUT', 'DELETE'])
 def video_publish(request, vid=None):
 
-    video = get_object_or_404(Video, pk=vid, user=request.user)
+    video = Video.objects.get_video_for_user(request.user,pk=vid)
 
     if request.method == 'PUT':
         video.publish()
@@ -133,7 +133,7 @@ def video_publish(request, vid=None):
 # 
 @api_view(['POST'])
 def send_share_mail(request, vid=None):
-    video = get_object_or_404(Video, pk=vid, user=request.user)
+    video = Video.objects.get_video_for_user(request.user,pk=vid)
     success, detail = share_mail_util.send_share_mail(video, request.DATA.get("recipients", ""), request.DATA.get("message",""))
 
     if not success:
@@ -152,7 +152,7 @@ class VideoViewSet(viewsets.ModelViewSet):
 
     # Can see only your videos, filterable by q
     def get_queryset(self):
-        videos = Video.objects.filter(user=self.request.user, archived=False)
+        videos = Video.objects.filter(team__owner=self.request.user, archived=False)
         q = self.request.GET.get('q')
         if q:
             q = q.strip()
@@ -175,7 +175,7 @@ class VideoViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         # add user
-        instance = serializer.save(user=self.request.user, team=self.request.user.default_team)
+        instance = serializer.save(team=self.request.user.default_team)
 
         #
         # see if this video should be a copy of an existing one
@@ -184,11 +184,11 @@ class VideoViewSet(viewsets.ModelViewSet):
         if copy_source:
             revision = None
             try:
-                video = Video.objects.get(pk=copy_source, user=self.request.user)
+                video = Video.objects.get(pk=copy_source, team__owner=self.request.user)
                 revision = video.draft
             except Video.DoesNotExist:
                 try:
-                    revision = VideoRevision.objects.get(pk=copy_source, video__user = self.request.user)
+                    revision = VideoRevision.objects.get(pk=copy_source, video__team__owner= self.request.user)
                 except VideoRevision.DoesNotExist:
                     pass
 
@@ -245,7 +245,7 @@ class VideoRevisionViewSet(viewsets.ModelViewSet):
 
     # Can see only your videos
     def get_queryset(self):
-        result = VideoRevision.objects.filter(video__user=self.request.user)
+        result = VideoRevision.objects.filter(video__team__owner=self.request.user)
         vid = self.kwargs.get('vid', None)
 
         if vid:
@@ -257,7 +257,7 @@ class VideoRevisionViewSet(viewsets.ModelViewSet):
 #
 @api_view(['PUT'])
 def jpg_sequence_view(request, rid=None):
-    source = get_object_or_404(Source, revisions__pk=rid, revisions__video__user=request.user)
+    source = get_object_or_404(Source, revisions__pk=rid, revisions__video__team__owner=request.user)
     success, message = source.export_jpg_sequence()
     if not success:
         return Response({"detail": message}, 400)
@@ -275,9 +275,9 @@ class MarkerViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self, vid = None):
         if vid:
-            return Marker.objects.filter(video_revision__video__user=self.request.user, video_revision__id=vid)
+            return Marker.objects.filter(video_revision__video__team__owner=self.request.user, video_revision__id=vid)
         else:
-            return Marker.objects.filter(video_revision__video__user=self.request.user)
+            return Marker.objects.filter(video_revision__video__team__owner=self.request.user)
 
 #
 # Marker Content View Set
@@ -289,9 +289,9 @@ class MarkerContentViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self, mid = None):
         if mid:
-            return MarkerContent.objects.filter(marker__video_revision__video__user=self.request.user, marker__id=mid)
+            return MarkerContent.objects.filter(marker__video_revision__video__team__owner=self.request.user, marker__id=mid)
         else:
-            return MarkerContent.objects.filter(marker__video_revision__video__user=self.request.user)
+            return MarkerContent.objects.filter(marker__video_revision__video__team__owner=self.request.user)
 
 #
 # Import a video from youtube etc.
@@ -300,9 +300,7 @@ class MarkerContentViewSet(viewsets.ModelViewSet):
 def import_source(request, key=None):
 
     # get video
-    video = get_object_or_404(Video, pk=key)
-    if video.user != request.user:
-        return Response(status=403)
+    video = Video.objects.get_video_for_user(request.user, pk=key)
 
     service = service_provider.get_service("video_source_import")
 

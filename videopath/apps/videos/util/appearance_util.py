@@ -11,7 +11,7 @@ def appearance_for_revision(revision):
 
    # build appearance in the right order
     result = settings.DEFAULT_VIDEO_APPEARANCE.copy()
-    user = revision.video.user
+    user = revision.video.team.owner
 
     # merge appearance from model on user 
     try:

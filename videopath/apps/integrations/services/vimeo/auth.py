@@ -5,7 +5,7 @@ from requests.auth import HTTPBasicAuth
 #
 # handling incoming oauth request
 #
-def handle_redirect(service, user, code):
+def handle_redirect(service, team, code):
 
 	# convert the code into an access token
 	headers = {

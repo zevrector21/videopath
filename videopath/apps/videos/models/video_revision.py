@@ -106,6 +106,9 @@ class VideoRevision(VideopathBaseModel):
 
         super(VideoRevision, self).save(*args, **kwargs)
 
+    def has_user_access(self, user):
+        return self.video.has_user_access(user)
+
 
     # duplicate the revision
     def duplicate(self):

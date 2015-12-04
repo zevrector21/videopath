@@ -14,7 +14,7 @@ def plan_usage(user, relative_month=0):
     first_day = date(td.year, td.month, 1)
     last_day = first_day + relativedelta(months=1)
     count = DailyAnalyticsData.objects.filter(
-        video__user=user,
+        video__team__owner=user,
         date__gte=first_day,
         date__lt=last_day
     ).aggregate(Sum("plays_all"))

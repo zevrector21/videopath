@@ -17,12 +17,12 @@ def view(request):
     #
     result += helpers.header("Users with the most views on their projects")
 
-    count = viewsets.all_videos().values('user__username').annotate(score=Sum("total_plays")).order_by('-score')
+    count = viewsets.all_videos().values('team__owner__username').annotate(score=Sum("total_plays")).order_by('-score')
     max_rows = 25
     result_array = []
     for entry in count:
         result_array.append([
-                helpers.userlink(entry["user__username"]),
+                helpers.userlink(entry["team__owner__username"]),
                 str(entry["score"])
             ])
         max_rows -= 1

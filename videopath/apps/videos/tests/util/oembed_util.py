@@ -8,7 +8,7 @@ class TestCase(BaseTestCase):
 
     def setup(self):
         self.setup_users()
-        self.video = Video.objects.create(user=self.user)
+        self.video = Video.objects.create(team=self.user.default_team)
 
     def test_invalid_urls(self):
 

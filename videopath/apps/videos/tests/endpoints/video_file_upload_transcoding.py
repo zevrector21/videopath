@@ -28,7 +28,7 @@ class TestCase(BaseTestCase):
   #
   def test_upload_video(self):
 
-    v=Video.objects.create(user=self.user)
+    v=Video.objects.create(team=self.user.default_team)
 
     # test creation of ticket
     response = self.client_user1.get(REQUEST_URL.format(v.pk))
@@ -50,7 +50,7 @@ class TestCase(BaseTestCase):
   # Test notifications
   #
   def test_progressing_notification(self):
-    v = Video.objects.create(user=self.user)
+    v = Video.objects.create(team=self.user.default_team)
     v.draft.source = Source.objects.create(key = FILE_KEY)
     v.draft.save()
     data = {
@@ -61,7 +61,7 @@ class TestCase(BaseTestCase):
     self.assertEqual(Source.objects.first().status, Source.STATUS_PROCESSING)
 
   def test_fail_notification(self):
-    v = Video.objects.create(user=self.user)
+    v = Video.objects.create(team=self.user.default_team)
     v.draft.source = Source.objects.create(key = FILE_KEY)
     v.draft.save()
     data = {
@@ -72,7 +72,7 @@ class TestCase(BaseTestCase):
     self.assertEqual(Source.objects.first().status, Source.STATUS_ERROR)
 
   def test_success_notification(self):
-    v = Video.objects.create(user=self.user)
+    v = Video.objects.create(team=self.user.default_team)
     v.draft.source = Source.objects.create(key = FILE_KEY)
     v.draft.save()
     data = {

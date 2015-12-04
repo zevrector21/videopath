@@ -19,7 +19,7 @@ def listview(request):
     count = DailyAnalyticsData.objects.filter(
         date__gte=first_day,
         date__lt=last_day)\
-        .values('video__user__username')\
+        .values('video__team__owner__username')\
         .annotate(score=Sum("plays_all"))\
         .order_by('-score')
 
@@ -27,7 +27,7 @@ def listview(request):
     result_array = []
     for entry in count:
         result_array.append([
-                entry["video__user__username"],
+                entry["video__team__owner__username"],
                 str(entry["score"])
             ])
         rows += 1
@@ -86,7 +86,7 @@ def videoview(request, key):
     video = Video.objects.get(key=key)
 
     result = helpers.header("General Info")
-    result += "User: " + helpers.userlink(video.user)
+    result += "User: " + helpers.userlink(video.team.owner)
 
     result += helpers.header("Overall stats")
     try:

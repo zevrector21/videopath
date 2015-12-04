@@ -35,6 +35,9 @@ class MarkerContent(VideopathBaseModel):
 
     url = models.CharField(max_length=255, blank=True)
 
+    def has_user_access(self, user):
+        return self.marker.has_user_access(user)
+
     # duplicate the marker content
     def duplicate(self):
         duplicate = copy.copy(self)

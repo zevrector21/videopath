@@ -17,7 +17,7 @@ def view(request):
 	#
 	# General Query Building blocks
 	#
-	SELECT_PUBLISHED_REVISIONS = "SELECT COUNT(*) FROM videos_video as v JOIN videos_videorevision as vr ON(v.current_revision_id = vr.id) JOIN auth_user as u ON (u.id = v.user_id)"
+	SELECT_PUBLISHED_REVISIONS = "SELECT COUNT(*) FROM videos_video as v JOIN videos_videorevision as vr ON(v.current_revision_id = vr.id) JOIN users_team as t ON (t.id = v.team_id) JOIN auth_user as u ON (u.id = t.owner_id) "
 	SELECT_PUBLISHED_MARKERS = SELECT_PUBLISHED_REVISIONS + " JOIN videos_marker vm ON (vm.video_revision_id = vr.id)"
 	SELECT_PUBLISHED_CONTENT_BLOCKS = SELECT_PUBLISHED_MARKERS + " JOIN videos_markercontent vmc ON (vmc.marker_id = vm.id)"
 	SELECT_VIDEO_SOURCES = SELECT_PUBLISHED_REVISIONS + " JOIN videos_source as s ON (vr.source_id = s.id)"

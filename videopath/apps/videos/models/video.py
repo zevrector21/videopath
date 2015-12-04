@@ -1,17 +1,16 @@
 import copy, datetime
 
 from django.db import models
-from django.contrib.auth.models import User
 from videopath.apps.users.models import Team
 from django.conf import settings
 
 from videopath.apps.common.models import VideopathBaseModel
-from videopath.apps.videos.managers.video_manager import VideoManager
+from videopath.apps.videos.models.videos import Videos
 
 class Video(VideopathBaseModel):
 
     # custom manager class
-    objects = VideoManager()
+    objects = Videos()
 
     # constants
     PRIVATE = 0
@@ -55,6 +54,9 @@ class Video(VideopathBaseModel):
     @staticmethod
     def autocomplete_search_fields():
         return ("id__iexact", "key__icontains",)
+
+    def has_user_access(self, user):
+        return ( self.team.owner == user ) or user in self.team.members
 
 
     def duplicate(self):
@@ -141,7 +143,7 @@ class Video(VideopathBaseModel):
 
     # name
     def __unicode__(self):
-        return u'%s %s' % (self.key, self.user)
+        return u'%s %s' % (self.key, self.team)
 
     # met stuff
     class Meta:

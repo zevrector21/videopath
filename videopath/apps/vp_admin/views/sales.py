@@ -7,6 +7,7 @@ from urlparse import urlparse
 
 from django.template.response import SimpleTemplateResponse
 from django.contrib.auth.models import User
+from videopath.apps.videos.models import Video
 
 from videopath.apps.users.actions import move_user_to_pipedrive
 
@@ -70,7 +71,8 @@ def inbound_users(request):
 		except:
 			row.extend(['', '', ''])
 
-		row.extend([user.videos.count(), user.videos.filter(published=True).count()]  )
+		user_videos = Video.objects.filter(team__owner=user)
+		row.extend([user_videos.count(), user_videos.filter(published=True).count()]  )
 
 		try:
 			row.append(user.subscription.plan)

@@ -9,11 +9,11 @@ class TestCase(BaseTestCase):
         self.create_user()
 
     def test_creation(self):
-        video = Video.objects.create(user=self.user)
+        video = Video.objects.create(team=self.user.default_team)
         self.assertIsNotNone(video.draft)
 
     def test_duplication(self):
-    	video = Video.objects.create(user=self.user)
+        video = Video.objects.create(team=self.user.default_team)
 
     	markers =[
     		Marker.objects.create(video_revision=video.draft),
@@ -32,7 +32,7 @@ class TestCase(BaseTestCase):
 
 
     def test_password(self):
-        video = Video.objects.create(user=self.user)
+        video = Video.objects.create(team=self.user.default_team)
         revision = video.draft
 
         # test if settings password adds hash and salted version of pw

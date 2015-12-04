@@ -44,11 +44,13 @@ def build_user_info(start_date, end_date):
         except:
             pass
 
+        user_videos = Video.objects.filter(team__owner=user)
+
         activation = {
             "signed_up": True,
-            "has_videos": user.videos.count() > 0,
-            "has_published_videos": user.videos.filter(published=Video.PUBLIC).count() > 0,
-            "has_views": user.videos.filter(total_plays__gte=10).count() > 0,
+            "has_videos": user_videos.count() > 0,
+            "has_published_videos": user_videos.filter(published=Video.PUBLIC).count() > 0,
+            "has_views": user_videos.filter(total_plays__gte=10).count() > 0,
             "has_upgraded": has_upgraded
         }
 

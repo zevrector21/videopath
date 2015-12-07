@@ -11,12 +11,12 @@ class Videos(models.Manager):
 
 		if pk:
 			try: 
-				return self.get(pk=pk, team__owner = user, archived=False)
+				return self.filter_for_user(user).get(pk=pk, archived=False)
 			except self.model.DoesNotExist: pass
 
 		if key:
 			try:
-				return self.get(key=key, team__owner = user, archived=False)
+				return  self.filter_for_user(user).get(key=key, archived=False)
 			except self.model.DoesNotExist: pass
 
 		raise Http404

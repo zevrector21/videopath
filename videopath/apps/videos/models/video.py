@@ -56,7 +56,7 @@ class Video(VideopathBaseModel):
         return ("id__iexact", "key__icontains",)
 
     def has_user_access(self, user):
-        return ( self.team.owner == user ) or user in self.team.members
+        return ( self.team.owner == user ) or (self.team.members.filter(username=user.username).count() > 0)
 
 
     def duplicate(self):

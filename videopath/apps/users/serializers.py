@@ -48,6 +48,8 @@ class TeamSerializer(serializers.ModelSerializer):
 
     stats = serializers.SerializerMethodField()
 
+    owner = SlimUserSerializer(read_only=True)
+
     # todo
     def get_role(self, team):
         user = self.context.get('request').user
@@ -67,7 +69,7 @@ class TeamSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Team
-        fields = ('name', 'id', 'role', 'is_default_team', 'stats')
+        fields = ('owner', 'name', 'id', 'role', 'is_default_team', 'stats')
         read_only_fields = ('owner', 'stats')
 
 class TeamMemberSerializer(serializers.ModelSerializer):

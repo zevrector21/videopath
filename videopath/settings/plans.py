@@ -27,6 +27,8 @@ class _Plans():
 
         'feature_custom_analytics': False,
 
+        'feature_teams': False, 
+
         'feature_theme': False,
         'feature_icon': False,
         'feature_advanced_video_settings': False, 

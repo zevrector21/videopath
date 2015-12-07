@@ -151,8 +151,14 @@ class VideoViewSet(viewsets.ModelViewSet):
     permission_classes = (VideoPermissions,AuthenticatedPermission)
 
     # Can see only your videos, filterable by q
-    def get_queryset(self):
-        videos = Video.objects.filter(team__owner=self.request.user, archived=False)
+    def get_queryset(self,team_id = None):
+        
+        videos = Video.objects.filter_for_user(self.request.user).filter(archived=False)
+
+        team_id = self.request.resolver_match.kwargs.get('team_id', None)
+        if team_id:
+            videos = videos.filter(team_id=team_id)
+
         q = self.request.GET.get('q')
         if q:
             q = q.strip()
@@ -174,8 +180,10 @@ class VideoViewSet(viewsets.ModelViewSet):
 
 
     def perform_create(self, serializer):
-        # add user
-        instance = serializer.save(team=self.request.user.default_team)
+        team = serializer.validated_data.get('team')
+        if not team:
+            team = self.request.user.default_team
+        instance = serializer.save(team=team)
 
         #
         # see if this video should be a copy of an existing one

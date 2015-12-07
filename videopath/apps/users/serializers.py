@@ -32,13 +32,21 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'id', 'plan', 'url', 'new_password', 'password', 'newsletter')
-        read_only_fields = ('username', 'id')
+        fields = ('username', 'default_team', 'email', 'id', 'plan', 'url', 'new_password', 'password', 'newsletter')
+        read_only_fields = ('username', 'id', 'default_team')
 
+class SlimUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'id')
+        read_only_fields = ('username', 'id', 'email')
 
 class TeamSerializer(serializers.ModelSerializer):
+
     role = serializers.SerializerMethodField()
     is_default_team = serializers.SerializerMethodField()
+
+    stats = serializers.SerializerMethodField()
 
     # todo
     def get_role(self, team):
@@ -51,10 +59,16 @@ class TeamSerializer(serializers.ModelSerializer):
     def get_is_default_team(self, team):
         return team.is_a_default_team() 
 
+    def get_stats(self, team):
+        return {
+            "number_of_videos": team.videos.filter(archived=False).count(),
+            "number_of_members": team.members.count() + 1
+        }
+
     class Meta:
         model = Team
-        fields = ('name', 'id', 'role', 'is_default_team')
-        read_only_fields = ('owner')
+        fields = ('name', 'id', 'role', 'is_default_team', 'stats')
+        read_only_fields = ('owner', 'stats')
 
 class TeamMemberSerializer(serializers.ModelSerializer):
     class Meta:

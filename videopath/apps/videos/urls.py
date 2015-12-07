@@ -14,6 +14,7 @@ router.register(r'marker/(?P<mid>[0-9]+)/content', MarkerContentViewSet, base_na
 
 router.register(r'marker', MarkerViewSet, base_name="marker")
 router.register(r'video', VideoViewSet, base_name="video")
+router.register(r'team/(?P<team_id>[0-9]+)/video', VideoViewSet, base_name="video")
 router.register(r'video-revision', VideoRevisionViewSet, base_name="video_revision")
 router.register(r'markercontent', MarkerContentViewSet, base_name="marker_content")
 

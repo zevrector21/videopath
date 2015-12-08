@@ -163,7 +163,7 @@ class VideoViewSet(viewsets.ModelViewSet):
         if q:
             q = q.strip()
             videos = videos.filter(Q(draft__title__icontains = q) | Q(draft__description__icontains = q))
-        return videos.extra(order_by=['-created'])
+        return videos.extra(order_by=['-created']).distinct()
 
     def perform_update(self, serializer):
         instance = serializer.save()
@@ -180,7 +180,7 @@ class VideoViewSet(viewsets.ModelViewSet):
 
 
     def perform_create(self, serializer):
-        team_id = self.request.GET.get('team')
+        team_id = self.request.DATA.get('team')
         team = None
         if team_id:
             try:

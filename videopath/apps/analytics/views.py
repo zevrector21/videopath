@@ -19,7 +19,7 @@ class TotalAnalyticsDataViewSet(viewsets.ReadOnlyModelViewSet):
         r = re.compile('video/(.*?)/ana')
         m = r.search(self.request.path)
         vid = m.group(1)
-        return TotalAnalyticsData.objects.filter(video__team__owner=self.request.user, video__id=vid)
+        return TotalAnalyticsData.objects.filter_for_user(self.request.user).filter(video__id=vid)
 
 class DailyAnalyticsDataViewSet(viewsets.ReadOnlyModelViewSet):
 
@@ -36,5 +36,5 @@ class DailyAnalyticsDataViewSet(viewsets.ReadOnlyModelViewSet):
         vid = m.group(1)
         start = date.fromtimestamp(int(self.request.GET.get("start", 0)))
         end = date.fromtimestamp(int(self.request.GET.get("end", 0)))
-        return DailyAnalyticsData.objects.filter(video__team__owner=self.request.user, video__id=vid, date__range=[start, end])
+        return DailyAnalyticsData.objects.filter_for_user(self.request.user).filter(video__id=vid, date__range=[start, end])
 

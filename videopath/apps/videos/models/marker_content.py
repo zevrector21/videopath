@@ -5,7 +5,17 @@ from django.db import models
 from videopath.apps.common.models import VideopathBaseModel
 from videopath.apps.videos.models.marker import Marker
 
+
+class MarkerContents(models.Manager):
+
+    def filter_for_user(self,user):
+        return self.filter( models.Q(marker__video_revision__video__team__owner = user) | models.Q(marker__video_revision__video__team__members = user) )
+
+
 class MarkerContent(VideopathBaseModel):
+
+    objects = MarkerContents()
+
     TYPE_CHOICES = (
         ("text", "text"),
         ("title", "title"),

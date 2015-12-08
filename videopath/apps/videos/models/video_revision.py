@@ -6,7 +6,15 @@ from django.db import models
 from videopath.apps.common.models import VideopathBaseModel, ColorField
 from videopath.apps.videos.models import Source
 
+class VideoRevisions(models.Manager):
+
+    def filter_for_user(self,user):
+        return self.filter( models.Q(video__team__owner = user) | models.Q(video__team__members = user) )
+
+
 class VideoRevision(VideopathBaseModel):
+
+    objects = VideoRevisions()
 
     video = models.ForeignKey("videos.Video", related_name="revisions")
     source = models.ForeignKey(

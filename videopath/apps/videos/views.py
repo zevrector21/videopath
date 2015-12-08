@@ -253,7 +253,7 @@ class VideoRevisionViewSet(viewsets.ModelViewSet):
 
     # Can see only your videos
     def get_queryset(self):
-        objects = VideoRevision.objects.filter(video__team__owner=self.request.user)
+        objects = VideoRevision.objects.filter_for_user(self.request.user)
         vid = self.kwargs.get('vid', None)
         if vid: objects = objects.filter(video__pk=vid)
         return objects
@@ -280,7 +280,7 @@ class MarkerViewSet(viewsets.ModelViewSet):
     permission_classes = (MarkerPermissions,AuthenticatedPermission)
 
     def get_queryset(self, vid = None):
-        objects = Marker.objects.filter(video_revision__video__team__owner=self.request.user)
+        objects = Marker.objects.filter_for_user(self.request.user)
         if vid: objects = objects.filter(video_revision__id=vid) 
         return objects
 
@@ -293,7 +293,7 @@ class MarkerContentViewSet(viewsets.ModelViewSet):
     permission_classes = (MarkerContentPermissions,AuthenticatedPermission)
 
     def get_queryset(self, mid = None):
-        objects = MarkerContent.objects.filter(marker__video_revision__video__team__owner=self.request.user)
+        objects = MarkerContent.objects.filter_for_user(self.request.user)
         if mid: objects = objects.filter(marker__id=mid)
         return objects
 

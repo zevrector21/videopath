@@ -5,7 +5,15 @@ from django.db import models
 from videopath.apps.common.models import VideopathBaseModel
 from videopath.apps.videos.models.video_revision import VideoRevision
 
+
+class Markers(models.Manager):
+
+    def filter_for_user(self,user):
+        return self.filter( models.Q(video_revision__video__team__owner = user) | models.Q(video_revision__video__team__members = user) )
+
 class Marker(VideopathBaseModel):
+
+    objects = Markers()
 
     # key
     key = models.CharField(max_length=50, blank=True, db_index=True)

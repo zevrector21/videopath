@@ -67,4 +67,8 @@ class TeamMemberPermissions(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS and team.is_user_member:
             return True
 
+        # leaving a group is allowed
+        if request.method == "DELETE" and obj.user == request.user:
+            return True
+
         return False

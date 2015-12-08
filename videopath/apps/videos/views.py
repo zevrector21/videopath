@@ -20,7 +20,7 @@ from videopath.apps.videos.permissions import MarkerPermissions, VideoPermission
 from videopath.apps.videos.models import Video, Marker, MarkerContent, VideoRevision, Source
 from videopath.apps.videos.serializers import VideoRevisionDetailSerializer, VideoSerializer, MarkerSerializer, MarkerContentSerializer, VideoRevisionSerializer
 from videopath.apps.common.services import service_provider
-
+from videopath.apps.users.models import Team
 
 from rest_framework.decorators import api_view
 from rest_framework.permissions import AllowAny
@@ -180,9 +180,16 @@ class VideoViewSet(viewsets.ModelViewSet):
 
 
     def perform_create(self, serializer):
-        team = serializer.validated_data.get('team')
+        team_id = self.request.GET.get('team')
+        team = None
+        if team_id:
+            try:
+                team = Team.objects.get(pk=team_id)
+            except Team.DoesNotExist: pass
         if not team:
             team = self.request.user.default_team
+
+        
         instance = serializer.save(team=team)
 
         #

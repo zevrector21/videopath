@@ -74,7 +74,7 @@ class VideoSerializer(serializers.ModelSerializer):
         model = Video
         fields = ('team', 'id', 'thumbnails', 'key', 'published',
                   'created', 'draft', 'current_revision', 'total_plays', 'total_views', 'revision_info', 'url', 'source')
-        read_only_fields = ('draft', 'current_revision', 'archived', 'url', 'total_plays', 'total_views', 'key', 'published')
+        read_only_fields = ('draft', 'current_revision', 'archived', 'url', 'total_plays', 'total_views', 'key', 'published', 'team')
 
 #
 # Marker

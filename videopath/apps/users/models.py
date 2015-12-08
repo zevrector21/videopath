@@ -115,7 +115,14 @@ class Team(VideopathBaseModel):
 #
 # Team member, connects people to teams
 #
+class TeamMembers(models.Manager):
+
+    def filter_for_user(self, user):
+        return self.filter(models.Q(team__owner = user) | models.Q(team__members = user)  )
+
 class TeamMember(VideopathBaseModel):
+
+    objects = TeamMembers()
 
     ROLE_EDITOR = "editor"
     ROLE_ADMIN = "admin"

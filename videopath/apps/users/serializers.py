@@ -69,11 +69,16 @@ class TeamSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Team
-        fields = ('owner', 'name', 'id', 'role', 'is_default_team', 'stats')
-        read_only_fields = ('owner', 'stats')
+        fields = ('owner', 'name', 'id', 'role', 'is_default_team', 'stats', 'created')
+        read_only_fields = ('owner', 'stats', 'created')
 
 class TeamMemberSerializer(serializers.ModelSerializer):
+    email = serializers.SerializerMethodField()
+
+    def get_email(self, member):
+        return member.user.email
+
     class Meta:
         model = TeamMember
-        fields = ('user', 'team', 'role')
-        read_only_fields = ('user', 'team')
+        fields = ('user', 'team', 'role', 'email', 'created', 'id')
+        read_only_fields = ('user', 'team', 'email', 'created')

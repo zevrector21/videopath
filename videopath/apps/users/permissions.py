@@ -64,7 +64,7 @@ class TeamMemberPermissions(permissions.BasePermission):
             return True
 
         # members of teams can see other members
-        if request.method in permissions.SAFE_METHODS and team.is_user_member:
+        if request.method in permissions.SAFE_METHODS and team.is_user_member(request.user):
             return True
 
         # leaving a group is allowed

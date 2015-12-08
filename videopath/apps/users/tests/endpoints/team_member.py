@@ -67,10 +67,10 @@ class TestCase(EndpointsBaseTestCase):
 	def test_listing_all_members(self):
 		self.setup_users_and_clients(2)
 
-		# should be disabled if not scoped to a team
+		# no memberships should be visible
 		response = self.client_user1.get_json(TEAMMEMBER_URL)
-		self.assertEqual(response.status_code, 404)
-
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.data.get('count'), 0)
 
 	def test_listing_members_as_members(self):
 
@@ -92,7 +92,7 @@ class TestCase(EndpointsBaseTestCase):
 
 		# user not in this team should not have access
 		response = self.client_user4.get_json(TEAMMEMBER_NESTED_URL.format(team.pk))
-		self.assertEqual(response.status_code, 404)
+		self.assertEqual(response.data.get('count'), 0)
 
 
 

@@ -236,6 +236,7 @@ class TeamMemberViewSet(viewsets.ModelViewSet):
 
     # get and validate data
     def create(self, request, team_id = None ):
+        
         email = self.request.data.get('email', 'none')
         tid = self.request.data.get('team')
         role = self.request.data.get('role', None)
@@ -248,10 +249,10 @@ class TeamMemberViewSet(viewsets.ModelViewSet):
         data = TeamMemberSerializer(member).data
         return Response(data, 201)
 
-
-    def get_queryset(self, team_id = None):
-        team = get_object_or_404(Team, pk=self.kwargs.get('team_id'))
-        if team.is_user_member(self.request.user):
-            return TeamMember.objects.filter(team=team)
-        raise Http404
+    def get_queryset(self):
+        members = TeamMember.objects.filter_for_user(self.request.user)
+        team_id = self.request.resolver_match.kwargs.get('team_id')
+        if team_id:
+            members = members.filter(team_id=team_id)
+        return members.distinct()
     

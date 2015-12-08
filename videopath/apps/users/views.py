@@ -223,7 +223,7 @@ class TeamViewSet(viewsets.ModelViewSet):
         serializer.save(owner=self.request.user)
 
     def get_queryset(self):
-        return Team.objects.teams_for_user(self.request.user)
+        return Team.objects.teams_for_user(self.request.user).distinct()
 
 #
 # Team Members

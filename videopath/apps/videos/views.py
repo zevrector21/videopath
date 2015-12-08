@@ -263,7 +263,7 @@ class VideoRevisionViewSet(viewsets.ModelViewSet):
         objects = VideoRevision.objects.filter_for_user(self.request.user)
         vid = self.kwargs.get('vid', None)
         if vid: objects = objects.filter(video__pk=vid)
-        return objects
+        return objects.distinct()
 
 #
 # Prepare for iphone transcoding
@@ -289,7 +289,7 @@ class MarkerViewSet(viewsets.ModelViewSet):
     def get_queryset(self, vid = None):
         objects = Marker.objects.filter_for_user(self.request.user)
         if vid: objects = objects.filter(video_revision__id=vid) 
-        return objects
+        return objects.distinct()
 
 #
 # Marker Content View Set
@@ -302,7 +302,7 @@ class MarkerContentViewSet(viewsets.ModelViewSet):
     def get_queryset(self, mid = None):
         objects = MarkerContent.objects.filter_for_user(self.request.user)
         if mid: objects = objects.filter(marker__id=mid)
-        return objects
+        return objects.distinct()
 
 #
 # Import a video from youtube etc.

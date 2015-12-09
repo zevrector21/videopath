@@ -213,7 +213,10 @@ class VideoViewSet(viewsets.ModelViewSet):
                 revision_copy.save()
                 instance.draft.delete()
                 instance.draft = revision_copy
+                instance.team = revision.video.team
                 instance.save()
+
+
 
         # if the demo attribute is present in the request
         # import demo video for this video

@@ -14,7 +14,7 @@ elif [ "$1" == "run_worker" ]; then
 	python worker.py
 elif [ "$1" == "test" ]; then
 	python manage.py test videopath/apps/**/tests/**/*.py --with-id
-elif [ "$1" == "failed_test" ]; then
+elif [ "$1" == "test_failed" ]; then
 	python manage.py test videopath/apps/**/tests/**/*.py --failed
 elif [ "$1" == "deploy" ]; then
 	#capture db state

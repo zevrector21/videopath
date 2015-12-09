@@ -277,6 +277,10 @@ def jpg_sequence_view(request, rid=None):
         revision = VideoRevision.objects.filter_for_user(request.user).distinct().get(pk=rid)
     except VideoRevision.DoesNotExist:
         raise Http404
+
+    if revision.source == None:
+        raise Http404
+
     success, message = revision.source.export_jpg_sequence()
     if not success:
         return Response({"detail": message}, 400)

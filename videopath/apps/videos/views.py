@@ -35,7 +35,7 @@ from rest_framework.permissions import AllowAny
 def icon_view(request, rid=None):
 
     try:
-        revision = VideoRevision.objects.get(video__team__owner = request.user, pk=rid)
+        revision = VideoRevision.objects.filter_for_user(request.user).distinct().get(pk=rid)
         if request.method == "PUT":
             ok, detail = icon_util.handle_uploaded_icon(revision, request.data["file"])
             if not ok:
@@ -199,11 +199,11 @@ class VideoViewSet(viewsets.ModelViewSet):
         if copy_source:
             revision = None
             try:
-                video = Video.objects.get(pk=copy_source, team__owner=self.request.user)
+                video = Video.objects.filter_for_user(self.request.user).distinct().get(pk=copy_source)
                 revision = video.draft
             except Video.DoesNotExist:
                 try:
-                    revision = VideoRevision.objects.get(pk=copy_source, video__team__owner= self.request.user)
+                    revision = VideoRevision.objects.filter_for_user(self.request.user).distinct().get(pk=copy_source)
                 except VideoRevision.DoesNotExist:
                     pass
 

@@ -8,6 +8,8 @@ from .util import oauth2_util
 from .services import config
 from .models import Integration
 
+from videopath.apps.users.models import Team
+
 #
 # get object description of integration for one user
 #
@@ -71,8 +73,9 @@ def authorize_with_credentials(team, service, credentials):
 #
 class IntegrationViewSet(viewsets.ViewSet):
 
-    def list(self, request):
-        data = get_integration_list(request.user.default_team)
+    def list(self, request, team_id=None):
+        team = Team.objects.teams_for_user(request.user).distinct().get(pk=team_id)
+        data = get_integration_list(team)
         return Response(data)
 
     # create is disabled
@@ -80,14 +83,16 @@ class IntegrationViewSet(viewsets.ViewSet):
         return Response({}, 404)
 
     #
-    def retrieve(self, request, pk=None):
-        data = get_integration_info(request.user.default_team, pk)
+    def retrieve(self, request, pk=None, team_id=None):
+        team = Team.objects.teams_for_user(request.user).distinct().get(pk=team_id)
+        data = get_integration_info(team, pk)
         return Response(data)
 
-    def update(self, request, pk=None):
+    def update(self, request, pk=None, team_id=None):
 
         # see if this is a request to authorize with credentials
-        if authorize_with_credentials(request.user.default_team, pk, request.data.get('authorize', None)):
+        team = Team.objects.teams_for_user(request.user).distinct().get(pk=team_id)
+        if authorize_with_credentials(team, pk, request.data.get('authorize', None)):
             return self.retrieve(request, pk)
         else:
             return Response(status=403)
@@ -98,9 +103,10 @@ class IntegrationViewSet(viewsets.ViewSet):
     #
     # delete data associated with this users integration
     #
-    def destroy(self, request, pk=None):
+    def destroy(self, request, pk=None, team_id=None):
         try:
-            integration = Integration.objects.get(team=request.user.default_team, service=pk)
+            team = Team.objects.teams_for_user(request.user).distinct().get(pk=team_id)
+            integration = Integration.objects.get(team=team, service=pk)
             integration.delete()
         except Integration.DoesNotExist:
             pass

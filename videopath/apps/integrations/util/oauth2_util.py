@@ -34,6 +34,7 @@ def handle_redirect(request, service):
 
 	state = request.GET.get('state','')
 	code = request.GET.get('code','')
+	team = None
 
 	# try to load user
 	try:
@@ -42,9 +43,9 @@ def handle_redirect(request, service):
 		team = Team.objects.get(pk=tid)
 		# check hash
 		if thash != hash_team(team):
-			return False
-	except User.DoesNotExist:
-		return False
+			return False, team
+	except Team.DoesNotExist:
+		return False, team
 
 	# try to handle oauth in service module
 	credentials = service['module'].handle_redirect(service, team, code)
@@ -55,8 +56,8 @@ def handle_redirect(request, service):
 		except Integration.DoesNotExist:
 			pass
 		credentials = json.dumps(credentials)
-		Integration.objects.create(team=team, service=service['id'], credentials=credentials)
+		integration = Integration.objects.create(team=team, service=service['id'], credentials=credentials)
 
-		return True
+		return True, team
 
-	return False
+	return False, team

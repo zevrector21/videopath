@@ -64,7 +64,7 @@ class TeamSerializer(serializers.ModelSerializer):
     def get_stats(self, team):
         return {
             "number_of_videos": team.videos.filter(archived=False).count(),
-            "number_of_members": team.members.count() + 1
+            "number_of_members": team.members.count()
         }
 
     class Meta:

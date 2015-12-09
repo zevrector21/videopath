@@ -6,7 +6,7 @@ from .views import IntegrationViewSet
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register(r'integration', IntegrationViewSet, base_name="integration")
+router.register(r'team/(?P<team_id>[0-9]+)/integration', IntegrationViewSet, base_name="integration")
 
 urlpatterns = patterns('',   
    url(r'', include(router.urls)),

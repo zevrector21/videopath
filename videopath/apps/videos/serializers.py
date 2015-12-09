@@ -63,11 +63,6 @@ class VideoSerializer(serializers.ModelSerializer):
             }
         else:
             return {}
-    #
-    # Probably not needed here?
-    #
-    def get_queryset(self):
-        return Video.objects.filter(team__owner=self.request.user)
 
 
     class Meta:

@@ -12,9 +12,9 @@ urlpatterns = patterns('',
    url(r'', include(router.urls)),
 
    # wire up services
-   url(r'^integration/mailchimp/', include('videopath.apps.integrations.services.mailchimp.urls')),
-   url(r'^integration/vimeo/', include('videopath.apps.integrations.services.vimeo.urls')),
-   url(r'^integration/brightcove/', include('videopath.apps.integrations.services.brightcove.urls')),
+   url(r'^team/(?P<team_id>[0-9]+)/integration/mailchimp/', include('videopath.apps.integrations.services.mailchimp.urls')),
+   url(r'^team/(?P<team_id>[0-9]+)/integration/vimeo/', include('videopath.apps.integrations.services.vimeo.urls')),
+   url(r'^team/(?P<team_id>[0-9]+)/integration/brightcove/', include('videopath.apps.integrations.services.brightcove.urls')),
 
    # wire up beacons
 

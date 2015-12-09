@@ -50,6 +50,16 @@ class TeamSerializer(serializers.ModelSerializer):
 
     owner = SlimUserSerializer(read_only=True)
 
+    plan = serializers.SerializerMethodField()
+
+    def get_plan(self, team):
+        plan = "free-free"
+        try:
+            plan = team.owner.subscription.plan
+        except:
+            pass
+        return settings.PLANS.plan_for_id(plan)
+
     # todo
     def get_role(self, team):
         user = self.context.get('request').user
@@ -69,7 +79,7 @@ class TeamSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Team
-        fields = ('owner', 'name', 'id', 'role', 'is_default_team', 'stats', 'created')
+        fields = ('owner', 'name', 'id', 'role', 'is_default_team', 'stats', 'created', 'plan')
         read_only_fields = ('owner', 'stats', 'created')
 
 class TeamMemberSerializer(serializers.ModelSerializer):

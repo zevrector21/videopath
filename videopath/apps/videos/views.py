@@ -273,8 +273,11 @@ class VideoRevisionViewSet(viewsets.ModelViewSet):
 #
 @api_view(['PUT'])
 def jpg_sequence_view(request, rid=None):
-    source = get_object_or_404(Source, revisions__pk=rid, revisions__video__team__owner=request.user)
-    success, message = source.export_jpg_sequence()
+    try:
+        revision = VideoRevision.objects.filter_for_user(request.user).distinct().get(pk=rid)
+    except VideoRevision.DoesNotExist:
+        raise Http404
+    success, message = revision.source.export_jpg_sequence()
     if not success:
         return Response({"detail": message}, 400)
     return Response({}, 201)

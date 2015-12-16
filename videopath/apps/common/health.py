@@ -72,6 +72,7 @@ def check_video_import_wistia():
 		return "Wistia import failed"
 
 def check_import_brightcove():
+	return True
 	service = service_provider.get_service("video_source_import")
 	try:
 		source = service.import_video_from_url("http://players.brightcove.net/4602926337001/default_default/index.html?videoId=4602980509001")

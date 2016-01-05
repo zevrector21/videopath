@@ -64,6 +64,7 @@ class UserActivityDayAdmin(admin.ModelAdmin):
 
 class AutomatedMailAdmin(admin.ModelAdmin):
     list_display = ('user', 'mailtype', 'created')
+    search_fields = ['user__email', 'user__username', 'mailtype']
     ordering = ('-created',)
     raw_id_fields = ['user',]
     autocomplete_lookup_fields = {

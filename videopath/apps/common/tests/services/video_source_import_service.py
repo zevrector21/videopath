@@ -22,9 +22,8 @@ class TestClass(BaseTestCase):
         self.assertEqual(source["service"], "wistia")
 
     def test_brightcove_import(self):
-        #source = self.service.import_video_from_url("http://players.brightcove.net/4602926337001/default_default/index.html?videoId=4602980509001")
-        #self.assertEqual(source["service"], "brightcove")
-        pass
+        source = self.service.import_video_from_url("http://players.brightcove.net/47628783001/default_default/index.html?videoId=3910607401001")
+        self.assertEqual(source["service"], "brightcove")
         
 
     def test_server_import(self):

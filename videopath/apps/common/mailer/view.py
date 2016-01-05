@@ -8,24 +8,29 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 @staff_member_required
 def view(request):
-	return SimpleTemplateResponse("insights/base.html", {
+
+	mail = request.GET.get('mail', 'signup')
+	mailtype = request.GET.get('mailtype', 'html')
+
+	mailconf = conf.mails.get(mail)
+
+
+	return SimpleTemplateResponse("qa/mails.html", {
+			'mails': conf.mails.keys(),
+			'mailsubject': mailconf['subject'],
+			'mail': mail,
+			'mailtype': mailtype
 	    })
 
 @staff_member_required
 def mailview(request, mail, mailtype):
 
-	# mailconf = conf.mails.get(mail)
 	testconf = conf.test_data.get(mail)
 	testconf.update({'username': request.user.username})
 
-	print conf.test_data
-	print testconf
-
 	c = Context(testconf)
-	t = get_template('mails/' + mail + '.' + mailtype)
+	t = get_template('mails/{0}.{1}'.format(mail, mailtype))
 	message = t.render(c)
-
-
 
 	if mailtype == 'txt':
 		c = Context({'mail': message})

@@ -25,8 +25,7 @@ def run_expire_authentication_tokens(sender, **kwargs):
 
 @receiver(hourly_jobs)
 def run_send_follow_up_mails(sender, **kwargs):
-	pass
-    #send_follow_up_mails.run()
+    send_follow_up_mails.run()
 
 @receiver(daily_jobs)
 def run_sync_with_pipedrive(sender, **kwargs):

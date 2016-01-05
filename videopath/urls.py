@@ -40,6 +40,8 @@ urlpatterns = patterns('',
 	# rest framework
 	url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
+	url(r'^qa/', include('videopath.apps.common.urls')),
+
 
 	# some public urls
 

@@ -134,7 +134,7 @@ def send_templated_mail(user, subject, template_name, vars, tags, force = False)
     send_mail(user, subject, message_plain, message_html, tags, force)
 
 
-### admin  & dev
+### admin & dev
 def send_admin_mail(subject, text):
     from django.contrib.auth.models import User
     users = User.objects.filter(is_superuser=True)
@@ -152,8 +152,6 @@ def send_dev_mail():
     send_templated_mail()
 
 # signup etc.
-
-
 def send_signup_email(user):
     send_templated_mail(
         user,

@@ -25,7 +25,7 @@ def view(request):
 @staff_member_required
 def mailview(request, mail, mailtype):
 
-	testconf = conf.test_data.get(mail)
+	testconf = conf.test_data.get(mail, {})
 	testconf.update({'username': request.user.username})
 
 	c = Context(testconf)

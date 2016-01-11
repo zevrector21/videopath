@@ -2,6 +2,6 @@
 {% block hello %}
 Dear {{ username }},
 {% endblock %}
-All the best from videopath
 {% block bye %}
+Your friends at Videopath
 {% endblock %}

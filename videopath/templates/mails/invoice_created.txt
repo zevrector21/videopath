@@ -1,4 +1,4 @@
-{% extends "mails/base_1.html" %}
+{% extends "mails/base_1.txt" %}
 {% load mathfilters %}
 {% block content %}
 
@@ -7,5 +7,4 @@ We have just created an invoice for <strong>{{ amount_due | div:100 | floatform
 {{link}}
 
 To change your plan or payment settings, visit your plans page on your account settings at <a href="http://app.videopath.com">http://app.videopath.com</a>.
-
 {% endblock %}

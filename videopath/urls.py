@@ -42,12 +42,8 @@ urlpatterns = patterns('',
 
 	url(r'^qa/', include('videopath.apps.common.urls')),
 
-
 	# some public urls
-
 	url(r'^public/invoices/(?P<invoice_id>[0-9]+)', 'videopath.apps.payments.views.public_invoice'),
-
-
 )
 
 

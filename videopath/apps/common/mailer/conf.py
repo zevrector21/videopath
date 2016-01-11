@@ -1,3 +1,5 @@
+import datetime
+
 #
 # register all mail types
 #
@@ -109,6 +111,29 @@ test_data = {
 		'password': '980LJSJ3n'
 	},
 
+
+	#
+	# subscriptions etc
+	#
+	'subscribe_will_change': {
+		'plan': 'Pro',
+		'switch_date': datetime.date.today()
+	},
+
+	'subscribe_change': {
+		'interval': 'Month',
+		'plan': 'Pro',
+		'is_free': False
+	},
+
+	'invoice_created': {
+		'subject': "Videopath billing"
+	},
+
+
+	#
+	# transcoding
+	#
 	'jpg_transcode_failed': {
 		'title': "My Project"
 	},
@@ -117,12 +142,13 @@ test_data = {
 		'title': "My Project"
 	},
 
+
 	'transcode_complete': {
 		'title': "My Project",
 		'video_id': "12345678"
 	},
 
-	'transcode_failed': {
+	'transcode_error': {
 		'title': "My Project"
 	},
 

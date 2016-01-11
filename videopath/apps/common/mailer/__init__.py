@@ -24,18 +24,22 @@ def prepare_mail(mailtype, variables, user = None):
     mailconf = conf.mails.get(mailtype, {})
 
     # update some defaults
-    fvariables = {}
+    fvariables = {
+        'to': 'void@videopath.com'
+    }
 
     agent = mailconf.get('agent', 'default')
 
     # set sender
-    if agent == 'user':
+    if agent == 'user' and user:
         fvariables.update({
             "from_email": user.email,
             "from_name": user.email,
             "replyto": user.email,
             })
     else:
+        if agent == 'user':
+            agent = 'default'
         fvariables.update(conf.agents.get(agent))
 
     if user:
@@ -57,6 +61,7 @@ def prepare_mail(mailtype, variables, user = None):
         'replyto': fvariables['replyto'],
         'to': fvariables['to']
     }
+
 
 
 

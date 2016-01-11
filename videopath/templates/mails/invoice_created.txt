@@ -1,7 +1,6 @@
 {% extends "mails/base_1.txt" %}
 {% load mathfilters %}
 {% block content %}
-
 We have just created an invoice for <strong>{{ amount_due | div:100 | floatformat:-2}} {{currency}}</strong> for your Videopath subscription.
 
 {{link}}

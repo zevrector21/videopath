@@ -1,7 +1,5 @@
 {% extends "mails/base_1.txt" %}
 {% block content %}
-
-
 You have exceeded your plan's quota for monthly video views. 
 Viewers may still view your videos, but Videopath interactivity on your videos has been disabled. Videopath interactivity on your videos will return at the start of next month.
 

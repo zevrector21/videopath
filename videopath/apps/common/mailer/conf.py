@@ -17,6 +17,11 @@ mails = {
 		'subject': "Videopath Password Reset"
 	},
 
+	'share_video': {
+		'subject': "An interactive video was shared with you!",
+		'agent': 'user'
+	},
+
 	#
 	# subscriptions etc
 	#
@@ -91,13 +96,15 @@ mails = {
 agents = {
 
 	"default": {
-    	"email": "support@videopath.com",
-        "name": "Videopath Team"
+    	"from_email": "support@videopath.com",
+        "from_name": "Videopath Team",
+        "replyto": "support@videopath.com",
     },
 
     "support": {
-        "email": "desiree@videopath.com",
-        "name": "Desiree dela Rosa"
+        "from_email": "desiree@videopath.com",
+        "from_name": "Desiree dela Rosa",
+        "replyto": "desiree@videopath.com",
     },
 
 }
@@ -109,6 +116,15 @@ test_data = {
 
 	'forgot_password': {
 		'password': '980LJSJ3n'
+	},
+
+	'share_video': {
+		'message': "Hey there, check out my cool video!",
+		'description': "Description of my video",
+		'title': "My Video!",
+		'link': "http://player.videopath.com/wmq2XEQj",
+		'thumb_url': 'https://dobvnaghfdgn1.cloudfront.net/WjI1mIEE3GbpTFCz2GfNCXKLvS4A92tx-hd',
+		'to': ['user1@example.com', 'user2@example.com', 'user3@example.com'],
 	},
 
 
@@ -154,7 +170,7 @@ test_data = {
 
 	'invoice_created': {
 		"amount_due": 640000,
-        "link": 'some_url',
+        "link": 'http://player.videopath.com/wmq2XEQj',
         "currency": "EUR"
 	}
 

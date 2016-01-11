@@ -1,3 +1,4 @@
+import conf
 
 from django.template import Context
 from django.template.loader import get_template
@@ -13,6 +14,50 @@ agents = {
         "name": "Desiree dela Rosa"
     }
 }
+
+#
+# new mailer implementation
+#
+def prepare_mail(mailtype, variables, user = None):
+
+    # get config for mail
+    mailconf = conf.mails.get(mailtype, {})
+
+    # update some defaults
+    fvariables = {}
+
+    agent = mailconf.get('agent', 'default')
+
+    # set sender
+    if agent == 'user':
+        fvariables.update({
+            "from_email": user.email,
+            "from_name": user.email,
+            "replyto": user.email,
+            })
+    else:
+        fvariables.update(conf.agents.get(agent))
+
+    if user:
+        fvariables.update({
+            'to': [user.email]
+            })
+
+
+    fvariables.update(variables)
+    c = Context(fvariables)
+
+    return {
+        'subject': mailconf.get('subject'),
+        'text': get_template('mails/{0}.txt'.format(mailtype)).render(c),
+        'html': get_template('mails/{0}.html'.format(mailtype)).render(c),
+        'tags': [mailtype],
+        'from_email': fvariables['from_email'],
+        'from_name': fvariables['from_name'],
+        'replyto': fvariables['replyto'],
+        'to': fvariables['to']
+    }
+
 
 
 def send_agent_mail(user, subject, template_name, agent, tags):

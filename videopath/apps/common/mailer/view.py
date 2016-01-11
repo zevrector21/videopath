@@ -1,4 +1,5 @@
 import conf
+from videopath.apps.common import mailer
 
 from django.template import Context
 from django.template.loader import get_template
@@ -12,28 +13,35 @@ def view(request):
 	mail = request.GET.get('mail', 'signup')
 	mailtype = request.GET.get('mailtype', 'html')
 
-	mailconf = conf.mails.get(mail)
-
+	testconf = conf.test_data.get(mail, {})
+	mailconf = mailer.prepare_mail(mail, testconf, request.user)
 
 	return SimpleTemplateResponse("qa/mails.html", {
 			'mails': conf.mails.keys(),
-			'mailsubject': mailconf['subject'],
 			'mail': mail,
-			'mailtype': mailtype
+			'mailtype': mailtype,
+
+			'mailsubject': mailconf['subject'],
+			'from_name': mailconf['from_name'],
+			'from_email': mailconf['from_email'],
+			'replyto': mailconf['replyto'],
+			'to': ','.join(mailconf['to'])
 	    })
 
 @staff_member_required
 def mailview(request, mail, mailtype):
 
 	testconf = conf.test_data.get(mail, {})
-	testconf.update({'username': request.user.username})
+	testconf.update({
+			'username': request.user.username,
+			'user': request.user
+			})
 
-	c = Context(testconf)
-	t = get_template('mails/{0}.{1}'.format(mail, mailtype))
-	message = t.render(c)
+	mailconf = mailer.prepare_mail(mail, testconf, request.user)
+	message = mailconf['html'] 
 
 	if mailtype == 'txt':
-		c = Context({'mail': message})
+		c = Context({'mail': mailconf['text']})
 		t = get_template('qa/plain_mail_wrapper.html')
 		message = t.render(c)
 

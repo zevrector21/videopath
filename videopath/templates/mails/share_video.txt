@@ -1,8 +1,8 @@
-{% extends "mails/base_0.txt" %}
+{% extends "mails/base_1.txt" %}
 {% block hello %}
 Hi there,
 {% endblock %}
-
+{% block content %}
 {{user.username | capfirst}} has shared this interactive video with you!
 
 {{link}}
@@ -10,7 +10,7 @@ Hi there,
 ---
 {{ message }}
 ---
-
+{% endblock %}
 {% block bye %}
 Your friends at Videopath
 {% endblock %}

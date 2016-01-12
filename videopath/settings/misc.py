@@ -36,7 +36,7 @@ DEMO_VIDEOS = {
 #
 # Maintenance mode
 #
-MAINTENANCE_IP = ''
+MAINTENANCE_IP = os.environ.get("MAINTENANCE_IP", None)
 
 #
 # Invoice Numbers

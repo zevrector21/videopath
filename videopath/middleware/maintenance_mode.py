@@ -9,12 +9,10 @@ class MaintenanceModeMiddleware(object):
 
     def process_request(self, request):
 
-    	return None
-
     	#
     	#
     	#
-        if settings.MAINTENANCE_IP != '':
+        if settings.MAINTENANCE_IP:
 
         	#
         	# Extract client ip

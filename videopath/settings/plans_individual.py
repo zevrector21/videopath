@@ -77,6 +77,7 @@ _plans_individual = {
                 'feature_theme': True,
                 'feature_icon': True,
                 'feature_advanced_library': True,
+                'payment_interval': 'month',
 
             },
 

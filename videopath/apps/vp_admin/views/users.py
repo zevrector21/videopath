@@ -10,6 +10,8 @@ from videopath.apps.videos.models import Video
 from videopath.apps.vp_admin.views import helpers
 from videopath.apps.vp_admin.views import viewsets
 
+from videopath.apps.payments.actions import start_trial
+
 @group_membership_required('insights')
 def listview(request):
     result = ""
@@ -85,8 +87,15 @@ def listview_sales(request):
 @group_membership_required('insights')
 def userview(request, username):
 
+
+    
+
     # load user
     user = User.objects.get(username=username)
+
+    # start trial if requested
+    if request.GET.get('trial', False):
+        start_trial.run(user)
 
     result = helpers.header("Info")
     result += "<a href='mailto:"+user.email+"'>" + user.email+ "</a> <br />"
@@ -99,9 +108,11 @@ def userview(request, username):
         pass
 
     try:
-        result += "Currently subscribed to " + user.subscription.plan
+        result += "Currently subscribed to " + user.subscription.plan + "<br />"
     except:
         pass
+
+    result += "<br /><a href ='{0}?trial=true'>Start Trial</a>".format(request.path)
 
     # billing info
     result += helpers.header("Billing Adress")

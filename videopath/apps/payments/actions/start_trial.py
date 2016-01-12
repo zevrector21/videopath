@@ -1,6 +1,6 @@
 FREE_PLAN = 'free-free'
 EVALUATION_PLAN = 'individual-agency-evaluation'
-EVALUATION_PERIOD_WEEKS = 4
+EVALUATION_PERIOD_WEEKS = 2
 
 from videopath.apps.payments.models import PendingSubscription
 from datetime import date, timedelta

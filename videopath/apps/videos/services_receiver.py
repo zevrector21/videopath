@@ -14,7 +14,7 @@ def jpg_transcode_error(message):
 	try:
 		source = Source.objects.get(key=key)
 		for v in source.get_attached_videos():
-			mailer.send_jpgs_trancode_failed_mail(v)
+			mailer.send_mail('jpg_transcode_failed', {'title':v.draft.title}, v.team.owner)
 	except Source.DoesNotExist:
 		pass 
 
@@ -36,7 +36,7 @@ def jpg_transcode_success(message):
 		# reexport all attached video objects
 		for v in source.get_attached_videos():
 			v.reexport()
-			mailer.send_jpgs_trancode_succeeded_mail(v)
+			mailer.send_mail('jpg_transcode_succeeded', {'title':v.draft.title}, v.team.owner)
 
 	except Source.DoesNotExist:
 		pass # do nothing..

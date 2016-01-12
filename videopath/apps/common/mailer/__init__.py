@@ -43,7 +43,9 @@ def prepare_mail(mailtype, variables, user = None):
 
     if user:
         fvariables.update({
-            'to': [{'email':user.email}]
+            'to': [{'email':user.email}],
+            'username':user.username,
+            'user': user
             })
 
 
@@ -64,7 +66,6 @@ def prepare_mail(mailtype, variables, user = None):
 def send_mail(mailtype, variables, user = None):
     conf = prepare_mail(mailtype, variables, user)
     mail_service.mandrill_send(conf)
-
 
 
 def send_agent_mail(user, subject, template_name, agent, tags):
@@ -203,65 +204,6 @@ def send_admin_mail(subject, text):
 def send_dev_mail():
     send_templated_mail()
 
-# signup etc.
-def send_signup_email(user):
-    send_templated_mail(
-        user,
-        "Hello from Videopath!",
-        "signup",
-        {},
-        ["signup"]
-    )
-
-
-# transcoding mails
-def send_transcode_succeeded_mail(source):
-    revision = source.revisions.first()
-    send_templated_mail(
-        revision.video.team.owner,
-        "\"" + revision.title + "\" is ready to edit!",
-        "transcode_complete",
-        {
-            "title": revision.title,
-            "video_id": revision.video.id
-        },
-        ["transcode_succeed"]
-    )
-
-
-def send_transcode_failed_mail(source):
-    revision = source.revisions.first()
-
-    send_templated_mail(
-        revision.video.team.owner,
-        "Error processing \"" + revision.title + "\"",
-        "transcode_error",
-        {
-            "title": revision.title
-        },
-        ["transcode_fail"]
-    )
-
-
-# quota
-def send_quota_warning_mail(user):
-    send_templated_mail(
-        user,
-        "You have almost used up your quota this month",
-        "quota_warning",
-        {},
-        ["quota"]
-    )
-
-
-def send_quota_exceeded_mail(user):
-    send_templated_mail(
-        user,
-        "You have exceeded your quota this month",
-        "quota_exceeded",
-        {},
-        ["quota"]
-    )
 
 # payment stuff
 def send_invoice_created_mail(user, invoice, link):
@@ -275,29 +217,6 @@ def send_invoice_created_mail(user, invoice, link):
             "currency": invoice.currency
         },
         ["payment"]
-    )
-
-# transcoding jpgs
-def send_jpgs_trancode_failed_mail(video):
-    send_templated_mail(
-        video.team.owner,
-        "iPhone Trancoding Failed",
-        "jpg_transcode_failed",
-        {
-            "title": video.draft.title,
-        },
-        ["jpg_transcoder"]
-    )
-
-def send_jpgs_trancode_succeeded_mail(video):
-    send_templated_mail(
-        video.team.owner,
-        "iPhone Trancoding Succeeded",
-        "jpg_transcode_succeeded",
-        {
-            "title": video.draft.title,
-        },
-        ["jpg_transcoder"]
     )
 
 # subscription emails
@@ -328,15 +247,3 @@ def send_subscription_will_change_mail(user, plan, switch_date):
     )
 
 
-# forgot pw
-def send_forgot_pw_mail(user, password):
-    send_templated_mail(
-        user,
-        "Videopath Password Reset",
-        "forgot_password",
-        {
-            "password": password
-        },
-        ["forgot_passord"],
-        force=True
-    )

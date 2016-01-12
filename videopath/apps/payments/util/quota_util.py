@@ -73,7 +73,7 @@ def _handle_user_warning(user):
         return
     user.quota_info.warning_sent = True
     user.quota_info.save()
-    mailer.send_quota_warning_mail(user)
+    mailer.send_mail('quota_warning', {}, user)
 
 
 #
@@ -84,5 +84,5 @@ def _handle_user_exceeded(user):
         return
     user.quota_info.quota_exceeded = True
     user.quota_info.save()
-    mailer.send_quota_exceeded_mail(user)
+    mailer.send_mail('quota_exceeded', {}, user)
 

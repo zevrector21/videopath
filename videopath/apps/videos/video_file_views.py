@@ -14,7 +14,7 @@ from rest_framework.response import Response
 
 from videopath.apps.videos.models import Video, Source
 from videopath.apps.files.util.aws_util import confirm_subscription
-from videopath.apps.common.mailer import send_transcode_failed_mail, send_transcode_succeeded_mail
+from videopath.apps.common.mailer import send_mail
 from videopath.apps.files.util.aws_util import get_upload_endpoint, verify_upload, start_transcoding_video
 
 
@@ -103,12 +103,15 @@ def process_notification(request, type):
         source.file_webm = key + '.webm'
         source.thumbnail_small = key + '/'+ thumbs_no + '.jpg'
         source.thumbnail_large = key + '/' + thumbs_no + '-hd.jpg'
-        send_transcode_succeeded_mail(source)
+        revision = source.revisions.first()
+        send_mail('transcode_complete', {'title': revision.title, 'video_id':revision.video.id}, revision.video.team.owner)
 
     elif state == 'ERROR':
         source.status = Source.STATUS_ERROR
         source.description = message['outputs'][0]['statusDetail']
-        send_transcode_failed_mail(source)
+        revision = source.revisions.first()
+        send_mail('transcode_error', {'title': revision.title, 'video_id':revision.video.id}, revision.video.team.owner)
+
 
     source.save()
 

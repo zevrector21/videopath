@@ -16,8 +16,6 @@ def view(request):
 	testconf = conf.test_data.get(mail, {})
 	mailconf = mailer.prepare_mail(mail, testconf, request.user)
 
-
-	print mailconf['to']
 	to = map(lambda x: x['email'], mailconf['to'])
 	to = reduce(lambda x, y: x + ',' + y, to)
 
@@ -37,10 +35,6 @@ def view(request):
 def mailview(request, mail, mailtype):
 
 	testconf = conf.test_data.get(mail, {})
-	testconf.update({
-			'username': request.user.username,
-			'user': request.user
-			})
 
 	mailconf = mailer.prepare_mail(mail, testconf, request.user)
 	message = mailconf['html'] 

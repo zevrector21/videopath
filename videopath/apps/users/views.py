@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.conf import settings
-from django.http import Http404
 
 from userena.models import UserenaSignup
 
@@ -20,7 +19,7 @@ from rest_framework.decorators import api_view
 from videopath.apps.common.services import service_provider
 from videopath.apps.users.models import AuthenticationToken, OneTimeAuthenticationToken, UserCampaignData, Team, TeamMember
 from videopath.apps.users.serializers import UserSerializer, TeamSerializer, TeamMemberSerializer
-from videopath.apps.common.mailer import send_signup_email, send_forgot_pw_mail
+from videopath.apps.common.mailer import  send_mail
 from videopath.apps.users.permissions import UserPermissions, TeamPermissions, TeamMemberPermissions, AuthenticatedPermission
 
 from videopath.apps.users.actions import login_user
@@ -82,7 +81,7 @@ def password_reset(request):
         string.ascii_uppercase + string.digits + string.ascii_lowercase) for x in range(12))
     user.set_password(password)
     user.save()
-    send_forgot_pw_mail(user, password)
+    send_mail('forgot_password', {'password':password}, user)
 
     return Response(status=201)
 
@@ -141,7 +140,7 @@ class UserViewSet(viewsets.ModelViewSet):
        
 
         # send a signup email
-        send_signup_email(user)
+        send_mail('signup', {}, user)
 
         # users geo record
         geo_service = service_provider.get_service("geo_ip")

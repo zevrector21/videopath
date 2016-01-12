@@ -210,12 +210,18 @@ def _send_email(user, action=None):
 
     if action == "plan_changed":
         plan = settings.PLANS.plan_for_id(user.subscription.plan)
-        mailer.send_subscription_changed_mail(
-            user, plan["name"], plan["payment_interval"], plan.get("default", False))
+        mailer.send_mail('subscribe_change', {
+                'plan':plan['name'], 
+                'interval': plan["payment_interval"], 
+                'is_free': plan.get("default", False)
+                }, user)
+
     elif action == "plan_will_change":
         try:
             plan = settings.PLANS.plan_for_id(user.pending_subscription.plan)
-            mailer.send_subscription_will_change_mail(
-                user, plan["name"], user.subscription.current_period_end)
+            mailer.send_mail('subscribe_will_change', {
+                    'plan': plan["name"],
+                    'switch_date':user.subscription.current_period_end
+                }, user)
         except PendingSubscription.DoesNotExist:
             pass

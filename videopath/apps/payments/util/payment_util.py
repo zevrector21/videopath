@@ -45,8 +45,8 @@ def create_payment(user, lines, currency):
         details=json.dumps(lines),
         provider=user.settings.payment_provider
     )
-
-    mailer.send_invoice_created_mail(payment.user, payment, payment_export_util.url_for_payment(payment))
+    url = payment_export_util.url_for_payment(payment)
+    mailer.send_mail('invoice_created', {'amount_due':amount_due, 'link': url, 'currency':currency}, payment.user)
     return payment
 
 #

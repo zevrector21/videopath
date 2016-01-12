@@ -28,23 +28,22 @@ def prepare_mail(mailtype, variables, user = None):
         'to': 'void@videopath.com'
     }
 
+    # default agent
+    fvariables.update(conf.agents.get('default'))
+
     agent = mailconf.get('agent', 'default')
 
     # set sender
     if agent == 'user' and user:
         fvariables.update({
-            "from_email": user.email,
-            "from_name": user.email,
             "replyto": user.email,
             })
-    else:
-        if agent == 'user':
-            agent = 'default'
+    elif agent != 'user':
         fvariables.update(conf.agents.get(agent))
 
     if user:
         fvariables.update({
-            'to': [user.email]
+            'to': [{'email':user.email}]
             })
 
 
@@ -62,6 +61,9 @@ def prepare_mail(mailtype, variables, user = None):
         'to': fvariables['to']
     }
 
+def send_mail(mailtype, variables, user = None):
+    conf = prepare_mail(mailtype, variables, user)
+    mail_service.mandrill_send(conf)
 
 
 
@@ -149,7 +151,7 @@ def send_share_mail(video, recipients, message):
 
 
 # regular system mails
-def send_mail(user, subject, message_plain, message_html, tags=[], force = False):
+def send_mail_old(user, subject, message_plain, message_html, tags=[], force = False):
 
     if not force and not user.settings.receive_system_emails:
         return
@@ -181,7 +183,7 @@ def send_templated_mail(user, subject, template_name, vars, tags, force = False)
     t = get_template("mails/" + template_name + ".txt")
     message_plain = t.render(c)
 
-    send_mail(user, subject, message_plain, message_html, tags, force)
+    send_mail_old(user, subject, message_plain, message_html, tags, force)
 
 
 ### admin & dev

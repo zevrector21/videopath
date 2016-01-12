@@ -16,6 +16,11 @@ def view(request):
 	testconf = conf.test_data.get(mail, {})
 	mailconf = mailer.prepare_mail(mail, testconf, request.user)
 
+
+	print mailconf['to']
+	to = map(lambda x: x['email'], mailconf['to'])
+	to = reduce(lambda x, y: x + ',' + y, to)
+
 	return SimpleTemplateResponse("qa/mails.html", {
 			'mails': conf.mails.keys(),
 			'mail': mail,
@@ -25,7 +30,7 @@ def view(request):
 			'from_name': mailconf['from_name'],
 			'from_email': mailconf['from_email'],
 			'replyto': mailconf['replyto'],
-			'to': ','.join(mailconf['to'])
+			'to': to
 	    })
 
 @staff_member_required

@@ -124,7 +124,7 @@ test_data = {
 		'title': "My Video!",
 		'link': "http://player.videopath.com/wmq2XEQj",
 		'thumb_url': 'https://dobvnaghfdgn1.cloudfront.net/WjI1mIEE3GbpTFCz2GfNCXKLvS4A92tx-hd',
-		'to': ['user1@example.com', 'user2@example.com', 'user3@example.com'],
+		'to': [{'email':'user1@example.com'}, {'email':'user2@example.com'}, {'email':'user3@example.com'}],
 	},
 
 

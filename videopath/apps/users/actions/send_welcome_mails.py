@@ -23,5 +23,5 @@ def run(max_mails=DEFAULT_MAX_MAILS):
 	    if count >= max_mails: break
 
 def _send_welcome_mail(user):
-    mailer.send_welcome_mail(user)
+    mailer.send_mail('welcome', {}, user)
     AutomatedMail.objects.create(mailtype=AutomatedMail.TYPE_WELCOME, user=user)

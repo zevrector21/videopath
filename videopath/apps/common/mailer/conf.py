@@ -37,6 +37,10 @@ mails = {
 		'subject': "Videopath billing"
 	},
 
+	'payment_failed': {
+		'subject': "Videopath payment failed"
+	},
+
 
 	#
 	# quota
@@ -143,7 +147,15 @@ test_data = {
 	},
 
 	'invoice_created': {
-		'subject': "Videopath billing"
+		"amount_due": 640000,
+        "link": 'http://player.videopath.com/wmq2XEQj',
+        "currency": "EUR"
+	},
+
+	'payment_failed': {
+		"amount_due": 640000,
+        "link": 'http://player.videopath.com/wmq2XEQj',
+        "currency": "EUR"
 	},
 
 
@@ -168,11 +180,7 @@ test_data = {
 		'title': "My Project"
 	},
 
-	'invoice_created': {
-		"amount_due": 640000,
-        "link": 'http://player.videopath.com/wmq2XEQj',
-        "currency": "EUR"
-	}
+	
 
 
 }

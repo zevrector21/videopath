@@ -30,7 +30,7 @@ def _send_three_weeks_follow_up(max_mails):
 	count = 0
 	for u in users:
 		# send
-		mailer.send_follow_up_three_weeks(u)
+		mailer.send_mail('follow_up_three_weeks', {}, u)
 		AutomatedMail.objects.create(user=u, mailtype = AutomatedMail.TYPE_FOLLOW_UP_21)
 		count += 1
 		if count > max_mails: break
@@ -49,7 +49,7 @@ def _send_six_weeks_follow_up(max_mails):
 		if u.automated_mails.filter(mailtype=AutomatedMail.TYPE_FOLLOW_UP_21, created__gte=three_weeks_ago).count():
 			continue
 		# send
-		mailer.send_follow_up_six_weeks(u)
+		mailer.send_mail('follow_up_six_weeks', {}, u)
 		AutomatedMail.objects.create(user=u, mailtype = AutomatedMail.TYPE_FOLLOW_UP_42)
 		count += 1
 		if count > max_mails: break

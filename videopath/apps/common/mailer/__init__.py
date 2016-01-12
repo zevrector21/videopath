@@ -16,7 +16,7 @@ agents = {
 }
 
 #
-# new mailer implementation
+# prepare mail variables
 #
 def prepare_mail(mailtype, variables, user = None):
 
@@ -63,141 +63,11 @@ def prepare_mail(mailtype, variables, user = None):
         'to': fvariables['to']
     }
 
+#
+# send a mail
+#
 def send_mail(mailtype, variables, user = None):
     conf = prepare_mail(mailtype, variables, user)
     mail_service.mandrill_send(conf)
-
-
-def send_agent_mail(user, subject, template_name, agent, tags):
-
-    if not user.settings.receive_retention_emails:
-        return
-
-    # get template
-    c = Context({})
-    t = get_template("mails/" + template_name + ".txt")
-    message = t.render(c)
-
-    agent = agents[agent]
-    message = {
-        'subject': subject,
-        'text': message,
-        'to': [{'email': user.email}],
-        'from_email': agent["email"],
-        'from_name': agent["name"],
-        'tags': tags,
-    }
-
-    mail_service.mandrill_send(message)
-
-
-def send_welcome_mail(user):
-    send_agent_mail(user, "How's Videopath working?", "welcome", "ree", ['follow up one week'])
-
-def send_follow_up_three_weeks(user):
-    send_agent_mail(user, "Get the most out of Videopath", "follow_up_three_weeks", "ree", ['follow up three weeks'])
-
-def send_follow_up_six_weeks(user):
-    send_agent_mail(user, "Make Videopath work for you!", "follow_up_six_weeks", "ree", ['follow up six weeks'])
-
-# share mail
-def send_share_mail(video, recipients, message):
-
-    try:
-        video.current_revision
-    except:
-        return
-
-    from videopath.apps.files.util.thumbnails_util import thumbnails_for_video
-
-    thumb_url = thumbnails_for_video(video)["large"]
-    if not thumb_url.startswith("http"):
-        thumb_url = "https:" + thumb_url
-
-    c = Context({
-        "thumb_url": thumb_url,
-        "user": video.team.owner,
-        "message": message,
-        "link": "http://player.videopath.com/" + video.key,
-        "description": video.current_revision.description,
-        "title": video.current_revision.title
-    })
-
-    # prepare html version
-    t = get_template("mails/share_video.html")
-    message_html = t.render(c)
-
-    # prepare plaintext version
-    t = get_template("mails/share_video.txt")
-    message_plain = t.render(c)
-
-    recipientsmap = []
-    for r in recipients:
-        recipientsmap.append({'email': r})
-
-    # send
-    message = {
-        'subject': video.team.owner.username + " shared a video with you!",
-        'text': message_plain,
-        'html': message_html,
-        'to': recipientsmap,
-        'from_email': 'no-reply@videopath.com',
-        'from_name': 'Videopath Team',
-        'tags': ['share'],
-        'replyto': video.team.owner.email
-    }
-    mail_service.mandrill_send(message)
-
-    return True
-
-
-# regular system mails
-def send_mail_old(user, subject, message_plain, message_html, tags=[], force = False):
-
-    if not force and not user.settings.receive_system_emails:
-        return
-
-    message = {
-        'subject': subject,
-        'text': message_plain,
-        'html': message_html,
-        'to': [{'email': user.email}],
-        'from_email': 'no-reply@videopath.com',
-        'from_name': 'Videopath Team',
-        'tags': tags,
-        'replyto': "support@videopath.com"
-    }
-    mail_service.mandrill_send(message)
-
-
-def send_templated_mail(user, subject, template_name, vars, tags, force = False):
-
-    vars["username"] = user.username
-
-    c = Context(vars)
-
-    # prepare html version
-    t = get_template("mails/" + template_name + ".html")
-    message_html = t.render(c)
-
-    # prepare plaintext version
-    t = get_template("mails/" + template_name + ".txt")
-    message_plain = t.render(c)
-
-    send_mail_old(user, subject, message_plain, message_html, tags, force)
-
-
-### admin & dev
-def send_admin_mail(subject, text):
-    from django.contrib.auth.models import User
-    users = User.objects.filter(is_superuser=True)
-    for user in users:
-        send_templated_mail(
-            user,
-            "Admin Alert: " + subject,
-            "admin",
-            {"text": text},
-            ["admin"]
-        )
 
 

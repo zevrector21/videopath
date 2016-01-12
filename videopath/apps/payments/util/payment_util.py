@@ -70,7 +70,7 @@ def process_payments():
                 payment_export_util.export_payment(payment)
             else:
                 # notify admin
-                mailer.send_admin_mail("Payment could not be processed", str(payment.number) + " " + payment.user.username)
+                mailer.send_mail('payment_failed', {'amount_due':payment.amount_due, 'currency':payment.currency}, payment.user)
 
             # save changes
             payment.charging_attempts += 1

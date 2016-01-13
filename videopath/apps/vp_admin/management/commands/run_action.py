@@ -15,7 +15,9 @@ class Command(BaseCommand):
 
     	path = 'videopath.apps.' + app_name + '.actions.' + action_name
     	action = importlib.import_module(path)
-    	action.run()
+
+        command_args = args[2:]
+    	action.run(*command_args)
 
     	
 

@@ -16,12 +16,7 @@ _plans_legacy = {
         'feature_theme': True,
 
         'variants': {
-            'yearly': {
-                'name': 'Basic Yearly',
-                'price_eur': 16500,
-                'payment_interval': 'year',
-                'value': 11,
-            },
+
             'monthly': {
                 'name': 'Basic Monthly',
                 'price_eur': 1500,
@@ -49,14 +44,6 @@ _plans_legacy = {
 
 
         'variants': {
-            'yearly': {
-                'name': 'Basic Yearly',
-                'price_eur': 80000,
-                'price_usd': 100000,
-                'price_gbp': 65000,
-                'payment_interval': 'year',
-                'value': 11,
-            },
             'monthly': {
                 'name': 'Basic Monthly',
                 'price_eur': 7900,

@@ -124,15 +124,6 @@ _plans_current = {
                 'value': 149,
                 'subscribable': False,
                 'feature_advanced_video_settings': True
-            },
-            'monthly-imbfitness': {
-                'name': 'Professional Plus Monthly (imbfitness)',
-                'price_eur': 10900,
-                'price_usd': 10900,
-                'price_gbp': 10900,
-                'payment_interval': 'month',
-                'value': 149,
-                'subscribable': False
             }
         }
     },

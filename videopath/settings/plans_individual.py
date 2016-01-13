@@ -20,15 +20,6 @@ _plans_individual = {
                 'payment_interval': 'month',
             },
 
-            'lonelycaballero': {
-                'name': 'Individual lonelycaballero',
-                'price_eur': 2500,
-                'payment_interval': 'month',
-
-                'feature_upload': True,
-                'feature_endscreen': True,
-            },
-
             'meisterclass': {
             
                 'name': 'Individual meisterclasss',
@@ -81,32 +72,6 @@ _plans_individual = {
 
             },
 
-            'nyia': {
-                'name': 'Nyia Personal Plan',
-                'feature_vimeo': True,
-                'feature_upload': True,
-                'feature_endscreen': True,
-                'feature_advanced_settings': True,
-                'feature_wistia': True,
-                'max_views_month': 500,
-                'price_eur': 2000,
-                'payment_interval': 'month',
-            },
-
-            'mediacrax': {
-                'name': 'Mediacrax Plan',
-                'feature_vimeo': True,
-                'feature_upload': True,
-                'feature_endscreen': True,
-                'feature_advanced_settings': True,
-                'feature_wistia': True,
-                'max_views_month': 50000,
-                'price_eur': 18900,
-                'payment_interval': 'month',
-                'feature_theme': True,
-                'feature_advanced_library': True,
-
-            },
 
             'staff': {
                 'name': 'videopath staff account',

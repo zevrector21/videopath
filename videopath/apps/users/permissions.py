@@ -20,8 +20,10 @@ class UserPermissions(permissions.BasePermission):
 
     	# require password when changing (putting) the object
     	if request.method in ["PUT", "PATCH"]:
-    		password = request.data.get("password", None)
-    		return request.user.check_password(password)
+            password = request.data.get("password", None)
+
+            print request.user
+            return request.user.check_password(password)
 
     	# safe methods are ok, as we've already made sure
     	# that the user may get this

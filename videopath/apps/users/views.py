@@ -100,6 +100,7 @@ class UserViewSet(viewsets.ModelViewSet):
         return User.objects.filter(pk=self.request.user.pk)
 
     def perform_update(self, serializer):
+
         instance = serializer.save()
 
         # if there is a new password,
@@ -108,6 +109,10 @@ class UserViewSet(viewsets.ModelViewSet):
         if new_password:
             instance.set_password(new_password)
             instance.save()
+        else:
+            instance.set_password(self.request.data.get("password"))
+            instance.save()
+
 
     #
     # Custom create method, pluggin in userena

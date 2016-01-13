@@ -7,7 +7,8 @@ if [ "$1" == "setup" ]; then
 	python manage.py check_permissions
 elif [ "$1" == "run" ]; then
     echo "Starting app"
-    gunicorn -b 127.0.0.1:5000  --access-logfile - --certfile certs/server.crt --keyfile certs/server.key --do-handshake-on-connect videopath.wsgi 
+    # gunicorn -b 127.0.0.1:5000  --access-logfile - --certfile certs/server.crt --keyfile certs/server.key --do-handshake-on-connect videopath.wsgi 
+    python manage.py runserver 5000
 elif [ "$1" == "run_worker" ]; then
     # start redis server in background
 	redis-server & 

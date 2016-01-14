@@ -189,7 +189,7 @@ def _import_brightcove(key):
     # const
     player_url = "http://players.brightcove.net/{0}/{1}_default/index.html?videoId={2}"
     api_url = 'https://edge.api.brightcove.com/playback/v1/accounts/{0}/videos/{1}'
-    re_policy_key = 'policyKey:"([A-Za-z0-9-_]*)"'
+    re_policy_key = 'policyKey:\\\\"([A-Za-z0-9-_]*)\\\\"'
 
     # extract base info
     account = key[0]
@@ -199,6 +199,7 @@ def _import_brightcove(key):
     # get policy key by parsing player result
     player_url = player_url.format(account, player, video_id)
     response = requests.get(player_url)
+    print response.text
     m = re.search(re_policy_key, response.text)
     policy_key = m.group(1)
 

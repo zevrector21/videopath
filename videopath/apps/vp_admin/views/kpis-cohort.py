@@ -12,7 +12,7 @@ from videopath.apps.videos.models import Video
 
 
 cohorte_selectors = {
-    "week": "%Y %V",
+    "week": "%G %V",
     "month": "%Y %m",
     "year": "%Y %m"
 }

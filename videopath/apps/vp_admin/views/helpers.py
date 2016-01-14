@@ -98,7 +98,7 @@ def printgraph(values, maxlength=30.0):
 #
 def dategraph(models, datefield, accumulate=False, aggregate_field = None):
 
-    timestring = "week %Y %V"
+    timestring = "week %G %V"
 
     # build dict
     values = {}

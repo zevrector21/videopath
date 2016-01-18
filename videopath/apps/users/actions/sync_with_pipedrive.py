@@ -17,7 +17,8 @@ def run():
 	
 	params = {
 		'api_token': PIPEDRIVE_API_KEY,
-		'sort': 'add_time DESC, email ASC'
+		'sort': 'add_time DESC, email ASC',
+		'limit': 1000
 	}
 	persons = requests.get(PIPEDRIVE_PERSON_URL, params=params).json()
 

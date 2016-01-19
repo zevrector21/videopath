@@ -50,7 +50,6 @@ class _Plans():
 	def __init__(self):
 
 		self.default_plan = None
-		self.coupons = _coupons_current;
 		self.all_plans = {}
 
 		# flatten plans,
@@ -80,19 +79,12 @@ class _Plans():
 		            self.default_plan = nplan
 
 
-		# merge plans into coupons
-		for ckey in self.coupons:
-		    c = self.coupons[ckey]
-		    self.coupons[ckey] = dict(self.all_plans[c["plan"]].items() + c.items())
-		    self.coupons[ckey]["id"] = ckey
-
 
     # list all available plans
 	def susbcribable_plans(self, name):
 
 		if name:
 			result = filter((lambda p: p["group"] == name and p["subscribable"] == True), self.all_plans.values())
-			result += filter(lambda c: c["id"] == name, self.coupons.values())
 		else:
 			result = filter((lambda p: p["subscribable"] == True), self.all_plans.values())
 		return result

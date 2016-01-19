@@ -6,51 +6,53 @@ _plans_individual = {
 
         'group': 'individual',
 
+        #
         # features
+        #
         'max_projects': 9999,
         'max_views_month': 10000000,
 
-        'value': 8000,
 
         'variants': {
 
             'individual': {
                 'name': 'Individual Plan',
                 'price_eur': 0,
-                'payment_interval': 'month',
+                'value': 8000
             },
 
             'meisterclass': {
-            
+
                 'name': 'Individual meisterclasss',
+
                 'price_eur': 3500,
                 'payment_interval': 'month',
+
                 'feature_upload': False,
-                'max_projects': 9999,
-
                 'feature_endscreen': True,
-                'value': 8001,
 
+                'value': 8001,
             },
 
             'escp': {
-            
                 'name': 'Individual escp',
+
                 'price_eur': 3500,
                 'payment_interval': 'month',
-                'max_projects': 9999,
 
                 'feature_endscreen': True,
                 'feature_vimeo': True,
                 'feature_upload': True,
                 'feature_theme': True,
                 'feature_advanced_library': True,
-                'value': 8002,
 
+                'value': 8002,
             },
 
             'sspss': {
+
                 'name': 'Individual SSPSS',
+
                 'feature_vimeo': True,
                 'feature_upload': True,
                 'feature_endscreen': True,
@@ -58,29 +60,31 @@ _plans_individual = {
                 'feature_wistia': True,
                 'feature_theme': True,
                 'feature_advanced_library': True,
+
                 'value': 8003,
             },
 
             'agency-evaluation': {
+
                 'name': 'Agency Evaluation',
+
                 'feature_vimeo': True,
                 'feature_upload': True,
                 'feature_endscreen': True,
                 'feature_advanced_settings': True,
                 'feature_wistia': True,
-                'max_views_month': 500,
                 'feature_theme': True,
                 'feature_icon': True,
                 'feature_advanced_library': True,
-                'payment_interval': 'month',
 
                 'value': 8004,
-
             },
 
 
             'staff': {
                 'name': 'videopath staff account',
+
+                # features
                 'feature_vimeo': True,
                 'feature_upload': True,
                 'feature_endscreen': True,

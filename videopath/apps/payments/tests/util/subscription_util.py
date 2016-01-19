@@ -20,10 +20,10 @@ class TestCase(BaseTestCase):
             self.user)["id"], "free-free")
 
         # test subscribing to free plan
-        subscription_util.subscribe_user(self.user, "201412-starter-monthly")
+        subscription_util.subscribe_user(self.user, "201509-starter-monthly")
 
         # we should now be subscribed to a plan
-        self.assertEqual(self.user.subscription.plan, "201412-starter-monthly")
+        self.assertEqual(self.user.subscription.plan, "201509-starter-monthly")
         self.assertEqual(self.user.subscription.currency, "EUR")
 
         # and there should be a payment
@@ -46,17 +46,17 @@ class TestCase(BaseTestCase):
         self.assertAlmostEqual((2.0 / 3.0) * 3500, amount, delta=100)
 
     def test_unsubscribe_from_plan(self):
-        subscription_util.subscribe_user(self.user, "201412-starter-monthly")
+        subscription_util.subscribe_user(self.user, "201509-starter-monthly")
         subscription_util.subscribe_user(self.user, "free-free")
         # current plan should still be starter, but this should switch to free
         # soon
         self.assertEqual(self.user.pending_subscription.plan, "free-free")
-        self.assertEqual(self.user.subscription.plan, "201412-starter-monthly")
+        self.assertEqual(self.user.subscription.plan, "201509-starter-monthly")
         self.assertEqual(self.user.payments.latest("number").amount_due, 7900)
 
     def test_upgrading_subscription(self):
 
-        subscription_util.subscribe_user(self.user, "201412-starter-monthly")
+        subscription_util.subscribe_user(self.user, "201509-starter-monthly")
         subscription_util.subscribe_user(self.user, "201412-pro-plus-monthly")
         self.assertEqual(self.user.subscription.plan, "201412-pro-plus-monthly")
 
@@ -67,7 +67,7 @@ class TestCase(BaseTestCase):
         startdate = date.today() - relativedelta(months=10)
         Subscription.objects.create(
             user=self.user,
-            plan="201412-starter-monthly",
+            plan="201509-starter-monthly",
             current_period_start=startdate,
             current_period_end=date.today(),
             price=3500,
@@ -100,7 +100,7 @@ class TestCase(BaseTestCase):
         self.user.settings.currency = "USD"
         self.user.settings.save()
 
-        subscription_util.subscribe_user(self.user, "201412-starter-monthly")
+        subscription_util.subscribe_user(self.user, "201509-starter-monthly")
 
         # subscription should be in USD
         self.assertEqual(self.user.subscription.currency, "USD")

@@ -11,30 +11,30 @@ class _Plans():
 		'default': False,
 		'subscribable': False,
 
-		# features for reference
+		#
+		# features
+		#
 		'feature_upload': False,
 		'feature_vimeo': False,
 		'feature_brightcove': False,
 		'feature_own_hosting': False,
         'feature_wistia': False,
         'feature_custom_hosting': False,
-
        	'feature_endscreen': False,
 		'feature_advanced_settings': False,
 		'feature_advanced_library': False,
 		'feature_email_collector': False,
         'feature_integrations': False,
-
         'feature_custom_analytics': False,
-
         'feature_teams': False, 
-
         'feature_theme': False,
         'feature_icon': False,
         'feature_advanced_video_settings': False, 
-
         'feature_dev': False,
 
+        #
+        #
+        #
 		'max_projects': 9999,
         'max_views_month': 2000,
 
@@ -82,12 +82,9 @@ class _Plans():
 
     # list all available plans
 	def susbcribable_plans(self, name):
-
 		if name:
-			result = filter((lambda p: p["group"] == name and p["subscribable"] == True), self.all_plans.values())
-		else:
-			result = filter((lambda p: p["subscribable"] == True), self.all_plans.values())
-		return result
+			return filter((lambda p: p["group"] == name and p["subscribable"] == True), self.all_plans.values())
+		return filter((lambda p: p["subscribable"] == True), self.all_plans.values())
 
 
 	# fetch a plan by id

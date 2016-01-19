@@ -10,7 +10,7 @@ _plans_individual = {
         'max_projects': 9999,
         'max_views_month': 10000000,
 
-        'value': 9999,
+        'value': 8000,
 
         'variants': {
 
@@ -29,6 +29,8 @@ _plans_individual = {
                 'max_projects': 9999,
 
                 'feature_endscreen': True,
+                'value': 8001,
+
             },
 
             'escp': {
@@ -43,7 +45,8 @@ _plans_individual = {
                 'feature_upload': True,
                 'feature_theme': True,
                 'feature_advanced_library': True,
-                
+                'value': 8002,
+
             },
 
             'sspss': {
@@ -54,7 +57,8 @@ _plans_individual = {
                 'feature_advanced_settings': True,
                 'feature_wistia': True,
                 'feature_theme': True,
-                'feature_advanced_library': True
+                'feature_advanced_library': True,
+                'value': 8003,
             },
 
             'agency-evaluation': {
@@ -69,6 +73,8 @@ _plans_individual = {
                 'feature_icon': True,
                 'feature_advanced_library': True,
                 'payment_interval': 'month',
+
+                'value': 8004,
 
             },
 
@@ -90,7 +96,9 @@ _plans_individual = {
                 'feature_advanced_video_settings': True, 
                 'feature_integrations': True,
                 'feature_email_collector': True,
-                'feature_teams': True
+                'feature_teams': True,
+
+                'value': 9999,
             }
 
         }

@@ -8,7 +8,7 @@ _plans_current = {
         'subscribable': True,
 
         'default': True,  # mark this as the default plan
-        'value': 1,
+        'value': 1000,
 
         # features
         'max_projects': 9999,
@@ -45,7 +45,7 @@ _plans_current = {
                 'price_usd': 100000,
                 'price_gbp': 65000,
                 'payment_interval': 'year',
-                'value': 11,
+                'value': 2003,
             },
             'monthly': {
                 'name': 'Basic Monthly',
@@ -53,7 +53,7 @@ _plans_current = {
                 'price_usd': 9900,
                 'price_gbp': 5900,
                 'payment_interval': 'month',
-                'value': 10,
+                'value': 2002,
             },
             'monthly-15': {
                 'name': 'Basic Monthly',
@@ -61,7 +61,7 @@ _plans_current = {
                 'price_usd': 2000,
                 'price_gbp': 1200,
                 'payment_interval': 'month',
-                'value': 9,
+                'value': 2001,
                 'subscribable': False
             }
         }
@@ -94,7 +94,7 @@ _plans_current = {
                 'price_usd': 425000,
                 'price_gbp': 280000,
                 'payment_interval': 'year',
-                'value': 151,
+                'value': 4003,
             },
             'monthly': {
                 'name': 'Professional Plus Monthly',
@@ -102,7 +102,7 @@ _plans_current = {
                 'price_usd': 39900,
                 'price_gbp': 29900,
                 'payment_interval': 'month',
-                'value': 150
+                'value': 4002
             },
             # individual monthly plans
             'monthly-25-jobviddy': {
@@ -111,7 +111,7 @@ _plans_current = {
                 'price_usd': 29900,
                 'price_gbp': 22500,
                 'payment_interval': 'month',
-                'value': 149,
+                'value': 4001,
                 'subscribable': False,
                 'feature_advanced_video_settings': True
             }
@@ -144,7 +144,7 @@ _plans_current = {
                 'price_usd': 139900,
                 'price_gbp': 104900,
                 'payment_interval': 'month',
-                'value': 200
+                'value': 6001
             },
             'yearly': {
                 'name': 'Enterprise Yearly',
@@ -152,7 +152,7 @@ _plans_current = {
                 'price_usd': 1500000,
                 'price_gbp': 1000000,
                 'payment_interval': 'year',
-                'value': 201
+                'value': 6002
             }
         }
     },

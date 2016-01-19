@@ -61,7 +61,7 @@ class CreditCardSerializer(serializers.Serializer):
 class PaymentDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = PaymentDetails
-        fields = ('name', 'street', 'city', 'post_code', 'country')
+        fields = ('name', 'street', 'city', 'post_code', 'country', 'vat_id')
 
 #
 # Payment / Invoices

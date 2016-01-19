@@ -30,6 +30,7 @@ class PaymentDetails(VideopathBaseModel):
     city = models.CharField(max_length=150)
     post_code = models.CharField(max_length=150)
     country = models.CharField(max_length=150, choices=COUNTRY_CHOICES)
+    vat_id = models.CharField(max_length=150, default='',null=True,blank=True)
 
     # user ref
     user = models.OneToOneField(User,

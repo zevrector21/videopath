@@ -104,16 +104,6 @@ _plans_current = {
                 'payment_interval': 'month',
                 'value': 150
             },
-            'monthly-25': {
-                'name': 'Professional Plus Monthly (25% Discount)',
-                'price_eur': 25900,
-                'price_usd': 29900,
-                'price_gbp': 22500,
-                'payment_interval': 'month',
-                'value': 149,
-                'subscribable': False
-            },
-
             # individual monthly plans
             'monthly-25-jobviddy': {
                 'name': 'Professional Plus Monthly (25% Discount) Andy',

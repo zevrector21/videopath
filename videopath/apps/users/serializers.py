@@ -28,7 +28,7 @@ class UserSerializer(serializers.ModelSerializer):
             plan = user.subscription.plan
         except:
             pass
-        return settings.PLANS.plan_for_id(plan)
+        return settings.PLANS.get(plan, settings.DEFAULT_PLAN)
 
     class Meta:
         model = User
@@ -58,7 +58,7 @@ class TeamSerializer(serializers.ModelSerializer):
             plan = team.owner.subscription.plan
         except:
             pass
-        return settings.PLANS.plan_for_id(plan)
+        return settings.PLANS.get(plan, settings.DEFAULT_PLAN)
 
     # todo
     def get_role(self, team):

@@ -86,12 +86,12 @@ class SubscriptionSerializer(serializers.ModelSerializer):
         return usage_util.plan_usage_current(subscription.user)
 
     def get_plan(self, subscription):
-        plan = settings.PLANS.plan_for_id(subscription.plan)
+        plan = settings.PLANS.get(subscription.plan, settings.DEFAULT_PLAN)
         return PlanSerializer(plan, currency = subscription.currency).data
 
     def get_pending_subscription(self, subscription):
         try:
-            plan = settings.PLANS.plan_for_id(subscription.user.pending_subscription.plan)
+            plan = settings.PLANS.get(subscription.user.pending_subscription.plan, settings.DEFAULT_PLAN)
             return PlanSerializer(plan, currency = subscription.currency).data
         except PendingSubscription.DoesNotExist:
             return False

@@ -60,7 +60,7 @@ def _get_quota_info():
     for row in qresult:
         result.append({
             "user_id": row["video__team__owner__pk"],
-            "plan": settings.PLANS.plan_for_id(row["video__team__owner__subscription__plan"]),
+            "plan": settings.PLANS.get(row["video__team__owner__subscription__plan"], settings.DEFAULT_PLAN),
             "views": row["views"],
         })
     return result

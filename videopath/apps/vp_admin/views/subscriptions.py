@@ -14,7 +14,7 @@ def view(request):
     # collect subscriptions
     result_array = []
     for sub in Subscription.objects.all().order_by("plan"):
-        if sub.plan != settings.PLANS.default_plan["id"] and sub.user.username not in helpers.company_accounts:
+        if sub.plan != settings.DEFAULT_PLAN["id"] and sub.user.username not in helpers.company_accounts:
             result_array.append([
                     helpers.userlink(sub.user),
                     sub.plan,

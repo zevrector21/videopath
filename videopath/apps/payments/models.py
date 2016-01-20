@@ -98,8 +98,6 @@ class Payment(VideopathBaseModel):
 #
 # Subscriptions, which plan the user is currently subscribed to
 #
-SUBSCRIPTION_CHOICES = settings.PLANS.model_subscription_choices()
-
 class Subscription(VideopathBaseModel):
 
     MANAGER_ADMIN = "admin"
@@ -111,7 +109,7 @@ class Subscription(VideopathBaseModel):
     )
 
     plan = models.CharField(
-        max_length=150, choices=SUBSCRIPTION_CHOICES, default=settings.PLANS.default_plan["id"])
+        max_length=150, choices=settings.PLANS_CHOICES, default=settings.DEFAULT_PLAN["id"])
     active = models.BooleanField(default=True)
 
     # meta
@@ -143,7 +141,7 @@ class Subscription(VideopathBaseModel):
 #
 class PendingSubscription(VideopathBaseModel):
 
-    plan = models.CharField(max_length=150, choices=SUBSCRIPTION_CHOICES)
+    plan = models.CharField(max_length=150, choices=settings.PLANS_CHOICES)
 
     user = models.OneToOneField(User,
                                 primary_key=True,

@@ -15,7 +15,7 @@ from videopath.apps.payments.models import Subscription, PendingSubscription
 def subscribe_user(user, plan_id=None, coupon_id=None):
 
     # if plan is not valid, return false
-    if settings.PLANS.plan_for_id(plan_id, False) is None:
+    if settings.PLANS.get(plan_id, None) is None:
         return False, "Please specify a valid plan id."
 
     # get current state of users subscription
@@ -25,8 +25,8 @@ def subscribe_user(user, plan_id=None, coupon_id=None):
         return False, "Operation can't be performed at this time"
 
     # get plan info
-    current_plan = settings.PLANS.plan_for_id(subscription.plan)
-    target_plan = settings.PLANS.plan_for_id(plan_id)
+    current_plan = settings.PLANS.get(subscription.plan, settings.DEFAULT_PLAN)
+    target_plan = settings.PLANS.get(plan_id,settings.DEFAULT_PLAN)
 
     # always clear pending subscription
     try:
@@ -57,8 +57,7 @@ def subscription_for_user(user):
     try:
         return user.subscription
     except Subscription.DoesNotExist:
-        default_plan_id = settings.PLANS.default_plan["id"]
-        subscribe_user(user, plan_id=default_plan_id)
+        subscribe_user(user, plan_id=settings.DEFAULT_PLAN["id"])
         return Subscription.objects.get(user=user)
 
 
@@ -67,8 +66,7 @@ def subscription_for_user(user):
 # Unsubcribe the user
 #
 def unsubscribe_user(user):
-    default_plan_id = settings.PLANS.default_plan["id"]
-    return subscribe_user(user, plan_id=default_plan_id)
+    return subscribe_user(user, plan_id=settings.DEFAULT_PLAN["id"])
 
 # 
 # Get the plan the user is subscriped to
@@ -76,10 +74,10 @@ def unsubscribe_user(user):
 def get_currently_active_plan_for_user(user):
     try:
         if user.subscription.active:
-            return settings.PLANS.plan_for_id(user.subscription.plan)
+            return settings.PLANS.get(user.subscription.plan, settings.DEFAULT_PLAN)
     except Subscription.DoesNotExist:
         pass
-    return settings.PLANS.default_plan
+    return settings.DEFAULT_PLAN
 
 #
 # goes through all subs, and checks if changes need to be made
@@ -100,7 +98,7 @@ def _get_remaining_credit_of_current_plan(user):
         period_start = user.subscription.current_period_start
         period_end = user.subscription.current_period_end
         today = date.today()
-        current_plan = settings.PLANS.plan_for_id(user.subscription.plan)
+        current_plan = settings.PLANS.get(user.subscription.plan, settings.DEFAULT_PLAN)
 
         # calculate amount
         base = (period_end - period_start).days
@@ -125,7 +123,7 @@ def _get_remaining_credit_of_current_plan(user):
 def _set_subscription_to_plan(user, plan_id):
 
     # subscribe to the new pla
-    target_plan = settings.PLANS.plan_for_id(plan_id)
+    target_plan = settings.PLANS.get(plan_id, settings.DEFAULT_PLAN)
     if target_plan["payment_interval"] == 'month':
         interval = relativedelta(months=1)
     elif target_plan["payment_interval"] == 'year':
@@ -167,7 +165,7 @@ def _renew_subscription(user):
 # switch the plan and create a new payment from it
 #
 def _update_plan_and_create_payment(user, plan_id=None):
-    current_plan = settings.PLANS.plan_for_id(user.subscription.plan)
+    current_plan = settings.PLANS.get(user.subscription.plan, settings.DEFAULT_PLAN)
     if not plan_id:
         plan_id = current_plan
     lines = []
@@ -209,7 +207,7 @@ def _update_subscription_for_user(user):
 def _send_email(user, action=None):
 
     if action == "plan_changed":
-        plan = settings.PLANS.plan_for_id(user.subscription.plan)
+        plan = settings.PLANS.get(user.subscription.plan, settings.DEFAULT_PLAN)
         mailer.send_mail('subscribe_change', {
                 'plan':plan['name'], 
                 'interval': plan["payment_interval"], 
@@ -218,7 +216,7 @@ def _send_email(user, action=None):
 
     elif action == "plan_will_change":
         try:
-            plan = settings.PLANS.plan_for_id(user.pending_subscription.plan)
+            plan = settings.PLANS.get(user.pending_subscription.plan, settings.DEFAULT_PLAN)
             mailer.send_mail('subscribe_will_change', {
                     'plan': plan["name"],
                     'switch_date':user.subscription.current_period_end

@@ -95,7 +95,8 @@ class _Plans():
 
 	# get a list of subscription choices for database
 	def model_subscription_choices(self):
-	    sorted_plans = self.all_plans.values().sort(key= lambda plan: plan["value"])
+	    sorted_plans = self.all_plans.values()
+	    sorted_plans.sort(key= lambda plan: plan["value"])
 	    choices = []
 	    for plan in sorted_plans:
 	        name = "{0:04d} {1} ({2})".format(plan["value"], plan["name"], plan["id"])

@@ -177,7 +177,8 @@ PLANS = {
                 'price_gbp': 22500,
                 'payment_interval': 'month',
                 'value': 4001,
-                'feature_advanced_video_settings': True
+                'feature_advanced_video_settings': True,
+                'subscribable': False
             },
 
             'monthly-20-discount': {

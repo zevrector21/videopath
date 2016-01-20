@@ -29,7 +29,6 @@ def view(request):
 
     # collect Plans
     def renderplan( plan):
-
         features = ""
         for key, value in plan.iteritems():
             if "feature" in key:
@@ -43,15 +42,18 @@ def view(request):
         result = [ "<b>" + plan["name"] + "</b><br />" + plan["id"], 
         humanize.intcomma(plan["price_usd"]/100), 
         humanize.intcomma(plan["price_eur"]/100), 
-        humanize.intcomma(plan["max_views_month"]), 
+        humanize.intcomma(plan["price_gbp"]/100),         
+        plan['payment_interval'],
         features,
-        "x" if plan["subscribable"] else ""]
+        "x" if plan["subscribable"] else "",
+        "x" if plan["listable"] else "",
+        Subscription.objects.filter(plan=plan['id']).count()]
         return result
 
     array = []    
-    for plan_id, plan in sorted(settings.PLANS.all_plans.iteritems()):
+    for plan in settings.PLANS_SORTED:
         array.append(renderplan(plan))
-    result += helpers.table(array, ["Name", "USD", "EUR", "Views", "Features", "Subs."])
+    result += helpers.table(array, ["Name", "USD", "EUR", "GBP", "Interval", "Features", "Subs.", "Listable", "No. Users"])
 
 
     return SimpleTemplateResponse("insights/base.html", {

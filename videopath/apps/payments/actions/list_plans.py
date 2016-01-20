@@ -7,7 +7,7 @@ def run():
 	usage_map = {}
 
 
-	for p in settings.PLANS.all_plans:
+	for p in settings.PLANS:
 		usage_map[p] = 0
 
 

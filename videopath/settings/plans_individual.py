@@ -6,12 +6,6 @@ _plans_individual = {
 
         'group': 'individual',
 
-        #
-        # features
-        #
-        'max_projects': 9999,
-        'max_views_month': 10000000,
-
 
         'variants': {
 

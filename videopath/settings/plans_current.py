@@ -8,12 +8,6 @@ _plans_current = {
         'subscribable': True,
 
         'default': True,  # mark this as the default plan
-
-        #
-        # features
-        #
-        'max_projects': 9999,
-        'max_views_month': 2000,
         
         #
         # variants
@@ -36,14 +30,13 @@ _plans_current = {
 
         'group': 'starter',
         'subscribable': True,
-        'feature_advanced_library': True,
+        
 
         #
         # features
         #
-        'max_projects': 9999,
-        'max_views_month': 10000000,
         'feature_endscreen': True,
+        'feature_advanced_library': True,
 
         #
         # variants
@@ -91,8 +84,6 @@ _plans_current = {
         #
         # features
         #
-        'max_projects': 9999,
-        'max_views_month': 10000000,
         'feature_endscreen': True,
         'feature_advanced_settings': True,
         'feature_vimeo': True,
@@ -148,8 +139,6 @@ _plans_current = {
         #
         # features
         #
-        'max_projects': 9999,
-        'max_views_month': 10000000,
         'feature_endscreen': True,
         'feature_advanced_settings': True,
         'feature_vimeo': True,

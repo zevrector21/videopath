@@ -30,7 +30,7 @@ PLAN_DEFAULTS = {
 	'subscribable': False,
 	'group-alias': [],
 	'max_projects': 9999,
-    'max_views_month': 2000,
+    'max_views_month': 10000000,
     'name': 'None',
     'price_eur': 0,
     'price_usd': 0,

@@ -35,13 +35,6 @@ class PlanSerializer(serializers.Serializer):
     max_views_month = serializers.IntegerField()
     max_projects = serializers.IntegerField()
 
-    # features
-    feature_upload = serializers.BooleanField()
-    feature_endscreen = serializers.BooleanField()
-    feature_vimeo = serializers.BooleanField()
-    feature_dev = serializers.BooleanField()
-    feature_advanced_settings = serializers.BooleanField()
-
     def __init__(self, *args, **kwargs):
         self.user_currency = kwargs.pop('currency', settings.CURRENCY_EUR)
         super(PlanSerializer, self).__init__(*args, **kwargs)

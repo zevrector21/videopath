@@ -18,6 +18,7 @@ def check_quotas():
     info = _get_quota_info()
 
     for entry in info:
+
         percent_used = float(
             entry["views"]) / float(entry["plan"]["max_views_month"])
         user = User.objects.get(pk=entry["user_id"])

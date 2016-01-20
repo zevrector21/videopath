@@ -32,7 +32,7 @@ class TestCase(BaseTestCase):
     def test_check_quotas(self):
 
         # simulate 1900 plays
-        ad = DailyAnalyticsData.objects.create(video=self.video, date=date.today(), plays_all=1900)
+        ad = DailyAnalyticsData.objects.create(video=self.video, date=date.today(), plays_all=9500000)
         quota_util.check_quotas()
 
         #assert that only the warning is true
@@ -40,8 +40,8 @@ class TestCase(BaseTestCase):
         self.assertTrue(info.warning_sent)
         self.assertFalse(info.quota_exceeded)
 
-        # simulate 5500 plays
-        ad.plays_all = 5500
+        # simulate 20mio plays
+        ad.plays_all = 20000000
         ad.save()
 
         # see if handle user exceeded is called

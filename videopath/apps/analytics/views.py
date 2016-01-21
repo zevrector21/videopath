@@ -36,5 +36,5 @@ class DailyAnalyticsDataViewSet(viewsets.ReadOnlyModelViewSet):
         vid = m.group(1)
         start = date.fromtimestamp(int(self.request.GET.get("start", 0)))
         end = date.fromtimestamp(int(self.request.GET.get("end", 0)))
-        return DailyAnalyticsData.objects.filter_for_user(self.request.user).filter(video__id=vid, date__range=[start, end]).distinct()
+        return DailyAnalyticsData.objects.filter_for_user(self.request.user).filter(video__id=vid, date__range=[start, end]).distinct().order_by('date')
 

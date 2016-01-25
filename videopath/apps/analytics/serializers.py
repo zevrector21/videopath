@@ -16,7 +16,7 @@ class BaseAnalyticsDataSerializer(serializers.ModelSerializer):
     def get_percent_interacting(self, data):
         if data.plays_all <= 0:
             return 0
-        return min(100, (float(data.overlays_opened_unique / float(data.plays_all)) ))
+        return min(100, (float(data.overlays_opened_unique / float(data.plays_all)) * 100))
 
     def get_clicks_per_user(self, data):
         if data.plays_all <= 0:
@@ -26,7 +26,7 @@ class BaseAnalyticsDataSerializer(serializers.ModelSerializer):
     def get_percent_completing(self, data):
         if data.plays_all <= 0:
             return 0
-        return (float(data.video_completed) / float(data.plays_all))
+        return min(100, (float(data.video_completed / float(data.plays_all)) * 100))
 
     def get_popular_markers(self, data):
         return json.loads(data.popular_markers)

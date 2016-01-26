@@ -394,6 +394,8 @@ PLANS = {
                 'feature_integrations': True,
                 'feature_email_collector': True,
                 'feature_teams': True,
+                'feature_advanced_analytics': True,
+
 
                 'value': 9999,
             }

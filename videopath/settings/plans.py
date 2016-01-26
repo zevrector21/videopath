@@ -19,7 +19,8 @@ PLAN_FEATURES = [
     'feature_theme',
     'feature_icon',
     'feature_advanced_video_settings', 
-    'feature_dev'
+    'feature_dev',
+    'feature_advanced_analytics'
 ]
 
 PLAN_DEFAULTS = {
@@ -84,6 +85,7 @@ PLANS = {
         #
         'feature_endscreen': True,
         'feature_advanced_library': True,
+        'feature_advanced_analytics': True,
 
         #
         # variants
@@ -164,6 +166,7 @@ PLANS = {
         'feature_theme': True,
         'feature_icon': True,
         'feature_advanced_library': True,
+        'feature_advanced_analytics': True,
 
         #
         # variants
@@ -247,6 +250,7 @@ PLANS = {
         'feature_theme': True,
         'feature_icon': True,
         'feature_advanced_library': True,
+        'feature_advanced_analytics': True,
 
         #
         # variants
@@ -364,6 +368,7 @@ PLANS = {
                 'feature_theme': True,
                 'feature_icon': True,
                 'feature_advanced_library': True,
+                'feature_advanced_analytics': True,
 
                 'value': 8004,
             },

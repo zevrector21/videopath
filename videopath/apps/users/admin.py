@@ -26,7 +26,7 @@ class UserAdmin(_UserAdmin):
 
 class TeamAdmin(admin.ModelAdmin):
     list_display = ('__unicode__', 'owner', 'is_default_team_of_user')
-    search_fields = ['owner__username', 'owner__email']
+    search_fields = ['owner__username', 'owner__email', 'name']
 
 class TeamMemberAdmin(admin.ModelAdmin):
     list_display = ('user', 'team', 'role')

@@ -174,7 +174,7 @@ PLANS = {
         'variants': {
 
             'monthly-25-jobviddy': {
-                'name': 'Professional Plus Monthly (25% Discount) Andy',
+                'name': 'Professional Monthly (25% Discount) Andy',
                 'price_eur': 25900,
                 'price_usd': 29900,
                 'price_gbp': 22500,
@@ -185,7 +185,7 @@ PLANS = {
             },
 
             'monthly-20-discount': {
-                'name': 'Professional Plus Monthly (20% Partners Discount)',
+                'name': 'Professional Monthly (20% Partners Discount)',
                 'coupons': ['partners-pro-plus'],
                 'price_eur': 27900,
                 'price_usd': 31900,
@@ -196,7 +196,7 @@ PLANS = {
             },
 
             'monthly': {
-                'name': 'Professional Plus Monthly',
+                'name': 'Professional Monthly',
                 'price_eur': 34900,
                 'price_usd': 39900,
                 'price_gbp': 29900,
@@ -206,7 +206,7 @@ PLANS = {
             },
 
             'yearly-20-discount': {
-                'name': 'Professional Plus Yearly (20% Partners Discount)',
+                'name': 'Professional Yearly (20% Partners Discount)',
                 'coupons': ['partners-pro-plus'],
                 'price_eur': 280000,
                 'price_usd': 340000,
@@ -217,7 +217,7 @@ PLANS = {
             },
 
             'yearly': {
-                'name': 'Professional Plus Yearly',
+                'name': 'Professional Yearly',
                 'price_eur': 350000,
                 'price_usd': 425000,
                 'price_gbp': 280000,

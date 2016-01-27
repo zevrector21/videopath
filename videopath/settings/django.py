@@ -110,7 +110,7 @@ GRAPPELLI_AUTOCOMPLETE_SEARCH_FIELDS = {
         "user": ("email__icontains", "username__icontains",)
     },
     "users": {
-        "team": ("owner__email__icontains", "owner__username__icontains",)
+        "team": ("owner__email__icontains", "owner__username__icontains", "name__icontains")
     }
 }
 

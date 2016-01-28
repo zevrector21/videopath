@@ -24,7 +24,8 @@ def create_default_team(sender, instance=None, **kwargs):
 
 @receiver(hourly_jobs)
 def run_send_welcome_mails(sender, **kwargs):
-    send_welcome_mails.run()
+    # send_welcome_mails.run()
+    pass
 
 @receiver(hourly_jobs)
 def run_expire_authentication_tokens(sender, **kwargs):

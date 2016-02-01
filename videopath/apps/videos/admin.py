@@ -219,8 +219,10 @@ admin.site.register(PlayerAppearance, PlayerAppearanceAdmin)
 # Video Source
 #
 class SourceAdmin(admin.ModelAdmin):
-    list_display = ( 'service', 'key')
+
+    list_display = ( 'service', 'key', 'jpg_sequence_support', 'sprite_support')
     search_fields = ['key', 'revisions__video__key', 'revisions__video__team__owner__username']
+    list_filter = ('service', 'jpg_sequence_support', 'sprite_support')
 
     fieldsets = (
         ('General', {

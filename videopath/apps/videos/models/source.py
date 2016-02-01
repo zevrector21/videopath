@@ -78,6 +78,9 @@ class Source(VideopathBaseModel):
     jpg_sequence_support = models.BooleanField(default=False)
     jpg_sequence_length = models.IntegerField(default=0)
 
+    sprite_support = models.BooleanField(default=False)
+    sprite_length = models.IntegerField(default=0)
+
     #
     # get a list of all video objects associated with this source
     #

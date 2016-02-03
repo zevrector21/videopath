@@ -355,7 +355,7 @@ def import_source(request, key=None):
         pass
 
     # hack to enable jpg transcoding for certain user accounts
-    if request.user.username in ['marketing', 'product_demo']:
+    if video.team.owner.username == 'videopath':
         video.export_jpg_sequence()
 
     return Response()

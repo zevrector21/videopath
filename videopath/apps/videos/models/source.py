@@ -94,7 +94,7 @@ class Source(VideopathBaseModel):
     #
     def export_jpg_sequence(self):
 
-        if self.jpg_sequence_support:
+        if self.sprite_support:
             return  False, "Project is already transcoded for iPhone."
         if self.duration > 600:
             return False, "Currently only projects shorter than 10 Minutes can be transcoded."

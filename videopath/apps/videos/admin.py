@@ -224,6 +224,13 @@ class SourceAdmin(admin.ModelAdmin):
     search_fields = ['key', 'revisions__video__key', 'revisions__video__team__owner__username']
     list_filter = ('service', 'jpg_sequence_support', 'sprite_support')
 
+    actions=["make_export_jpgs",]
+
+    def make_export_jpgs(self, request,queryset):
+        for source in queryset.all():
+            source.export_jpg_sequence()
+    make_export_jpgs.short_description = "Export JPGs"
+
     fieldsets = (
         ('General', {
             'fields': ('key', 'status')

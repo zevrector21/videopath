@@ -98,13 +98,13 @@ class TestCase(BaseTestCase):
 
         # already transcoded
         s.service=Source.SERVICE_YOUTUBE
-        s.jpg_sequence_support = True
+        s.sprite_support = True
         s.save()
         response = self.client_user1.put(JPG_URL.format(v.draft.pk))
         self.assertEqual(response.status_code, 400)
 
         # too long
-        s.jpg_sequence_support = False
+        s.sprite_support = False
         s.duration=10000
         s.save()
         response = self.client_user1.put(JPG_URL.format(v.draft.pk))

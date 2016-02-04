@@ -5,8 +5,13 @@ IDS = ["WDsLAmcYdZMlGdKh","FqCE0143","mxGDfzvy","EEpp6gdK","NH7yAjsP","5mFGKnft"
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
+    	print 'running'
        	for key in IDS:
-       		video = Video.objects.get(key=key)
-       		video.export_jpg_sequence()
+       		print 'trying ' + key
+       		try:
+       			video = Video.objects.get(key=key)
+       			video.export_jpg_sequence()
+       		except:
+       			print 'skipping ' + key
 
 	

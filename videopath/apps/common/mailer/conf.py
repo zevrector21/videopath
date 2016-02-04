@@ -62,7 +62,7 @@ mails = {
 
 
 	'jpg_transcode_succeeded': {
-		'subject': 'iPhone Trancoding Succeeded'
+		'subject': 'iPhone Transcoding Successful'
 	},
 
 	'transcode_complete': {

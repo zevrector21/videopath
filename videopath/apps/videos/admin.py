@@ -245,7 +245,7 @@ class SourceAdmin(admin.ModelAdmin):
             'fields': ('file_mp4', 'file_webm', 'thumbnail_large', 'thumbnail_small')
         }),
         ('JPG Support', {
-            'fields': ('jpg_sequence_support', 'jpg_sequence_length')
+            'fields': ('jpg_sequence_support', 'jpg_sequence_length', 'sprite_support', 'sprite_length')
         }),
         ('Other', {
             'fields': ('description','youtube_allow_clickthrough')

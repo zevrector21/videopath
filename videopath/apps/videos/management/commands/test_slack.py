@@ -10,7 +10,7 @@ class Command(BaseCommand):
         source.sprite_support = False
         source.save()
 
-        return 
+        continue 
        	for key in IDS:
        		print 'trying ' + key
        		try:

@@ -12,7 +12,7 @@ class TestCase(EndpointsBaseTestCase):
 
         # should show a list of integrations
         response = self.client_user1.get_json(INTEGRATION_URL.format(self.user1.default_team.pk))
-        self.assertTrue(response.data.get('count') >= 1)
+        self.assertTrue(len(response.data) >= 1)
         self.assertEqual(response.status_code, 200)
 
     def test_manipulate_integration(self):

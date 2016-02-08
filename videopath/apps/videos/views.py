@@ -134,7 +134,7 @@ def video_publish(request, vid=None):
 @api_view(['POST'])
 def send_share_mail(request, vid=None):
     video = Video.objects.get_video_for_user(request.user,pk=vid)
-    success, detail = share_mail_util.send_share_mail(video, request.DATA.get("recipients", ""), request.DATA.get("message",""))
+    success, detail = share_mail_util.send_share_mail(video, request.data.get("recipients", ""), request.data.get("message",""))
 
     if not success:
         raise ParseError(detail=detail)
@@ -168,7 +168,7 @@ class VideoViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         instance = serializer.save()
 
-        revert_revision = self.request.DATA.get("revert_revision", None)
+        revert_revision = self.request.data.get("revert_revision", None)
         if revert_revision:
             try:
                 revision = VideoRevision.objects.get(pk = revert_revision, video=instance)
@@ -180,7 +180,7 @@ class VideoViewSet(viewsets.ModelViewSet):
 
 
     def perform_create(self, serializer):
-        team_id = self.request.DATA.get('team')
+        team_id = self.request.data.get('team')
         team = None
         if team_id:
             try:
@@ -195,7 +195,7 @@ class VideoViewSet(viewsets.ModelViewSet):
         #
         # see if this video should be a copy of an existing one
         #
-        copy_source=self.request.DATA.get("copy_source", None)
+        copy_source=self.request.data.get("copy_source", None)
         if copy_source:
             revision = None
             try:
@@ -221,7 +221,7 @@ class VideoViewSet(viewsets.ModelViewSet):
         # if the demo attribute is present in the request
         # import demo video for this video
         try:
-            demo = self.request.DATA.get("demo_project", None)
+            demo = self.request.data.get("demo_project", None)
             if demo:
                 from videopath.apps.videos.models import Source
                 thumb = 'https://i.ytimg.com/vi/CovpUAzI6jY/maxresdefault.jpg'

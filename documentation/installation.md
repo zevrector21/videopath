@@ -60,6 +60,13 @@ Start it with ``source dir-to-your-venv/bin/activate``.
 	# or use the heroku dev server
 	foreman start
 
+#### Pip Help
+Install cryptography on mac:
+run this before installing with pip
+	brew install openssl
+	export LDFLAGS=-L/usr/local/opt/openssl/lib
+	export CPPFLAGS=-I/usr/local/opt/openssl/include
+
 #### Heroku
 
 	# Create app

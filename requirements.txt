@@ -35,6 +35,7 @@ pygeoip==0.3.2
 cryptography==0.9
 pycrypto==2.6
 python-dateutil==2.4.2
+slacker=0.9.0
 
 # used but can be replaced
 simplejson==3.7.2

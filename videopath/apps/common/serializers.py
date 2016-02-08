@@ -16,9 +16,7 @@ def get_paginated_serializer(objects, serializer_class, serializer_args = {}, pa
 		"""
 		results_field = 'results'
 		count = serializers.ReadOnlyField(source='paginator.count')
-		next = pagination.NextPageField(source='*')
-		previous = pagination.PreviousPageField(source='*')
-
+		
 		def __init__(self, *args, **kwargs):
 		    """
 		    Override init to add in the object serializer field on-the-fly.

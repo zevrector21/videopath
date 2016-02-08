@@ -3,9 +3,16 @@ import re
 from datetime import date 
 
 from rest_framework import viewsets
+from rest_framework.pagination import PageNumberPagination
 
 from videopath.apps.analytics.models import TotalAnalyticsData, DailyAnalyticsData
 from videopath.apps.analytics.serializers import TotalAnalyticsDataSerializer, DailyAnalyticsDataSerializer
+
+
+class LargeResultsSetPagination(PageNumberPagination):
+    page_size = 365
+    page_size_query_param = 'page_size'
+    max_page_size = 365
 
 class TotalAnalyticsDataViewSet(viewsets.ReadOnlyModelViewSet):
 
@@ -25,7 +32,7 @@ class DailyAnalyticsDataViewSet(viewsets.ReadOnlyModelViewSet):
 
     model = DailyAnalyticsData
     serializer_class = DailyAnalyticsDataSerializer
-    paginate_by = 365
+    pagination_class = LargeResultsSetPagination
 
     # Can see only your videos
     def get_queryset(self, vid=None):

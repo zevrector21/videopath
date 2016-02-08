@@ -67,7 +67,7 @@ def _import_youtube(key):
 
     try:
         response = urllib2.urlopen(v3_api_url)
-        result_json = json.loads(response)
+        result_json = json.load(response)
         item = result_json["items"][0]
     except:
         _raise()
@@ -103,7 +103,7 @@ def _import_youtube(key):
     # try hitting the oembed url and getting more correct video dimensions
     try:
         response = urllib2.urlopen(oembed_url)
-        result_json = json.loads(response)
+        result_json = json.load(response)
         aspect = float(result_json['width']) / float(result_json['height'])
         print aspect
     except:
@@ -144,7 +144,7 @@ def _import_vimeo(key):
     vimeo_url = "http://vimeo.com/api/v2/video/_KEY_.json".replace('_KEY_', key)
     try:
         response = urllib2.urlopen(vimeo_url)
-        j = json.loads(response)
+        j = json.load(response)
         item = j[0]
         return {
             "description":item["title"],

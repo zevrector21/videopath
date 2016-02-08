@@ -1,4 +1,4 @@
-from rest_framework.renderers import XMLRenderer
+from rest_framework_xml.renderers import XMLRenderer
 from django.utils.xmlutils import SimplerXMLGenerator
 from django.utils.six.moves import StringIO
 

@@ -1,2 +1,1 @@
-import signals_receiver
-import services_receiver
+default_app_config = 'videopath.apps.videos.apps.VideosConfig'

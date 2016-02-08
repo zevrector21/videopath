@@ -1,1 +1,1 @@
-import signals_receiver
+default_app_config = 'videopath.apps.payments.apps.PaymentsConfig'

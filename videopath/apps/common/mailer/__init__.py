@@ -7,7 +7,9 @@ from videopath.apps.common.services import service_provider
 
 mail_service = service_provider.get_service("mail")
 
+#
 # agents
+#
 agents = {
     "ree": {
         "email": "desiree@videopath.com",

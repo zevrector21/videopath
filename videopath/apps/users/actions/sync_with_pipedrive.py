@@ -31,12 +31,10 @@ def run():
 			continue
 		try:
 			email = email.strip()
-			
 			user = User.objects.get(email=email)
 			info, created = UserSalesInfo.objects.get_or_create(user=user)
 			info.pipedrive_person_id = pipedrive_id
 			info.save()
-			print email
 		except User.DoesNotExist:
 			pass		
 

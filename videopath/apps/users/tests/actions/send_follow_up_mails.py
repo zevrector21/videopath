@@ -60,3 +60,15 @@ class TestCase(BaseTestCase):
 
         send_follow_up_mails.run()
         self.assertEqual(AutomatedMail.objects.count(),2)
+
+    def test_send_follow_up_retention_disabled(self):
+        # a new user should not receive automails
+        send_follow_up_mails.run()
+        self.assertEqual(AutomatedMail.objects.count(),0)
+
+        # a user that joined over a week ago should
+        UserActivity.objects.create(user=self.user, last_seen=four_weeks_ago)
+        self.user.settings.receive_retention_emails = False
+        self.user.settings.save()
+        send_follow_up_mails.run()
+        self.assertEqual(AutomatedMail.objects.count(),0)

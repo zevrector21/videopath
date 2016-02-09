@@ -14,7 +14,7 @@ DEFAULT_MAX_MAILS = 10
 
 def run(max_mails=DEFAULT_MAX_MAILS):
 	thresh = datetime.now() - timedelta(days=USER_MIN_AGE_IN_DAYS)
-	users = User.objects.filter(date_joined__lte=thresh, sales_info__exact = None)
+	users = User.objects.filter(date_joined__lte=thresh, sales_info__exact = None, settings__receive_retention_emails=True)
 	users = users.exclude(automated_mails__mailtype=AutomatedMail.TYPE_WELCOME)
 	count = 0
 	for u in users:

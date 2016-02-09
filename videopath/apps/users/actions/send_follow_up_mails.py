@@ -24,7 +24,10 @@ def _send_three_weeks_follow_up(max_mails):
 	two_months_ago = datetime.now() - timedelta(days=TWO_MONTHS)
 
 	# all users which have received mail 21 and have not been seen for longer than 3 weeks
-	users = User.objects.filter(activity__last_seen__lte=three_weeks_ago, date_joined__gte=two_months_ago)
+	users = User.objects.filter(
+			activity__last_seen__lte=three_weeks_ago, 
+			date_joined__gte=two_months_ago, 
+			settings__receive_retention_emails=True)
 	users = users.exclude(automated_mails__mailtype=AutomatedMail.TYPE_FOLLOW_UP_21)
 
 	count = 0
@@ -40,7 +43,11 @@ def _send_six_weeks_follow_up(max_mails):
 	two_months_ago = datetime.now() - timedelta(days=TWO_MONTHS)
 
 	# all users which have received mail 21 and have not been seen for longer than 6 weeks
-	users = User.objects.filter(activity__last_seen__lte=six_weeks_ago,  date_joined__gte=two_months_ago, automated_mails__mailtype = AutomatedMail.TYPE_FOLLOW_UP_21)
+	users = User.objects.filter(
+			activity__last_seen__lte=six_weeks_ago,  
+			date_joined__gte=two_months_ago, 
+			automated_mails__mailtype = AutomatedMail.TYPE_FOLLOW_UP_21, 
+			settings__receive_retention_emails=True)
 	users = users.exclude(automated_mails__mailtype=AutomatedMail.TYPE_FOLLOW_UP_42)
 
 	count = 0

@@ -192,7 +192,6 @@ PLANS = {
                 'price_gbp': 23900,
                 'payment_interval': 'month',
                 'value': 4002,
-                'listable': True,
             },
 
             'monthly': {
@@ -213,7 +212,6 @@ PLANS = {
                 'price_gbp': 220000,
                 'payment_interval': 'year',
                 'value': 4004,
-                'listable': True,
             },
 
             'yearly': {
@@ -430,7 +428,7 @@ def SUBSCRIBABLE_PLANS(group):
 
     def _filter(p):
         if not p['subscribable']: return False
-        if not group and p["listable"]: return True
+        if (not group or group == '') and p["listable"]: return True
         if p['coupons'] and group in p['coupons']: return True
         if not p['coupons'] and group == p["group"]: return True
         return False

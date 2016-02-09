@@ -3,7 +3,7 @@ from django.http import HttpResponse
 import csv
 import datetime
 from urlparse import urlparse
-
+from django.shortcuts import redirect
 
 from django.template.response import SimpleTemplateResponse
 from django.contrib.auth.models import User
@@ -45,17 +45,35 @@ def inbound_users(request):
 
 	header = ['ID', 'Email', 'Phone', 'Date Joined',
 		 'Country', 'Referrer', 'Campaign',
-		 'Created', 'Published', 'Plan', 'Pipedrive', 'Pro Demo', 
+		 'Created', 'Published', 'Plan', 'Pipedrive', 'Retentionmails', 'Pro Demo', 
 		]
 
 	days = int(request.GET.get('days', 14))
 	date = datetime.date.today() - datetime.timedelta(days=days)
 
+
+	#
+	# Toggle pipedrive export
+	#
 	pipedrive_export = int(request.GET.get('pipedrive', -1))
 	export_user_to_pipedrive(pipedrive_export)
 
+	#
+	# toggle retention
+	#
+	change_mail_settings = int(request.GET.get('retention', -1))
+	change_mail_value = int(request.GET.get('value', -1))
+
+	if change_mail_settings > 0:
+		u = User.objects.get(pk=change_mail_settings)
+		u.settings.receive_retention_emails = True if change_mail_value else False
+		u.settings.save()
+
+	if len(request.GET):
+		return redirect(BASE_URL)
+
 	# build row from user
-	for user in User.objects.filter(date_joined__gte=date).order_by('-date_joined'):
+	for user in User.objects.select_related('sales_info').select_related('settings').select_related('campaign_data').filter(date_joined__gte=date).order_by('-date_joined'):
 
 		try:
 			phone = user.settings.phone_number
@@ -87,6 +105,9 @@ def inbound_users(request):
 			url = BASE_URL + '?pipedrive=' + str(user.pk)
 			row.append('<a href = "{0}">Export</a>'.format(url))
 
+		url = BASE_URL + '?retention=' + str(user.pk) +'&value=' + ('0' if user.settings.receive_retention_emails else '1')
+		title = 'Enabled' if user.settings.receive_retention_emails else 'Disabled'
+		row.append('<a href = "{0}">{1}</a>'.format(url, title))
 		row.append('Upgrade (15 days)')
 
 

@@ -106,7 +106,8 @@ class Source(VideopathBaseModel):
                 {
                 'key':self.key,
                 'service': self.service,
-                'service_identifier': self.service_identifier
+                'service_identifier': self.service_identifier,
+                'file_mp4': self.file_mp4
                 }
             })
         return True, ''

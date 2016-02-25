@@ -46,7 +46,7 @@ def create_payment(user, lines, currency):
         provider=user.settings.payment_provider
     )
     url = payment_export_util.url_for_payment(payment)
-    receiver = [user.payment_details.email] if user.payment_details.email else None
+    receiver = user.payment_details.email if user.payment_details.email else None
     mailer.send_mail('invoice_created', {'amount_due':amount_due, 'link': url, 'currency':currency}, payment.user, receiver)
     return payment
 
@@ -71,7 +71,7 @@ def process_payments():
                 payment_export_util.export_payment(payment)
             else:
                 # notify admin
-                receiver = [payment.user.payment_details.email] if payment.user.payment_details.email else None
+                receiver = payment.user.payment_details.email if payment.user.payment_details.email else None
                 mailer.send_mail('payment_failed', {'amount_due':payment.amount_due, 'currency':payment.currency}, payment.user, receiver)
 
             # save changes

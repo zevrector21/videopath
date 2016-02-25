@@ -20,7 +20,7 @@ agents = {
 #
 # prepare mail variables
 #
-def prepare_mail(mailtype, variables, user = None, receivers = None):
+def prepare_mail(mailtype, variables, user = None, receiver = None):
 
     # get config for mail
     mailconf = conf.mails.get(mailtype, {})
@@ -50,9 +50,9 @@ def prepare_mail(mailtype, variables, user = None, receivers = None):
             'user': user
             })
 
-    if receivers:
+    if receiver:
         fvariables.update({
-            'to': receivers
+            'to': [{'email': receiver}]
             })
 
 
@@ -73,8 +73,8 @@ def prepare_mail(mailtype, variables, user = None, receivers = None):
 #
 # send a mail
 #
-def send_mail(mailtype, variables, user = None, receivers = None):
-    conf = prepare_mail(mailtype, variables, user, receivers)
+def send_mail(mailtype, variables, user = None, receiver = None):
+    conf = prepare_mail(mailtype, variables, user, receiver)
     mail_service.mandrill_send(conf)
 
 

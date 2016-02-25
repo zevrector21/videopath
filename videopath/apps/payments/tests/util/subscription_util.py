@@ -5,13 +5,14 @@ from django.contrib.auth.models import User
 
 from videopath.apps.common.test_utils import BaseTestCase
 from videopath.apps.payments.util import subscription_util
-from videopath.apps.payments.models import Subscription, PendingSubscription, Payment
+from videopath.apps.payments.models import Subscription, PendingSubscription, Payment, PaymentDetails
 
 
 class TestCase(BaseTestCase):
 
     def setup(self):
         self.create_user()
+        PaymentDetails.objects.create(user=self.user, country="Germany")
 
     def test_subscribe_to_plan(self):
 

@@ -11,6 +11,7 @@ class TestCase(BaseTestCase):
     def test_creation(self):
 
     	# no payment should be created if nothing is owed
+        PaymentDetails.objects.create(user=self.user, country="Germany")
     	payment = payment_util.create_payment(self.user, [], "eur")
     	self.assertEquals(payment,None)
 
@@ -23,6 +24,7 @@ class TestCase(BaseTestCase):
         self.assertEquals(payment.percent_vat,19)
 
     def test_processing(self):
+        PaymentDetails.objects.create(user=self.user, country="United Kingdom")
     	payment_util.process_payments()
 
     def test_creation_with_eu_vat(self):

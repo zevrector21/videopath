@@ -73,8 +73,8 @@ def prepare_mail(mailtype, variables, user = None, receivers = None):
 #
 # send a mail
 #
-def send_mail(mailtype, variables, user = None):
-    conf = prepare_mail(mailtype, variables, user)
+def send_mail(mailtype, variables, user = None, receivers = None):
+    conf = prepare_mail(mailtype, variables, user, receivers)
     mail_service.mandrill_send(conf)
 
 

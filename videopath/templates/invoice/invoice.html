@@ -262,6 +262,13 @@
 
         </div>
 
+        {% if payment_details.notes %}
+        <p>
+            <br />
+            <strong>Your notes:</strong><br/>{{ payment_details.notes }}
+        </p>
+        {% endif %}
+
         <p class = "bye">
             Your friends at Videopath<br />
             <a href = "http://www.videopath.com">videopath.com</a>

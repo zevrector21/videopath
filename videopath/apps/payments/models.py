@@ -32,6 +32,13 @@ class PaymentDetails(VideopathBaseModel):
     country = models.CharField(max_length=150, choices=COUNTRY_CHOICES)
     vat_id = models.CharField(max_length=150, default='',null=True,blank=True)
 
+    # billing email address
+    email = models.CharField(max_length=150, default='',null=True,blank=True)
+
+    # extra notes to be put on the invoice
+    notes = models.TextField(default="",null=True,blank=True)
+
+
     # user ref
     user = models.OneToOneField(User,
                                 primary_key=True,

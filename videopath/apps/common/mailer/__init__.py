@@ -20,7 +20,7 @@ agents = {
 #
 # prepare mail variables
 #
-def prepare_mail(mailtype, variables, user = None):
+def prepare_mail(mailtype, variables, user = None, receivers = None):
 
     # get config for mail
     mailconf = conf.mails.get(mailtype, {})
@@ -48,6 +48,11 @@ def prepare_mail(mailtype, variables, user = None):
             'to': [{'email':user.email}],
             'username':user.username,
             'user': user
+            })
+
+    if receivers:
+        fvariables.update({
+            'to': receivers
             })
 
 

@@ -31,6 +31,26 @@ class TestCase(BaseTestCase):
         self.assertEqual(self.user.payments.latest("number").amount_due, 7900)
         self.assertEqual(self.user.payments.latest("number").currency, "EUR")
 
+    def test_subscribe_to_plan_with_payment_email(self):
+
+        self.user.payment_details.email = 'dscharf@gmx.net'
+        self.user.payment_details.save()
+
+        # default plan should be the free plan
+        self.assertEqual(subscription_util.get_currently_active_plan_for_user(
+            self.user)["id"], "free-free")
+
+        # test subscribing to free plan
+        subscription_util.subscribe_user(self.user, "201509-starter-monthly")
+
+        # we should now be subscribed to a plan
+        self.assertEqual(self.user.subscription.plan, "201509-starter-monthly")
+        self.assertEqual(self.user.subscription.currency, "EUR")
+
+        # and there should be a payment
+        self.assertEqual(self.user.payments.latest("number").amount_due, 7900)
+        self.assertEqual(self.user.payments.latest("number").currency, "EUR")
+
     def test_remaining_credit(self):
 
         startdate = date.today() - relativedelta(days=10)

@@ -1,5 +1,7 @@
 from django.db.models import Count
 from django.contrib import admin
+from django.contrib.admin import SimpleListFilter
+
 from .models import User
 from videopath.apps.videos.models import Video
 from urlparse import urlparse
@@ -7,6 +9,32 @@ from urlparse import urlparse
 from videopath.apps.payments.actions import start_trial
 
 PIPEDRIVE_PERSON_URL = 'https://videopath.pipedrive.com/person/'
+
+
+#
+# User Filter
+#
+class PlanFilter(SimpleListFilter):
+    title = 'plan' # or use _('country') for translated title
+    parameter_name = 'plan'
+
+    def lookups(self, request, model_admin):
+        return [
+        	('free', 'Free'),
+        	('nonfree', 'Non Free')
+        ]
+        # You can also use hardcoded model name like "Country" instead of 
+        # "model_admin.model" if this is not direct foreign key filter
+
+    def queryset(self, request, queryset):
+    	value = self.value()
+        if value == 'free':
+            return queryset.filter(subscription__plan='free-free')
+        elif value == 'nonfree':
+        	return queryset.exclude(subscription__plan='free-free').exclude(subscription=None)
+        else:
+            return queryset
+
 
 #
 # Sales user
@@ -39,11 +67,14 @@ class UserAdmin(admin.ModelAdmin):
 	plan.allow_tags = True
     
 	def country(self, obj):
-		return obj.campaign_data.country
+		try: return obj.campaign_data.country
+		except: return '-'
 	country.admin_order_field = 'campaign_data__country'
 
 	def phone(self,obj):
-		return obj.settings.phone_number
+		try: return obj.settings.phone_number
+		except: return '-'
+
 
 	def videos(self,obj):
 		unpublished = Video.objects.filter(team__owner=obj, archived=False, published=False).count() 
@@ -53,11 +84,12 @@ class UserAdmin(admin.ModelAdmin):
 	videos.admin_order_field ='videos_count'
 
 	def referrer(self,obj):
-		url = obj.campaign_data.referrer
+		try: url = obj.campaign_data.referrer
+		except: return '-'
 		if url:
 		    parsed_uri = urlparse( url )
 		    return '<a href="' + url + '">' + parsed_uri.netloc +'</a><br />';
-		return ''
+		return '-'
 	referrer.allow_tags=True
 
 	def retention_mails(self,obj):
@@ -125,7 +157,7 @@ class UserAdmin(admin.ModelAdmin):
 	# Filter & Search
 	#
 	search_fields = ['username', 'email']
-	list_filter = ['subscription__plan', 'campaign_data__country']
+	list_filter = ['campaign_data__country', PlanFilter]
 
 	#
 	# Other settings

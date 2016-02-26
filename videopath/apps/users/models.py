@@ -18,6 +18,13 @@ class User(_User):
         return self.email + " - " + self.username
 
 #
+# Proxy user model for Sales list
+#
+class UserSales(_User):
+    class Meta:
+        proxy = True
+
+#
 # All the users settings go here
 #
 class UserSettings(UserenaBaseProfile):

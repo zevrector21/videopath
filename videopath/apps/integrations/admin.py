@@ -13,6 +13,8 @@ class IntegrationAdmin(admin.ModelAdmin):
     ordering = ('-created',)
     search_fields = ['team', 'team__owner', 'service']
 
+    
+
 
 admin.site.register(Integration, IntegrationAdmin)
 

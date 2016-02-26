@@ -166,5 +166,9 @@ class UserAdmin(admin.ModelAdmin):
 	ordering = ('-date_joined',)
 	list_display_links = None
 	change_list_filter_template = "admin/filter_listing.html"
+	def has_module_permission(self, request):
+		return True
+	def has_change_permission(self, request, obj = None):
+		return True
 
 admin.site.register(User, UserAdmin)

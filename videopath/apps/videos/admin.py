@@ -14,7 +14,7 @@ class VideoAdmin(admin.ModelAdmin):
 
     # fields
     list_display = ('key', 'id', 'team', 'revision_link', 'created_humanized',
-                    'modified_humanized',  'draft_link', 'current_revision_link', 'archived')
+                    'modified_humanized',  'draft_link', 'current_revision_link', 'archived', 'player_version')
     ordering = ('-created',)
     search_fields = ['key', 'id', 'team__owner__username', 'team__owner__email']
     exclude = ['draft','current_revision']

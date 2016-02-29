@@ -2,11 +2,11 @@ from django.db.models import Count
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
 
-from .models import User
-from videopath.apps.videos.models import Video
+from .models import User, Video
 from urlparse import urlparse
 
 from videopath.apps.payments.actions import start_trial
+from .actions import upgrade_to_player_5
 
 PIPEDRIVE_PERSON_URL = 'https://videopath.pipedrive.com/person/'
 
@@ -172,3 +172,32 @@ class UserAdmin(admin.ModelAdmin):
 		return True
 
 admin.site.register(User, UserAdmin)
+
+class VideoAdmin(admin.ModelAdmin):
+	list_display_links = None
+	list_display = ('key','created', 'player_version', 'team', 'title',)
+	list_filter = ['player_version',]
+	search_fields = ['draft__title', 'key', 'team__owner__username']
+	ordering = ('-created',)
+
+	#
+	#
+	#
+	def make_upgrade_to_player_5(self, request, queryset):
+	    for video in queryset.all():
+		    result = upgrade_to_player_5.run(video)
+		    if result: self.message_user(request, result)
+
+	make_upgrade_to_player_5.short_description = "Upgrade to player 5"
+	actions=["make_upgrade_to_player_5"]
+
+	#
+	# Disable delete for this list
+	#
+	def has_delete_permission(self, request, obj=None):
+		return False
+
+	def title(self,obj):
+		return obj.draft.title
+admin.site.register(Video, VideoAdmin)
+

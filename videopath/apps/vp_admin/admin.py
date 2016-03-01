@@ -5,7 +5,7 @@ from django.contrib.admin import SimpleListFilter
 from .models import User, Video
 from urlparse import urlparse
 
-from videopath.apps.payments.actions import start_trial
+from videopath.apps.payments.actions import start_trial, downgrade_to_free_plan
 from .actions import upgrade_to_player_5
 
 PIPEDRIVE_PERSON_URL = 'https://videopath.pipedrive.com/person/'
@@ -124,7 +124,7 @@ class UserAdmin(admin.ModelAdmin):
 	#
 	# Actions
 	#
-	actions=["make_toggle_retention_mails", "make_trial_2_weeks", "make_trial_4_weeks"]
+	actions=["make_toggle_retention_mails", "make_trial_2_weeks", "make_trial_4_weeks", "make_downgrade_to_free"]
 
 	def make_trial_2_weeks(self, request, queryset):
 		for user in queryset.all():
@@ -146,6 +146,11 @@ class UserAdmin(admin.ModelAdmin):
 		    user.settings.receive_retention_emails = not user.settings.receive_retention_emails
 		    user.settings.save()
 	make_toggle_retention_mails.short_description = "Toggle Retention mails"
+
+	def make_downgrade_to_free(self, request, queryset):
+		for user in queryset.all():
+		    downgrade_to_free_plan.run(user)
+	make_downgrade_to_free.short_description = "Downgrade to free plan"
 
 	#
 	# Disable delete for this list

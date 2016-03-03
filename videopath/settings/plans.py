@@ -371,6 +371,28 @@ PLANS = {
                 'value': 8004,
             },
 
+            'coop': {
+                'name': 'Coop Enterprise',
+
+                # features
+                'feature_vimeo': True,
+                'feature_upload': True,
+                'feature_endscreen': True,
+                'feature_advanced_settings': True,
+                'feature_wistia': True,
+                'feature_custom_analytics': True,
+                'feature_brightcove': True,
+                'feature_custom_hosting': True,
+                'feature_theme': True,
+                'feature_icon': True,
+                'feature_advanced_library': True,
+                'feature_advanced_video_settings': True, 
+                'feature_integrations': True,
+                'feature_advanced_analytics': True,
+
+                'value': 8005
+            },
+
 
             'staff': {
                 'name': 'videopath staff account',

@@ -8,6 +8,7 @@ from ..models import User, Video
 from urlparse import urlparse
 
 from videopath.apps.payments.actions import start_trial, downgrade_to_free_plan
+from videopath.apps.users.actions import move_user_to_pipedrive
 
 PIPEDRIVE_PERSON_URL = 'https://videopath.pipedrive.com/person/'
 
@@ -129,7 +130,7 @@ class UserAdmin(VideopathModelAdmin):
 	#
 	# Actions
 	#
-	actions=["make_toggle_retention_mails", "make_trial_2_weeks", "make_trial_4_weeks", "make_downgrade_to_free"]
+	actions=["make_toggle_retention_mails", "make_trial_2_weeks", "make_trial_4_weeks", "make_downgrade_to_free", "make_move_to_pipedrive"]
 
 	def make_trial_2_weeks(self, request, queryset):
 		for user in queryset.all():
@@ -156,6 +157,11 @@ class UserAdmin(VideopathModelAdmin):
 		for user in queryset.all():
 		    downgrade_to_free_plan.run(user)
 	make_downgrade_to_free.short_description = "Downgrade to free plan"
+
+	def make_move_to_pipedrive(self, request, queryset):
+		for user in queryset.all():
+			move_user_to_pipedrive.run(user)
+	make_move_to_pipedrive.short_description = "Send user to pipedrive"
 
     	
 	#

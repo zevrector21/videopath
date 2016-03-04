@@ -11,6 +11,7 @@ from videopath.apps.users.models import UserSalesInfo, UserCampaignData
 PIPEDRIVE_API_KEY = settings.PIPEDRIVE_API_KEY
 
 PIPEDRIVE_BASE_URL = 'https://api.pipedrive.com/v1'
+INSIGHTS_BASE_URL = 'https://api.videopath.com/admin/insights/users/'
 
 PIPEDRIVE_PERSON_URL = PIPEDRIVE_BASE_URL + '/persons'
 PIPEDRIVE_FIND_PERSON_URL = PIPEDRIVE_PERSON_URL + '/find'
@@ -18,8 +19,9 @@ PIPEDRIVE_DEAL_URL = PIPEDRIVE_BASE_URL + '/deals'
 PIPEDRIVE_ORG_URL = PIPEDRIVE_BASE_URL + '/organizations'
 PIPEDRIVE_NOTE_URL = PIPEDRIVE_BASE_URL + '/notes'
 
-DEFAULT_STAGE_ID = 12
+DEFAULT_STAGE_ID = 21
 SOURCE_FIELD_ID = 'c74438c341d64dadce88fec9796605a73daa2057'
+USER_APP_LINK_FIELD_ID = '6d43da07f7a39b393d40dcc48fcda4f41b0feabc'
 USER_ID = 823305 # anthony
 
 
@@ -46,6 +48,7 @@ def _get_person_by_email(email):
 		'search_by_email': 1
 	}
 	result = _pipedrive_get(PIPEDRIVE_FIND_PERSON_URL, params)['data']
+	
 	if result and len(result):
 		return result[0].get('id')
 	return None 
@@ -65,13 +68,14 @@ def _create_person_in_pipedrive(user):
 		'name': email,
 		'visible_to': 3,
 		'phone': phone,
-		'owner_id': USER_ID
+		'owner_id': USER_ID,
+		USER_APP_LINK_FIELD_ID: INSIGHTS_BASE_URL + user.email + '/'
 	}
 	person_id = _pipedrive_post(PIPEDRIVE_PERSON_URL, data=data)['data']['id']
 
 	# create org
 	data = {
-		'name': "Inbound " + email,
+		'name': "Organization of " + email,
 		SOURCE_FIELD_ID: 78,
 		'visible_to': 3,
 		'owner_id': USER_ID
@@ -81,7 +85,7 @@ def _create_person_in_pipedrive(user):
 
 	# also create a deal
 	data = {
-		'title': "Inbound " + email,
+		'title': "Deal of " + email,
 		'person_id': person_id,
 		'org_id': org_id,
 		'stage_id': DEFAULT_STAGE_ID,

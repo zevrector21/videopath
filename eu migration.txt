@@ -1,5 +1,13 @@
+
+
+// on the fly
+* copy database heroku pg:copy source-application::OLIVE HEROKU_POSTGRESQL_PINK -a target-application
+* Migrate domains on aws and change app name
+* switch to different cloudampq on services app
+
+// after migration
+* re-add scheduled jobs
+
+// probably done
 * Check database access
 * Check https access
-* Migrate domains on aws
-* switch to production dynos
-* switch to different cloudampq on services app

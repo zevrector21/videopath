@@ -1,0 +1,5 @@
+* Check database access
+* Check https access
+* Migrate domains on aws
+* switch to production dynos
+* switch to different cloudampq on services app

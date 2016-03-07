@@ -19,9 +19,13 @@ PIPEDRIVE_DEAL_URL = PIPEDRIVE_BASE_URL + '/deals'
 PIPEDRIVE_ORG_URL = PIPEDRIVE_BASE_URL + '/organizations'
 PIPEDRIVE_NOTE_URL = PIPEDRIVE_BASE_URL + '/notes'
 
-DEFAULT_STAGE_ID = 21
+DEFAULT_STAGE_ID = 14
 SOURCE_FIELD_ID = 'c74438c341d64dadce88fec9796605a73daa2057'
 USER_APP_LINK_FIELD_ID = '6d43da07f7a39b393d40dcc48fcda4f41b0feabc'
+USER_COUNTRY_FIELD_ID = '027bf82e5f6fcafb475fbd8f7a47c45668e7fc2c'
+USER_REFERRER_FIELD_ID = 'd683ac8e5a36c454e67961f3aa5c6b04b1076b79'
+
+
 USER_ID = 823305 # anthony
 
 
@@ -62,6 +66,13 @@ def _create_person_in_pipedrive(user):
 	except:
 		phone = ''
 
+	country = ''
+	referrer = ''
+	try:
+		country = user.campaign_data.country
+		referrer = user.campaign_data.referrer
+	except UserCampaignData.DoesNotExist: pass
+
 	# create person
 	data = {
 		'email': email,
@@ -69,25 +80,17 @@ def _create_person_in_pipedrive(user):
 		'visible_to': 3,
 		'phone': phone,
 		'owner_id': USER_ID,
-		USER_APP_LINK_FIELD_ID: INSIGHTS_BASE_URL + user.email + '/'
+		USER_APP_LINK_FIELD_ID: INSIGHTS_BASE_URL + user.email + '/',
+		USER_COUNTRY_FIELD_ID: country,
+		USER_REFERRER_FIELD_ID: referrer
 	}
 	person_id = _pipedrive_post(PIPEDRIVE_PERSON_URL, data=data)['data']['id']
 
-	# create org
-	data = {
-		'name': "Organization of " + email,
-		SOURCE_FIELD_ID: 78,
-		'visible_to': 3,
-		'owner_id': USER_ID
-	}
-	#print _pipedrive_post(PIPEDRIVE_ORG_URL, data=data)['data']['id']
-	org_id = _pipedrive_post(PIPEDRIVE_ORG_URL, data=data)['data']['id']
 
 	# also create a deal
 	data = {
 		'title': "Deal of " + email,
 		'person_id': person_id,
-		'org_id': org_id,
 		'stage_id': DEFAULT_STAGE_ID,
 		'value': 2000,
 		'currency': "EUR",
@@ -96,20 +99,6 @@ def _create_person_in_pipedrive(user):
 	}
 	deal_id = _pipedrive_post(PIPEDRIVE_DEAL_URL, data=data)['data']['id']
 
-	# add notes to user and deal
-	try:	
-		content  = 'Country: ' + user.campaign_data.country + '<br />'
-		content += 'Campaign: ' + user.campaign_data.name + '<br />'
-		content += 'Referrer: ' + user.campaign_data.referrer + '<br />'
-		data = {
-			'content': content,
-			'deal_id': deal_id,
-			'person_id': person_id,
-			'org_id': org_id
-		}
-		_pipedrive_post(PIPEDRIVE_NOTE_URL, data=data)
-	except UserCampaignData.DoesNotExist:
-		pass
 
 	return person_id
 

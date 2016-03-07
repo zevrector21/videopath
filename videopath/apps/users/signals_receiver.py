@@ -10,8 +10,8 @@ from videopath.apps.vp_admin.signals import hourly_jobs, daily_jobs
 from videopath.apps.users.actions import sync_with_pipedrive
 from videopath.apps.users.actions import expire_authentication_tokens
 from videopath.apps.users.actions import clear_example_users
-from videopath.apps.users.actions import send_welcome_mails
-from videopath.apps.users.actions import send_follow_up_mails
+from videopath.apps.users.actions import move_new_users_to_pipedrive
+
 
 @receiver(pre_delete, sender=AuthenticationToken)
 def delete_auth_token_cache(sender, instance=None, **kwargs):
@@ -22,19 +22,10 @@ def create_default_team(sender, instance=None, **kwargs):
 	 if instance:
 	 	Team.objects.get_or_create(owner=instance, is_default_team_of_user=instance, name='My Projects')
 
-@receiver(hourly_jobs)
-def run_send_welcome_mails(sender, **kwargs):
-    # send_welcome_mails.run()
-    pass
 
 @receiver(hourly_jobs)
 def run_expire_authentication_tokens(sender, **kwargs):
     expire_authentication_tokens.run()
-
-@receiver(hourly_jobs)
-def run_send_follow_up_mails(sender, **kwargs):
-    # send_follow_up_mails.run()
-    pass
 
 @receiver(daily_jobs)
 def run_sync_with_pipedrive(sender, **kwargs):
@@ -43,3 +34,8 @@ def run_sync_with_pipedrive(sender, **kwargs):
 @receiver(daily_jobs)
 def run_clear_example_users(sender, **kwargs):
 	clear_example_users.run()
+
+
+@receiver(hourly_jobs)
+def run_move_users_to_pipedrive(sender, **kwargs):
+    move_new_users_to_pipedrive.run()

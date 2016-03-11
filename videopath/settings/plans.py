@@ -102,6 +102,16 @@ PLANS = {
                 'subscribable': False
             },   
 
+            'monthly-25': {
+                'name': 'Basic Monthly',
+                'price_eur': 2500,
+                'price_usd': 2500,
+                'price_gbp': 2500,
+                'payment_interval': 'month',
+                'value': 2001,
+                'subscribable': False
+            },   
+
             'monthly-20-discount': {
                 'coupons': ['partners-starter'],
                 'name': 'Basic Monthly (20% Partners Discount)',

@@ -84,6 +84,9 @@ def _render_template(video):
     vrs = VideoRevisionDetailSerializer(revision)
     data_json = JSONRenderer().render(vrs.data)
     data_string = json.dumps(vrs.data)
+    try:
+        branded = video.team.owner.subscription.plan == 'free-free'
+    except: branded = True
 
     # get thumbnail url 
     thumb_urls = thumbnails_util.thumbnails_for_revision(video.current_revision)
@@ -133,7 +136,7 @@ def _render_template(video):
         template_dict.update({
             'video_data': data_json,
             'thumb_urls': thumb_urls,
-            'title': video.current_revision.title + " - Videopath",
+            'title': video.current_revision.title + (" - Videopath" if branded else ""),
             'description': description,
             'markers': video.current_revision.markers
         })

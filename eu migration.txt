@@ -1,7 +1,8 @@
 
 
 // on the fly
-* copy database heroku pg:copy source-application::OLIVE HEROKU_POSTGRESQL_PINK -a target-application
+* copy database 
+** heroku pg:copy videopath-api::AMBER HEROKU_POSTGRESQL_AMBER_URL -a videopath-api-eu
 * Migrate domains on aws and change app name
 * switch to different cloudampq on services app
 

@@ -61,6 +61,7 @@ class Team(VideopathBaseModel):
     owner = models.ForeignKey(_User, related_name='owned_teams')
     name = models.CharField(max_length=150, default='My Projects')
     members = models.ManyToManyField(_User, through='TeamMember')
+    archived = models.BooleanField(default=False)
 
     # each user has a default team where his projects go
     # this is defined on team, as the django user object is 

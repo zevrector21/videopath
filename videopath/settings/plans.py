@@ -86,6 +86,7 @@ PLANS = {
         'feature_endscreen': True,
         'feature_advanced_library': True,
         'feature_advanced_analytics': True,
+        'feature_vimeo': True,
 
         #
         # variants

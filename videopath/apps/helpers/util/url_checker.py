@@ -1,10 +1,7 @@
 import requests
 from urlparse import urlparse
 
-url = 'zeit.de'
-
-
-def checkURL(url, secure=False):
+def _check_url(url, secure=False):
 	try:
 		parsed = urlparse(url)
 		url = ('https://' if secure else 'http://') + parsed.netloc + parsed.path
@@ -22,10 +19,10 @@ def checkURL(url, secure=False):
 			'embedable': False
 		}
 
-result = {
-	'url': url,
-	'http': checkURL(url, False),
-	'https': checkURL(url, True),
-}
+def check_url(url):
+	return {
+		'url': url,
+		'http': _check_url(url, False),
+		'https': _check_url(url, True),
+	}
 
-print result

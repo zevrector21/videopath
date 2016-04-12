@@ -24,8 +24,16 @@ def import_data():
 
     service = _get_service()
 
-    # import daily numbers
+    # import daily numbers yesterday
     datemapper = DateMapperDaily()
+    datemapper.set_days_ago(1)
+    for importer in importers:
+        i = importer(datemapper, service)
+        i.import_data()
+
+    # to be save, get from day before also
+    datemapper = DateMapperDaily()
+    datemapper.set_days_ago(2)
     for importer in importers:
         i = importer(datemapper, service)
         i.import_data()

@@ -7,6 +7,7 @@ import base64
 from oauth2client.client import SignedJwtAssertionCredentials
 from apiclient.discovery import build
 
+from django.db.models import Sum
 from django.conf import settings
 
 from videopath.apps.videos.models import Video, Marker
@@ -31,13 +32,6 @@ def import_data():
         i = importer(datemapper, service)
         i.import_data()
 
-    # to be save, get from day before also
-    datemapper = DateMapperDaily()
-    datemapper.set_days_ago(2)
-    for importer in importers:
-        i = importer(datemapper, service)
-        i.import_data()
-
     # import total numbers
     datemapper = DateMapperTotal()
     for importer in importers:
@@ -45,9 +39,11 @@ def import_data():
         i.import_data()
 
     # move total played numbers into video data
-    for tad in TotalAnalyticsData.objects.all():
-        tad.video.total_plays = tad.plays_all
-        tad.video.save()
+    for v in Video.objects.all():
+        plays = DailyAnalyticsData.objects.filter(video=v).aggregate(Sum('plays_unique'))
+        plays = plays['plays_unique__sum']
+        if plays: v.total_plays = plays
+        v.save()
 
     analytics_imported.send_robust(None)
 

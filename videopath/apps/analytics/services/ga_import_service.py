@@ -25,23 +25,23 @@ def import_data():
 
     service = _get_service()
 
-    # import daily numbers yesterday
-    datemapper = DateMapperDaily()
-    datemapper.set_days_ago(1)
-    for importer in importers:
-        i = importer(datemapper, service)
-        i.import_data()
+    # # import daily numbers yesterday
+    # datemapper = DateMapperDaily()
+    # datemapper.set_days_ago(1)
+    # for importer in importers:
+    #     i = importer(datemapper, service)
+    #     i.import_data()
 
-    # import total numbers
-    datemapper = DateMapperTotal()
-    for importer in importers:
-        i = importer(datemapper, service)
-        i.import_data()
+    # # import total numbers
+    # datemapper = DateMapperTotal()
+    # for importer in importers:
+    #     i = importer(datemapper, service)
+    #     i.import_data()
 
     # move total played numbers into video data
     for v in Video.objects.all():
-        plays = DailyAnalyticsData.objects.filter(video=v).aggregate(Sum('plays_unique'))
-        plays = plays['plays_unique__sum']
+        plays = DailyAnalyticsData.objects.filter(video=v).aggregate(Sum('plays_all'))
+        plays = plays['plays_all__sum']
         if plays: v.total_plays = plays
         v.save()
 

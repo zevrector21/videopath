@@ -157,6 +157,7 @@ revision_fields = (
     'ui_disable_share_buttons',
     'ui_equal_marker_lengths',
     'ui_icon',
+    'ui_icon_link_target',
     'custom_tracking_code',
     'iphone_images',
     'continuous_playback',

@@ -57,6 +57,7 @@ class VideoRevision(VideopathBaseModel):
 
     # reference to custom icon if uploaded
     ui_icon = models.CharField(max_length=512, blank=True)
+    ui_icon_link_target = models.CharField(max_length=1024, blank=True, null=True, default='https://videopath.com')
 
     # other ui settings
     ui_disable_share_buttons = models.BooleanField(default=False)

@@ -26,3 +26,9 @@ def transcode_random_video(sender, **kwargs):
 
 	source = Source.objects.filter(jpg_sequence_support=True, sprite_support=False).order_by('?').first()
 	source.export_jpg_sequence()
+
+	source = Source.objects.filter(jpg_sequence_support=True, sprite_support=False).order_by('?').first()
+	source.export_jpg_sequence()
+
+	source = Source.objects.filter(jpg_sequence_support=True, sprite_support=False).order_by('?').first()
+	source.export_jpg_sequence()

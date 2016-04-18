@@ -138,7 +138,10 @@ def _render_template(video):
             'thumb_urls': thumb_urls,
             'title': video.current_revision.title + (" - Videopath" if branded else ""),
             'description': description,
-            'markers': video.current_revision.markers
+            'markers': video.current_revision.markers,
+            'width': 1024,
+            'height': 1024 * video.draft.source.aspect if video.draft.source else 768,
+            'key': video.key
         })
 
     c = Context(template_dict)

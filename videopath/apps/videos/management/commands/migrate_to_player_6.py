@@ -9,8 +9,11 @@ from videopath.apps.videos.models import Video
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-       	for v in Video.objects.all():
-       		v.player_version = '4'
+    	count = 0
+       	for v in Video.objects.filter(team__owner__email='info@videopath.com'):
+       		count += 1
+       		print count
+       		v.player_version = '6'
        		v.save()
 
    		from videopath.apps.videos.util import video_export_util

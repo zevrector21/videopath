@@ -140,7 +140,7 @@ def _render_template(video):
             'description': description,
             'markers': video.current_revision.markers,
             'width': 1024,
-            'height': 1024 * video.draft.source.aspect if video.draft.source else 768,
+            'height': 1024 / video.draft.source.aspect if video.draft.source else 768,
             'key': video.key
         })
 

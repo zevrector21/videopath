@@ -109,6 +109,11 @@ def _render_template(video):
     except:
         pass
 
+    width = 1024
+    height = 768
+    if video.draft.source and video.draft.source.aspect != 0:
+        height = 1024 / video.draft.source.aspect
+
 
     # for non production builds omit player version
     if not settings.PRODUCTION:
@@ -139,8 +144,8 @@ def _render_template(video):
             'title': video.current_revision.title + (" - Videopath" if branded else ""),
             'description': description,
             'markers': video.current_revision.markers,
-            'width': 1024,
-            'height': 1024 / video.draft.source.aspect if video.draft.source else 768,
+            'width': width,
+            'height': height,
             'key': video.key
         })
 

@@ -112,7 +112,7 @@ def _render_template(video):
     width = 1024
     height = 768
     if video.draft.source and video.draft.source.aspect != 0:
-        height = 1024 / video.draft.source.aspect
+        height = int(1024 / video.draft.source.aspect)
 
 
     # for non production builds omit player version
@@ -135,6 +135,7 @@ def _render_template(video):
             'description': 'Private Video',
             'markers': []
         })
+
 
     #regular video
     else:

@@ -4,6 +4,7 @@ EVALUATION_PERIOD_WEEKS = 2
 
 from videopath.apps.payments.models import PendingSubscription
 from datetime import date, timedelta
+from videopath.apps.payments.signals import subscription_updated
 
 def run(user, weeks=EVALUATION_PERIOD_WEEKS):
 	if user.subscription.plan != FREE_PLAN and user.subscription.plan != EVALUATION_PLAN:
@@ -15,6 +16,6 @@ def run(user, weeks=EVALUATION_PERIOD_WEEKS):
 	user.subscription.save()
 
 	PendingSubscription.objects.create(user=user, plan=FREE_PLAN)
-
+	subscription_updated.send_robust(sender=user, user=user)
 	return True
 

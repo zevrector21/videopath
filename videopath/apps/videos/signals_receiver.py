@@ -40,4 +40,3 @@ def transcode_random_video(sender, **kwargs):
 @receiver(subscription_updated)
 def export_users_videos(sender, user=None, **kwargs):
 	video_export_util.export_user_videos(user)
-	print 'done!'

@@ -8,6 +8,7 @@ from videopath.apps.common import mailer
 from videopath.apps.payments.util import payment_util
 from videopath.apps.payments.models import Subscription, PendingSubscription
 
+from videopath.apps.payments.signals import subscription_updated
 
 #
 # Subscribe the user to a plan
@@ -150,6 +151,8 @@ def _set_subscription_to_plan(user, plan_id):
         "text": "Videopath " + target_plan["name"] + " " + str(subscription.current_period_start) + " until " + str(subscription.current_period_end),
         "amount": subscription.price
     }
+
+    subscription_updated.send_robust(sender=user, user=user)
 
     return True, line
 

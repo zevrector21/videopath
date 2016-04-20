@@ -1,4 +1,5 @@
 from videopath.apps.payments.models import Subscription
+from videopath.apps.payments.signals import subscription_updated
 
 def run(user):
 	try:
@@ -6,3 +7,4 @@ def run(user):
 	except: pass
 	user.subscription.delete()
 	Subscription.objects.create(user=user)
+	subscription_updated.send_robust(sender=user, user=user)

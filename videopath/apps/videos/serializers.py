@@ -168,7 +168,8 @@ revision_fields = (
     'tracking_pixel_q3',
     'tracking_pixel_end',
     'created',
-    'revision_type'
+    'revision_type',
+    'branded'
 )
 
 revision_detail_fields = (
@@ -193,6 +194,7 @@ class VideoRevisionSerializer(serializers.ModelSerializer):
     key = serializers.SerializerMethodField()
     ui_icon = serializers.SerializerMethodField()
     revision_type = serializers.SerializerMethodField()
+    branded = serializers.SerializerMethodField()
 
     # some helper functions
     def get_key(self, video_revision):
@@ -213,6 +215,12 @@ class VideoRevisionSerializer(serializers.ModelSerializer):
         if video_revision.video.current_revision == video_revision:
             return 'published'
         return ''
+
+    def get_branded(self, video_revision):
+        try:
+            branded = video_revision.video.team.owner.subscription.plan == 'free-free'
+        except: branded = True
+        return branded
 
 
     order_by = '-created'

@@ -157,6 +157,8 @@ class MarkerAdmin(admin.ModelAdmin):
     list_display = ('title', 'time', 'video_revision', 'content_link')
     list_filter = ('video_revision__id',)
     ordering = ('time',)
+    search_fields = ['key', 'id', ]
+
 
     def content_link(self, obj):
         link = "/admin/videos/markercontent/?marker__id=" + str(obj.id)
@@ -173,6 +175,7 @@ class MarkerContentAdmin(admin.ModelAdmin):
     list_display = ('ordinal', 'type')
     list_filter = ('marker__id',)
     ordering = ('ordinal',)
+    search_fields = ['key', 'id', ]
 
 admin.site.register(MarkerContent, MarkerContentAdmin)
 

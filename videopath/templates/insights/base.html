@@ -102,53 +102,9 @@
         }
 
 
-        .vp_graph {
-            height:150px;
+        .vp_linegraph {
+            height:250px;
             width: 800px;
-        }
-
-        .vp_graph_item {
-            height:150px;
-            display: inline-block;
-            position: relative;
-            opacity: 0.7;
-        }
-        .vp_graph_item:hover {
-            opacity: 1;
-            background-color: #ccc;
-        }
-
-        .vp_graph_item .vp_graph_item_inner {
-            background-color:#444;
-            position: absolute;
-            bottom:0px;
-            left:0px;
-            right:0px;
-
-        }
-        .vp_graph_item:nth-child(even) .vp_graph_item_inner {
-            background-color: #555;
-        }
-
-        .vp_graph_item .vp_graph_label_bottom,
-        .vp_graph_item .vp_graph_label_top
-         {
-            display: none;
-        }
-
-        .vp_graph_item:hover .vp_graph_label_bottom,
-        .vp_graph_item:hover .vp_graph_label_top{
-            
-            position: absolute;
-            display: block;
-        }
-
-        .vp_graph_item:hover .vp_graph_label_bottom {
-            bottom:-20px;
-        }
-
-        .vp_graph_item:hover .vp_graph_label_top {
-            left:15px;
         }
 
 
@@ -156,6 +112,7 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="https://code.jquery.com/jquery-2.2.3.min.js" crossorigin="anonymous"></script>
     <script>
+        google.charts.load('current', {'packages':['corechart']});
     </script>
 </head>
 <body>

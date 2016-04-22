@@ -17,7 +17,7 @@ cohorte_selectors = {
     "year": "%Y %m"
 }
 
-steps = ["signed_up", "has_videos", "has_published_videos", "has_views", "has_upgraded"]
+steps = ["has_videos", "has_published_videos", "has_views", "has_upgraded"]
 
 
 # build a dict of users containing all the relevant info
@@ -118,46 +118,33 @@ def group_users(users, cohorte_selector):
 
 #  Create the activation view
 def build_activation_table(groups):
-    result = ""
 
-    row = "<td/>"
+
+    data = [['week'] + steps]
+
     for group in groups:
-        row += "<td>&nbsp;&nbsp;&nbsp;</td><td colspan=2><b>"+group["cohorte"]+"</b></td>"
-    result += "<tr>"+ row + "</tr>"
+        idata = [group['cohorte']]
+        for step in steps:
+            idata.append(group["activation"][step] * 100 / group['size'])
+        data.append(idata)
 
-
-    for step in steps:
-        row="<td>" + step.replace("_", "&nbsp;") + "</td>"
-        for group in groups:
-            total = group["activation"][step]
-            size = group["size"]
-            row+="<td> </td><td>"+ str(total * 100 / size ) + "%&nbsp;&nbsp;</td><td>" + str(total) + "</td>" 
-        result += "<tr>"+ row + "</tr>"
-
-    return "<table>" + result + "</table>"
+    return helpers.chart(data, 'line')
 
 
 def build_retention_table(groups):
-    result = ""
 
-    row = "<td/>"
-    row2 = "<td>Total</td>"
+
+    data = [['week', '-1 month', '-2 months', '-3 months', '-4 months']]
+
     for group in groups:
-        row += "<td>&nbsp;&nbsp;&nbsp;</td><td colspan=2><b>"+group["cohorte"]+"</b></td>"
-        row2 += "<td>&nbsp;&nbsp;&nbsp;</td><td>100%&nbsp;&nbsp;</td><td>"+str(group["size"])+"</td>"
+        idata = [group['cohorte']]
+        for i in range(1,5):
+            idata.append(group["retention"][i] * 100 / group['size'])
+        data.append(idata)
 
-    result += "<tr>"+ row + "</tr>"
-    result += "<tr>"+ row2 + "</tr>"
 
-    for i in range(1,12):
-        row="<td>" + str(i) + "&nbsp;&nbsp;</td>"
-        for group in groups:
-            total = group["retention"][i]
-            size = group["size"]
-            row+="<td> </td><td>"+ str(total * 100 / size ) + "%&nbsp;&nbsp;</td><td>" + str(total) + "</td>" 
-        result += "<tr>"+ row + "</tr>"
+    return helpers.chart(data, 'line')
 
-    return "<table>" + result + "</table>"
 
 
 # build the view
@@ -196,11 +183,11 @@ def view(request):
 
 
     # activiation section
-    result += helpers.header("Activation")
+    result += helpers.header("Activation (percentage of signed up)")
     result += build_activation_table(groups)
 
     # retention section
-    result += helpers.header("Retention")
+    result += helpers.header("Retention (percentage of signed up)")
     result += build_retention_table(groups)
 
     return SimpleTemplateResponse("insights/base.html", {

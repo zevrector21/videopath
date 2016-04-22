@@ -55,14 +55,13 @@ def view(request):
 	num_wistia = get_result(SELECT_VIDEO_SOURCES + " WHERE s.service like 'wistia'")
 	num_brightcove = get_result(SELECT_VIDEO_SOURCES + " WHERE s.service like 'brightcove'")
 
-	table = []
+	table = [["Import Source", 'Videos']]
 	table.append(["Uploaded Files", num_uploaded])
 	table.append(["Youtube Hosting", num_youtube])
 	table.append(["Vimeo Hosting", num_vimeo])
 	table.append(["Wistia Hosting", num_wistia])
 	table.append(["Brightcove Hosting", num_brightcove])
-
-	result += helpers.table(table, ["Feature", "All", "Upgraded"])
+	result += helpers.chart(table,'column')
 
 	#
 	# Video Feature Stats
@@ -79,7 +78,7 @@ def view(request):
 	num_password = get_result(SELECT_PUBLISHED_REVISIONS + " WHERE vr.password !=''")
 	num_iphone_enabled = get_result(SELECT_PUBLISHED_REVISIONS + " WHERE vr.iphone_images > 20")
 
-	table = []
+	table = [['Feature', 'Videos']]
 	table.append(["Custom Colors", num_custom_colors])
 	table.append(["Custom Thumbnail", num_custom_thumbnail])
 	table.append(["Disabled Share Buttons", num_disable_share_buttons])
@@ -89,7 +88,8 @@ def view(request):
 	table.append(["Password Protection", num_password])
 	table.append(["Continuous Playback", num_continuous_playback])
 	table.append(["Iphone enabled", num_iphone_enabled])
-	result += helpers.table(table, ["Feature", "All", "Upgraded"])
+	result += helpers.chart(table,'column')
+
 
 	#
 	# Content Block Stats
@@ -106,7 +106,7 @@ def view(request):
 	num_button_block = get_result(SELECT_PUBLISHED_CONTENT_BLOCKS + " WHERE vmc.type = 'simple_button'")
 
 
-	table = []
+	table = [["Type", "Amount"]]
 	table.append(["Text ", num_text_block])
 	table.append(["Image ", num_image_block])
 	table.append(["Social ", num_social_block])
@@ -114,7 +114,7 @@ def view(request):
 	table.append(["Website ", num_website_block])
 	table.append(["Button ", num_button_block])
 	table.append(["Maps ", num_maps_block])
-	result += helpers.table(table, ["Feature", "All", "Upgraded"])
+	result += helpers.chart(table,'pie')
 
 
 	return SimpleTemplateResponse("insights/base.html", {

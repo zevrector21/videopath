@@ -3,6 +3,9 @@ import humanize
 from datetime import date, timedelta
 from django.contrib.auth.models import User
 from django.utils.encoding import smart_text
+from random import choice
+from string import ascii_uppercase
+from json import dumps
 
 base = "/admin/insights/"
 
@@ -79,26 +82,53 @@ def userlink(user):
     url = base + 'users/' + username +"/"
     return "<a href = '"+url+"'>"+username+"</a>"
 
+def chart(values, t):
+    result = ''
 
-def printgraph(values, maxlength=30.0):
+    key = (''.join(choice(ascii_uppercase) for i in range(12)))
+    result += "<div class='vp_linegraph' id='{0}'></div>".format(key)
 
-    result = ""
-    max_value = float(max(values.values()))
-    count = len(values)
-    width = 100.0 / float(count)
+    types= {
+        'line': 'LineChart',
+        'pie': 'PieChart',
+        'column': "ColumnChart"
+    }
 
-    if count > 0 and max_value > 0:
-        result = reduce(lambda x, item: x + "<div class ='vp_graph_item' style='width:{0}%'><div class = 'vp_graph_label_top'>{2}</div><div class = 'vp_graph_label_bottom'>{3}</div><div class = 'vp_graph_item_inner' style='height:{1}%'></div></div>".format(width, float(values[item]) / max_value * 100, values[item], item), values, '')
+    options = {
+        "curveType": "function",
+        "colors": ['#81b9c3','#41c3ac','#ff884d', '#ff6b57', '#273a45', '#c6c6c6', '#f8f8f8'],
+        "legend": { "position": "in"},
+        "vAxis": {
+            "viewWindow": {
+                "min": 0
+            }
+        },
+        "pointSize": 3
+    }
 
-    return "<div class='vp_graph'>" + result + "</div>"
+    result += (
+        "<script type='text/javascript'>"
+        "google.charts.setOnLoadCallback({0});"
+        "function {0}() {{"
+
+            "var data = google.visualization.arrayToDataTable({1});"
+
+            "var options = {2};"
+            "var chart = new google.visualization.{3}(document.getElementById('{0}'));"
+            "chart.draw(data, options);"
+        "}}"
+        "</script>"
+    ).format(key, dumps(values), dumps(options), types[t])
+
+    return result
 
 
 #
 # Build weekly date graph
 #
-def dategraph(models, datefield, accumulate=False, aggregate_field = None):
+def dategraph(models, datefield, accumulate=False, aggregate_field = None, metric_name='name'):
 
-    timestring = "week %G %V"
+    timestring = "%G %V"
 
     # build dict
     values = {}
@@ -128,4 +158,9 @@ def dategraph(models, datefield, accumulate=False, aggregate_field = None):
             total = total + values[key]
             values[key] = total
 
-    return printgraph(values)
+    return chart([['week', metric_name]] + values.items(), 'line')
+
+
+
+
+

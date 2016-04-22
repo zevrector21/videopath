@@ -4,7 +4,7 @@ urlpatterns = patterns('',
    
    url(r'^insights/kpis-cohort/', 'videopath.apps.vp_admin.views.kpis-cohort.view'),
    url(r'^insights/kpis-all/', 'videopath.apps.vp_admin.views.kpis-all.view'),
-
+   url(r'^insights/kpis-web/', 'videopath.apps.vp_admin.views.kpis-web.view'),
    url(r'^insights/users/sales/', 'videopath.apps.vp_admin.views.users.listview_sales'),
    url(r'^insights/users/(?P<username>.+)/', 'videopath.apps.vp_admin.views.users.userview'),
    url(r'^insights/users/', 'videopath.apps.vp_admin.views.users.listview'),

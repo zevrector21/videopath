@@ -77,11 +77,15 @@ class TokenAdmin(admin.ModelAdmin):
     fields = ('user',)
     ordering = ('-last_used',)
     raw_id_fields = ['user',]
+    search_fields = ['user__username', 'user__email']
+
     autocomplete_lookup_fields = {
         'fk': ['user',],
     }
 
 class OTTokenAdmin(admin.ModelAdmin):
+    search_fields = ['user__username', 'user__email']
+
     list_display = ('key', 'created')
     #fields = ('key',)
     ordering = ('created',)

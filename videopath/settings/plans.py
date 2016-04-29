@@ -260,6 +260,9 @@ PLANS = {
         'feature_icon': True,
         'feature_advanced_library': True,
         'feature_advanced_analytics': True,
+        'feature_email_collector': True,
+        'feature_brightcove': True,
+
 
         #
         # variants

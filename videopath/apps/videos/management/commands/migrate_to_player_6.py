@@ -22,9 +22,8 @@ accs = [
 class Command(BaseCommand):
     def handle(self, *args, **options):
     	count = 0
-       	for v in Video.objects.filter(team__owner__email__in=accs):
+       	for v in Video.objects.all():
        		count += 1
-       		print count
        		v.player_version = '6'
        		v.save()
 

@@ -20,7 +20,8 @@ PLAN_FEATURES = [
     'feature_icon',
     'feature_advanced_video_settings', 
     'feature_dev',
-    'feature_advanced_analytics'
+    'feature_advanced_analytics',
+    'feature_whitelabel'
 ]
 
 PLAN_DEFAULTS = {
@@ -447,6 +448,7 @@ PLANS = {
                 'feature_integrations': True,
                 'feature_advanced_analytics': True,
                 'feature_email_collector': True,
+                'feature_whitelabel': True,
 
                 'price_eur': 34900,
                 'price_usd': 39900,

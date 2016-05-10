@@ -16,7 +16,7 @@ You will need these things to start
 	git
 	heroku (only for running on heroku)
 	libmemcached (brew install libmemcached)
-	postgres (for exampel via postgres.app on mac)
+	postgres (brew install postgresql)
 
 ### Recommended 
 

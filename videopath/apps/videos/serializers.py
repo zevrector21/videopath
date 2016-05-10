@@ -169,7 +169,8 @@ revision_fields = (
     'tracking_pixel_end',
     'created',
     'revision_type',
-    'branded'
+    'branded',
+    'whitelabel'
 )
 
 revision_detail_fields = (
@@ -195,6 +196,7 @@ class VideoRevisionSerializer(serializers.ModelSerializer):
     ui_icon = serializers.SerializerMethodField()
     revision_type = serializers.SerializerMethodField()
     branded = serializers.SerializerMethodField()
+    whitelabel = serializers.SerializerMethodField()
 
     # some helper functions
     def get_key(self, video_revision):
@@ -221,6 +223,14 @@ class VideoRevisionSerializer(serializers.ModelSerializer):
             branded = video_revision.video.team.owner.subscription.plan == 'free-free'
         except: branded = True
         return branded
+
+    def get_whitelabel(self, video_revision):
+        plan = "free-free"
+        try:
+            plan = video_revision.video.team.owner.subscription.plan
+        except: pass
+        plan = settings.PLANS.get(plan, settings.DEFAULT_PLAN)
+        return plan.get('feature_whitelabel', False)
 
 
     order_by = '-created'

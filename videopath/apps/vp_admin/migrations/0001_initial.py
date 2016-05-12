@@ -8,8 +8,8 @@ import django.contrib.auth.models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('payments', '0015_auto_20160511_1515'),
-        ('videos', '0024_auto_20160511_1515'),
+        ('videos', '0001_initial'),
+        ('payments', '0001_initial'),
         ('auth', '0006_require_contenttypes_0002'),
     ]
 

@@ -139,6 +139,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
     'raven.contrib.django.raven_compat', # error reporting with raven
+    'django_extensions',
     #'south',
     'django_nose',
     'userena',

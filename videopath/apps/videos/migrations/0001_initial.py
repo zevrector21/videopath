@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db import models, migrations
+from django.db import migrations, models
 import videopath.apps.common.models
 import django.db.models.deletion
 from django.conf import settings
@@ -10,8 +10,8 @@ from django.conf import settings
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('users', '__first__'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('files', '0001_initial'),
     ]
 
     operations = [
@@ -27,9 +27,6 @@ class Migration(migrations.Migration):
                 ('overlay_width', models.IntegerField(default=-1)),
                 ('overlay_height', models.IntegerField(default=-1)),
             ],
-            options={
-            },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='MarkerContent',
@@ -38,7 +35,7 @@ class Migration(migrations.Migration):
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('key', models.CharField(db_index=True, max_length=50, blank=True)),
-                ('type', models.CharField(default=b'text', max_length=20, choices=[(b'text', b'text'), (b'title', b'title'), (b'image', b'image'), (b'website', b'website'), (b'map', b'map'), (b'video', b'video'), (b'media', b'media'), (b'audio', b'audio'), (b'simple_button', b'simple_button'), (b'social', b'social')])),
+                ('type', models.CharField(default=b'text', max_length=20, choices=[(b'text', b'text'), (b'title', b'title'), (b'image', b'image'), (b'website', b'website'), (b'map', b'map'), (b'video', b'video'), (b'media', b'media'), (b'audio', b'audio'), (b'simple_button', b'simple_button'), (b'social', b'social'), (b'email_collector', b'email_collector')])),
                 ('ordinal', models.IntegerField(default=0, null=True, blank=True)),
                 ('text', models.TextField(null=True, blank=True)),
                 ('data', models.TextField(null=True, blank=True)),
@@ -46,9 +43,6 @@ class Migration(migrations.Migration):
                 ('url', models.CharField(max_length=255, blank=True)),
                 ('marker', models.ForeignKey(related_name='contents', to='videos.Marker')),
             ],
-            options={
-            },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='PlayerAppearance',
@@ -79,14 +73,41 @@ class Migration(migrations.Migration):
                 ('ui_font_overlay_titles', models.CharField(max_length=255, null=True, blank=True)),
                 ('ui_font_overlay_text', models.CharField(max_length=255, null=True, blank=True)),
                 ('endscreen_logo', models.CharField(max_length=255, null=True, blank=True)),
-                ('icon', models.CharField(max_length=255, null=True, blank=True)),
-                ('language', models.CharField(default=b'en', max_length=50, choices=[(b'en', b'English'), (b'de', b'German'), (b'fr', b'French')])),
-                ('sharing_disabled', models.BooleanField(default=False)),
+                ('ui_icon', models.CharField(max_length=255, null=True, blank=True)),
+                ('ui_icon_link_target', models.CharField(max_length=1024, null=True, blank=True)),
+                ('ui_click_hint_color', videopath.apps.common.models.ColorField(default=b'#ffffff', max_length=10)),
+                ('ui_click_hint_appearences', models.IntegerField(default=1)),
+                ('ui_language', models.CharField(default=b'en', max_length=50, choices=[(b'en', b'English'), (b'de', b'German'), (b'fr', b'French')])),
                 ('user', models.OneToOneField(related_name='default_player_appearance', null=True, blank=True, to=settings.AUTH_USER_MODEL)),
             ],
+        ),
+        migrations.CreateModel(
+            name='Source',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('created', models.DateTimeField(auto_now_add=True)),
+                ('modified', models.DateTimeField(auto_now=True)),
+                ('key', models.CharField(unique=True, max_length=50, blank=True)),
+                ('status', models.CharField(default=b'ok', max_length=255, choices=[(b'awaiting_upload', b'awaiting_upload'), (b'processing', b'processing'), (b'ok', b'ok'), (b'error', b'error')])),
+                ('service_identifier', models.CharField(default=b'', max_length=255)),
+                ('service', models.CharField(default=b'none', max_length=255, choices=[(b'none', b'none'), (b'youtube', b'youtube'), (b'vimeo', b'vimeo'), (b'wistia', b'wistia'), (b'brightcove', b'brightcove'), (b'videopath', b'videopath'), (b'custom', b'custom')])),
+                ('duration', models.FloatField(default=0)),
+                ('aspect', models.FloatField(default=0)),
+                ('description', models.CharField(default=b'', max_length=255)),
+                ('thumbnail_small', models.CharField(default=b'', max_length=2048)),
+                ('thumbnail_large', models.CharField(default=b'', max_length=2048)),
+                ('file_mp4', models.CharField(default=b'', max_length=512, blank=True)),
+                ('file_webm', models.CharField(default=b'', max_length=512, blank=True)),
+                ('youtube_allow_clickthrough', models.BooleanField(default=False)),
+                ('notes', models.CharField(max_length=255, blank=True)),
+                ('jpg_sequence_support', models.BooleanField(default=False)),
+                ('jpg_sequence_length', models.IntegerField(default=0)),
+                ('sprite_support', models.BooleanField(default=False)),
+                ('sprite_length', models.IntegerField(default=0)),
+            ],
             options={
+                'abstract': False,
             },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='Video',
@@ -96,15 +117,11 @@ class Migration(migrations.Migration):
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('key', models.CharField(db_index=True, unique=True, max_length=50, blank=True)),
                 ('published', models.IntegerField(default=0, choices=[(0, b'Private'), (1, b'Public')])),
-                ('nice_name', models.CharField(db_index=True, max_length=50, blank=True)),
                 ('total_plays', models.IntegerField(default=0)),
                 ('total_views', models.IntegerField(default=0)),
-                ('player_version', models.CharField(default=b'2', max_length=20, choices=[(b'1', b'1 - Scruffy'), (b'2', b'2 - Bender')])),
+                ('player_version', models.CharField(default=b'6', max_length=20, choices=[(b'1', b'1 - Scruffy'), (b'2', b'2 - Bender'), (b'3', b'3 - Zoidberg'), (b'4', b'4 - Zap Brannigan'), (b'5', b'5 - Leila'), (b'6', b'6 - Hedonism Bot')])),
                 ('archived', models.BooleanField(default=False)),
             ],
-            options={
-            },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='VideoRevision',
@@ -114,13 +131,16 @@ class Migration(migrations.Migration):
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('title', models.CharField(default=b'New Video', max_length=255)),
                 ('description', models.TextField(blank=True)),
-                ('video_appearance', models.TextField(blank=True)),
-                ('custom_tracking_code', models.CharField(max_length=20, blank=True)),
-                ('ui_color_1', videopath.apps.common.models.ColorField(default=b'#424242', max_length=10)),
+                ('published_date', models.DateTimeField(null=True, blank=True)),
+                ('ui_color_1', videopath.apps.common.models.ColorField(default=b'#273a45', max_length=10)),
                 ('ui_color_2', videopath.apps.common.models.ColorField(default=b'#ffffff', max_length=10)),
+                ('ui_icon', models.CharField(max_length=512, blank=True)),
+                ('ui_icon_link_target', models.CharField(default=b'https://videopath.com', max_length=1024, null=True, blank=True)),
                 ('ui_disable_share_buttons', models.BooleanField(default=False)),
                 ('ui_equal_marker_lengths', models.BooleanField(default=False)),
                 ('ui_fit_video', models.BooleanField(default=False)),
+                ('continuous_playback', models.BooleanField(default=False)),
+                ('custom_tracking_code', models.CharField(max_length=20, blank=True)),
                 ('iphone_images', models.IntegerField(default=-1)),
                 ('endscreen_url', models.CharField(max_length=512, blank=True)),
                 ('endscreen_title', models.CharField(max_length=512, blank=True)),
@@ -129,36 +149,37 @@ class Migration(migrations.Migration):
                 ('endscreen_button_target', models.CharField(default=b'http://videopath.com', max_length=512, blank=True)),
                 ('endscreen_button_color', videopath.apps.common.models.ColorField(default=b'#ff6b57', max_length=10, blank=True)),
                 ('endscreen_subtitle', models.CharField(default=b'Create your own interactive video', max_length=512, blank=True)),
-                ('custom_thumbnail', models.ForeignKey(related_name='video_thumbnail', default=None, blank=True, to='files.ImageFile', null=True)),
+                ('tracking_pixel_start', models.TextField(default=b'', blank=True)),
+                ('tracking_pixel_q1', models.TextField(default=b'', blank=True)),
+                ('tracking_pixel_q2', models.TextField(default=b'', blank=True)),
+                ('tracking_pixel_q3', models.TextField(default=b'', blank=True)),
+                ('tracking_pixel_end', models.TextField(default=b'', blank=True)),
+                ('password', models.CharField(max_length=512, blank=True)),
+                ('password_hashed', models.CharField(max_length=512, blank=True)),
+                ('password_salt', models.CharField(max_length=512, blank=True)),
                 ('player_appearance', models.ForeignKey(related_name='video_revisions', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='videos.PlayerAppearance', null=True)),
+                ('source', models.ForeignKey(related_name='revisions', on_delete=django.db.models.deletion.SET_NULL, default=None, blank=True, to='videos.Source', null=True)),
                 ('video', models.ForeignKey(related_name='revisions', to='videos.Video')),
             ],
-            options={
-            },
-            bases=(models.Model,),
         ),
         migrations.AddField(
             model_name='video',
             name='current_revision',
             field=models.OneToOneField(related_name='video_current', null=True, on_delete=django.db.models.deletion.SET_NULL, blank=True, to='videos.VideoRevision'),
-            preserve_default=True,
         ),
         migrations.AddField(
             model_name='video',
             name='draft',
             field=models.OneToOneField(related_name='video_draft', null=True, on_delete=django.db.models.deletion.SET_NULL, blank=True, to='videos.VideoRevision'),
-            preserve_default=True,
         ),
         migrations.AddField(
             model_name='video',
-            name='user',
-            field=models.ForeignKey(related_name='videos', to=settings.AUTH_USER_MODEL),
-            preserve_default=True,
+            name='team',
+            field=models.ForeignKey(related_name='videos', to='users.Team'),
         ),
         migrations.AddField(
             model_name='marker',
             name='video_revision',
             field=models.ForeignKey(related_name='markers', to='videos.VideoRevision'),
-            preserve_default=True,
         ),
     ]

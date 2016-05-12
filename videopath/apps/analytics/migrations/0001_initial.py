@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db import models, migrations
+from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('videos', '0001_initial'),
     ]
 
     operations = [
@@ -25,10 +26,8 @@ class Migration(migrations.Migration):
                 ('popular_markers', models.TextField(default=b'{}')),
                 ('video_completed', models.IntegerField(default=0)),
                 ('date', models.DateField()),
+                ('video', models.ForeignKey(related_name='daily_analytics', to='videos.Video')),
             ],
-            options={
-            },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='TotalAnalyticsData',
@@ -44,9 +43,7 @@ class Migration(migrations.Migration):
                 ('avg_session_time', models.FloatField(default=0)),
                 ('popular_markers', models.TextField(default=b'{}')),
                 ('video_completed', models.IntegerField(default=0)),
+                ('video', models.ForeignKey(related_name='total_analytics', to='videos.Video')),
             ],
-            options={
-            },
-            bases=(models.Model,),
         ),
     ]

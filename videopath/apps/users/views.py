@@ -1,6 +1,3 @@
-import random
-import string
-
 from videopath.apps.users.models import User
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
@@ -43,11 +40,8 @@ def api_token(request):
     
     # logout    
     if request.method == "DELETE":
-        if not request.user.is_authenticated():
-            raise PermissionDenied
         AuthenticationToken.objects.get(key=request.auth).delete()
-        return Response()
-
+        
     # get token
     if request.method == "POST":
         username = request.data.get("username", "").lower()
@@ -63,6 +57,8 @@ def api_token(request):
         else:
             raise PermissionDenied
 
+    return Response()
+
 #
 # Generate a new password and send an email
 #
@@ -71,16 +67,12 @@ def api_token(request):
 def password_reset(request):
 
     name = request.data.get("username", None).lower()
-    try:
-        user = User.objects.get(Q(username=name) | Q(email=name))
+    try: user = User.objects.get(Q(username=name) | Q(email=name))
     except User.DoesNotExist or User.MultipleObjectsReturned:
         raise ValidationError(detail="Could not find user.")
 
     # create new pw
-    password = ''.join(random.choice(
-        string.ascii_uppercase + string.digits + string.ascii_lowercase) for x in range(12))
-    user.set_password(password)
-    user.save()
+    password = user.create_new_password()
     send_mail('forgot_password', {'password':password}, user)
 
     return Response(status=201)
@@ -203,15 +195,15 @@ class UserViewSet(viewsets.ModelViewSet):
         user.settings.save()
 
         # create response
-        data = UserSerializer(user, context={'request': request}).data
-        data["api_token"] = token.key
-        data["api_token_once"] = ottoken.key
+        result = UserSerializer(user, context={'request': request}).data
+        result["api_token"] = token.key
+        result["api_token_once"] = ottoken.key
 
         slack = service_provider.get_service("slack")
         slack.notify("User " + user.email + " just signed up from " + geo_record["country_full"] + ".")
 
         # possibly return some tokens and shit
-        return Response(data, status=status.HTTP_201_CREATED)
+        return Response(result, status=status.HTTP_201_CREATED)
 
 #
 # Teams

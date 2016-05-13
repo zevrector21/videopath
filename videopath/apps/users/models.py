@@ -1,3 +1,7 @@
+import random
+import string
+
+
 from django.db import models
 from django.contrib.auth.models import User 
 
@@ -9,6 +13,13 @@ from django.conf import settings
 #
 # Add stuff to user model
 #
+def create_new_password(self):
+    password = ''.join(random.choice(
+        string.ascii_uppercase + string.digits + string.ascii_lowercase) for x in range(12))
+    self.set_password(password)
+    self.save()
+    return password
+User.add_to_class('create_new_password', create_new_password)
 
 
 #

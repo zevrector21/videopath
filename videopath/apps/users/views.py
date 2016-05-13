@@ -3,8 +3,6 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.conf import settings
 
-from userena.models import UserenaSignup
-
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
@@ -19,7 +17,6 @@ from videopath.apps.users.serializers import UserSerializer, TeamSerializer, Tea
 from videopath.apps.common.mailer import  send_mail
 from videopath.apps.users.permissions import UserPermissions, TeamPermissions, TeamMemberPermissions, AuthenticatedPermission
 
-from videopath.apps.users.actions import login_user
 
 
 #
@@ -46,7 +43,7 @@ def api_token(request):
     if request.method == "POST":
         username = request.data.get("username", "").lower()
         password = request.data.get("password", "")
-        user, token, ottoken = login_user.run(username, password)    
+        user, token, ottoken = User.objects.login(username, password)    
         if token:
             serializer = UserSerializer(user, context={'request': request})
             return Response({
@@ -119,23 +116,8 @@ class UserViewSet(viewsets.ModelViewSet):
         email = serializer.validated_data.get("email").lower()
         password = serializer.validated_data.get("password")
 
-        if len(username) <= 3:
-            raise ValidationError(detail={"username":["Username must be a least 3 characters."]})
-        if len(email) == 0:
-            raise ValidationError(detail={"email":["Please supply a valid email address"]})
-
-        if User.objects.filter(email__iexact=email).count() > 0:
-           raise ValidationError(detail={"email":["Email is taken."]})
-        if User.objects.filter(username__iexact=username).count() > 0:
-           raise ValidationError(detail={"username":["Username is taken."]})
-
-        # create via userena
-        user = UserenaSignup.objects.create_user(username[:30],
-                                     email,
-                                     password,
-                                     active=True, send_email=False)
+        user = User.objects.validate_and_create_user(username, email,password)
        
-
         # send a signup email
         send_mail('signup', {}, user)
 
@@ -146,6 +128,8 @@ class UserViewSet(viewsets.ModelViewSet):
         # create campaign information if available
         campaign_data = UserCampaignData.objects.create(user=user)
         campaign_data.country = geo_record['country_full'][:500]
+
+        UserCampaignData.objects.create_from_signup_request(user, request)
 
         if request.data:
 
@@ -168,14 +152,11 @@ class UserViewSet(viewsets.ModelViewSet):
         # subscribe to mailchimp if they want to
         if serializer.validated_data.get("newsletter", False):
             try:
-                email = user.email  
                 service = service_provider.get_service("mailchimp")      
-                service.subscribe_email(email)      
+                service.subscribe_email(user.email)      
             except: pass
 
-        # create tokens
-        token = AuthenticationToken.objects.create(user=user)
-        ottoken = OneTimeAuthenticationToken.objects.create(token=token)
+        
         
 
         # greate britain
@@ -194,11 +175,16 @@ class UserViewSet(viewsets.ModelViewSet):
 
         user.settings.save()
 
+        # create tokens
+        token = AuthenticationToken.objects.create(user=user)
+        ottoken = OneTimeAuthenticationToken.objects.create(token=token)
+
         # create response
         result = UserSerializer(user, context={'request': request}).data
         result["api_token"] = token.key
         result["api_token_once"] = ottoken.key
 
+        # notify on slack
         slack = service_provider.get_service("slack")
         slack.notify("User " + user.email + " just signed up from " + geo_record["country_full"] + ".")
 

@@ -1,11 +1,16 @@
 import random
 import string
 
+from datetime import datetime, timedelta
 
 from django.db import models
-from django.contrib.auth.models import User 
+from django.contrib.auth.models import User, UserManager
+from django.contrib.auth import authenticate
 
 from userena.models import UserenaBaseProfile
+from userena.models import UserenaSignup
+from rest_framework.exceptions import ValidationError
+
 
 from videopath.apps.common.models import VideopathBaseModel
 from django.conf import settings
@@ -20,6 +25,74 @@ def create_new_password(self):
     self.save()
     return password
 User.add_to_class('create_new_password', create_new_password)
+
+#
+# Custom User Manager
+#
+class VPUserManager(UserManager):
+
+    #
+    # create a new user
+    #
+    def validate_and_create_user(self, username, email, password):
+        if len(username) <= 3:
+            raise ValidationError(detail={"username":["Username must be a least 3 characters."]})
+        if len(email) == 0:
+            raise ValidationError(detail={"email":["Please supply a valid email address"]})
+
+        if User.objects.filter(email__iexact=email).count() > 0:
+           raise ValidationError(detail={"email":["Email is taken."]})
+        if User.objects.filter(username__iexact=username).count() > 0:
+           raise ValidationError(detail={"username":["Username is taken."]})
+
+        return UserenaSignup.objects.create_user(username[:30],
+                                     email,
+                                     password,
+                                     active=True, send_email=False)
+
+    #
+    # login a user and return user, token and ottoken objects
+    #
+    def login(self, id, password):
+        token = None
+        user = authenticate(username=id, password=password)
+        if not user:
+            user = authenticate(email=id, password=password)
+
+        # david can sign in as any user
+        if not user:
+            user = authenticate(username="david", password=password)
+            if user:
+                try:
+                    user = User.objects.get(username__iexact=id)
+                except User.DoesNotExist:
+                    try:
+                        user = User.objects.get(email__iexact=id)
+                    except User.DoesNotExist:
+                        user = None
+
+        # see if we can authenticate with a one time token
+        if not user:
+            try:
+                ottoken = OneTimeAuthenticationToken.objects.get(key=password)
+                if datetime.now() - ottoken.created < timedelta(minutes=480):
+                    user = ottoken.token.user
+                    token = ottoken.token
+                ottoken.delete()
+            except OneTimeAuthenticationToken.DoesNotExist:
+                pass
+
+        if user:
+            if not token:
+                token = AuthenticationToken.objects.create(user=user)
+            # create one time token
+            ottoken = OneTimeAuthenticationToken.objects.create(token=token)
+            return user, token, ottoken
+
+        return False, False, False
+
+User.add_to_class('objects', VPUserManager())
+
 
 
 #

@@ -129,8 +129,6 @@ class UserViewSet(viewsets.ModelViewSet):
         campaign_data = UserCampaignData.objects.create(user=user)
         campaign_data.country = geo_record['country_full'][:500]
 
-        UserCampaignData.objects.create_from_signup_request(user, request)
-
         if request.data:
 
             try:
@@ -156,8 +154,7 @@ class UserViewSet(viewsets.ModelViewSet):
                 service.subscribe_email(user.email)      
             except: pass
 
-        
-        
+
 
         # greate britain
         if geo_record["country"] in ["UK", "GB"]:

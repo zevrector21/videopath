@@ -2,7 +2,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from videopath.apps.vp_admin.signals import hourly_jobs
 
-from videopath.apps.videos.models import Video, VideoRevision, Source
+from videopath.apps.videos.models import Video, VideoRevision
 
 from videopath.apps.payments.signals import subscription_updated
 

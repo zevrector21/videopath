@@ -2,7 +2,7 @@ from django.db.models.signals import pre_delete, post_save
 from django.dispatch import receiver
 from django.core.cache import cache
 
-from django.contrib.auth.models import User
+from videopath.apps.users.models import User
 
 from videopath.apps.users.models import AuthenticationToken, Team
 from videopath.apps.vp_admin.signals import hourly_jobs, daily_jobs

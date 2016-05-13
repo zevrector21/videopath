@@ -3,7 +3,7 @@ from dateutil.relativedelta import relativedelta
 
 from django.db.models import Sum
 from django.conf import settings
-from django.contrib.auth.models import User
+from videopath.apps.users.models import User
 
 from videopath.apps.payments.models import QuotaInformation
 from videopath.apps.analytics.models import DailyAnalyticsData

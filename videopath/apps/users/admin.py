@@ -98,6 +98,7 @@ class UserCampaignDataAdmin(admin.ModelAdmin):
 
 #admin.site.unregister(User)
 admin.site.unregister(UserSettings)
+admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 admin.site.register(Team, TeamAdmin)
 admin.site.register(TeamMember, TeamMemberAdmin)

@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User as _User
+from django.contrib.auth.models import User 
 
 from userena.models import UserenaBaseProfile
 
@@ -7,22 +7,16 @@ from videopath.apps.common.models import VideopathBaseModel
 from django.conf import settings
 
 #
-# Proxy model for users, so that we can add stuff to it
+# Add stuff to user model
 #
-class User(_User):
-    def reload(self):
-        return self.__class__.objects.get(pk=self.pk)
-    class Meta:
-        proxy = True
-    def __unicode__(self):
-        return self.email + " - " + self.username
+
 
 #
 # All the users settings go here
 #
 class UserSettings(UserenaBaseProfile):
 
-    user = models.OneToOneField(_User,
+    user = models.OneToOneField(User,
                                 unique=True,
                                 verbose_name=('user'),
                                 related_name='settings')
@@ -58,15 +52,15 @@ class Team(VideopathBaseModel):
 
     objects = Teams()
 
-    owner = models.ForeignKey(_User, related_name='owned_teams')
+    owner = models.ForeignKey(User, related_name='owned_teams')
     name = models.CharField(max_length=150, default='My Projects')
-    members = models.ManyToManyField(_User, through='TeamMember')
+    members = models.ManyToManyField(User, through='TeamMember')
     archived = models.BooleanField(default=False)
 
     # each user has a default team where his projects go
     # this is defined on team, as the django user object is 
     # not really mutable
-    is_default_team_of_user = models.OneToOneField(_User,
+    is_default_team_of_user = models.OneToOneField(User,
                                                 unique=True,
                                                 verbose_name=('default_team_of_user'),
                                                 related_name='default_team',
@@ -134,14 +128,14 @@ class TeamMember(VideopathBaseModel):
     )
 
     team = models.ForeignKey(Team)
-    user = models.ForeignKey(_User)
+    user = models.ForeignKey(User)
     role = models.CharField(max_length=20, choices=TYPE_CHOICES, default=ROLE_EDITOR)
 
 #
 # Campaign Data to store info about where the user came from
 #
 class UserCampaignData(VideopathBaseModel):
-    user = models.OneToOneField(_User, 
+    user = models.OneToOneField(User, 
                                 unique=True, 
                                 verbose_name=('user'),
                                 related_name='campaign_data'
@@ -162,7 +156,7 @@ class UserCampaignData(VideopathBaseModel):
 # SalesInfo, saves connection to crm (pipedrive atm)
 #
 class UserSalesInfo(VideopathBaseModel):
-    user = models.OneToOneField(_User, 
+    user = models.OneToOneField(User, 
                                 unique=True, 
                                 verbose_name=('user'),
                                 related_name='sales_info'
@@ -175,7 +169,7 @@ class UserSalesInfo(VideopathBaseModel):
 #
 class UserActivity(VideopathBaseModel):
 
-    user = models.OneToOneField(_User,
+    user = models.OneToOneField(User,
                                 unique=True,
                                 verbose_name=('user'),
                                 related_name='activity')
@@ -185,7 +179,7 @@ class UserActivity(VideopathBaseModel):
 # remember days on which users where logged in
 #
 class UserActivityDay(VideopathBaseModel):
-    user = models.ForeignKey(_User, related_name="user_activity_day")
+    user = models.ForeignKey(User, related_name="user_activity_day")
     day = models.DateField(auto_now_add=True)
     class Meta:
         unique_together = ("user", "day")
@@ -204,7 +198,7 @@ class AutomatedMail(VideopathBaseModel):
         (TYPE_FOLLOW_UP_21, TYPE_FOLLOW_UP_21),
         (TYPE_FOLLOW_UP_42, TYPE_FOLLOW_UP_42),
     )
-    user = models.ForeignKey(_User, related_name="automated_mails")
+    user = models.ForeignKey(User, related_name="automated_mails")
     mailtype = models.CharField(
         max_length=20, choices=TYPE_CHOICES, default="")
 
@@ -213,7 +207,7 @@ class AutomatedMail(VideopathBaseModel):
 #
 class AuthenticationToken(VideopathBaseModel):
 
-    user = models.ForeignKey(_User, related_name="authentication_tokens")
+    user = models.ForeignKey(User, related_name="authentication_tokens")
     key = models.CharField(max_length=40, primary_key=True)
     last_used = models.DateTimeField(auto_now_add=True, blank=True)
 

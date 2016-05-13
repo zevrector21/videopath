@@ -5,7 +5,7 @@ from django.core.cache import cache
 from rest_framework.test import APITestCase
 from rest_framework.test import APIClient
 
-from videopath.apps.users.models import AuthenticationToken
+from videopath.apps.users.models import AuthenticationToken, User
 
 USER1_DETAILS = {
     "username": "dave",

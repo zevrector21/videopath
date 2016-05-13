@@ -1,7 +1,7 @@
 import random
 import string
 
-from django.contrib.auth.models import User
+from videopath.apps.users.models import User
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.conf import settings

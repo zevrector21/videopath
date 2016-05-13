@@ -153,14 +153,17 @@ class VideoViewSet(viewsets.ModelViewSet):
         
         videos = Video.objects.filter_for_user(self.request.user).filter(archived=False)
 
+        # filter by team
         team_id = self.request.resolver_match.kwargs.get('team_id', None)
         if team_id:
             videos = videos.filter(team_id=team_id)
 
+        # filter by query
         q = self.request.GET.get('q')
         if q:
             q = q.strip()
             videos = videos.filter(Q(draft__title__icontains = q) | Q(draft__description__icontains = q))
+
         return videos.extra(order_by=['-created']).distinct()
 
     def perform_update(self, serializer):
@@ -178,16 +181,14 @@ class VideoViewSet(viewsets.ModelViewSet):
 
 
     def perform_create(self, serializer):
-        team_id = self.request.data.get('team')
-        team = None
-        if team_id:
-            try:
-                team = Team.objects.get(pk=team_id)
-            except Team.DoesNotExist: pass
-        if not team:
-            team = self.request.user.default_team
 
-        
+        # find correct team for video
+        team_id = self.request.data.get('team')
+        team = self.request.user.default_team
+        if team_id:
+            try: team = Team.objects.get(pk=team_id)
+            except Team.DoesNotExist: pass
+
         instance = serializer.save(team=team)
 
         #
@@ -213,7 +214,6 @@ class VideoViewSet(viewsets.ModelViewSet):
                 instance.draft = revision_copy
                 instance.team = revision.video.team
                 instance.save()
-
 
 
         # if the demo attribute is present in the request

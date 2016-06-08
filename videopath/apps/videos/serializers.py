@@ -170,7 +170,8 @@ revision_fields = (
     'created',
     'revision_type',
     'branded',
-    'whitelabel'
+    'whitelabel',
+    'ui_enable_mobile_portrait'
 )
 
 revision_detail_fields = (

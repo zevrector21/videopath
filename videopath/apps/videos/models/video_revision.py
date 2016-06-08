@@ -63,6 +63,7 @@ class VideoRevision(VideopathBaseModel):
     ui_disable_share_buttons = models.BooleanField(default=False)
     ui_equal_marker_lengths = models.BooleanField(default=False)
     ui_fit_video = models.BooleanField(default=False)
+    ui_enable_mobile_portrait = models.BooleanField(default=False)
 
     # other settings
     continuous_playback = models.BooleanField(default=False)

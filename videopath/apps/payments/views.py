@@ -1,4 +1,3 @@
-
 from django.conf import settings
 from django.http import Http404
 from django.shortcuts import get_object_or_404
@@ -46,13 +45,14 @@ def subscription_view(request, uid=None):
         except:
             raise ValidationError(detail="Please make sure you have a credit card and a valid address.")
         plan_id = request.data.get("plan_id", None)
-        success, message = subscription_util.subscribe_user(request.user, plan_id)
+        success, message = request.user.subscribe_to_plan(plan_id)
+
         if not success:
             raise ValidationError(detail=message)
 
     # unsubcribe
     if request.method == "DELETE":
-        subscription_util.unsubscribe_user(request.user)
+        request.user.unsubscribe_from_plan()
 
 
     # return current subscription here

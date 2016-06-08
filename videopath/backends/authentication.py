@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from videopath.apps.users.models import User
 
 
 class EmailAuthBackend(object):

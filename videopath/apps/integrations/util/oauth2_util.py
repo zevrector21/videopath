@@ -5,7 +5,6 @@ import json
 from datetime import date
 
 from ..models import Integration
-from django.contrib.auth.models import User
 from videopath.apps.users.models import Team
 
 

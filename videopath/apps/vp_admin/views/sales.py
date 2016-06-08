@@ -6,7 +6,7 @@ from urlparse import urlparse
 from django.shortcuts import redirect
 
 from django.template.response import SimpleTemplateResponse
-from django.contrib.auth.models import User
+from videopath.apps.users.models import User
 from videopath.apps.videos.models import Video
 
 from videopath.apps.users.actions import move_user_to_pipedrive

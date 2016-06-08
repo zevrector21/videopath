@@ -1,7 +1,7 @@
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
-from django.contrib.auth.models import User
+from videopath.apps.users.models import User
 
 from videopath.apps.common.test_utils import BaseTestCase
 from videopath.apps.payments.util import subscription_util

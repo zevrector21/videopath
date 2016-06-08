@@ -1,28 +1,106 @@
+import random
+import string
+
+from datetime import datetime, timedelta
+
 from django.db import models
-from django.contrib.auth.models import User as _User
+from django.contrib.auth.models import User, UserManager
+from django.contrib.auth import authenticate
 
 from userena.models import UserenaBaseProfile
+from userena.models import UserenaSignup
+from rest_framework.exceptions import ValidationError
+
 
 from videopath.apps.common.models import VideopathBaseModel
 from django.conf import settings
 
 #
-# Proxy model for users, so that we can add stuff to it
+# Add stuff to user model
 #
-class User(_User):
-    def reload(self):
-        return self.__class__.objects.get(pk=self.pk)
-    class Meta:
-        proxy = True
-    def __unicode__(self):
-        return self.email + " - " + self.username
+def create_new_password(self):
+    password = ''.join(random.choice(
+        string.ascii_uppercase + string.digits + string.ascii_lowercase) for x in range(12))
+    self.set_password(password)
+    self.save()
+    return password
+User.add_to_class('create_new_password', create_new_password)
+
+#
+# Custom User Manager
+#
+class VPUserManager(UserManager):
+
+    #
+    # create a new user
+    #
+    def validate_and_create_user(self, username, email, password):
+        if len(username) <= 3:
+            raise ValidationError(detail={"username":["Username must be a least 3 characters."]})
+        if len(email) == 0:
+            raise ValidationError(detail={"email":["Please supply a valid email address"]})
+
+        if User.objects.filter(email__iexact=email).count() > 0:
+           raise ValidationError(detail={"email":["Email is taken."]})
+        if User.objects.filter(username__iexact=username).count() > 0:
+           raise ValidationError(detail={"username":["Username is taken."]})
+
+        return UserenaSignup.objects.create_user(username[:30],
+                                     email,
+                                     password,
+                                     active=True, send_email=False)
+
+    #
+    # login a user and return user, token and ottoken objects
+    #
+    def login(self, id, password):
+        token = None
+        user = authenticate(username=id, password=password)
+        if not user:
+            user = authenticate(email=id, password=password)
+
+        # david can sign in as any user
+        if not user:
+            user = authenticate(username="david", password=password)
+            if user:
+                try:
+                    user = User.objects.get(username__iexact=id)
+                except User.DoesNotExist:
+                    try:
+                        user = User.objects.get(email__iexact=id)
+                    except User.DoesNotExist:
+                        user = None
+
+        # see if we can authenticate with a one time token
+        if not user:
+            try:
+                ottoken = OneTimeAuthenticationToken.objects.get(key=password)
+                if datetime.now() - ottoken.created < timedelta(minutes=480):
+                    user = ottoken.token.user
+                    token = ottoken.token
+                ottoken.delete()
+            except OneTimeAuthenticationToken.DoesNotExist:
+                pass
+
+        if user:
+            if not token:
+                token = AuthenticationToken.objects.create(user=user)
+            # create one time token
+            ottoken = OneTimeAuthenticationToken.objects.create(token=token)
+            return user, token, ottoken
+
+        return False, False, False
+
+User.add_to_class('objects', VPUserManager())
+
+
 
 #
 # All the users settings go here
 #
 class UserSettings(UserenaBaseProfile):
 
-    user = models.OneToOneField(_User,
+    user = models.OneToOneField(User,
                                 unique=True,
                                 verbose_name=('user'),
                                 related_name='settings')
@@ -58,15 +136,15 @@ class Team(VideopathBaseModel):
 
     objects = Teams()
 
-    owner = models.ForeignKey(_User, related_name='owned_teams')
+    owner = models.ForeignKey(User, related_name='owned_teams')
     name = models.CharField(max_length=150, default='My Projects')
-    members = models.ManyToManyField(_User, through='TeamMember')
+    members = models.ManyToManyField(User, through='TeamMember')
     archived = models.BooleanField(default=False)
 
     # each user has a default team where his projects go
     # this is defined on team, as the django user object is 
     # not really mutable
-    is_default_team_of_user = models.OneToOneField(_User,
+    is_default_team_of_user = models.OneToOneField(User,
                                                 unique=True,
                                                 verbose_name=('default_team_of_user'),
                                                 related_name='default_team',
@@ -134,14 +212,14 @@ class TeamMember(VideopathBaseModel):
     )
 
     team = models.ForeignKey(Team)
-    user = models.ForeignKey(_User)
+    user = models.ForeignKey(User)
     role = models.CharField(max_length=20, choices=TYPE_CHOICES, default=ROLE_EDITOR)
 
 #
 # Campaign Data to store info about where the user came from
 #
 class UserCampaignData(VideopathBaseModel):
-    user = models.OneToOneField(_User, 
+    user = models.OneToOneField(User, 
                                 unique=True, 
                                 verbose_name=('user'),
                                 related_name='campaign_data'
@@ -162,7 +240,7 @@ class UserCampaignData(VideopathBaseModel):
 # SalesInfo, saves connection to crm (pipedrive atm)
 #
 class UserSalesInfo(VideopathBaseModel):
-    user = models.OneToOneField(_User, 
+    user = models.OneToOneField(User, 
                                 unique=True, 
                                 verbose_name=('user'),
                                 related_name='sales_info'
@@ -175,7 +253,7 @@ class UserSalesInfo(VideopathBaseModel):
 #
 class UserActivity(VideopathBaseModel):
 
-    user = models.OneToOneField(_User,
+    user = models.OneToOneField(User,
                                 unique=True,
                                 verbose_name=('user'),
                                 related_name='activity')
@@ -185,7 +263,7 @@ class UserActivity(VideopathBaseModel):
 # remember days on which users where logged in
 #
 class UserActivityDay(VideopathBaseModel):
-    user = models.ForeignKey(_User, related_name="user_activity_day")
+    user = models.ForeignKey(User, related_name="user_activity_day")
     day = models.DateField(auto_now_add=True)
     class Meta:
         unique_together = ("user", "day")
@@ -204,7 +282,7 @@ class AutomatedMail(VideopathBaseModel):
         (TYPE_FOLLOW_UP_21, TYPE_FOLLOW_UP_21),
         (TYPE_FOLLOW_UP_42, TYPE_FOLLOW_UP_42),
     )
-    user = models.ForeignKey(_User, related_name="automated_mails")
+    user = models.ForeignKey(User, related_name="automated_mails")
     mailtype = models.CharField(
         max_length=20, choices=TYPE_CHOICES, default="")
 
@@ -213,7 +291,7 @@ class AutomatedMail(VideopathBaseModel):
 #
 class AuthenticationToken(VideopathBaseModel):
 
-    user = models.ForeignKey(_User, related_name="authentication_tokens")
+    user = models.ForeignKey(User, related_name="authentication_tokens")
     key = models.CharField(max_length=40, primary_key=True)
     last_used = models.DateTimeField(auto_now_add=True, blank=True)
 

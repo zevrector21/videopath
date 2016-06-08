@@ -1,17 +1,21 @@
-from django.contrib.auth.models import User
+from videopath.apps.users.models import User 
 from django.conf import settings
 
 from rest_framework import serializers
 
 from videopath.apps.users.models import UserSettings, Team, TeamMember
 
-
+#
+#
+#
 class UserSettingsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserSettings
 
-
+#
+#
+#
 class UserSerializer(serializers.ModelSerializer):
 
     plan = serializers.SerializerMethodField()
@@ -41,6 +45,9 @@ class SlimUserSerializer(serializers.ModelSerializer):
         fields = ('username', 'email', 'id')
         read_only_fields = ('username', 'id', 'email')
 
+#
+#
+#
 class TeamSerializer(serializers.ModelSerializer):
 
     role = serializers.SerializerMethodField()
@@ -82,6 +89,10 @@ class TeamSerializer(serializers.ModelSerializer):
         fields = ('owner', 'name', 'id', 'role', 'is_default_team', 'stats', 'created', 'plan')
         read_only_fields = ('owner', 'stats', 'created')
 
+
+#
+#
+#
 class TeamMemberSerializer(serializers.ModelSerializer):
     email = serializers.SerializerMethodField()
 

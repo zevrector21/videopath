@@ -1,6 +1,6 @@
 from datetime import timedelta, datetime
 
-from django.contrib.auth.models import User
+from videopath.apps.users.models import User
 from .decorators import group_membership_required
 from django.template.response import SimpleTemplateResponse
 

@@ -3,7 +3,7 @@ import itertools
 
 from django.http import HttpResponseRedirect
 from django.template.response import SimpleTemplateResponse
-from django.contrib.auth.models import User
+from videopath.apps.users.models import User
 from django.core.cache import cache
 from .decorators import group_membership_required
 

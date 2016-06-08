@@ -1,7 +1,7 @@
 import collections
 import humanize
 from datetime import date, timedelta
-from django.contrib.auth.models import User
+from videopath.apps.users.models import User
 from django.utils.encoding import smart_text
 from random import choice
 from string import ascii_uppercase

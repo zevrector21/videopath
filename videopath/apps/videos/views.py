@@ -352,8 +352,9 @@ def import_source(request, key=None):
     except:
         pass
 
-    # hack to enable jpg transcoding for certain user accounts
-    if video.team.owner.username == 'videopath':
+
+    if video.team.owner.can_use_feature('advanced_video_settings'):
         video.export_jpg_sequence()
+
 
     return Response()

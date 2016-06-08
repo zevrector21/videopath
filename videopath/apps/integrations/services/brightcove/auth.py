@@ -45,9 +45,6 @@ def list_videos(credentials):
 		'page_number':'0',
 		'get_item_count': 'true'
 	}
-
-	print params
-
 	response = requests.get(url, params=params)
 	print response.json()
 

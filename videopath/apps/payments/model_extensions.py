@@ -7,7 +7,6 @@ from django.conf import settings
 # Users User
 #
 def subscribe_to_plan(self, plan=None, coupon=None):
-	print self
 	return subscription_util.subscribe_user(self,plan,coupon)
 User.subscribe_to_plan = MethodType(subscribe_to_plan, None, User)
 

@@ -39,8 +39,8 @@ def beacon(request, credentials, owner):
 		mc = mailchimp.Mailchimp(credentials['api_key'])
 		mc.lists.subscribe(list_id, {"email":email}, update_existing=True)
 	except Exception as e:
+		pass
 		# send to user
-		print str(e)
 	return Response()
 
 

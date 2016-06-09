@@ -154,8 +154,16 @@ class Video(VideopathBaseModel):
         video_export_util.delete_export(self)
 
     def reexport(self):
+        if not self.published:
+            return
         from videopath.apps.videos.util import video_export_util
         video_export_util.export_video(self)
+
+    def enable_mobile_portrait(self):
+        for r in self.revisions.all():
+            r.ui_enable_mobile_portrait = True
+            r.save()
+        self.reexport()
 
     def export_jpg_sequence(self):
         if self.draft.source:

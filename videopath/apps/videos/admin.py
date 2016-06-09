@@ -25,7 +25,7 @@ class VideoAdmin(admin.ModelAdmin):
     }
 
     # actions
-    actions=["make_published", "make_unpublished", "make_duplicated", "make_reexport", "make_export_jpgs"]
+    actions=["make_published", "make_unpublished", "make_duplicated", "make_reexport", "make_export_jpgs", "make_mobile_portrait"]
     def make_published(self, request, queryset):
         for video in queryset.all():
             video.publish()
@@ -52,6 +52,11 @@ class VideoAdmin(admin.ModelAdmin):
         for video in queryset.all():
             video.export_jpg_sequence()
     make_export_jpgs.short_description = "Export JPGs"
+
+    def make_mobile_portrait(self, request, queryset):
+        for video in queryset.all():
+            video.enable_mobile_portrait()
+    make_mobile_portrait.short_description = "Enable for mobile portrait"
 
     # custom fields
     def created_humanized(self, obj):

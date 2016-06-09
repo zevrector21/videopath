@@ -239,7 +239,7 @@ class VideoRevisionSerializer(serializers.ModelSerializer):
     class Meta:
         model = VideoRevision
         fields = revision_fields
-        read_only_fields = ('id', 'video')
+        read_only_fields = ('id', 'video', 'ui_enable_mobile_portrait')
 
     #
     # dynamically add extra info

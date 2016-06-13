@@ -2,7 +2,7 @@ import json
 
 from rest_framework import serializers
 
-from videopath.apps.analytics.models import TotalAnalyticsData, DailyAnalyticsData
+from videopath.apps.analytics.models import TotalAnalyticsData, DailyAnalyticsData, VideoStatistics
 
 #
 # Basic analytics 

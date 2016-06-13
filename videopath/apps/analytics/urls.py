@@ -9,5 +9,8 @@ router.register(r'video/(?P<vid>[0-9]+)/analytics', TotalAnalyticsDataViewSet, b
 router.register(r'video/(?P<vid>[0-9]+)/analytics-daily', DailyAnalyticsDataViewSet, base_name="analytics_daily")
 
 urlpatterns = patterns('',
+
+	url(r'^stats/', 'videopath.apps.analytics.views.stats'),
+
 	url(r'', include(router.urls))
 )

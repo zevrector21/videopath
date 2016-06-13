@@ -4,8 +4,12 @@ from datetime import date
 
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import AllowAny
+from rest_framework.decorators import permission_classes
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
 
-from videopath.apps.analytics.models import TotalAnalyticsData, DailyAnalyticsData
+from videopath.apps.analytics.models import TotalAnalyticsData, DailyAnalyticsData, VideoStatistics
 from videopath.apps.analytics.serializers import TotalAnalyticsDataSerializer, DailyAnalyticsDataSerializer
 
 
@@ -45,3 +49,24 @@ class DailyAnalyticsDataViewSet(viewsets.ReadOnlyModelViewSet):
         end = date.fromtimestamp(int(self.request.GET.get("end", 0)))
         return DailyAnalyticsData.objects.filter_for_user(self.request.user).filter(video__id=vid, date__range=[start, end]).distinct().order_by('date')
 
+#
+# "Login" and "Logout" methods
+#
+@api_view(['POST'])
+@permission_classes((AllowAny,))
+def stats(request):
+
+    playingTotal = float(request.data.get('playingTotal', 0))
+    overlayOpenTotal = float(request.data.get('overlayOpenTotal', 0))
+    progressMax = float(request.data.get('progressMax', 0))
+    sessionTotal = float(request.data.get('sessionTotal', 0))
+    
+    if sessionTotal > 0 and playingTotal > 0:
+        VideoStatistics.objects.create(
+            playingTotal=playingTotal,
+            overlayOpenTotal=overlayOpenTotal,
+            progressMax=progressMax,
+            sessionTotal=sessionTotal
+            )
+
+    return Response()

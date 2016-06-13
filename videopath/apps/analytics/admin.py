@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from videopath.apps.analytics.models import TotalAnalyticsData, DailyAnalyticsData
+from videopath.apps.analytics.models import TotalAnalyticsData, DailyAnalyticsData, VideoStatistics
 
 class TotalAnalyticsDataAdmin(admin.ModelAdmin):
     list_display = ('video', 'plays_all', 'plays_unique',
@@ -23,5 +23,10 @@ class DailyAnalyticsDataAdmin(admin.ModelAdmin):
         'fk': ['video',],
     }
 
+class VideoStatisticsAdmin(admin.ModelAdmin):
+    list_display = ('created', 'sessionTotal', 'playingTotal', 'overlayOpenTotal', 'progressMax')
+    ordering = ('-created',)
+
 admin.site.register(TotalAnalyticsData, TotalAnalyticsDataAdmin)
 admin.site.register(DailyAnalyticsData, DailyAnalyticsDataAdmin)
+admin.site.register(VideoStatistics, VideoStatisticsAdmin)

@@ -24,7 +24,7 @@ class DailyAnalyticsDataAdmin(admin.ModelAdmin):
     }
 
 class VideoStatisticsAdmin(admin.ModelAdmin):
-    list_display = ('created', 'sessionTotal', 'playingTotal', 'overlayOpenTotal', 'progressMax')
+    list_display = ('created', 'sessionKey', 'sessionTotal', 'playingTotal', 'overlayOpenTotal', 'progressMax')
     ordering = ('-created',)
 
 admin.site.register(TotalAnalyticsData, TotalAnalyticsDataAdmin)

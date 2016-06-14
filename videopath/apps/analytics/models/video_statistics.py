@@ -9,3 +9,6 @@ class VideoStatistics(VideopathBaseModel):
     overlayOpenTotal = models.FloatField(default=0)
     progressMax = models.FloatField(default=0)
     sessionTotal = models.FloatField(default=0)
+
+    # unique id
+    sessionKey = models.CharField(max_length=255, blank=True, db_index=True)

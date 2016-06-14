@@ -56,17 +56,16 @@ class DailyAnalyticsDataViewSet(viewsets.ReadOnlyModelViewSet):
 @permission_classes((AllowAny,))
 def stats(request):
 
-    playingTotal = float(request.data.get('playingTotal', 0))
-    overlayOpenTotal = float(request.data.get('overlayOpenTotal', 0))
-    progressMax = float(request.data.get('progressMax', 0))
-    sessionTotal = float(request.data.get('sessionTotal', 0))
+    values = {
+        'playingTotal': float(request.data.get('playingTotal', 0)),
+        'overlayOpenTotal': float(request.data.get('overlayOpenTotal', 0)),
+        'progressMax': float(request.data.get('progressMax', 0)),
+        'sessionTotal': float(request.data.get('sessionTotal', 0)),
+    }
+
+    sessionKey = request.data.get('sessionKey', None)
     
-    if sessionTotal > 0 and playingTotal > 0:
-        VideoStatistics.objects.create(
-            playingTotal=playingTotal,
-            overlayOpenTotal=overlayOpenTotal,
-            progressMax=progressMax,
-            sessionTotal=sessionTotal
-            )
+    if sessionKey is not None and values['playingTotal'] > 0 and values['sessionTotal'] > 0:
+        VideoStatistics.objects.update_or_create(sessionKey=sessionKey, defaults=values)
 
     return Response()

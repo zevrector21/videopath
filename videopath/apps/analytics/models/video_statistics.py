@@ -12,3 +12,4 @@ class VideoStatistics(VideopathBaseModel):
 
     # unique id
     sessionKey = models.CharField(max_length=255, blank=True, db_index=True)
+    videoKey = models.CharField(max_length=255, blank=True, db_index=True)

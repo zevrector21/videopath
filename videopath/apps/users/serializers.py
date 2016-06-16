@@ -23,7 +23,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     newsletter = serializers.BooleanField(required=False)
 
-    password = serializers.CharField(min_length=6, required=False)
+    # password = serializers.CharField(min_length=6, required=False)
     new_password = serializers.CharField(min_length=6, required=False)
 
     def get_plan(self, user):
@@ -36,7 +36,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'default_team', 'email', 'id', 'plan', 'url', 'new_password', 'password', 'newsletter')
+        fields = ('username', 'default_team', 'email', 'id', 'plan', 'url', 'new_password', 'newsletter')
         read_only_fields = ('username', 'id', 'default_team')
 
 class SlimUserSerializer(serializers.ModelSerializer):

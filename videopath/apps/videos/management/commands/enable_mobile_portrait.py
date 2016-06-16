@@ -9,8 +9,8 @@ class Command(BaseCommand):
     	for r in VideoRevision.objects.all():
     		if r.video.team.owner.username == 'babbel':
     			print 'skip'
-    		# print 'conv'
-    		# r.ui_enable_mobile_portrait = True
-    		# r.save();
+    		else:
+    			r.ui_enable_mobile_portrait = True
+    			r.save();
 
         video_export_util.export_all_videos(verbose=True)

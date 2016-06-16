@@ -24,11 +24,13 @@ class DailyAnalyticsDataAdmin(admin.ModelAdmin):
     }
 
 class VideoStatisticsAdmin(admin.ModelAdmin):
-    list_display = ('created', 'sessionKey', 'sessionTotal', 'playingTotal', 'overlayOpenTotal', 'progressMax', 'video_link')
+    list_display = ('created', 'sessionTotal', 'playingTotal', 'overlayOpenTotal', 'progressMax', 'videoKey', 'video_link')
     ordering = ('-created',)
 
+    search_fields = ['videoKey']
+
     def video_link(self, obj):
-        link = "http://player.videopath.com/" + str(obj.videoKey)
+        link = "/admin/insights/videos/" + str(obj.videoKey) + "/"
         return "<a href = '" + link + "'>Link</a>"
     video_link.allow_tags = True
 

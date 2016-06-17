@@ -35,6 +35,7 @@ class Source(VideopathBaseModel):
     SERVICE_BRIGHTCOVE = "brightcove"
     SERVICE_VIDEOPATH = "videopath"
     SERVICE_CUSTOM = "custom"
+    SERVICE_MOVINGIMAGES = "movingimages"
     SERVICE_CHOICES = (
         (SERVICE_NONE, SERVICE_NONE),
         (SERVICE_YOUTUBE, SERVICE_YOUTUBE),
@@ -43,6 +44,7 @@ class Source(VideopathBaseModel):
         (SERVICE_BRIGHTCOVE, SERVICE_BRIGHTCOVE),
         (SERVICE_VIDEOPATH, SERVICE_VIDEOPATH),
         (SERVICE_CUSTOM, SERVICE_CUSTOM),
+        (SERVICE_MOVINGIMAGES,SERVICE_MOVINGIMAGES)
     )
 
     # unique id

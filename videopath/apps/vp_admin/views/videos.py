@@ -113,7 +113,21 @@ def videoview(request, key):
 
     result += helpers.header("Engagement stats")
     try:
+
+        # overall stats
         querySet = VideoStatistics.objects.filter(videoKey=key, sessionTotal__lte = 1800)
+
+        stats =  querySet.aggregate(playingTotal = Sum('playingTotal'), overlayOpenTotal = Sum('overlayOpenTotal'), sessionTotal = Sum('sessionTotal'))
+        num_sessions = str(querySet.count())
+        result += "Recorded Sessions: " + num_sessions + "\n"
+        result += "Overall session time: " + formatSeconds(stats['sessionTotal']) + " - avg. "  + formatSeconds( stats['sessionTotal'] / float(num_sessions))   + "\n"
+        result += "Overall play time: " + formatSeconds(stats['playingTotal']) + " - avg. " + formatSeconds( stats['playingTotal'] / float(num_sessions)) + "\n"
+        result += "Overall overlay time: " + formatSeconds(stats['overlayOpenTotal']) +  " - avg. " + formatSeconds( stats['overlayOpenTotal'] / float(num_sessions)) + "\n"
+        result += "<strong>Time spent longer on video: " + str(math.ceil(stats['overlayOpenTotal'] / stats['sessionTotal'] * 100)) + '% </strong>'
+
+        # sessions with overlay opens
+        result += '<br /><br /><strong>Session with overlay opens</strong><br />'
+        querySet = VideoStatistics.objects.filter(videoKey=key, sessionTotal__lte = 1800, overlayOpenTotal__gt = 10 )
 
         stats =  querySet.aggregate(playingTotal = Sum('playingTotal'), overlayOpenTotal = Sum('overlayOpenTotal'), sessionTotal = Sum('sessionTotal'))
         num_sessions = str(querySet.count())

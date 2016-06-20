@@ -15,6 +15,7 @@ PLAN_FEATURES = [
 	'feature_email_collector',
     'feature_integrations',
     'feature_custom_analytics',
+    'feature_movingimage',
     'feature_teams', 
     'feature_theme',
     'feature_icon',
@@ -479,6 +480,7 @@ PLANS = {
                 'feature_email_collector': True,
                 'feature_teams': True,
                 'feature_advanced_analytics': True,
+                'feature_movingimage': True,
 
 
                 'value': 9999,

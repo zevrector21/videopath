@@ -82,6 +82,7 @@ def listview(request):
 
 
 def formatSeconds(s):
+    if not s: s = 0 
     s = math.floor(s)
     return str(timedelta(seconds=s))
 
@@ -137,7 +138,6 @@ def videoview(request, key):
         result += "Overall overlay time: " + formatSeconds(stats['overlayOpenTotal']) +  " - avg. " + formatSeconds( stats['overlayOpenTotal'] / float(num_sessions)) + "\n"
         result += "<strong>Time spent longer on video: " + str(math.ceil(stats['overlayOpenTotal'] / stats['sessionTotal'] * 100)) + '% </strong>'
     except:
-        raise
         result += "No data available at this time"
 
     result += helpers.header("Video")

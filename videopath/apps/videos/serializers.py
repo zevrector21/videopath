@@ -78,9 +78,7 @@ class MarkerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Marker
         order_by = '-time'
-        fields = ('id', 'key', 'title', 'time', 'video_revision',
-                  'overlay_height', 'overlay_width')
-        read_only_fields = ('overlay_height', 'overlay_width')
+        fields = ('id', 'key', 'title', 'time', 'video_revision')
 
 #
 # Marker Content
@@ -128,8 +126,7 @@ class NestedMarkerSerializer(MarkerSerializer):
         model = Marker
         order_by = '-time'
         fields = ('id', 'key', 'title', 'time', 'video_revision',
-                  'contents', 'overlay_height', 'overlay_width')
-        read_only_fields = ('overlay_height', 'overlay_width')
+                  'contents')
 
 
 

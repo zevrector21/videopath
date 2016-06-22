@@ -23,10 +23,6 @@ class Marker(VideopathBaseModel):
     title = models.CharField(max_length=100, blank=True)
     time = models.FloatField(default=0, null=False, blank=False)
 
-    # overlay params
-    overlay_width = models.IntegerField(default=-1)
-    overlay_height = models.IntegerField(default=-1)
-
     def has_user_access(self, user):
         return self.video_revision.has_user_access(user)
 

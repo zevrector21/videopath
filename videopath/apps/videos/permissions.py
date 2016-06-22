@@ -12,6 +12,7 @@ class VideoRevisionPermissions(permissions.BasePermission):
 
     def has_permission(self, request, view):
         if request.method == "GET": return True
+        if request.method == "POST": return False # revisions can not be created by users
         try:
             data = json.loads(request.body)
             revision = VideoRevision.objects.get(pk=data["id"])

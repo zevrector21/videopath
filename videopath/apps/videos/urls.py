@@ -9,6 +9,8 @@ from videopath.apps.videos.views import icon_view, thumbnail_view
 # Register view sets
 router = routers.DefaultRouter()
 router.register(r'video/(?P<vid>[0-9]+)/revision', VideoRevisionViewSet, base_name="video_revision")
+router.register(r'video/(?P<vid>[0-9]+)/video-revision', VideoRevisionViewSet, base_name="video_revision") # correced alias
+
 router.register(r'video-revision/(?P<vid>[0-9]+)/marker', MarkerViewSet, base_name="marker")
 
 router.register(r'marker/(?P<mid>[0-9]+)/content', MarkerContentViewSet, base_name="marker_content")

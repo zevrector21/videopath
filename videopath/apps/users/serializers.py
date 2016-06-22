@@ -23,7 +23,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     newsletter = serializers.BooleanField(required=False)
 
-    password = serializers.CharField(min_length=6, required=False)
+    password = serializers.CharField(min_length=6, required=False, write_only=True)
     new_password = serializers.CharField(min_length=6, required=False)
 
     def get_plan(self, user):

@@ -22,7 +22,7 @@ class VideoRevisionPermissions(permissions.BasePermission):
             return False
 
     def has_object_permission(self, request, view, obj):
-        return obj.has_user_access(request.user, request.METHOD=="GET")
+        return obj.has_user_access(request.user, request.method=="GET")
 
 
 class MarkerPermissions(permissions.BasePermission):
@@ -39,7 +39,7 @@ class MarkerPermissions(permissions.BasePermission):
             return False
 
     def has_object_permission(self, request, view, obj):
-        return obj.has_user_access(request.user, request.METHOD=="GET")
+        return obj.has_user_access(request.user, request.method=="GET")
 
 class VideoPermissions(permissions.BasePermission):
 
@@ -62,4 +62,4 @@ class MarkerContentPermissions(permissions.BasePermission):
             return False
 
     def has_object_permission(self, request, view, obj):
-        return obj.has_user_access(request.user, request.METHOD=="GET")
+        return obj.has_user_access(request.user, request.method=="GET")

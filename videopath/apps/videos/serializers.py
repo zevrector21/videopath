@@ -145,7 +145,6 @@ revision_fields = (
     'ui_color_1',
     'ui_color_2',
     'ui_fit_video',
-    'endscreen_url',
     'endscreen_title',
     'endscreen_subtitle',
     'endscreen_background_color',

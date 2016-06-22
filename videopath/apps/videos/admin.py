@@ -127,7 +127,7 @@ class VideoRevisionAdmin(admin.ModelAdmin):
             'fields': ('ui_color_1', 'ui_color_2', 'ui_icon', 'ui_icon_link_target','player_appearance', 'continuous_playback', 'ui_enable_mobile_portrait')
         }),
         ('Endscreen', {
-            'fields': ('endscreen_url', 'endscreen_title', 'endscreen_background_color', 'endscreen_button_title', 'endscreen_button_target', 'endscreen_button_color')
+            'fields': ('endscreen_title', 'endscreen_background_color', 'endscreen_button_title', 'endscreen_button_target', 'endscreen_button_color')
         }),
 
         ('Files', {

@@ -70,7 +70,6 @@ class VideoRevision(VideopathBaseModel):
     custom_tracking_code = models.CharField(max_length=20, blank=True)
     
     # endscreen settings
-    endscreen_url = models.CharField(max_length=512, blank=True)
     endscreen_title = models.CharField(max_length=512, blank=True)
     endscreen_background_color = ColorField(default="#32526e", blank=True)
     endscreen_button_title = models.CharField(

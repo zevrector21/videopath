@@ -286,6 +286,20 @@ class AutomatedMail(VideopathBaseModel):
     mailtype = models.CharField(
         max_length=20, choices=TYPE_CHOICES, default="")
 
+
+class APIToken(VideopathBaseModel):
+    user = models.ForeignKey(User, related_name="api_tokens")
+    key = models.CharField(max_length=40, primary_key=True,  blank=True)
+    last_used = models.DateTimeField(auto_now_add=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.key:
+            self.key = self.generate_key(32)
+        return super(VideopathBaseModel, self).save(*args, **kwargs)
+
+    def __unicode__(self):
+        return self.key
+
 #
 # List of authentication tokens given out to users
 #

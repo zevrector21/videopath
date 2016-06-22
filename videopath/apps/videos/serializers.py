@@ -33,6 +33,7 @@ class SourceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Source
         read_only_fields = ()
+        exclude = ('modified', 'notes')
 
 
 

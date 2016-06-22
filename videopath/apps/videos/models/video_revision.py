@@ -81,13 +81,6 @@ class VideoRevision(VideopathBaseModel):
     endscreen_subtitle = models.CharField(
         default="Create your own interactive video", max_length=512, blank=True)
 
-    # tracking pixel support
-    tracking_pixel_start = models.TextField(blank=True, default="")
-    tracking_pixel_q1 = models.TextField(blank=True, default="")
-    tracking_pixel_q2 = models.TextField(blank=True, default="")
-    tracking_pixel_q3 = models.TextField(blank=True, default="")
-    tracking_pixel_end = models.TextField(blank=True, default="")
-
     # password protection
     password = models.CharField(max_length=512, blank=True) # stores the salted sha digest
     password_hashed = models.CharField(max_length=512, blank=True) # helper field for updateing the password

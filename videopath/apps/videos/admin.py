@@ -134,9 +134,6 @@ class VideoRevisionAdmin(admin.ModelAdmin):
             'fields': ('custom_thumbnail', )
         }),
 
-        ('Tracking', {
-            'fields': ('tracking_pixel_start', 'tracking_pixel_q1', 'tracking_pixel_q2', 'tracking_pixel_q3', 'tracking_pixel_end')
-        })
     )
 
     readonly_fields=('password_hashed', 'password_salt')

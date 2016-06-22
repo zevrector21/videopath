@@ -45,8 +45,6 @@ class VideoSerializer(serializers.ModelSerializer):
 
     thumbnails = serializers.SerializerMethodField()
 
-    url = serializers.HyperlinkedIdentityField(view_name='video-detail')
-
     source = SourceSerializer(required=False, source="draft.source", read_only=True)
 
     def get_thumbnails(self, video):
@@ -69,7 +67,7 @@ class VideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video
         fields = ('team', 'id', 'thumbnails', 'key', 'published',
-                  'created', 'draft', 'current_revision', 'total_plays', 'total_views', 'revision_info', 'url', 'source')
+                  'created', 'draft', 'current_revision', 'total_plays', 'total_views', 'revision_info', 'source')
         read_only_fields = ('draft', 'current_revision', 'archived', 'url', 'total_plays', 'total_views', 'key', 'published', 'team')
 
 #
@@ -165,7 +163,6 @@ revision_fields = (
     'revision_type',
     'branded',
     'whitelabel',
-    'url',
     'ui_enable_mobile_portrait'
 )
 
@@ -193,7 +190,6 @@ class VideoRevisionSerializer(serializers.ModelSerializer):
     revision_type = serializers.SerializerMethodField()
     branded = serializers.SerializerMethodField()
     whitelabel = serializers.SerializerMethodField()
-    url = serializers.HyperlinkedIdentityField(view_name='video_revision-detail')
 
     # some helper functions
     def get_key(self, video_revision):

@@ -68,9 +68,6 @@ class VideoRevision(VideopathBaseModel):
     # other settings
     continuous_playback = models.BooleanField(default=False)
     custom_tracking_code = models.CharField(max_length=20, blank=True)
-
-    # iphone support
-    iphone_images = models.IntegerField(default=-1)
     
     # endscreen settings
     endscreen_url = models.CharField(max_length=512, blank=True)

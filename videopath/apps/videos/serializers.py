@@ -159,7 +159,6 @@ revision_fields = (
     'ui_icon',
     'ui_icon_link_target',
     'custom_tracking_code',
-    'iphone_images',
     'continuous_playback',
     'password',
     'tracking_pixel_start',

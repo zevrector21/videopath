@@ -115,7 +115,7 @@ class VideoRevisionAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('General', {
-            'fields': ('video', 'title', 'description', 'iphone_images', 'published_date')
+            'fields': ('video', 'title', 'description', 'published_date')
         }),
         ('Password', {
             'fields': ( 'password', 'password_salt', 'password_hashed' )

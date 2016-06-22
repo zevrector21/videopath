@@ -295,6 +295,8 @@ class MarkerViewSet(viewsets.ModelViewSet):
     permission_classes = (MarkerPermissions,AuthenticatedPermission)
 
     def get_queryset(self, vid = None):
+  
+        vid = self.request.resolver_match.kwargs.get('vid', None)
         objects = Marker.objects.filter_for_user(self.request.user)
         if vid: objects = objects.filter(video_revision__id=vid) 
         return objects.distinct()
@@ -308,6 +310,7 @@ class MarkerContentViewSet(viewsets.ModelViewSet):
     permission_classes = (MarkerContentPermissions,AuthenticatedPermission)
 
     def get_queryset(self, mid = None):
+        mid = self.request.resolver_match.kwargs.get('mid', None)
         objects = MarkerContent.objects.filter_for_user(self.request.user)
         if mid: objects = objects.filter(marker__id=mid)
         return objects.distinct()

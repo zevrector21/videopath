@@ -105,7 +105,11 @@ class VideoRevision(VideopathBaseModel):
 
         super(VideoRevision, self).save(*args, **kwargs)
 
-    def has_user_access(self, user):
+    def has_user_access(self, user, readonly = True):
+
+        # only allow write access if this is a draft revision
+        if not readonly and not self.video_draft:
+            return False
         return self.video.has_user_access(user)
 
 

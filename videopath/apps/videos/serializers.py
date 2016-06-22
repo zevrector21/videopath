@@ -165,6 +165,7 @@ revision_fields = (
     'revision_type',
     'branded',
     'whitelabel',
+    'url',
     'ui_enable_mobile_portrait'
 )
 
@@ -192,6 +193,7 @@ class VideoRevisionSerializer(serializers.ModelSerializer):
     revision_type = serializers.SerializerMethodField()
     branded = serializers.SerializerMethodField()
     whitelabel = serializers.SerializerMethodField()
+    url = serializers.HyperlinkedIdentityField(view_name='video_revision-detail')
 
     # some helper functions
     def get_key(self, video_revision):

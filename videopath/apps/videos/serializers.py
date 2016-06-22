@@ -25,7 +25,6 @@ class SourceSerializer(serializers.ModelSerializer):
             ret['file_mp4'] = settings.VIDEO_CDN + ret['file_mp4']
             ret['file_webm'] = settings.VIDEO_CDN + ret['file_webm']
 
-        ret['jpg_sequence_base_url'] = settings.JPGS_CDN + instance.key.lower() + '/'
         ret['sprite_base_url'] = settings.JPGS_CDN + instance.key.lower() + '/'
         
         return ret

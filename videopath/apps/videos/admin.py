@@ -228,9 +228,9 @@ admin.site.register(PlayerAppearance, PlayerAppearanceAdmin)
 #
 class SourceAdmin(admin.ModelAdmin):
 
-    list_display = ( 'service', 'key', 'jpg_sequence_support', 'sprite_support')
+    list_display = ( 'service', 'key', 'sprite_support')
     search_fields = ['key', 'revisions__video__key', 'revisions__video__team__owner__username']
-    list_filter = ('service', 'jpg_sequence_support', 'sprite_support')
+    list_filter = ('service', 'sprite_support')
 
     actions=["make_export_jpgs",]
 
@@ -253,7 +253,7 @@ class SourceAdmin(admin.ModelAdmin):
             'fields': ('file_mp4', 'file_webm', 'thumbnail_large', 'thumbnail_small')
         }),
         ('JPG Support', {
-            'fields': ('jpg_sequence_support', 'jpg_sequence_length', 'sprite_support', 'sprite_length')
+            'fields': ('sprite_support', 'sprite_length')
         }),
         ('Other', {
             'fields': ('description','youtube_allow_clickthrough')

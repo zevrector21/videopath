@@ -21,14 +21,6 @@ def create_first_draft(sender, instance=None, created=False, **kwargs):
         revision.save()
 
 
-
-@receiver(hourly_jobs)
-def transcode_random_video(sender, **kwargs):
-
-	# source = Source.objects.filter(jpg_sequence_support=True, sprite_support=False).order_by('?').first()
-	# source.export_jpg_sequence()
-	pass
-
 @receiver(subscription_updated)
 def export_users_videos(sender, user=None, **kwargs):
 	video_export_util.export_user_videos(user)

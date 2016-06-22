@@ -39,10 +39,10 @@ class TestCase(BaseTestCase):
         		duration=100,
         		thumbnail_small = 'http://t1.jpg',
         		thumbnail_large = 'http://t2.jpg',
-        		jpg_sequence_support=True,
-        		jpg_sequence_length=100
+        		sprite_support=True,
+        		sprite_length=100
         	)
         ss = SourceSerializer(source)
-    	self.assertEqual(ss.data['jpg_sequence_support'],True)
-        self.assertEqual(ss.data['jpg_sequence_length'],100)
-        self.assertEqual(ss.data['jpg_sequence_base_url'], settings.JPGS_CDN + source.key.lower() + '/')
+    	self.assertEqual(ss.data['sprite_support'],True)
+        self.assertEqual(ss.data['sprite_length'],100)
+        self.assertEqual(ss.data['sprite_base_url'], settings.JPGS_CDN + source.key.lower() + '/')

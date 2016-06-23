@@ -57,18 +57,16 @@ class VideoSerializer(serializers.ModelSerializer):
         if revision:
             return {
                 "title": revision.title,
-                "draft_saved": video.draft.modified if video.draft_id != None else 0,
                 "marker_count": revision.markers.count()
             }
         else:
             return {}
 
-
     class Meta:
         model = Video
-        fields = ('team', 'id', 'thumbnails', 'key', 'published',
-                  'created', 'draft', 'current_revision', 'total_plays', 'total_views', 'revision_info', 'source')
-        read_only_fields = ('draft', 'current_revision', 'archived', 'url', 'total_plays', 'total_views', 'key', 'published', 'team')
+        fields = ('team', 'id', 'thumbnails', 'key', 'published', 
+                  'created', 'draft', 'current_revision', 'total_plays', 'revision_info', 'source')
+        read_only_fields = ('draft', 'current_revision', 'archived', 'url', 'total_plays', 'key', 'published', 'team')
 
 #
 # Marker
@@ -99,35 +97,16 @@ class MarkerContentSerializer(serializers.ModelSerializer):
                   'data', 'title', 'url', 'image_url', 'key', 'video_key')
 
 #
-# Marker Content Nested
-#
-class NestedContentsSerializer(serializers.ModelSerializer):
-
-    image_url = serializers.SerializerMethodField()
-    def get_image_url(self, content):
-        return file_url_for_markercontent(content)
-
-    video_key = serializers.SerializerMethodField()
-    def get_video_key(self, content):
-        return content.marker.video_revision.video.key
-
-    class Meta:
-        model = MarkerContent
-        fields = ('type', 'text', 'ordinal', 'data', 'title',
-                  'image_url', 'url', 'id', 'marker', 'key', 'video_key')
-
-#
 # Marker Nested
 #
 class NestedMarkerSerializer(MarkerSerializer):
-    contents = NestedContentsSerializer(read_only=True, many=True)
+    contents = MarkerContentSerializer(read_only=True, many=True)
 
     class Meta:
         model = Marker
         order_by = '-time'
         fields = ('id', 'key', 'title', 'time', 'video_revision',
                   'contents')
-
 
 
 #
@@ -257,7 +236,6 @@ class VideoRevisionDetailSerializer(VideoRevisionSerializer):
     thumbnails = serializers.SerializerMethodField()
     source = SourceSerializer(required=False, read_only=True)
         
-
     class Meta:
         model = VideoRevision
         fields = revision_detail_fields

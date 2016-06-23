@@ -1,3 +1,6 @@
+
+import ast
+
 from rest_framework import serializers
 
 from videopath.apps.videos.models import Video, Marker, MarkerContent, VideoRevision, PlayerAppearance, Source
@@ -91,9 +94,23 @@ class MarkerContentSerializer(serializers.ModelSerializer):
     def get_video_key(self, content):
         return content.marker.video_revision.video.key
 
+
+    #
+    # dynamically expand content json object
+    #
+    def to_representation(self, instance):
+        ret = super(MarkerContentSerializer, self).to_representation(instance)
+        print "----"
+        print instance.content
+        try:
+            ret['content'] = ast.literal_eval(instance.content)
+        except:
+            ret['content'] = {}
+        return ret
+
     class Meta:
         model = MarkerContent
-        fields = ('id', 'type', 'marker', 'ordinal', 'text',
+        fields = ('id', 'type', 'marker', 'ordinal', 'text', 'content',
                   'data', 'title', 'url', 'image_url', 'key', 'video_key')
 
 #

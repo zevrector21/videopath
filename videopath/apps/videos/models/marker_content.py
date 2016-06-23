@@ -38,6 +38,8 @@ class MarkerContent(VideopathBaseModel):
         max_length=20, choices=TYPE_CHOICES, default="text")
     ordinal = models.IntegerField(null=True, blank=True, default=0)
 
+    content = models.TextField(null=True, blank=True, default="{}")
+
     text = models.TextField(null=True, blank=True)
     data = models.TextField(null=True, blank=True)
 

@@ -263,6 +263,7 @@ PLANS = {
         'feature_advanced_library': True,
         'feature_advanced_analytics': True,
         'feature_email_collector': True,
+        'feature_advanced_video_settings': True,
         'feature_brightcove': True,
 
 

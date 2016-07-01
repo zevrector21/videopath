@@ -50,7 +50,8 @@ url_tests = {
         "youtu\.be[^+]*([\w-]{11})"
     ],
     "wistia": [
-        "wistia.com/medias/([\w-]{8,})"
+        "wistia.com/medias/([\w-]{8,})",
+        "fast.wistia.net/embed/iframe/([\w-]{8,})"
     ],
     "brightcove": [
         'brightcove.net\/([0-9]*)\/([0-9a-z\-]*)_([0-9a-z\-]*)\/index.html\?videoId=([0-9]*)'

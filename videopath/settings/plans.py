@@ -89,6 +89,7 @@ PLANS = {
         'feature_advanced_library': True,
         'feature_advanced_analytics': True,
         'feature_vimeo': True,
+        'feature_wistia': True,
 
         #
         # variants

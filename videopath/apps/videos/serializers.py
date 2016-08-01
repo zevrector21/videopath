@@ -100,8 +100,6 @@ class MarkerContentSerializer(serializers.ModelSerializer):
     #
     def to_representation(self, instance):
         ret = super(MarkerContentSerializer, self).to_representation(instance)
-        print "----"
-        print instance.content
         try:
             ret['content'] = ast.literal_eval(instance.content)
         except:

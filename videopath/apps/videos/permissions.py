@@ -59,7 +59,7 @@ class MarkerContentPermissions(permissions.BasePermission):
             marker = Marker.objects.get(pk=data["marker"])
 
             # disallow creation of multiple content blocks if there already is one fullscreen block present
-            if request.method == "POST" and marker.contents.filter(type__in=['image','social']).count() > 0:
+            if request.method == "POST" and marker.contents.filter(type__in=['website','social']).count() > 0:
                 return False
 
             return marker.has_user_access(request.user, False)

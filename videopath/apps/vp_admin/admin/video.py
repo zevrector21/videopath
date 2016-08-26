@@ -16,6 +16,15 @@ class VideoAdmin(VideopathModelAdmin):
 	search_fields = ['draft__title', 'key', 'team__owner__username']
 	ordering = ('-created',)
 
+	actions=["make_export_jpgs"]
+
+
 	def title(self,obj):
 		return obj.draft.title
+
+	def make_export_jpgs(self, request,queryset):
+	    for video in queryset.all():
+	        video.export_jpg_sequence()
+	make_export_jpgs.short_description = "Export JPGs"
+
 admin.site.register(Video, VideoAdmin)

@@ -156,7 +156,7 @@ admin.site.register(VideoRevision, VideoRevisionAdmin)
 # Marker
 #
 class MarkerAdmin(admin.ModelAdmin):
-    list_display = ('title', 'time', 'video_revision', 'content_link')
+    list_display = ('title', 'time', 'video_revision', 'created', 'content_link')
     list_filter = ('video_revision__id',)
     ordering = ('time',)
     search_fields = ['key', 'id', ]
@@ -225,7 +225,7 @@ admin.site.register(PlayerAppearance, PlayerAppearanceAdmin)
 #
 class SourceAdmin(admin.ModelAdmin):
 
-    list_display = ( 'service', 'key', 'sprite_support')
+    list_display = ( 'service', 'key', 'created', 'sprite_support')
     search_fields = ['key', 'revisions__video__key', 'revisions__video__team__owner__username']
     list_filter = ('service', 'sprite_support')
 

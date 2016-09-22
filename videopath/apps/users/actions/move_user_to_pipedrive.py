@@ -26,7 +26,7 @@ USER_COUNTRY_FIELD_ID = '027bf82e5f6fcafb475fbd8f7a47c45668e7fc2c'
 USER_REFERRER_FIELD_ID = 'd683ac8e5a36c454e67961f3aa5c6b04b1076b79'
 
 
-USER_ID = 823305 # Anthony
+USER_ID = 279049 # Anna
 
 
 def run(user, only_check_and_link = False):

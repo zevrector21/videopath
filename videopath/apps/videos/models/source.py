@@ -108,7 +108,8 @@ class Source(VideopathBaseModel):
                 'file_mp4': self.file_mp4
                 }
             })
-        return True, ''
+
+        return True, 'Video sent to be exported'
 
     #
     # get correct tumbnails for this source object

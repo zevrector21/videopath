@@ -24,7 +24,9 @@ class VideoAdmin(VideopathModelAdmin):
 
 	def make_export_jpgs(self, request,queryset):
 	    for video in queryset.all():
-	        video.export_jpg_sequence()
+	        status, result = video.export_jpg_sequence()
+	        self.message_user(request, result)
+
 	make_export_jpgs.short_description = "Export JPGs"
 
 admin.site.register(Video, VideoAdmin)

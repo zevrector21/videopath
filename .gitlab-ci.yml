@@ -12,7 +12,7 @@ test_on_heroku:
   type: test
   script:
     - dpl --provider=heroku --app=videopath-api-builds --api-key=$HEROKU_API_KEY
-    - heroku run python tests/run.py --exit-code --app videopath-api-builds
+    - heroku run ./app test --exit-code --app videopath-api-builds
     
 deploy_to_staging:
   type: deploy

@@ -18,7 +18,7 @@ Deploy to Staging:
   type: deploy
   script:
     - dpl --provider=heroku --app=videopath-api-dev --api-key=$HEROKU_API_KEY
-    - heroku run python manage.py migrate --exit-code --app videopath-api-dev
+    - heroku run python manage.py migrate --noinput --exit-code --app videopath-api-dev
   environment: staging
   only:
     - develop
@@ -28,7 +28,7 @@ Deploy to Production:
   script:
     - heroku pg:backups capture --app videopath-api
     - dpl --provider=heroku --app=videopath-api --api-key=$HEROKU_API_KEY
-    - heroku run python manage.py migrate --exit-code --app videopath-api
+    - heroku run python manage.py migrate --noinput --exit-code --app videopath-api
   environment: production
   only:
     - master

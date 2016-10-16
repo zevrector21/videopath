@@ -1,0 +1,33 @@
+before_script:
+  - echo "deb http://toolbelt.heroku.com/ubuntu ./" > /etc/apt/sources.list.d/heroku.list
+  - wget -O- https://toolbelt.heroku.com/apt/release.key | apt-key add -
+  - apt-get update
+  - apt-get install -y heroku-toolbelt
+  - gem install dpl
+stages:
+  - test
+  - deploy
+ 
+test_on_heroku:
+  type: test
+  script:
+    - dpl --provider=heroku --app=videopath-api-builds --api-key=$HEROKU_API_KEY
+    - heroku run ./app.sh test --exit-code --app videopath-api-builds
+    
+deploy_to_staging:
+  type: deploy
+  script:
+    - dpl --provider=heroku --app=videopath-api-dev --api-key=$HEROKU_API_KEY
+    - heroku run python manage.py migrate --exit-code --app videopath-api-dev
+  only:
+    - develop
+    
+deploy_to_production:
+  type: deploy
+  script:
+    - heroku pg:backups capture --app videopath-api
+    - dpl --provider=heroku --app=videopath-api --api-key=$HEROKU_API_KEY
+    - heroku run python manage.py migrate --exit-code --app videopath-api
+  only:
+    - master
+  when: manual

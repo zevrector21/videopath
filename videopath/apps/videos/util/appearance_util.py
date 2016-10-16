@@ -3,7 +3,6 @@ from django.conf import settings
 #
 # Inject appearance info
 #
-import shlex
 def appearance_for_revision(revision):
 
     from videopath.apps.videos.models import PlayerAppearance

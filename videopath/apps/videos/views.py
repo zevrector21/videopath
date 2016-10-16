@@ -1,8 +1,6 @@
 
 from django.http import Http404
 
-from django.shortcuts import get_object_or_404
-
 from django.db.models import Q
 
 from rest_framework import viewsets
@@ -155,14 +153,17 @@ class VideoViewSet(viewsets.ModelViewSet):
         
         videos = Video.objects.filter_for_user(self.request.user).filter(archived=False)
 
+        # filter by team
         team_id = self.request.resolver_match.kwargs.get('team_id', None)
         if team_id:
             videos = videos.filter(team_id=team_id)
 
+        # filter by query
         q = self.request.GET.get('q')
         if q:
             q = q.strip()
             videos = videos.filter(Q(draft__title__icontains = q) | Q(draft__description__icontains = q))
+
         return videos.extra(order_by=['-created']).distinct()
 
     def perform_update(self, serializer):
@@ -180,16 +181,14 @@ class VideoViewSet(viewsets.ModelViewSet):
 
 
     def perform_create(self, serializer):
-        team_id = self.request.data.get('team')
-        team = None
-        if team_id:
-            try:
-                team = Team.objects.get(pk=team_id)
-            except Team.DoesNotExist: pass
-        if not team:
-            team = self.request.user.default_team
 
-        
+        # find correct team for video
+        team_id = self.request.data.get('team')
+        team = self.request.user.default_team
+        if team_id:
+            try: team = Team.objects.get(pk=team_id)
+            except Team.DoesNotExist: pass
+
         instance = serializer.save(team=team)
 
         #
@@ -215,7 +214,6 @@ class VideoViewSet(viewsets.ModelViewSet):
                 instance.draft = revision_copy
                 instance.team = revision.video.team
                 instance.save()
-
 
 
         # if the demo attribute is present in the request
@@ -297,6 +295,8 @@ class MarkerViewSet(viewsets.ModelViewSet):
     permission_classes = (MarkerPermissions,AuthenticatedPermission)
 
     def get_queryset(self, vid = None):
+  
+        vid = self.request.resolver_match.kwargs.get('vid', None)
         objects = Marker.objects.filter_for_user(self.request.user)
         if vid: objects = objects.filter(video_revision__id=vid) 
         return objects.distinct()
@@ -310,6 +310,7 @@ class MarkerContentViewSet(viewsets.ModelViewSet):
     permission_classes = (MarkerContentPermissions,AuthenticatedPermission)
 
     def get_queryset(self, mid = None):
+        mid = self.request.resolver_match.kwargs.get('mid', None)
         objects = MarkerContent.objects.filter_for_user(self.request.user)
         if mid: objects = objects.filter(marker__id=mid)
         return objects.distinct()
@@ -354,8 +355,9 @@ def import_source(request, key=None):
     except:
         pass
 
-    # hack to enable jpg transcoding for certain user accounts
-    if video.team.owner.username == 'videopath':
+
+    if video.team.owner.can_use_feature('advanced_video_settings'):
         video.export_jpg_sequence()
+
 
     return Response()

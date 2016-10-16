@@ -5,9 +5,10 @@ from django.db.models import Sum
 from .decorators import group_membership_required
 
 from videopath.apps.videos.models import Video
-from videopath.apps.analytics.models import DailyAnalyticsData
+from videopath.apps.analytics.models import DailyAnalyticsData, VideoStatistics
 from videopath.apps.vp_admin.views import helpers
 
+import math
 
 @group_membership_required('insights')
 def listview(request):
@@ -80,6 +81,11 @@ def listview(request):
         })
 
 
+def formatSeconds(s):
+    if not s: s = 0 
+    s = math.floor(s)
+    return str(timedelta(seconds=s))
+
 
 @group_membership_required('insights')
 def videoview(request, key):
@@ -105,6 +111,34 @@ def videoview(request, key):
 
     except:
         result += "No stats available at this time"
+
+    result += helpers.header("Engagement stats")
+    try:
+
+        # overall stats
+        querySet = VideoStatistics.objects.filter(videoKey=key, sessionTotal__lte = 1800)
+
+        stats =  querySet.aggregate(playingTotal = Sum('playingTotal'), overlayOpenTotal = Sum('overlayOpenTotal'), sessionTotal = Sum('sessionTotal'))
+        num_sessions = str(querySet.count())
+        result += "Recorded Sessions: " + num_sessions + "\n"
+        result += "Overall session time: " + formatSeconds(stats['sessionTotal']) + " - avg. "  + formatSeconds( stats['sessionTotal'] / float(num_sessions))   + "\n"
+        result += "Overall play time: " + formatSeconds(stats['playingTotal']) + " - avg. " + formatSeconds( stats['playingTotal'] / float(num_sessions)) + "\n"
+        result += "Overall overlay time: " + formatSeconds(stats['overlayOpenTotal']) +  " - avg. " + formatSeconds( stats['overlayOpenTotal'] / float(num_sessions)) + "\n"
+        result += "<strong>Time spent longer on video: " + str(math.ceil(stats['overlayOpenTotal'] / stats['sessionTotal'] * 100)) + '% </strong>'
+
+        # sessions with overlay opens
+        result += '<br /><br /><strong>Session with overlay opens</strong><br />'
+        querySet = VideoStatistics.objects.filter(videoKey=key, sessionTotal__lte = 1800, overlayOpenTotal__gt = 10 )
+
+        stats =  querySet.aggregate(playingTotal = Sum('playingTotal'), overlayOpenTotal = Sum('overlayOpenTotal'), sessionTotal = Sum('sessionTotal'))
+        num_sessions = str(querySet.count())
+        result += "Recorded Sessions: " + num_sessions + "\n"
+        result += "Overall session time: " + formatSeconds(stats['sessionTotal']) + " - avg. "  + formatSeconds( stats['sessionTotal'] / float(num_sessions))   + "\n"
+        result += "Overall play time: " + formatSeconds(stats['playingTotal']) + " - avg. " + formatSeconds( stats['playingTotal'] / float(num_sessions)) + "\n"
+        result += "Overall overlay time: " + formatSeconds(stats['overlayOpenTotal']) +  " - avg. " + formatSeconds( stats['overlayOpenTotal'] / float(num_sessions)) + "\n"
+        result += "<strong>Time spent longer on video: " + str(math.ceil(stats['overlayOpenTotal'] / stats['sessionTotal'] * 100)) + '% </strong>'
+    except:
+        result += "No data available at this time"
 
     result += helpers.header("Video")
     result += '<iframe width="700px" height="525px" frameborder="0" src="https://player.videopath.com/' + video.key + '" allowfullscreen="" onmousewheel="event.preventDefault();"></iframe>'

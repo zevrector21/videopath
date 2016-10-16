@@ -63,16 +63,13 @@ class VideoRevision(VideopathBaseModel):
     ui_disable_share_buttons = models.BooleanField(default=False)
     ui_equal_marker_lengths = models.BooleanField(default=False)
     ui_fit_video = models.BooleanField(default=False)
+    ui_enable_mobile_portrait = models.BooleanField(default=True)
 
     # other settings
     continuous_playback = models.BooleanField(default=False)
     custom_tracking_code = models.CharField(max_length=20, blank=True)
-
-    # iphone support
-    iphone_images = models.IntegerField(default=-1)
     
     # endscreen settings
-    endscreen_url = models.CharField(max_length=512, blank=True)
     endscreen_title = models.CharField(max_length=512, blank=True)
     endscreen_background_color = ColorField(default="#32526e", blank=True)
     endscreen_button_title = models.CharField(
@@ -82,13 +79,6 @@ class VideoRevision(VideopathBaseModel):
     endscreen_button_color = ColorField(default="#ff6b57", blank=True)
     endscreen_subtitle = models.CharField(
         default="Create your own interactive video", max_length=512, blank=True)
-
-    # tracking pixel support
-    tracking_pixel_start = models.TextField(blank=True, default="")
-    tracking_pixel_q1 = models.TextField(blank=True, default="")
-    tracking_pixel_q2 = models.TextField(blank=True, default="")
-    tracking_pixel_q3 = models.TextField(blank=True, default="")
-    tracking_pixel_end = models.TextField(blank=True, default="")
 
     # password protection
     password = models.CharField(max_length=512, blank=True) # stores the salted sha digest
@@ -115,7 +105,11 @@ class VideoRevision(VideopathBaseModel):
 
         super(VideoRevision, self).save(*args, **kwargs)
 
-    def has_user_access(self, user):
+    def has_user_access(self, user, readonly = True):
+
+        # only allow write access if this is a draft revision
+        if not readonly and not self.video_draft:
+            return False
         return self.video.has_user_access(user)
 
 

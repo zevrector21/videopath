@@ -13,9 +13,8 @@ def jpg_transcode_error(message):
 	key = message['request']['source']['key']
 	try:
 		source = Source.objects.get(key=key)
-		if not source.jpg_sequence_support:
-			for v in source.get_attached_videos():
-				mailer.send_mail('jpg_transcode_failed', {'title':v.draft.title}, v.team.owner)
+		for v in source.get_attached_videos():
+			mailer.send_mail('jpg_transcode_failed', {'title':v.draft.title}, v.team.owner)
 	except Source.DoesNotExist:
 		pass 
 
@@ -32,9 +31,8 @@ def jpg_transcode_success(message):
 		source = Source.objects.get(key=key)
 
 		# only send mails if jpg sequence change is new
-		if not source.jpg_sequence_support:
-			for v in source.get_attached_videos():
-				mailer.send_mail('jpg_transcode_succeeded', {'title':v.draft.title}, v.team.owner)
+		for v in source.get_attached_videos():
+			mailer.send_mail('jpg_transcode_succeeded', {'title':v.draft.title}, v.team.owner)
 
 		source.jpg_sequence_support = True
 		source.jpg_sequence_length = message['result']['results']['frames']

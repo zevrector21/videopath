@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as _UserAdmin
 
-from .models import UserCampaignData, UserSalesInfo, AuthenticationToken,UserActivityDay, OneTimeAuthenticationToken, UserActivity, AutomatedMail, UserSettings, User, Team, TeamMember
+from .models import APIToken, UserCampaignData, UserSalesInfo, AuthenticationToken,UserActivityDay, OneTimeAuthenticationToken, UserActivity, AutomatedMail, UserSettings, User, Team, TeamMember
 from videopath.apps.users.actions import move_user_to_pipedrive
 
 
@@ -95,9 +95,13 @@ class UserCampaignDataAdmin(admin.ModelAdmin):
     list_display = ('user', 'created')
     ordering = ('created',)
 
+class APITokenAdmin(admin.ModelAdmin):
+    search_fields = ['user__username', 'user__email']
+    list_display = ('user', 'created', 'key')
 
 #admin.site.unregister(User)
 admin.site.unregister(UserSettings)
+admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 admin.site.register(Team, TeamAdmin)
 admin.site.register(TeamMember, TeamMemberAdmin)
@@ -107,6 +111,7 @@ admin.site.register(UserActivity, UserActivityAdmin)
 admin.site.register(UserActivityDay, UserActivityDayAdmin)
 admin.site.register(UserCampaignData, UserCampaignDataAdmin)
 admin.site.register(UserSalesInfo, UserSalesInfoAdmin)
+admin.site.register(APIToken, APITokenAdmin)
 
 admin.site.register(AutomatedMail, AutomatedMailAdmin)
 admin.site.register(UserSettings, UserSettingsAdmin)

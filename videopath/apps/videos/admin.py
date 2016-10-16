@@ -25,7 +25,7 @@ class VideoAdmin(admin.ModelAdmin):
     }
 
     # actions
-    actions=["make_published", "make_unpublished", "make_duplicated", "make_reexport", "make_export_jpgs"]
+    actions=["make_published", "make_unpublished", "make_duplicated", "make_reexport", "make_export_jpgs", "make_mobile_portrait"]
     def make_published(self, request, queryset):
         for video in queryset.all():
             video.publish()
@@ -52,6 +52,11 @@ class VideoAdmin(admin.ModelAdmin):
         for video in queryset.all():
             video.export_jpg_sequence()
     make_export_jpgs.short_description = "Export JPGs"
+
+    def make_mobile_portrait(self, request, queryset):
+        for video in queryset.all():
+            video.enable_mobile_portrait()
+    make_mobile_portrait.short_description = "Enable for mobile portrait"
 
     # custom fields
     def created_humanized(self, obj):
@@ -110,7 +115,7 @@ class VideoRevisionAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('General', {
-            'fields': ('video', 'title', 'description', 'iphone_images', 'published_date')
+            'fields': ('video', 'title', 'description', 'published_date')
         }),
         ('Password', {
             'fields': ( 'password', 'password_salt', 'password_hashed' )
@@ -119,19 +124,16 @@ class VideoRevisionAdmin(admin.ModelAdmin):
             'fields': ('source', )
         }),
         ('Appearance', {
-            'fields': ('ui_color_1', 'ui_color_2', 'ui_icon', 'ui_icon_link_target','player_appearance', 'continuous_playback')
+            'fields': ('ui_color_1', 'ui_color_2', 'ui_icon', 'ui_icon_link_target','player_appearance', 'continuous_playback', 'ui_enable_mobile_portrait')
         }),
         ('Endscreen', {
-            'fields': ('endscreen_url', 'endscreen_title', 'endscreen_background_color', 'endscreen_button_title', 'endscreen_button_target', 'endscreen_button_color')
+            'fields': ('endscreen_title', 'endscreen_background_color', 'endscreen_button_title', 'endscreen_button_target', 'endscreen_button_color')
         }),
 
         ('Files', {
             'fields': ('custom_thumbnail', )
         }),
 
-        ('Tracking', {
-            'fields': ('tracking_pixel_start', 'tracking_pixel_q1', 'tracking_pixel_q2', 'tracking_pixel_q3', 'tracking_pixel_end')
-        })
     )
 
     readonly_fields=('password_hashed', 'password_salt')
@@ -154,7 +156,7 @@ admin.site.register(VideoRevision, VideoRevisionAdmin)
 # Marker
 #
 class MarkerAdmin(admin.ModelAdmin):
-    list_display = ('title', 'time', 'video_revision', 'content_link')
+    list_display = ('title', 'time', 'video_revision', 'created', 'content_link')
     list_filter = ('video_revision__id',)
     ordering = ('time',)
     search_fields = ['key', 'id', ]
@@ -223,9 +225,9 @@ admin.site.register(PlayerAppearance, PlayerAppearanceAdmin)
 #
 class SourceAdmin(admin.ModelAdmin):
 
-    list_display = ( 'service', 'key', 'jpg_sequence_support', 'sprite_support')
+    list_display = ( 'service', 'key', 'created', 'sprite_support')
     search_fields = ['key', 'revisions__video__key', 'revisions__video__team__owner__username']
-    list_filter = ('service', 'jpg_sequence_support', 'sprite_support')
+    list_filter = ('service', 'sprite_support')
 
     actions=["make_export_jpgs",]
 
@@ -248,7 +250,7 @@ class SourceAdmin(admin.ModelAdmin):
             'fields': ('file_mp4', 'file_webm', 'thumbnail_large', 'thumbnail_small')
         }),
         ('JPG Support', {
-            'fields': ('jpg_sequence_support', 'jpg_sequence_length', 'sprite_support', 'sprite_length')
+            'fields': ('sprite_support', 'sprite_length')
         }),
         ('Other', {
             'fields': ('description','youtube_allow_clickthrough')

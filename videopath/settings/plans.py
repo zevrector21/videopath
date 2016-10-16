@@ -15,6 +15,7 @@ PLAN_FEATURES = [
 	'feature_email_collector',
     'feature_integrations',
     'feature_custom_analytics',
+    'feature_movingimage',
     'feature_teams', 
     'feature_theme',
     'feature_icon',
@@ -88,6 +89,7 @@ PLANS = {
         'feature_advanced_library': True,
         'feature_advanced_analytics': True,
         'feature_vimeo': True,
+        'feature_wistia': True,
 
         #
         # variants
@@ -262,6 +264,7 @@ PLANS = {
         'feature_advanced_library': True,
         'feature_advanced_analytics': True,
         'feature_email_collector': True,
+        'feature_advanced_video_settings': True,
         'feature_brightcove': True,
 
 
@@ -457,6 +460,33 @@ PLANS = {
 
             },
 
+            'veedu': {
+                'name': 'Enterprise Monthly',
+
+                #
+                # features
+                #
+                'feature_endscreen': True,
+                'feature_advanced_settings': True,
+                'feature_vimeo': True,
+                'feature_wistia': True,
+                'feature_custom_analytics': True,
+                'feature_custom_hosting': True,
+                'feature_theme': True,
+                'feature_icon': True,
+                'feature_advanced_library': True,
+                'feature_advanced_analytics': True,
+                'feature_email_collector': True,
+                'feature_advanced_video_settings': True,
+                'feature_brightcove': True,
+
+                'price_eur': 76500,
+                'price_usd': 76500,
+                'price_gbp': 76500,
+
+
+            },
+
 
             'staff': {
                 'name': 'videopath staff account',
@@ -479,6 +509,7 @@ PLANS = {
                 'feature_email_collector': True,
                 'feature_teams': True,
                 'feature_advanced_analytics': True,
+                'feature_movingimage': True,
 
 
                 'value': 9999,

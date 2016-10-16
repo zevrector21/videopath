@@ -76,7 +76,7 @@ def view(request):
 	num_fit_video = get_result(SELECT_PUBLISHED_REVISIONS + " WHERE vr.ui_fit_video = true")
 	num_custom_tracking_code = get_result(SELECT_PUBLISHED_REVISIONS + " WHERE vr.custom_tracking_code != ''")
 	num_password = get_result(SELECT_PUBLISHED_REVISIONS + " WHERE vr.password !=''")
-	num_iphone_enabled = get_result(SELECT_PUBLISHED_REVISIONS + " WHERE vr.iphone_images > 20")
+	# num_iphone_enabled = get_result(SELECT_PUBLISHED_REVISIONS + " WHERE vr.iphone_images > 20")
 
 	table = [['Feature', 'Videos']]
 	table.append(["Custom Colors", num_custom_colors])
@@ -87,7 +87,7 @@ def view(request):
 	table.append(["Custom Tracking Code", num_custom_tracking_code])
 	table.append(["Password Protection", num_password])
 	table.append(["Continuous Playback", num_continuous_playback])
-	table.append(["Iphone enabled", num_iphone_enabled])
+	# table.append(["Iphone enabled", num_iphone_enabled])
 	result += helpers.chart(table,'column')
 
 

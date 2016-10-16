@@ -46,8 +46,8 @@ class TestCase(BaseTestCase):
     		"key":source.key
     	}})
     	source = Source.objects.get(key=source.key)
-    	self.assertEqual(source.jpg_sequence_support, True)
-    	self.assertEqual(source.jpg_sequence_length, 24)
+    	self.assertEqual(source.sprite_support, True)
+    	self.assertEqual(source.sprite_length, 24)
 
 
 

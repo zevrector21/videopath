@@ -1,3 +1,6 @@
+
+import ast
+
 from rest_framework import serializers
 
 from videopath.apps.videos.models import Video, Marker, MarkerContent, VideoRevision, PlayerAppearance, Source
@@ -25,7 +28,6 @@ class SourceSerializer(serializers.ModelSerializer):
             ret['file_mp4'] = settings.VIDEO_CDN + ret['file_mp4']
             ret['file_webm'] = settings.VIDEO_CDN + ret['file_webm']
 
-        ret['jpg_sequence_base_url'] = settings.JPGS_CDN + instance.key.lower() + '/'
         ret['sprite_base_url'] = settings.JPGS_CDN + instance.key.lower() + '/'
         
         return ret
@@ -33,6 +35,7 @@ class SourceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Source
         read_only_fields = ()
+        exclude = ('modified', 'notes')
 
 
 
@@ -44,8 +47,6 @@ class VideoSerializer(serializers.ModelSerializer):
     revision_info = serializers.SerializerMethodField()
 
     thumbnails = serializers.SerializerMethodField()
-
-    url = serializers.HyperlinkedIdentityField(view_name='video-detail')
 
     source = SourceSerializer(required=False, source="draft.source", read_only=True)
 
@@ -59,18 +60,16 @@ class VideoSerializer(serializers.ModelSerializer):
         if revision:
             return {
                 "title": revision.title,
-                "draft_saved": video.draft.modified if video.draft_id != None else 0,
                 "marker_count": revision.markers.count()
             }
         else:
             return {}
 
-
     class Meta:
         model = Video
-        fields = ('team', 'id', 'thumbnails', 'key', 'published',
-                  'created', 'draft', 'current_revision', 'total_plays', 'total_views', 'revision_info', 'url', 'source')
-        read_only_fields = ('draft', 'current_revision', 'archived', 'url', 'total_plays', 'total_views', 'key', 'published', 'team')
+        fields = ('team', 'id', 'thumbnails', 'key', 'published', 
+                  'created', 'draft', 'current_revision', 'total_plays', 'revision_info', 'source')
+        read_only_fields = ('draft', 'current_revision', 'archived', 'url', 'total_plays', 'key', 'published', 'team')
 
 #
 # Marker
@@ -80,9 +79,7 @@ class MarkerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Marker
         order_by = '-time'
-        fields = ('id', 'key', 'title', 'time', 'video_revision',
-                  'overlay_height', 'overlay_width')
-        read_only_fields = ('overlay_height', 'overlay_width')
+        fields = ('id', 'key', 'title', 'time', 'video_revision')
 
 #
 # Marker Content
@@ -97,42 +94,34 @@ class MarkerContentSerializer(serializers.ModelSerializer):
     def get_video_key(self, content):
         return content.marker.video_revision.video.key
 
+
+    #
+    # dynamically expand content json object
+    #
+    def to_representation(self, instance):
+        ret = super(MarkerContentSerializer, self).to_representation(instance)
+        try:
+            ret['content'] = ast.literal_eval(instance.content)
+        except:
+            ret['content'] = {}
+        return ret
+
     class Meta:
         model = MarkerContent
-        fields = ('id', 'type', 'marker', 'ordinal', 'text',
+        fields = ('id', 'type', 'marker', 'ordinal', 'text', 'content',
                   'data', 'title', 'url', 'image_url', 'key', 'video_key')
-
-#
-# Marker Content Nested
-#
-class NestedContentsSerializer(serializers.ModelSerializer):
-
-    image_url = serializers.SerializerMethodField()
-    def get_image_url(self, content):
-        return file_url_for_markercontent(content)
-
-    video_key = serializers.SerializerMethodField()
-    def get_video_key(self, content):
-        return content.marker.video_revision.video.key
-
-    class Meta:
-        model = MarkerContent
-        fields = ('type', 'text', 'ordinal', 'data', 'title',
-                  'image_url', 'url', 'id', 'marker', 'key', 'video_key')
 
 #
 # Marker Nested
 #
 class NestedMarkerSerializer(MarkerSerializer):
-    contents = NestedContentsSerializer(read_only=True, many=True)
+    contents = MarkerContentSerializer(read_only=True, many=True)
 
     class Meta:
         model = Marker
         order_by = '-time'
         fields = ('id', 'key', 'title', 'time', 'video_revision',
-                  'contents', 'overlay_height', 'overlay_width')
-        read_only_fields = ('overlay_height', 'overlay_width')
-
+                  'contents')
 
 
 #
@@ -147,7 +136,6 @@ revision_fields = (
     'ui_color_1',
     'ui_color_2',
     'ui_fit_video',
-    'endscreen_url',
     'endscreen_title',
     'endscreen_subtitle',
     'endscreen_background_color',
@@ -159,18 +147,13 @@ revision_fields = (
     'ui_icon',
     'ui_icon_link_target',
     'custom_tracking_code',
-    'iphone_images',
     'continuous_playback',
     'password',
-    'tracking_pixel_start',
-    'tracking_pixel_q1',
-    'tracking_pixel_q2',
-    'tracking_pixel_q3',
-    'tracking_pixel_end',
     'created',
     'revision_type',
     'branded',
-    'whitelabel'
+    'whitelabel',
+    'ui_enable_mobile_portrait'
 )
 
 revision_detail_fields = (
@@ -238,7 +221,7 @@ class VideoRevisionSerializer(serializers.ModelSerializer):
     class Meta:
         model = VideoRevision
         fields = revision_fields
-        read_only_fields = ('id', 'video')
+        read_only_fields = ('id', 'video', 'ui_enable_mobile_portrait')
 
     #
     # dynamically add extra info
@@ -268,7 +251,6 @@ class VideoRevisionDetailSerializer(VideoRevisionSerializer):
     thumbnails = serializers.SerializerMethodField()
     source = SourceSerializer(required=False, read_only=True)
         
-
     class Meta:
         model = VideoRevision
         fields = revision_detail_fields

@@ -1,6 +1,6 @@
 from videopath.apps.common.test_utils import BaseTestCase
 
-from django.contrib.auth.models import User
+from videopath.apps.users.models import User
 
 from videopath.apps.users.actions import clear_example_users
 

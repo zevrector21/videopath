@@ -35,6 +35,7 @@ class Source(VideopathBaseModel):
     SERVICE_BRIGHTCOVE = "brightcove"
     SERVICE_VIDEOPATH = "videopath"
     SERVICE_CUSTOM = "custom"
+    SERVICE_MOVINGIMAGES = "movingimages"
     SERVICE_CHOICES = (
         (SERVICE_NONE, SERVICE_NONE),
         (SERVICE_YOUTUBE, SERVICE_YOUTUBE),
@@ -43,6 +44,7 @@ class Source(VideopathBaseModel):
         (SERVICE_BRIGHTCOVE, SERVICE_BRIGHTCOVE),
         (SERVICE_VIDEOPATH, SERVICE_VIDEOPATH),
         (SERVICE_CUSTOM, SERVICE_CUSTOM),
+        (SERVICE_MOVINGIMAGES,SERVICE_MOVINGIMAGES)
     )
 
     # unique id
@@ -74,10 +76,6 @@ class Source(VideopathBaseModel):
     # videopath
     notes = models.CharField(max_length=255, blank=True)
 
-    # save support for jpgs
-    jpg_sequence_support = models.BooleanField(default=False)
-    jpg_sequence_length = models.IntegerField(default=0)
-
     sprite_support = models.BooleanField(default=False)
     sprite_length = models.IntegerField(default=0)
 
@@ -96,7 +94,7 @@ class Source(VideopathBaseModel):
 
         if self.sprite_support:
             return  False, "Project is already transcoded for iPhone."
-        if self.duration > 600:
+        if self.duration > 660:
             return False, "Currently only projects shorter than 10 Minutes can be transcoded."
         if self.service not in [Source.SERVICE_YOUTUBE, Source.SERVICE_VIMEO, Source.SERVICE_VIDEOPATH, Source.SERVICE_CUSTOM]:
             return False, "Currently only youtube and vimeo projects can be transcoded."
@@ -110,7 +108,8 @@ class Source(VideopathBaseModel):
                 'file_mp4': self.file_mp4
                 }
             })
-        return True, ''
+
+        return True, 'Video sent to be exported'
 
     #
     # get correct tumbnails for this source object

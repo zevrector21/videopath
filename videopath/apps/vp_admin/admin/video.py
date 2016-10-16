@@ -3,7 +3,6 @@ from django.contrib import admin
 from .base import VideopathModelAdmin
 
 from ..models import  Video
-from ..actions import upgrade_to_player_5
 
 #
 # Video Admin
@@ -17,17 +16,17 @@ class VideoAdmin(VideopathModelAdmin):
 	search_fields = ['draft__title', 'key', 'team__owner__username']
 	ordering = ('-created',)
 
-	#
-	#
-	#
-	def make_upgrade_to_player_5(self, request, queryset):
-	    for video in queryset.all():
-		    result = upgrade_to_player_5.run(video)
-		    if result: self.message_user(request, result)
+	actions=["make_export_jpgs"]
 
-	make_upgrade_to_player_5.short_description = "Upgrade to player 5"
-	actions=["make_upgrade_to_player_5"]
 
 	def title(self,obj):
 		return obj.draft.title
+
+	def make_export_jpgs(self, request,queryset):
+	    for video in queryset.all():
+	        status, result = video.export_jpg_sequence()
+	        self.message_user(request, result)
+
+	make_export_jpgs.short_description = "Export JPGs"
+
 admin.site.register(Video, VideoAdmin)

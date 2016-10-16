@@ -2,7 +2,7 @@ import re
 import urllib2
 import requests
 import json
-
+from lxml import html
 
 #
 # Import
@@ -17,6 +17,8 @@ def import_video_from_url( url):
         return _import_wistia(key)
     if service == "brightcove":
         return _import_brightcove(key)
+    if service == "movingimages":
+        return _import_movingimages(key, url)
     else:
         _raise("Please double check that you copied a valid Video URL.")
 
@@ -48,10 +50,14 @@ url_tests = {
         "youtu\.be[^+]*([\w-]{11})"
     ],
     "wistia": [
-        "wistia.com/medias/([\w-]{8,})"
+        "wistia.com/medias/([\w-]{8,})",
+        "fast.wistia.net/embed/iframe/([\w-]{8,})"
     ],
     "brightcove": [
         'brightcove.net\/([0-9]*)\/([0-9a-z\-]*)_([0-9a-z\-]*)\/index.html\?videoId=([0-9]*)'
+    ],
+    "movingimages": [
+        'e.video-cdn.net\/video\?video-id=([0-9a-zA-Z\-_]*)&player-id=([0-9a-zA-Z\-_]*)'
     ]
 }
 
@@ -237,7 +243,26 @@ def _import_brightcove(key):
 
     return result
 
+def _import_movingimages(key, url):
 
+    response = requests.get(url)
+    tree = html.fromstring(response.text)
+    width = tree.xpath('//meta[@property="og:video:width"]/@content')[0]
+    height = tree.xpath('//meta[@property="og:video:height"]/@content')[0]
+    title = tree.xpath('//meta[@property="og:title"]/@content')[0]
+    thumbnail = tree.xpath('//meta[@property="og:image"]/@content')[0]
+
+    return {
+        "service": "movingimages",
+        "service_identifier": json.dumps({
+            'video_id': key[0],
+            'player_id': key[1]
+        }),
+        "aspect": float(width) / float(height),
+        "description":title,
+        "thumbnail_small": thumbnail,
+        "thumbnail_large": thumbnail
+    }
 
 #
 # Custom Imports, if self hosting

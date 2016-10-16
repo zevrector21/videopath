@@ -5,7 +5,7 @@ from django.core.cache import cache
 from rest_framework.test import APITestCase
 from rest_framework.test import APIClient
 
-from videopath.apps.users.models import AuthenticationToken
+from videopath.apps.users.models import AuthenticationToken, User
 
 USER1_DETAILS = {
     "username": "dave",
@@ -36,11 +36,12 @@ USER4_DETAILS = {
 #
 def create_simple_user(username=USER1_DETAILS["username"], password = USER1_DETAILS["password"], email=USER1_DETAILS["email"]):
     permissions, users, warnings = UserenaSignup.objects.check_permissions()
-    return UserenaSignup.objects.create_user(username=username,
+    user = UserenaSignup.objects.create_user(username=username,
                                              password=password,
                                              email=email,
                                              active=True,
                                              send_email=False)
+    return user
 
 #
 # Base client with some convenice functions
@@ -84,7 +85,8 @@ class BaseTestCase(APITestCase):
     # Setup Test Users
     #
     def setup_users(self, num=2):
-        self.user = self.user1 = create_simple_user(username=USER1_DETAILS["username"], password = USER1_DETAILS["password"], email=USER1_DETAILS["email"])
+        self.user = create_simple_user(username=USER1_DETAILS["username"], password = USER1_DETAILS["password"], email=USER1_DETAILS["email"])
+        self.user1 = self.user
         if num < 2: return
         self.user2 = create_simple_user(username=USER2_DETAILS["username"], password = USER2_DETAILS["password"], email=USER2_DETAILS["email"])
         if num < 3: return

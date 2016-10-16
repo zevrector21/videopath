@@ -4,7 +4,7 @@ from django.core.cache import cache
 
 from rest_framework import exceptions
 
-from videopath.apps.users.models import AuthenticationToken, UserActivity, UserActivityDay
+from videopath.apps.users.models import APIToken, AuthenticationToken, UserActivity, UserActivityDay
 from videopath.apps.common.services import service_provider
 
 def authenticate_token(key):
@@ -38,7 +38,13 @@ def _load_user_and_token(key):
 	        cache.set(key + "-user", user, 60 * 5)  # save for 5 minutes
 	        cache.set(key + "-token", token, 60 * 5)  # save for 5 minutes
 	    except AuthenticationToken.DoesNotExist:
-	        raise exceptions.AuthenticationFailed('Invalid token')
+	    	try: 
+	    		token = APIToken.objects.get(key=key)
+	        	user = token.user
+	       	 	cache.set(key + "-user", user, 60 * 5)  # save for 5 minutes
+	        	cache.set(key + "-token", token, 60 * 5)  # save for 5 minutes
+	        except APIToken.DoesNotExist:
+	        	raise exceptions.AuthenticationFailed('Invalid token')
 
 	#
 	if not user.is_active:

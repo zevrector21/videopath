@@ -2,7 +2,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from videopath.apps.vp_admin.signals import hourly_jobs
 
-from videopath.apps.videos.models import Video, VideoRevision, Source
+from videopath.apps.videos.models import Video, VideoRevision
 
 from videopath.apps.payments.signals import subscription_updated
 
@@ -20,14 +20,6 @@ def create_first_draft(sender, instance=None, created=False, **kwargs):
         instance.save()
         revision.save()
 
-
-
-@receiver(hourly_jobs)
-def transcode_random_video(sender, **kwargs):
-
-	# source = Source.objects.filter(jpg_sequence_support=True, sprite_support=False).order_by('?').first()
-	# source.export_jpg_sequence()
-	pass
 
 @receiver(subscription_updated)
 def export_users_videos(sender, user=None, **kwargs):

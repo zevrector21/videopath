@@ -12,15 +12,17 @@ class VideoRevisionPermissions(permissions.BasePermission):
 
     def has_permission(self, request, view):
         if request.method == "GET": return True
+        if request.method == "POST": return False # revisions can not be created by users
+        if request.method == "DELETE": return False # revisions can not be deleted by users
         try:
             data = json.loads(request.body)
             revision = VideoRevision.objects.get(pk=data["id"])
-            return revision.has_user_access(request.user)
+            return revision.has_user_access(request.user, False)
         except Exception:
             return False
 
     def has_object_permission(self, request, view, obj):
-        return obj.has_user_access(request.user)
+        return obj.has_user_access(request.user, request.method=="GET")
 
 
 class MarkerPermissions(permissions.BasePermission):
@@ -32,12 +34,12 @@ class MarkerPermissions(permissions.BasePermission):
         try:
             data = json.loads(request.body)
             revision = VideoRevision.objects.get(pk=data["video_revision"])
-            return revision.has_user_access(request.user)
+            return revision.has_user_access(request.user, False)
         except Exception:
             return False
 
     def has_object_permission(self, request, view, obj):
-        return obj.has_user_access(request.user)
+        return obj.has_user_access(request.user, request.method=="GET")
 
 class VideoPermissions(permissions.BasePermission):
 
@@ -55,9 +57,14 @@ class MarkerContentPermissions(permissions.BasePermission):
         try:
             data = json.loads(request.body)
             marker = Marker.objects.get(pk=data["marker"])
-            return marker.has_user_access(request.user)
+
+            # disallow creation of multiple content blocks if there already is one fullscreen block present
+            if request.method == "POST" and marker.contents.filter(type__in=['website','social']).count() > 0:
+                return False
+
+            return marker.has_user_access(request.user, False)
         except Exception:
             return False
 
     def has_object_permission(self, request, view, obj):
-        return obj.has_user_access(request.user)
+        return obj.has_user_access(request.user, request.method=="GET")

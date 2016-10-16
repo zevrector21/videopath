@@ -45,6 +45,17 @@ def import_video_from_url( url):
 			'service_identifier': {'player': u'33108374-2ef7-4447-b6d3-f0e046e0f70c', 'account': u'4328472451001', 'video_id': u'4332059708001'}
 		}
 
+	# moving images
+	if "video-cdn" in url:
+		return {
+			'aspect': 1.7777777777777777,
+			'duration': 0,
+			'thumbnail_small': '',
+			'thumbnail_large': '',
+			'service': 'movingimages',
+			'service_identifier': {'video_id': u'-BNPey-_eWpKCkw82-UCWt', 'player_id': u'597G7fRQ7Fhe99cC4fEDYp'}
+		} 
+
 
 def import_video_from_server(vars):
 	return {

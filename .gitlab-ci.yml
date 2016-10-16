@@ -8,26 +8,28 @@ stages:
   - test
   - deploy
  
-test_on_heroku:
+Test on Heroku:
   type: test
   script:
     - dpl --provider=heroku --app=videopath-api-builds --api-key=$HEROKU_API_KEY
-    - heroku run ./app test --exit-code --app videopath-api-builds
+    - heroku run ./app.sh test --exit-code --app videopath-api-builds
     
-deploy_to_staging:
+Deploy to Staging:
   type: deploy
   script:
     - dpl --provider=heroku --app=videopath-api-dev --api-key=$HEROKU_API_KEY
     - heroku run python manage.py migrate --exit-code --app videopath-api-dev
+  environment: staging
   only:
     - develop
     
-deploy_to_production:
+Deploy to Production:
   type: deploy
   script:
     - heroku pg:backups capture --app videopath-api
     - dpl --provider=heroku --app=videopath-api --api-key=$HEROKU_API_KEY
     - heroku run python manage.py migrate --exit-code --app videopath-api
+  environment: production
   only:
     - master
   when: manual

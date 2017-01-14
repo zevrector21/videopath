@@ -289,14 +289,6 @@ def import_video_from_server(vars):
 	if resp.status_code != 200:
 	    _raise("Could not find a mp4 file at the given location.")
 
-	# test existence of webm file
-	try:
-	    resp = requests.head(webm)
-	except:
-	    _raise("Could not verify the existense of a webm file at the given location.")
-	if resp.status_code != 200:
-	    _raise("Could not find a webm file at the given location.")
-
 	if duration <= 0:
 	    _raise("Invalid duration.")
 

@@ -4,7 +4,7 @@ import datetime
 from videopath.apps.videos.models import Video
 from videopath.apps.analytics.models import DailyAnalyticsData, TotalAnalyticsData
 
-DAILY_URL = "/v1/video/{0}/analytics-daily/?start=0&end=1577836800"
+DAILY_URL = "/v1/video/{0}/analytics-daily/?start=0&end=4075742868"
 TOTAL_URL = "/v1/video/{0}/analytics/"
 
 # Uses the standard django frame testing client

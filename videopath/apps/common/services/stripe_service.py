@@ -23,7 +23,7 @@ def get_card_for_user(user):
     if not stripe_customer:
         return None
 
-    cards = stripe_customer.cards.all()
+    cards = stripe_customer.sources.all()
     for card in cards.data:
         return card
     return None
@@ -37,10 +37,10 @@ def set_card_for_user(user, token):
     stripe_customer = _get_stripe_customer_for_user(user, True)
 
     try:
-        new_card = stripe_customer.cards.create(card=token)
+        new_card = stripe_customer.sources.create(card=token)
 
         # remove excess cards on stripe
-        cards = stripe_customer.cards.all()
+        cards = stripe_customer.sources.all()
         for card in cards.data:
             if new_card.id != card.id:
                 card.delete()

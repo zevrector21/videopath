@@ -119,7 +119,7 @@ class UserViewSet(viewsets.ModelViewSet):
         user = User.objects.validate_and_create_user(username, email,password)
        
         # send a signup email
-        # send_mail('signup', {}, user)
+        send_mail('signup', {}, user)
 
         # users geo record
         geo_service = service_provider.get_service("geo_ip")

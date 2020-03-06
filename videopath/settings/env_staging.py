@@ -40,6 +40,6 @@ JPGS_CDN = '//videopathmobilefilesdev.blob.core.windows.net/'
 #
 # Endpoint
 #
-API_ENDPOINT = 'https://videopath-api-dev.herokuapp.com'
+API_ENDPOINT = 'https://api-dev.herokuapp.com'
 
 APP_URL = 'https://app-dev.videopath.com/develop'

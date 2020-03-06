@@ -15,15 +15,15 @@ CACHES = memcacheify()
 # Player config for export
 #
 PLAYER_DEFAULT_VERSION = '6'
-PLAYER_SRC = '//d2re7j0vtih67y.cloudfront.net/player/'
+PLAYER_SRC = '//src.videopath.com/player/'
 PLAYER_LOCATION = 'http://player.videopath.com/'
 
 #
 # CDN Endpoints
 #
 VIDEO_CDN = '//videos.videopath.com/'
-THUMBNAIL_CDN = '//d2nmf7yrr53ast.cloudfront.net/'
-IMAGE_CDN = 'https://dobvnaghfdgn1.cloudfront.net/'
+THUMBNAIL_CDN = '//thumbs.videopath.com/'
+IMAGE_CDN = 'https://images.videopath.com/'
 DOCS_CDN = "http://docs.videopath.com/"
 
 #

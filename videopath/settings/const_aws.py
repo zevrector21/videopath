@@ -27,7 +27,7 @@ AWS_VIDEO_BACKUP_BUCKET = "video-backup.videopath.com"
 #
 # images buckets
 #
-AWS_IMAGE_OUT_BUCKET = 'images.videopath.com'
+AWS_IMAGE_OUT_BUCKET = 'vp-images-prod'
 AWS_IMAGE_ICON_FOLDER = 'icon'
 AWS_IMAGE_THUMBNAIL_FOLDER = 'thumbnail'
 
@@ -54,3 +54,4 @@ PGBACKUPS_URL = os.environ.get("PGBACKUPS_URL")
 # Cloudfront IDs
 #
 AWS_PLAYER_DISTRIBUTION_ID = "EWJTLXRZSWYB1"
+

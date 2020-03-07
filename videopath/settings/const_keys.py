@@ -64,4 +64,4 @@ SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY")
 #
 # Youtube 
 #
-YOUTUBE_API_KEY = os.environ.set("YOUTUBE_API_KEY")
+YOUTUBE_API_KEY = os.environ.get("YOUTUBE_API_KEY")

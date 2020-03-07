@@ -59,3 +59,9 @@ PIPEDRIVE_API_KEY = os.environ.get("PIPEDRIVE_API_KEY")
 # Sendgrid
 #
 SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY")
+
+
+#
+# Youtube 
+#
+YOUTUBE_API_KEY = os.environ.set("YOUTUBE_API_KEY")

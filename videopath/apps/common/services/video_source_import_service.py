@@ -4,6 +4,8 @@ import requests
 import json
 from lxml import html
 
+from django.conf import settings
+
 #
 # Import
 #
@@ -67,8 +69,9 @@ url_tests = {
 def _import_youtube(key):
 
     # build api urls
-    v3_api_url = "https://www.googleapis.com/youtube/v3/videos?id=_KEY_&part=snippet,statistics,contentDetails,status&key=AIzaSyBLmIRp_0JZDxWDGl8ZkIzmwT1W1NSOfLk".replace(
-        "_KEY_", key)
+    v3_api_url = "https://www.googleapis.com/youtube/v3/videos?id=_KEY_&part=snippet,statistics,contentDetails,status&key=_YOUTUBE_API_KEY_".replace(
+        "_KEY_", key).replace(
+        "_YOUTUBE_API_KEY_", settings.YOUTUBE_API_KEY)
     oembed_url = "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=_KEY_&format=json".replace("_KEY_", key)
 
     try:

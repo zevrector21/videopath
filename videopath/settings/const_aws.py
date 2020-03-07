@@ -40,7 +40,7 @@ AWS_DOCS_INVOICE_PREFIX = "invoices/"
 #
 # Player bucket
 #
-AWS_PLAYER_BUCKET = 'player.videopath.com'
+AWS_PLAYER_BUCKET = 'player-prod.videopath.com'
 
 #
 # Dumps bucket

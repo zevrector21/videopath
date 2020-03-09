@@ -28,7 +28,7 @@ def send_share_mail(video, recipients, message):
 		'message': message,
 		'description': video.draft.description,
 		'title': video.draft.title,
-		'link': "http://player.videopath.com/" + video.key,
+		'link': "http://player.videopath.com/" + video.key + "/index.html",
 		'thumb_url': thumbnails_for_video(video)["large"],
 		'to': recipients_validated,
 	}, video.team.owner)

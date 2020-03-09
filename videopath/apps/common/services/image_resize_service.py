@@ -6,8 +6,6 @@ from django.conf import settings
 from videopath.apps.files.settings import image_sizes
 from videopath.apps.files.models import ImageFile
 
-logger = settings.LOGGER
-
 _filename_in = "/tmp/image_resize_in"
 _filename_out = "/tmp/image_resize_out"
 
@@ -21,8 +19,7 @@ def resize_image_file(f):
     try:
         _resize_image_file(f)
     except Exception as e:
-        logger.exception(e)        
-        f.status == ImageFile.ERROR
+        f.status = ImageFile.ERROR
         f.save()
         return
 

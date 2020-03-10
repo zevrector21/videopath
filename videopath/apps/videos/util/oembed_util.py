@@ -4,7 +4,7 @@ from videopath.apps.videos.models import Video
 from videopath.apps.files.util import thumbnails_util
 
 # conf
-embed_template = '<iframe frameborder="0" allowfullscreen="" onmousewheel="event.preventDefault()" width="{0}" height="{1}" src="//player.videopath.com/{2}"></iframe>'
+embed_template = '<iframe frameborder="0" allow="autoplay" allowfullscreen="" onmousewheel="event.preventDefault()" width="{0}" height="{1}" src="//player.videopath.com/{2}"></iframe>'
 url_regex = "player\.videopath\.com\/([a-zA-Z0-9]{2,20})"
 
 def parse(conf):

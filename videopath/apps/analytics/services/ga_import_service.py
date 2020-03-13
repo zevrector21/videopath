@@ -188,6 +188,8 @@ class MetricsImport:
         self.process_start()
         while has_more:
             entries, has_more = self.get_entries()
+            if not entries:
+                continue
             for entry in entries:
                 video_key = entry.pop(0)
                 row = self.datemapper.get_database_row(video_key)

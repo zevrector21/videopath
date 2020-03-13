@@ -24,7 +24,7 @@ PLAYER_LOCATION = 'http://player.videopath.com/'
 VIDEO_CDN = '//videos.videopath.com/'
 THUMBNAIL_CDN = '//thumbs.videopath.com/'
 IMAGE_CDN = 'https://images.videopath.com/'
-DOCS_CDN = "http://docs.videopath.com/"
+DOCS_CDN = "https://docs.videopath.com/"
 
 #
 # demo videos

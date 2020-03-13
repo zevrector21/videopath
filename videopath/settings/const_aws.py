@@ -34,7 +34,7 @@ AWS_IMAGE_THUMBNAIL_FOLDER = 'thumbnail'
 #
 # docs bucket and prefixes
 #
-AWS_DOCS_BUCKET = 'docs.videopath.com'
+AWS_DOCS_BUCKET = 'vp-docs'
 AWS_DOCS_INVOICE_PREFIX = "invoices/"
 
 #

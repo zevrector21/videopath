@@ -189,7 +189,7 @@ class VideoRevisionSerializer(serializers.ModelSerializer):
         return thumbnails_util.thumbnails_for_revision(video_revision)
 
     def get_ui_icon(self, video_revision):
-        icon_base_url = "//images.videopath.com/icon/"
+        icon_base_url = settings.IMAGE_CDN + settings.AWS_IMAGE_ICON_FOLDER  + "/"
         if video_revision.ui_icon:
             return icon_base_url + video_revision.ui_icon
         return icon_base_url + "default.png"

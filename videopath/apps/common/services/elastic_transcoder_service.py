@@ -3,7 +3,8 @@ from boto import sns
 
 from django.conf import settings
 
-AWS_REGION = 'us-west-2'
+import os
+AWS_REGION = os.environ.get('AWS_DEFAULT_REGION','us-west-2')
 
 #
 # Start a transcoding job

@@ -113,4 +113,4 @@ def process_messages():
 
 		time.sleep(2)
 
-start_new_thread(process_messages, ())
+#start_new_thread(process_messages, ())

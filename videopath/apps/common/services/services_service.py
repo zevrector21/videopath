@@ -53,7 +53,7 @@ def connect():
 		finally:
 			close_connection(connection)
 
-start_new_thread(connect, ())
+#start_new_thread(connect, ())
 
 
 #

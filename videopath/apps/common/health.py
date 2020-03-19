@@ -80,10 +80,10 @@ def check_import_brightcove():
 	except:
 		return "Brightcove import failed"
 	
-
-def check_services_connection():
-	service = service_provider.get_service("services")
-	return service.test_connection()
+#TODO: replace with celery
+#def check_services_connection():
+#	service = service_provider.get_service("services")
+#	return service.test_connection()
 
 #
 # Django stuff

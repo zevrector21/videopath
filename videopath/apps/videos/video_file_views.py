@@ -95,7 +95,7 @@ def process_notification(request, type):
         source.status = Source.STATUS_PROCESSING
 
     elif state == 'COMPLETED':
-        thumbs_no = '00002' if message['outputs'][0]['duration'] > 65 else '00001'
+        thumbs_no = '00001' #'00002' if message['outputs'][0]['duration'] > 65 else '00001'
         source.aspect = float( message['outputs'][0]['width'] ) / float(message['outputs'][0]['height'])
         source.duration = message['outputs'][0]['duration']
         source.status = Source.STATUS_OK

@@ -1,6 +1,5 @@
-image: debian:jessie 
+image: kroniak/ssh-client:3.6 
 before_script:
-  - apt-get update -qq
   - 'which ssh-agent || ( apt-get install -qq openssh-client )'
   - eval $(ssh-agent -s)
   - mkdir -p ~/.ssh

@@ -1,24 +1,26 @@
+image: debian:jessie 
 before_script:
-  - echo "deb http://toolbelt.heroku.com/ubuntu ./" > /etc/apt/sources.list.d/heroku.list
-  - wget -O- https://toolbelt.heroku.com/apt/release.key | apt-key add -
-  - apt-get update
-  - apt-get install -y heroku-toolbelt
-  - gem install dpl
+  - apt-get update -qq
+  - 'which ssh-agent || ( apt-get install -qq openssh-client )'
+  - eval $(ssh-agent -s)
+  - mkdir -p ~/.ssh
+  - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+  - echo -n "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+
 stages:
   - test
   - deploy
  
-Test on Heroku:
+Test on Staging:
   type: test
+  environment: staging
   script:
-    - dpl --provider=heroku --app=videopath-api-builds --api-key=$HEROKU_API_KEY
-    - heroku run ./app.sh test --exit-code --app videopath-api-builds
+    - ssh root@162.220.165.19 "bash -ac 'cd /home/videopath/api && git fetch origin && git reset --hard origin/develop && source /home/videopath/envs/api/bin/activate && ./app.sh test'"
     
 Deploy to Staging:
   type: deploy
   script:
-    - dpl --provider=heroku --app=videopath-api-dev --api-key=$HEROKU_API_KEY
-    - heroku run python manage.py migrate --noinput --exit-code --app videopath-api-dev
+    - ssh root@162.220.165.19 "cd /home/videopath/; ./scripts/deploy-api-staging.sh "
   environment: staging
   only:
     - develop

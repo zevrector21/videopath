@@ -15,12 +15,12 @@ Test on Staging:
   type: test
   environment: staging
   script:
-    - ssh root@162.220.165.19 "bash -ac 'cd /home/videopath/api && git fetch origin && git reset --hard origin/develop && source /home/videopath/envs/api/bin/activate && ./app.sh test'"
+    - ssh root@api-staging.videopath.com "bash -ac 'cd /home/videopath/api && git fetch origin && git reset --hard origin/develop && source /home/videopath/envs/api/bin/activate && ./app.sh test'"
     
 Deploy to Staging:
   type: deploy
   script:
-    - ssh root@162.220.165.19 "cd /home/videopath/; ./scripts/deploy-api-staging.sh "
+    - ssh root@api-staging.videopath.com "cd /home/videopath/; ./scripts/deploy-api-staging.sh "
   environment: staging
   only:
     - develop
@@ -28,9 +28,7 @@ Deploy to Staging:
 Deploy to Production:
   type: deploy
   script:
-    - heroku pg:backups capture --app videopath-api
-    - dpl --provider=heroku --app=videopath-api --api-key=$HEROKU_API_KEY
-    - heroku run python manage.py migrate --noinput --exit-code --app videopath-api
+    - ssh root@api.videopath.com "cd /home/ubuntu/; ./scripts/deploy-api-production.sh "
   environment: production
   only:
     - master

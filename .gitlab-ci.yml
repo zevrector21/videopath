@@ -27,7 +27,7 @@ Deploy to Staging:
 Deploy to Production:
   type: deploy
   script:
-    - ssh root@api.videopath.com "cd /home/ubuntu/; ./scripts/deploy-api-production.sh "
+    - ssh ubuntu@api.videopath.com "cd /home/ubuntu/; ./scripts/deploy-api-production.sh "
   environment: production
   only:
     - master

@@ -1,3 +1,0 @@
-* Clean up Video fields
-* Clean up source fields
-* 
